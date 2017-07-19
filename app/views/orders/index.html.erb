@@ -1,0 +1,31 @@
+<%page_title="Orders" %>
+<div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Orders</h4>
+                                <p class="category">List of orders</p>
+                            </div>
+                            <div class="content table-responsive table-full-width">
+                                <table class="table table-striped">
+                                    <thead>
+                                      <th>Date</th>
+                                    	<th>Customer</th>
+                                      <th>Mode of Payment</th>
+                                      <th>Discount</th>
+                                      <th>Total Cost</th>
+                                    </thead>
+                                    <tbody>
+                                      <% @orders.each do |order| %>
+                                      <tr>
+                                        <td><%=link_to order.date.strftime("%B %e, %Y"), order %></td>
+                                        <td><%= order.customer_full_name.try(:titleize) %></td>
+                                        <td><span class="label label-<%=order.mode_of_payment_color%>"><%= order.mode_of_payment %></td>
+                                        <td><%= number_to_currency order.discount_amount%></td>
+                                        <td><%= number_to_currency order.payment_total_cost%></td>
+
+                                      </tr>
+                                      <% end %>
+                                    </tbody>

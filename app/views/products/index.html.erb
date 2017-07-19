@@ -1,0 +1,48 @@
+<div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                              <div class="row">
+                                <div class="col-md-3">
+                                  <h4 class="title">Products</h4>
+                                  <p class="category">List of products</p>
+                                </div>
+                                <div class="col-md-7">
+                                  <%=form_tag products_path, method: :get, id: "search-form" do %>
+                                    <div class="input-group">
+                                      <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search product...", type: "search" %>
+                                      <span class="input-group-btn">
+                                        <%= button_tag(type: 'submit', class: "btn") do %>
+                                          <i class="icon-magnifier"></i>
+                                        <% end %>
+                                      </span>
+                                    </div>
+                                  <% end %>
+                                </div>
+                                <div class="col-md-2">
+                                  <%=link_to 'New Product', new_product_path, class: "btn btn-primary pull-right" %>
+                                </div>
+                              </div>
+                            <div class="content table-responsive table-full-width">
+                                <table class="table table-striped">
+                                    <thead>
+                                      
+                                      <th>Name</th>
+                                    	<th>Price</th>
+                                    	<th>Deliveries</th>
+                                      <th>Sold</th>
+                                    	<th>In Stock</th>
+                                    </thead>
+                                    <tbody>
+                                      <% @products.each do |product| %>
+                                      <tr>
+                                      <td><%=link_to product.name, product %></td>
+                                      <td><%= number_to_currency product.retail_price %></td>
+                                      <td> <%= number_to_currency product.deliveries, unit: "" %></td>
+                                      <td> <%= number_to_currency product.sold, unit: "" %></td>
+                                      <td> <%= number_to_currency product.in_stock, unit: "" %></td>
+                                      </tr>
+                                      <% end %>
+                                    </tbody>

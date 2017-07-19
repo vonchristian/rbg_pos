@@ -1,0 +1,45 @@
+<div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                              <div class="row">
+                                <div class="col-md-3">
+                                  <h4 class="title">Customers</h4>
+                                  <p class="category">List of customers</p>
+                                </div>
+                                <div class="col-md-7">
+                                  <%=form_tag customers_path, method: :get, id: "search-form" do %>
+                                    <div class="input-group">
+                                      <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search product...", type: "search" %>
+                                      <span class="input-group-btn">
+                                        <%= button_tag(type: 'submit', class: "btn") do %>
+                                          <i class="icon-magnifier"></i>
+                                        <% end %>
+                                      </span>
+                                    </div>
+                                  <% end %>
+                                </div>
+                                <div class="col-md-2">
+                                  <%=link_to 'New Customer', new_customer_path, class: "btn btn-primary pull-right" %>
+                                </div>
+                              </div>
+                            <div class="content table-responsive table-full-width">
+                                <table class="table table-striped">
+                                    <thead>
+                                      
+                                      <th>Name</th>
+                                    	<th>Address</th>
+                                    	<th>Contact</th>
+                                      <th>Purchases</th>
+                                    </thead>
+                                    <tbody>
+                                      <% @customers.each do |customer| %>
+                                        <tr>
+                                          <td><%= image_tag(customer.avatar.url(:small), class: "img-circle") %> <%=link_to customer.full_name.try(:titleize), customer %></td>
+                                          <td><%= customer.address %></td>
+                                          <td><%= customer.contact_number %></td>
+                                          <td><%= customer.purchases_count %></td>
+                                        </tr>
+                                      <% end %>

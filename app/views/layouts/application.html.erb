@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RbgPos</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+  </head>
+  <title><%= full_title(yield(:title)) %></title>
+  <body>
+  <div class="wrapper">
+    <%=render 'layouts/sidebar' %>
+     <div class="main-panel">
+    <%= render 'layouts/header' %>
+    <%=render "layouts/flash" %>
+
+    <%= yield %>
+  </body>
+</html>

@@ -1,0 +1,97 @@
+        <div id="customer-modal" class="modal fade"></div>
+<div class="content">
+  <div class="row">
+    <div  class="col-md-12">
+      <div class="card">
+        <div class="content">
+          <div class="header">
+            <div class="row">
+              <div class="col-md-8">
+                <h4 class="title"><span class="icon-basket-loaded"></span> Cart</h4>
+                <p class="category">Current line items in cart</p>
+              </div>
+              <div class="col-md-4">
+                <span class="pull-right">
+                  <%= link_to 'Add Items', store_index_path, class: "btn btn-primary" %>
+                </span>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-6">
+              <% @cart.line_items.each do |line_item| %>
+                <div class="row">
+                  <div class="col-md-2">
+                    <%= line_item.quantity %>
+                  </div>
+                  <div class="col-md-5">
+                    <%=line_item.product_name %><br>
+                    <span class="text-danger"><%= number_to_currency line_item.unit_cost %></span><br>
+                    <small class="text-muted"><%= line_item.barcode.try(:upcase)%></small>
+                  </div>
+                  <div class="col-md-3">
+                    <span class="pull-right"><%= number_to_currency line_item.total_cost %></span>
+
+                  </div>
+                </div>
+                <hr>
+                <% end %>
+                  <div class="row">
+                    <div class="col-md-5">
+                      <h4 class="title"> TOTAL </h4>
+                    </div>
+                    <div class="col-md-5">
+                      <h4 class="title pull-right">
+                        <b id='cart-total-cost'><%= number_to_currency @cart.total_cost %></b>
+                      </h4>
+                    </div>
+                  </div>
+                  <br>
+                </div>
+                <div class="col-md-4 col-md-offset-1">
+              <%= simple_form_for @order, wrappers: :vertical_radio_and_checkboxes do |f| %>
+                <div class="row">
+                  <div class="col-md-5">
+                    <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Time.zone.now.strftime("%B %e, %Y")} %>
+                  </div>
+                  <div class="col-md-7">
+                    <span><label>Customer</label><span class="pull-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span></span>
+                    <%= f.input :customer_id, collection: Customer.all.map{|a| [a.full_name, a.id] }, label: false %>
+                  </div>
+                </div>
+
+                <%= f.simple_fields_for :payment do |p| %>
+                  <%= p.input :mode_of_payment, input_html: { checked: 'Cash', id: 'mode-of-payment' }, collection: Payment.mode_of_payments.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
+                    <div id='cash-payment-details'>
+                      <div class="row">
+                        <div class="col-md-4">
+                      
+                          <%= p.input :discount_amount,  as: :string, label: 'Discount' %>
+                        </div>
+                        <div class="col-md-4">
+                          <%= p.input :cash_tendered, as: :string %>
+                        </div>
+                        <div class="col-md-4">
+                          <%= p.input :change %>
+                          <%= p.input :total_cost %>
+                          <%= p.input :total_cost_less_discount %>
+                        </div>
+                      </div>
+                    </div>
+                <% end %>
+              <%= f.submit "Save Order", class: "btn btn-primary btn-block" %>
+              <br>
+            <% end %>
+<script>
+  var checkbox = document.getElementById('mode-of-payment');
+  var details_div = document.getElementById('cash-payment-details');
+  checkbox.onchange = function() {
+     if(this.checked) {
+       details_div.style['display'] = 'block';
+     } else {
+       details_div.style['display'] = 'none';
+     }
+  };
+</script>
+

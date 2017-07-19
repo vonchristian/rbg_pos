@@ -1,0 +1,37 @@
+<div class="content">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="card">
+        <div class="header">
+          <h4 class="title">New Stock</h4>
+          <p class="category">New stock details for this product</p>
+        </div> 
+      <div class="content">
+<%= simple_form_for [@product, @stock] do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :supplier_id, collection: Supplier.all.map{|a| [a.business_name, a.id] }, prompt: "Select Supplier" %>
+  <%= f.input :quantity %>
+  <p> Purchase Details </p>
+  <%= f.input :unit_cost %>
+  <%= f.input :total_cost %>
+  <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+  <hr>
+  <p> Pricing Details </p>
+  <%= f.input :retail_price %>
+  <%= f.input :wholesale_price %>
+  <%= f.input :barcode %>
+  <%= f.input :name, input_html: { value: @product.name }, as: :hidden %>
+  <%= f.submit "Save Stock", class: "btn btn-primary" %>
+<% end %>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+  $('.datepicker').datepicker({
+	  format: "yyyy-mm-dd",
+	  orientation: "auto bottom",
+	  todayHighlight: 'true',
+	  autoclose: 'true'
+  });
+});
+
+</script>

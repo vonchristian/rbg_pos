@@ -1,0 +1,30 @@
+<div class="content">
+<div class="row">
+  <div  class="col-md-6 col-md-offset-3">
+    <div class="content">
+      <div class="card">
+            <div class="content">
+              <div class="header">
+                     <h4 class="title"><%= @order.customer_full_name.try(:upcase) %></h4>
+                                <i class="icon-calendar"></i> <%= @order.date.strftime("%B %e, %Y") %><br>
+                                Mode of Payment <p class="label label-<%= @order.mode_of_payment_color%>"><%= @order.mode_of_payment %></p>
+
+                            </div>
+              <hr>
+              <% @order.line_items.each do |line_item| %>
+                <div class="row">
+                  <div class="col-md-2">
+                    <%= line_item.quantity %> <%= line_item.product_unit %>
+                  </div>
+                  <div class="col-md-5">
+                    <%=line_item.product_name %><br>
+                    <small class="text-muted"><%= line_item.barcode %></small>
+                  </div>
+                  <div class="col-md-3">
+                    <span class="pull-right"><%= number_to_currency line_item.total_cost %></span>
+
+                  </div>
+                </div>
+                <hr>
+                <% end %>
+              
