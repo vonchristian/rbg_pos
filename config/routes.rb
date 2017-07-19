@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-	root to: 'dashboard#index'
+  devise_for :users, controllers: { sessions: 'users/sessions' , registrations: "bplo_section/settings/users"}
+  
+	root to: 'store#index'
 	resources :store, only: [:index]
 	resources :customers
   resources :products, except: [:destroy] do 
@@ -13,6 +15,10 @@ Rails.application.routes.draw do
   resources :customer_registrations, only: [:new, :create]
   namespace :reports do 
     resources :sales, only: [:index]
+  end
+  resources :accounting, only: [:index]
+  namespace :accounting do 
+    resources :entries, only: [:show]
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

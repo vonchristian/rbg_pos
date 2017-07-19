@@ -1,0 +1,20 @@
+<div class="content">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card">
+      <div class="header">
+        <h4 class="title">Entries </h4>
+        <p class="category"> List of journal entries </p>
+          <% AccountingModule::Entry.all.each do |entry| %>
+            <div class="row">
+              <div class="col-md-8">
+                <%= link_to entry.entry_date.strftime("%b %e, %Y"), accounting_entry_path(entry) %><br>
+                <%=entry.description %>
+              </div>
+              <div class="col-md-3">
+                <span class="pull-right"><%=number_to_currency entry.credit_amounts.distinct.sum(:amount) %></span>
+              </div>
+            </div>
+            <br>
+          <% end %>
+      </div>

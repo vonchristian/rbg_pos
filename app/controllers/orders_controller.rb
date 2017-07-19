@@ -9,9 +9,10 @@ class OrdersController < ApplicationController
 	end 
 	def create 
 		@cart = current_cart
-		@order = Order.create(order_params)
+		@order = Order.new(order_params)
 		if @order.valid?
-			 @order.add_line_items_from_cart(current_cart)
+			@order.add_line_items_from_cart(@cart)
+			@order.save
 			redirect_to store_index_url, notice: "Order saved successfully"
 		else 
 			render :new 
@@ -24,6 +25,6 @@ class OrdersController < ApplicationController
 
 	private 
 	def order_params 
-		params.require(:order).permit(:customer_id, :date, payment_attributes: [:mode_of_payment, :discount_amount, :cash_tendered, :change, :total_cost])
+		params.require(:order).permit(:customer_id, :date, payment_attributes: [:mode_of_payment, :discount_amount, :cash_tendered, :change, :total_cost, :total_cost_less_discount])
 	end
 end

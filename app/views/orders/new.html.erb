@@ -50,7 +50,7 @@
                   <br>
                 </div>
                 <div class="col-md-4 col-md-offset-1">
-              <%= simple_form_for @order, wrappers: :vertical_radio_and_checkboxes do |f| %>
+              <%= simple_form_for @order, url: :orders, wrappers: :vertical_radio_and_checkboxes do |f| %>
                 <div class="row">
                   <div class="col-md-5">
                     <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Time.zone.now.strftime("%B %e, %Y")} %>
@@ -67,15 +67,15 @@
                       <div class="row">
                         <div class="col-md-4">
                       
-                          <%= p.input :discount_amount,  as: :string, label: 'Discount' %>
+                          <%= p.input :discount_amount,  as: :string, label: 'Discount', input_html: {id: "discount_amount", oninput: 'calculateOrderTotalCost()' } %>
                         </div>
                         <div class="col-md-4">
-                          <%= p.input :cash_tendered, as: :string %>
+                          <%= p.input :cash_tendered, as: :string, input_html: {id: "cash_tendered", oninput: 'calculateOrderTotalCost()' } %>
                         </div>
                         <div class="col-md-4">
-                          <%= p.input :change %>
-                          <%= p.input :total_cost %>
-                          <%= p.input :total_cost_less_discount %>
+                          <%= p.input :change, input_html: {id: "change" } %>
+                          <%= p.input :total_cost, input_html: { value: @cart.total_cost, id: "total_cost"  } %>
+                          <%= p.input :total_cost_less_discount, input_html: {id: "total_cost_less_discount" } %>
                         </div>
                       </div>
                     </div>

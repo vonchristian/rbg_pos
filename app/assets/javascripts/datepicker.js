@@ -1,8 +1,10 @@
 $(document).ready(function() {
-  $('.datepicker').datepicker({
-	  format: "MM dd, yyyy",
-	  orientation: "auto bottom",
-	  todayHighlight: 'true',
-	  autoclose: 'true'
+  $('.datepicker').datetimepicker({
+  	format: 'YYYY-MM-DD hh:mm:ss A',
+  	showClose: true,
+      widgetPositioning: {
+            horizontal: 'auto',
+            vertical: 'auto'
+      }
   });
 });

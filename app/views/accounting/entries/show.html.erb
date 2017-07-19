@@ -1,0 +1,9 @@
+<%=@entry.commercial_document.try(:customer_full_name) %>
+<% @entry.debit_amounts.each do |debit_amount| %>
+	<%= debit_amount.amount %>
+	<%= debit_amount.account.name %>
+<% end %>
+<% @entry.credit_amounts.each do |credit_amount| %>
+	<%= credit_amount.amount %>
+	<%= credit_amount.account.name %>
+<% end %>

@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/zpaulovics/datetimepicker-rails.git
+  revision: 36d21cec5da7f5b214925804f60e63c61c747023
+  branch: master
+  submodules: true
+  specs:
+    datetimepicker-rails (4.7.16)
+      momentjs-rails (>= 2.9.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -47,8 +56,6 @@ GEM
       dragonfly (~> 1.0)
     barby (0.6.5)
     bcrypt (3.1.11)
-    bootstrap-datepicker-rails (1.6.4.1)
-      railties (>= 3.0)
     bootstrap-sass (3.3.7)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
@@ -161,6 +168,8 @@ GEM
       puma (>= 2.13)
     mini_portile2 (2.2.0)
     minitest (5.10.2)
+    momentjs-rails (2.17.1)
+      railties (>= 3.1)
     multi_json (1.12.1)
     nio4r (2.1.0)
     nokogiri (1.8.0)
@@ -312,7 +321,6 @@ PLATFORMS
 DEPENDENCIES
   avatar_magick (~> 1.0.1)
   barby
-  bootstrap-datepicker-rails
   bootstrap-sass (~> 3.3.6)
   bullet
   byebug
@@ -320,6 +328,7 @@ DEPENDENCIES
   capybara-webkit
   coffee-rails (~> 4.2)
   database_cleaner
+  datetimepicker-rails!
   devise
   dragonfly
   factory_girl_rails
@@ -335,6 +344,7 @@ DEPENDENCIES
   kaminari
   memory_profiler
   mina-puma
+  momentjs-rails (>= 2.9.0)
   paperclip
   pg (~> 0.18)
   pg_search

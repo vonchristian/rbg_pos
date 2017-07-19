@@ -10,10 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170719040801) do
+ActiveRecord::Schema.define(version: 20170719113809) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "accounts", force: :cascade do |t|
+    t.string "name"
+    t.string "account_code"
+    t.boolean "contra", default: false
+    t.string "type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_code"], name: "index_accounts_on_account_code", unique: true
+    t.index ["name"], name: "index_accounts_on_name", unique: true
+    t.index ["type"], name: "index_accounts_on_type"
+  end
+
+  create_table "amounts", force: :cascade do |t|
+    t.bigint "account_id"
+    t.bigint "entry_id"
+    t.decimal "amount"
+    t.string "type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id", "entry_id"], name: "index_amounts_on_account_id_and_entry_id"
+    t.index ["account_id"], name: "index_amounts_on_account_id"
+    t.index ["entry_id", "account_id"], name: "index_amounts_on_entry_id_and_account_id"
+    t.index ["entry_id"], name: "index_amounts_on_entry_id"
+    t.index ["type"], name: "index_amounts_on_type"
+  end
 
   create_table "carts", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -40,6 +66,17 @@ ActiveRecord::Schema.define(version: 20170719040801) do
     t.datetime "avatar_updated_at"
   end
 
+  create_table "entries", force: :cascade do |t|
+    t.string "reference_number"
+    t.datetime "entry_date"
+    t.string "commercial_document_type"
+    t.bigint "commercial_document_id"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
+  end
+
   create_table "line_items", force: :cascade do |t|
     t.bigint "cart_id"
     t.bigint "stock_id"
@@ -59,9 +96,7 @@ ActiveRecord::Schema.define(version: 20170719040801) do
     t.datetime "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "mode_of_payment"
     t.index ["customer_id"], name: "index_orders_on_customer_id"
-    t.index ["mode_of_payment"], name: "index_orders_on_mode_of_payment"
   end
 
   create_table "payments", force: :cascade do |t|
@@ -123,6 +158,28 @@ ActiveRecord::Schema.define(version: 20170719040801) do
     t.index ["business_name"], name: "index_suppliers_on_business_name", unique: true
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.inet "current_sign_in_ip"
+    t.inet "last_sign_in_ip"
+    t.string "first_name"
+    t.string "last_name"
+    t.integer "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  add_foreign_key "amounts", "accounts"
+  add_foreign_key "amounts", "entries"
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "stocks"
