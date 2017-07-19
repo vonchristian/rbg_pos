@@ -9,11 +9,23 @@
         <div class="content">
           <h4 class="title"> Sales </h4>
           <hr>
-          <p class="category"> Daily Sales </p>
-          <small>Generate report of sales for this day <%=Time.zone.now.strftime("%B %e, %Y") %></small>
+          <%=link_to reports_sales_path(format: 'pdf', from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day) do %>
+	          <p class="category"> Daily Sales </p>
+	          <small>Generate report of sales for this day <%=Time.zone.now.strftime("%B %e, %Y") %></small>
+	        <% end %>
           <hr>
-          <p class="category"> Weekly Sales </p>
-          <small>Generate report of sales for this day <%=Time.zone.now.strftime("%B %e, %Y") %></small>
+          <%=link_to reports_sales_path(format: 'pdf', from_date: Time.zone.now.beginning_of_week, to_date: Time.zone.now.end_of_week) do %>
+	          <p class="category"> Weekly Sales </p>
+	          <small>Generate report of sales for this day <%=Time.zone.now.strftime("%B %e, %Y") %></small>
+	        <% end %>
           <hr>
-           <p class="category"> Monthly Sales </p>
-          <small>Generate report of sales for this day <%=Time.zone.now.strftime("%B %e, %Y") %></small>
+          <%=link_to reports_sales_path(format: 'pdf', from_date: Time.zone.now.beginning_of_month, to_date: Time.zone.now.end_of_month) do %>
+             <p class="category"> Monthly Sales </p>
+            <small>Generate report of sales for this month <%=Time.zone.now.strftime("%B %Y") %></small>
+          <% end %>
+          <hr>
+          <%=link_to reports_sales_path(format: 'pdf') do %>
+	          <p class="category"> Yearly Sales </p>
+	          <small>Generate report of sales for this year <%=Time.zone.now.year %></small>
+	        <% end %>
+          <hr>

@@ -11,5 +11,8 @@ Rails.application.routes.draw do
   resources :categories, only: [:new, :create]
   resources :reports, only: [:index]
   resources :customer_registrations, only: [:new, :create]
+  namespace :reports do 
+    resources :sales, only: [:index]
+  end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
