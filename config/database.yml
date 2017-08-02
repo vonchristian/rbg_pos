@@ -81,5 +81,5 @@ test:
 production:
   <<: *default
   database: rbg_pos_production
-  username: rbg_pos
-  password: <%= ENV['RBG_POS_DATABASE_PASSWORD'] %>
+  username: deploy
+  password: deploy@itworx
