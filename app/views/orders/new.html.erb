@@ -67,15 +67,15 @@
                       <div class="row">
                         <div class="col-md-4">
                       
-                          <%= p.input :discount_amount,  as: :string, label: 'Discount', input_html: {id: "discount_amount", oninput: 'calculateOrderTotalCost()' } %>
+                          <%= p.input :discount_amount,  as: :string, label: 'Discount', input_html: {value: 0, id: "discount_amount", oninput: 'calculateOrderTotalCost()' } %>
                         </div>
                         <div class="col-md-4">
                           <%= p.input :cash_tendered, as: :string, input_html: {id: "cash_tendered", oninput: 'calculateOrderTotalCost()' } %>
                         </div>
                         <div class="col-md-4">
-                          <%= p.input :change, input_html: {id: "change" } %>
-                          <%= p.input :total_cost, input_html: { value: @cart.total_cost, id: "total_cost"  } %>
-                          <%= p.input :total_cost_less_discount, input_html: {id: "total_cost_less_discount" } %>
+                          <%= p.input :change, input_html: {id: "change", value: 0 } %>
+                          <%= p.input :total_cost, input_html: { value: @cart.total_cost, id: "total_cost"  }, as: :hidden %>
+                          <%= p.input :total_cost_less_discount, input_html: {id: "total_cost_less_discount" }, as: :hidden %>
                         </div>
                       </div>
                     </div>
