@@ -8,6 +8,11 @@ class LineItemsController < ApplicationController
 			redirect_to store_index_url, alert: 'Quantity exceeded available stocks'
 		end
 	end 
+	def destroy 
+		@line_item = LineItem.find(params[:id])
+		@line_item.destroy 
+		redirect_to orders_url, notice: 'Line item returned successfully.'
+	end
 
 	private 
 	def line_item_params

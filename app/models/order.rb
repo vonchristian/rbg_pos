@@ -20,6 +20,9 @@ class Order < ApplicationRecord
       all
     end
   end
+  def line_items_total_cost
+    line_items.sum(:total_cost)
+  end
   def add_line_items_from_cart(cart)
   	cart.line_items.each do |line_item|
   		line_item.cart_id = nil 

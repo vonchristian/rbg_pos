@@ -1,0 +1,12 @@
+<%= simple_form_for @job_order do |f| %>
+  <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.simple_fields_for :unit do |u| %>
+    <%= u.input :model %>
+    <%= u.input :brand %>
+    <%= u.input :serial_number %>
+
+
+  <% end %>
+  <%= f.input :remarks %>
+  <%= f.submit %>
+<% end %>

@@ -1,38 +1,38 @@
 <div class="content">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="header">
-          <div class="row">
-            <div class="col-md-1">
-              <%=image_tag(@customer.avatar.url(:medium), class: "img-circle", height: 50, width: 50) %>
-            </div>
-            <div class="col-md-9">
-              <h4 class="title"><%= @customer.full_name.try(:upcase) %></h4>
-              <p class="category"> Address </p>
-            </div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="header">
+        <div class="row">
+          <div class="col-md-1">
+            <%=image_tag(@customer.avatar.url(:medium), class: "img-circle", height: 50, width: 50) %>
+          </div>
+          <div class="col-md-9">
+            <h4 class="title"><%= @customer.full_name.try(:upcase) %></h4>
+            <p class="category"> Address </p>
           </div>
         </div>
-        <br>
+      </div>
+      <br>
 <div class="tabbable-line">
-          <ul class="nav nav-tabs">
-            <li class="active">
-              <a href="#tab_default_1" data-toggle="tab">
-              <i class="fa fa-user"></i> Info </a>
-            </li>
-            <li>
-              <a href="#customer-orders" data-toggle="tab">
-              Orders </a>
-            </li>
-            <li>
-              <a href="#tab_default_3" data-toggle="tab">
-              Activities </a>
-            </li>
-          </ul>
-          <div class="tab-content">
-            <div class="tab-pane active" id="tab_default_1">
-              fdsfds
-            </div>
-           
-               <%=render 'customers/partials/orders' %>
-           
+        <ul class="nav nav-tabs">
+          <li class="active">
+            <a href="#tab_default_1" data-toggle="tab">
+            <i class="fa fa-user"></i> Info </a>
+          </li>
+          <li>
+            <a href="#customer-orders" data-toggle="tab">
+            Orders </a>
+          </li>
+          <li>
+            <a href="#tab_default_3" data-toggle="tab">
+            Activities </a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="tab_default_1">
+            fdsfds
+          </div>
+         
+             <%=render 'customers/partials/orders' %>
+         

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170719113809) do
+ActiveRecord::Schema.define(version: 20170803125006) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,6 +75,20 @@ ActiveRecord::Schema.define(version: 20170719113809) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
+  end
+
+  create_table "job_orders", force: :cascade do |t|
+    t.bigint "unit_id"
+    t.datetime "date"
+    t.integer "status"
+    t.text "remarks"
+    t.integer "actions_taken"
+    t.bigint "customer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_job_orders_on_customer_id"
+    t.index ["status"], name: "index_job_orders_on_status"
+    t.index ["unit_id"], name: "index_job_orders_on_unit_id"
   end
 
   create_table "line_items", force: :cascade do |t|
@@ -158,6 +172,18 @@ ActiveRecord::Schema.define(version: 20170719113809) do
     t.index ["business_name"], name: "index_suppliers_on_business_name", unique: true
   end
 
+  create_table "units", force: :cascade do |t|
+    t.string "brand"
+    t.string "model"
+    t.string "serial_number"
+    t.datetime "purchase_date"
+    t.datetime "warranty_date"
+    t.bigint "customer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_units_on_customer_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -180,6 +206,8 @@ ActiveRecord::Schema.define(version: 20170719113809) do
 
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
+  add_foreign_key "job_orders", "customers"
+  add_foreign_key "job_orders", "units"
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "stocks"
@@ -188,4 +216,5 @@ ActiveRecord::Schema.define(version: 20170719113809) do
   add_foreign_key "products", "categories"
   add_foreign_key "stocks", "products"
   add_foreign_key "stocks", "suppliers"
+  add_foreign_key "units", "customers"
 end

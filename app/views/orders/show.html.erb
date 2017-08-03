@@ -20,9 +20,13 @@
                     <%=line_item.product_name %><br>
                     <small class="text-muted"><%= line_item.barcode %></small>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-2">
                     <span class="pull-right"><%= number_to_currency line_item.total_cost %></span>
-
+                  </div>
+                  <div class="col-md-1">
+                    <%= link_to line_item_path(line_item), method: :delete, data: { confirm_with: 'Are you sure?' } do %>
+                      <span class="text-danger" title="Return" data-toggle="tooltip"><i class="fa fa-trash"></i> </span>
+                    <% end %>
                   </div>
                 </div>
                 <hr>
