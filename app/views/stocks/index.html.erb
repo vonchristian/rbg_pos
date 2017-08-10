@@ -1,0 +1,50 @@
+<div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                              <div class="row">
+                                <div class="col-md-3">
+                                  <h4 class="title">Stocks</h4>
+                                  <p class="category">List of stocks</p>
+                                </div>
+                                <div class="col-md-7">
+                                  <%=form_tag stocks_path, method: :get, id: "search-form" do %>
+                                    <div class="input-group">
+                                      <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search stock...", type: "search" %>
+                                      <span class="input-group-btn">
+                                        <%= button_tag(type: 'submit', class: "btn") do %>
+                                          <i class="icon-magnifier"></i>
+                                        <% end %>
+                                      </span>
+                                    </div>
+                                  <% end %>
+                                </div>
+                                
+                              </div>
+                            <div class="content table-responsive table-full-width">
+                                <table class="table table-striped">
+                                    <thead>
+                                      
+                                      <th>Product</th>
+                                    	<th>Quantity</th>
+                                    	<th>Unit Cost</th>
+                                      <th>Total Cost</th>
+                                      <th> Price </th>
+                                    	<th>Supplier</th>
+                                    </thead>
+                                    <tbody>
+                                      <% @stocks.each do |stock| %>
+                                      <tr>
+                                      <td><%=link_to stock.name, stock %><br>
+                                      <small class="text-muted"><%= stock.barcode %></td>
+                                      <td><%= stock.quantity %></td>
+                                      <td><%= number_to_currency stock.unit_cost %></td>
+                                      <td><%= number_to_currency stock.total_cost %></td>
+                                      <td><%= number_to_currency stock.retail_price %></td>
+                                      <td><%= number_to_currency stock.supplier_business_name %></td>
+                                      
+                                      </tr>
+                                      <% end %>
+                                    </tbody>

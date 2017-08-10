@@ -20,8 +20,14 @@ Rails.application.routes.draw do
   namespace :accounting do 
     resources :entries, only: [:show]
   end
-  resources :line_items, only: [:destroy]
+  resources :line_items, only: [:destroy] do 
+    resources :sales_returns, only: [:new, :create], module: :line_items
+  end
 
   resources :job_orders, only: [:index, :new, :create]
+  resources :stocks, only: [:index, :show] do 
+    resources :transfers, only: [:new, :create], module: :stocks
+  end
+  resources :sales_returns, only: [:index]
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

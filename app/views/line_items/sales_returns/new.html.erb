@@ -1,0 +1,19 @@
+<div class="content">
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <div class="card">
+        <div class="content">
+				<%= simple_form_for [@line_item, @sales_return], url: :line_item_sales_returns do |f| %>
+				  <%= f.error_notification %>
+				  <%= f.input :quantity, input_html: { value: @line_item.quantity } %> 
+				  <%= f.input :sales_return_type, collection: SalesReturn.sales_return_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
+				  <%= f.input :remarks, as: :text %>
+				  <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+				  <hr>
+				  <div class="row">
+            <div class="col-md-12">
+				      <%= f.submit "Save", class: "btn btn-primary pull-right" %>
+				      <%= link_to 'Cancel', order_path(@line_item.order), class: "btn btn-default pull-left" %>
+				    </div>
+				  </div>
+				<% end %>

@@ -1,0 +1,42 @@
+<div class="content">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="card">
+      <div class="content">
+        <h4><%= @stock.name %></h4>
+        <div class="row">
+          <div class="col-md-4">
+            Quantity Received
+          </div>
+          <div class="col-md-8">
+            <%= @stock.quantity %>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-4">
+            Date Received
+          </div>
+          <div class="col-md-8">
+            <%= @stock.date.strftime("%B %e, %Y") %>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-4">
+            Transferred
+          </div>
+          <div class="col-md-8">
+            <%= @stock.stock_transfers.sum(:quantity) %>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-4">
+            In Stock
+          </div>
+          <div class="col-md-8">
+            <%= @stock.in_stock %>
+          </div>
+        </div>
+        <hr>
+<%= link_to 'New Transfer', new_stock_transfer_path(@stock), class: "btn btn-primary" %>

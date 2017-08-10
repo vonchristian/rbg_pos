@@ -33,6 +33,8 @@
                                     	<th>Price</th>
                                     	<th>Deliveries</th>
                                       <th>Sold</th>
+                                      <th> Transferred </th>
+                                      <th> Returned </th>
                                     	<th>In Stock</th>
                                     </thead>
                                     <tbody>
@@ -40,8 +42,10 @@
                                       <tr>
                                       <td><%=link_to product.name, product %></td>
                                       <td><%= number_to_currency product.retail_price %></td>
-                                      <td> <%= number_to_currency product.deliveries, unit: "" %></td>
-                                      <td> <%= number_to_currency product.sold, unit: "" %></td>
+                                      <td> <%= number_to_currency product.delivered_items_count, unit: "" %></td>
+                                      <td> <%= number_to_currency product.sold_items_count, unit: "" %></td>
+                                      <td> <%= number_to_currency product.transferred_stocks_count, unit: "" %></td>
+                                      <td> <%= number_to_currency product.returned_items_count, unit: "" %></td>
                                       <td> <%= number_to_currency product.in_stock, unit: "" %></td>
                                       </tr>
                                       <% end %>

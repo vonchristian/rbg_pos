@@ -4,6 +4,9 @@ class Product < ApplicationRecord
 
 	has_many :stocks 
 	has_many :sold_items, through: :stocks, class_name: 'LineItem', source: :line_items
+	has_many :returned_items, through: :sold_items,  source: :sales_return
+
+	has_many :transferred_stocks, through: :stocks, source: :stock_transfers
 	has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",
@@ -16,12 +19,18 @@ class Product < ApplicationRecord
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
   validates :name, presence: true, uniqueness: true
 	def in_stock
-		deliveries - sold
+		(delivered_items_count + returned_items_count) - (sold_items_count - transferred_stocks_count)
 	end 
-	def sold 
+	def sold_items_count
 		sold_items.sum(:quantity)
 	end
-	def deliveries
+	def delivered_items_count
 		stocks.sum(:quantity)
+	end
+	def transferred_stocks_count
+		transferred_stocks.sum(:quantity)
+	end
+	def returned_items_count 
+		returned_items.sum(:quantity)
 	end
 end

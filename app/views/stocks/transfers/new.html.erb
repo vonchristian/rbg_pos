@@ -1,0 +1,23 @@
+<div class="content">
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <div class="card">
+        <div class="content">
+          <p> Transfer Details </p>
+          Stock: <%= @stock.name %>
+          <br>
+          Stock quantity: <%= @stock.in_stock %>
+          <br>
+          <hr>
+          <%=simple_form_for [@stock, @transfer], url: :stock_transfers do |f| %>
+            <%= f.error_notification %>
+            <%= f.input :quantity, as: :string %>
+            <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+            <%= f.input :destination_branch_id, collection: Branch.all.map{ |a| [a.name.upcase, a.id] } %>
+            <%= f.submit "Save", class: "btn btn-primary" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

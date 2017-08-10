@@ -1,0 +1,47 @@
+<div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                              <div class="row">
+                                <div class="col-md-3">
+                                  <h4 class="title">Stocks</h4>
+                                  <p class="category">List of stocks</p>
+                                </div>
+                                <div class="col-md-7">
+                                  <%=form_tag sales_returns_path, method: :get, id: "search-form" do %>
+                                    <div class="input-group">
+                                      <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search stock...", type: "search" %>
+                                      <span class="input-group-btn">
+                                        <%= button_tag(type: 'submit', class: "btn") do %>
+                                          <i class="icon-magnifier"></i>
+                                        <% end %>
+                                      </span>
+                                    </div>
+                                  <% end %>
+                                </div>
+                                
+                              </div>
+                            <div class="content table-responsive table-full-width">
+                                <table class="table table-striped">
+                                    <thead>
+                                      <th>Date Returned</th>
+                                      <th> Item </th>
+                                    	<th>Quantity</th>
+                                      <th>Remarks</th>
+                                    </thead>
+                                    <tbody>
+                                      <% @sales_returns.each do |sales_return| %>
+                                        <tr>
+                                          <td><%= sales_return.date %></td>
+                                          <td><%= sales_return.name %> <br>
+                                            <small class="text-muted"><%= sales_return.barcode %></small>
+                                          </td>
+                                          <td><%= sales_return.quantity %></td>
+                                          <td><%= sales_return.remarks %></td>
+                                       
+                                      
+                                        </tr>
+                                      <% end %>
+                                    </tbody>

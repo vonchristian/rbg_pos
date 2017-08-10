@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170803125006) do
+ActiveRecord::Schema.define(version: 20170810043518) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,25 @@ ActiveRecord::Schema.define(version: 20170803125006) do
     t.index ["entry_id", "account_id"], name: "index_amounts_on_entry_id_and_account_id"
     t.index ["entry_id"], name: "index_amounts_on_entry_id"
     t.index ["type"], name: "index_amounts_on_type"
+  end
+
+  create_table "branches", force: :cascade do |t|
+    t.bigint "business_id"
+    t.string "name"
+    t.string "address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["business_id"], name: "index_branches_on_business_id"
+  end
+
+  create_table "businesses", force: :cascade do |t|
+    t.string "name"
+    t.string "owner"
+    t.string "address"
+    t.string "email"
+    t.string "contact_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "carts", force: :cascade do |t|
@@ -143,6 +162,46 @@ ActiveRecord::Schema.define(version: 20170803125006) do
     t.index ["name"], name: "index_products_on_name", unique: true
   end
 
+  create_table "refunds", force: :cascade do |t|
+    t.integer "refund_type"
+    t.text "remarks"
+    t.string "refundable_type"
+    t.bigint "refundable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["refund_type"], name: "index_refunds_on_refund_type"
+    t.index ["refundable_type", "refundable_id"], name: "index_refunds_on_refundable_type_and_refundable_id"
+  end
+
+  create_table "sales_returns", force: :cascade do |t|
+    t.bigint "line_item_id"
+    t.integer "sales_return_type"
+    t.datetime "date"
+    t.string "remarks"
+    t.bigint "order_id"
+    t.decimal "quantity"
+    t.string "name"
+    t.string "barcode"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["line_item_id"], name: "index_sales_returns_on_line_item_id"
+    t.index ["order_id"], name: "index_sales_returns_on_order_id"
+    t.index ["sales_return_type"], name: "index_sales_returns_on_sales_return_type"
+  end
+
+  create_table "stock_transfers", force: :cascade do |t|
+    t.bigint "stock_id"
+    t.datetime "date"
+    t.decimal "quantity"
+    t.bigint "destination_branch_id"
+    t.bigint "origin_branch_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["destination_branch_id"], name: "index_stock_transfers_on_destination_branch_id"
+    t.index ["origin_branch_id"], name: "index_stock_transfers_on_origin_branch_id"
+    t.index ["stock_id"], name: "index_stock_transfers_on_stock_id"
+  end
+
   create_table "stocks", force: :cascade do |t|
     t.decimal "unit_cost"
     t.bigint "product_id"
@@ -157,6 +216,8 @@ ActiveRecord::Schema.define(version: 20170803125006) do
     t.decimal "retail_price"
     t.decimal "wholesale_price"
     t.string "name"
+    t.bigint "branch_id"
+    t.index ["branch_id"], name: "index_stocks_on_branch_id"
     t.index ["name"], name: "index_stocks_on_name", unique: true
     t.index ["product_id"], name: "index_stocks_on_product_id"
     t.index ["supplier_id"], name: "index_stocks_on_supplier_id"
@@ -200,12 +261,25 @@ ActiveRecord::Schema.define(version: 20170803125006) do
     t.integer "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "branch_id"
+    t.index ["branch_id"], name: "index_users_on_branch_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "warranties", force: :cascade do |t|
+    t.string "warrantable_type"
+    t.bigint "warrantable_id"
+    t.datetime "date_received"
+    t.datetime "released_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["warrantable_type", "warrantable_id"], name: "index_warranties_on_warrantable_type_and_warrantable_id"
+  end
+
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
+  add_foreign_key "branches", "businesses"
   add_foreign_key "job_orders", "customers"
   add_foreign_key "job_orders", "units"
   add_foreign_key "line_items", "carts"
@@ -214,7 +288,14 @@ ActiveRecord::Schema.define(version: 20170803125006) do
   add_foreign_key "orders", "customers"
   add_foreign_key "payments", "orders"
   add_foreign_key "products", "categories"
+  add_foreign_key "sales_returns", "line_items"
+  add_foreign_key "sales_returns", "orders"
+  add_foreign_key "stock_transfers", "branches", column: "destination_branch_id"
+  add_foreign_key "stock_transfers", "branches", column: "origin_branch_id"
+  add_foreign_key "stock_transfers", "stocks"
+  add_foreign_key "stocks", "branches"
   add_foreign_key "stocks", "products"
   add_foreign_key "stocks", "suppliers"
   add_foreign_key "units", "customers"
+  add_foreign_key "users", "branches"
 end

@@ -21,8 +21,14 @@
                 </li>
                 <li class="<%='active' if current_page?(products_path) %>">
                     <a href="/products">
-                        <i class="icon-layers"></i>
+                        <i class="icon-tag"></i>
                         <p>Products</p>
+                    </a>
+                </li>
+                <li class="<%='active' if current_page?(stocks_path) %>">
+                    <a href="/stocks">
+                        <i class="icon-layers"></i>
+                        <p>Stocks</p>
                     </a>
                 </li>
                 <li class="<%='active' if current_page?(orders_path) %>">
@@ -39,17 +45,12 @@
                 </li>
                 <hr>
                  <li>
-                    <a href="/accounting">
-                        <i class="icon-graph"></i>
-                        <p>Accounting</p>
+                    <a href="/sales_returns">
+                        <i class="icon-action-redo"></i>
+                        <p>Sales Returns</p>
                     </a>
                 </li>
-                <li>
-                    <a href="/job_orders">
-                        <i class="icon-graph"></i>
-                        <p>Services</p>
-                    </a>
-                </li>
+               
             </ul>
     	</div>
     </div>
