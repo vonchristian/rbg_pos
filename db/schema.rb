@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170810043518) do
+ActiveRecord::Schema.define(version: 20170810072013) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -217,9 +217,13 @@ ActiveRecord::Schema.define(version: 20170810043518) do
     t.decimal "wholesale_price"
     t.string "name"
     t.bigint "branch_id"
+    t.integer "stock_type"
+    t.bigint "origin_branch_id"
     t.index ["branch_id"], name: "index_stocks_on_branch_id"
     t.index ["name"], name: "index_stocks_on_name", unique: true
+    t.index ["origin_branch_id"], name: "index_stocks_on_origin_branch_id"
     t.index ["product_id"], name: "index_stocks_on_product_id"
+    t.index ["stock_type"], name: "index_stocks_on_stock_type"
     t.index ["supplier_id"], name: "index_stocks_on_supplier_id"
   end
 
@@ -294,6 +298,7 @@ ActiveRecord::Schema.define(version: 20170810043518) do
   add_foreign_key "stock_transfers", "branches", column: "origin_branch_id"
   add_foreign_key "stock_transfers", "stocks"
   add_foreign_key "stocks", "branches"
+  add_foreign_key "stocks", "branches", column: "origin_branch_id"
   add_foreign_key "stocks", "products"
   add_foreign_key "stocks", "suppliers"
   add_foreign_key "units", "customers"

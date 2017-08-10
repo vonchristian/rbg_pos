@@ -29,5 +29,9 @@ Rails.application.routes.draw do
     resources :transfers, only: [:new, :create], module: :stocks
   end
   resources :sales_returns, only: [:index]
+  resources :settings, only: [:index]
+  resources :branches, only: [:new, :create]
+  resources :businesses, only: [:edit, :update]
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

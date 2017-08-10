@@ -9,9 +9,15 @@
       <div class="content">
 <%= simple_form_for [@product, @stock] do |f| %>
   <%= f.error_notification %>
+  <%= f.input :stock_type, collection: Stock.stock_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons,  checked: Stock.stock_types.first, input_html: {id: "stock_type"} %>
+
   <%= f.input :supplier_id, collection: Supplier.all.map{|a| [a.business_name, a.id] }, prompt: "Select Supplier" %>
+
+  <%= f.input :origin_branch_id, label: "Select Branch", collection: Branch.all.map{|a| [a.name, a.id] }, prompt: "Select Branch" %>
+  </div>
+
   <%= f.input :quantity %>
-  <p> Purchase Details </p>
+  <p> Cost Details </p>
   <%= f.input :unit_cost %>
   <%= f.input :total_cost %>
   <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
@@ -24,14 +30,3 @@
   <%= f.submit "Save Stock", class: "btn btn-primary" %>
 <% end %>
 
-<script type="text/javascript">
-	$(document).ready(function() {
-  $('.datepicker').datepicker({
-	  format: "yyyy-mm-dd",
-	  orientation: "auto bottom",
-	  todayHighlight: 'true',
-	  autoclose: 'true'
-  });
-});
-
-</script>

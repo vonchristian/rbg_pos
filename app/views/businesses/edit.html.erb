@@ -1,0 +1,10 @@
+<%=simple_form_for @business do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :name %>
+  <%= f.input :owner%>
+  <%= f.input :address%>
+  <%= f.input :contact_number %>
+  <%= f.input :email %>
+  <%= f.submit "Save", class: "btn btn-danger" %>
+<% end %>
+

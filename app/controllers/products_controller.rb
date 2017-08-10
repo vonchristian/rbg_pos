@@ -1,9 +1,9 @@
 class ProductsController < ApplicationController
 	def index 
 		if params[:search].present?
-			@products = Product.text_search(params[:search])
+			@products = Product.text_search(params[:search]).page(params[:page]).per(35)
 		else
-		  @products = Product.all 
+		  @products = Product.all.page(params[:page]).per(35)
 		end
 	end 
 	def new 

@@ -1,10 +1,10 @@
 class CustomersController < ApplicationController 
 	def index 
 		if params[:search].present?
-			@customers = Customer.text_search(params[:search])
+			@customers = Customer.text_search(params[:search]).page(params[:page]).per(35)
 		else 
-			@customers = Customer.all 
-		end 
+			@customers = Customer.all.page(params[:page]).per(35)
+		end
 	end 
 	def new 
 		@customer = Customer.new 

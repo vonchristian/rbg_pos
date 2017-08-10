@@ -1,9 +1,9 @@
 class StocksController < ApplicationController 
 	def index 
 		if params[:search].present?
-			@stocks= Stock.text_search(params[:search])
+			@stocks= Stock.text_search(params[:search]).page(params[:page]).per(35)
 		else
-		  @stocks = Stock.all 
+		  @stocks = Stock.all.page(params[:page]).per(35)
 		end
 	end
 	def new 
@@ -26,6 +26,6 @@ class StocksController < ApplicationController
 
 	private 
 	def stock_params
-		params.require(:stock).permit(:supplier_id, :unit_cost, :total_cost, :quantity, :retail_price, :wholesale_price, :barcode, :name)
+		params.require(:stock).permit(:stock_type, :supplier_id, :unit_cost, :total_cost, :quantity, :retail_price, :wholesale_price, :barcode, :name, :origin_branch_id)
 	end 
 end

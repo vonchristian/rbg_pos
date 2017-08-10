@@ -1,0 +1,22 @@
+<div class="content">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="content">
+        <h4>Branches </h4>
+          <% Branch.all.each do |branch| %>
+          	<%= branch.name %>
+          	<br>
+          	<br>
+          <% end %>
+        <br>
+          <%=link_to 'New Branch', new_branch_path, class: "btn btn-danger btn-sm" %>
+          <hr>
+        <h4> Business Info </h4>
+          <%= @business.name %>
+          <br>
+          <%= @business.owner %>
+          <br>
+          <%= @business.address %>
+         <br>
+         <%= link_to 'Update Business', edit_business_path(@business), class: "btn btn-danger btn-sm" %>
+       
