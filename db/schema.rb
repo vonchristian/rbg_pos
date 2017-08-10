@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170810072013) do
+ActiveRecord::Schema.define(version: 20170810082109) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,7 +22,9 @@ ActiveRecord::Schema.define(version: 20170810072013) do
     t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "main_account_id"
     t.index ["account_code"], name: "index_accounts_on_account_code", unique: true
+    t.index ["main_account_id"], name: "index_accounts_on_main_account_id"
     t.index ["name"], name: "index_accounts_on_name", unique: true
     t.index ["type"], name: "index_accounts_on_type"
   end
@@ -281,6 +283,7 @@ ActiveRecord::Schema.define(version: 20170810072013) do
     t.index ["warrantable_type", "warrantable_id"], name: "index_warranties_on_warrantable_type_and_warrantable_id"
   end
 
+  add_foreign_key "accounts", "accounts", column: "main_account_id"
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
   add_foreign_key "branches", "businesses"

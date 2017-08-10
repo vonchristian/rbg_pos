@@ -6,7 +6,7 @@ module AccountingModule
     
 
     class_attribute :normal_credit_balance
-
+    has_one :main_account
     has_many :amounts, class_name: "AccountingModule::Amount"
     has_many :credit_amounts, :extend => AmountsExtension, :class_name => 'AccountingModule::CreditAmount'
     has_many :debit_amounts, :extend => AmountsExtension, :class_name => 'AccountingModule::DebitAmount'
