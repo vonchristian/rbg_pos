@@ -38,6 +38,8 @@
                                       <th> Transferred </th>
                                       <th> Returned </th>
                                       <th> Under Warranty </th>
+                                      <th> Released Warranty </th>
+
                                     	<th>In Stock</th>
                                     </thead>
                                     <tbody>
@@ -50,6 +52,8 @@
                                       <td> <%= number_to_currency product.transferred_stocks_count, unit: "" %></td>
                                       <td> <%= number_to_currency product.returned_items_count, unit: "" %></td>
                                       <td> <%= number_to_currency product.items_under_warranty_count, unit: "" %></td>
+                                      <td> <%= number_to_currency product.released_warranties_count, unit: "" %></td>
+
 
                                       <td> <%= number_to_currency product.in_stock, unit: "" %></td>
                                       </tr>

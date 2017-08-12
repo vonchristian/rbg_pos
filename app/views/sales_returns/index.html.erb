@@ -27,6 +27,7 @@
                                 <table class="table table-striped">
                                     <thead>
                                       <th>Date Returned</th>
+                                      <th> Type </th>
                                       <th> Item </th>
                                     	<th>Quantity</th>
                                       <th>Remarks</th>
@@ -35,6 +36,7 @@
                                       <% @sales_returns.each do |sales_return| %>
                                         <tr>
                                           <td><%= sales_return.date.strftime("%B %e, %Y") %></td>
+                                          <td>  <span class="badge"><%= sales_return.sales_return_type.try(:titleize) %></span></td>
                                           <td><%= sales_return.name %> <br>
                                             <small class="text-muted"><%= sales_return.barcode %></small>
                                           </td>

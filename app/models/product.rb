@@ -6,6 +6,7 @@ class Product < ApplicationRecord
 	has_many :sold_items, through: :stocks, class_name: 'LineItem', source: :line_items
 	has_many :returned_items, through: :sold_items,  source: :sales_return
 	has_many :items_under_warranty, through: :sold_items, source: :sales_return
+	has_many :released_warranties, through: :items_under_warranty, source: :warranty_release
 
 	has_many :transferred_stocks, through: :stocks, source: :stock_transfers
 	has_attached_file :avatar,
@@ -20,7 +21,7 @@ class Product < ApplicationRecord
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
   validates :name, presence: true, uniqueness: true
 	def in_stock
-		(delivered_items_count + returned_items_count) - (sold_items_count - transferred_stocks_count)
+		(delivered_items_count + returned_items_count) - (sold_items_count - transferred_stocks_count) - released_warranties_count
 	end 
 	def sold_items_count
 		sold_items.sum(:quantity)
@@ -36,5 +37,8 @@ class Product < ApplicationRecord
 	end
 	def items_under_warranty_count
 		items_under_warranty.sum(:quantity)
+	end
+	def released_warranties_count
+		released_warranties.count
 	end
 end
