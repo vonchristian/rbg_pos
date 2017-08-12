@@ -7,12 +7,14 @@ module LineItems
 			else 
 			  @sales_return = @line_item.build_sales_return
 			end
+			authorize :sales_return, :new?
 		end
 		def create
 			@line_item = LineItem.find(params[:line_item_id])
 			@sales_return = @line_item.create_sales_return(sales_return_params)
 			@sales_return.barcode = @line_item.stock.barcode 
 			@sales_return.name = @line_item.stock.name 
+			authorize :sales_return, :create?
 			if @sales_return.valid?
 				@sales_return.save
 				redirect_to order_path(@line_item.order), notice: "Item returned successfully."

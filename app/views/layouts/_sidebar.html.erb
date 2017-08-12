@@ -31,10 +31,16 @@
                         <p>Stocks</p>
                     </a>
                 </li>
+                 <li class="<%='active' if current_page?(suppliers_path) %>">
+                    <a href="/suppliers">
+                        <i class="icon-grid"></i>
+                        <p>Suppliers</p>
+                    </a>
+                </li>
                 <li class="<%='active' if current_page?(orders_path) %>">
                     <a href="/orders">
-                        <i class="icon-handbag"></i>
-                        <p>Sales </p>
+                        <i class="icon-basket-loaded"></i>
+                        <p>Orders </p>
                     </a>
                 </li>
                 <li>
@@ -48,6 +54,12 @@
                     <a href="/sales_returns">
                         <i class="icon-action-redo"></i>
                         <p>Sales Returns</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/warranties">
+                        <i class="icon-exclamation"></i>
+                        <p>Warranties</p>
                     </a>
                 </li>
                  <li>

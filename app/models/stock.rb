@@ -10,9 +10,9 @@ class Stock < ApplicationRecord
   has_many :stock_transfers
   validates :quantity, :unit_cost, :retail_price, :wholesale_price, presence: true, numericality: { greater_than: 0.1 }
   
-  delegate :name, :unit, :in_stock, to: :product, prefix: true
-  delegate :avatar, to: :product
-  delegate :business_name, to: :supplier, prefix: true
+  delegate :name, :unit, :in_stock, to: :product, prefix: true, allow_nil: true
+  delegate :avatar, to: :product, allow_nil: true
+  delegate :business_name, to: :supplier, prefix: true, allow_nil: true
   before_validation :set_date
   def in_stock
     quantity - stock_transfers.sum(:quantity)

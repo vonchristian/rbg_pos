@@ -1,6 +1,7 @@
 class OrdersController < ApplicationController
 	def index 
 		@orders = Order.all 
+		authorize @orders
 	end
 	def new 
 		@cart = current_cart
@@ -13,7 +14,7 @@ class OrdersController < ApplicationController
 		if @order.valid?
 			@order.add_line_items_from_cart(@cart)
 			@order.save
-			redirect_to store_index_url, notice: "Order saved successfully"
+			redirect_to @order, notice: "Order saved successfully."
 		else 
 			render :new 
 		end 
@@ -21,6 +22,13 @@ class OrdersController < ApplicationController
 
 	def show 
 		@order = Order.find(params[:id])
+		respond_to do |format| 
+			format.html
+			format.pdf do 
+				pdf = OrderPdf.new(@order, view_context)
+          send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Order.pdf"
+			end
+		end
 	end
 
 	private 

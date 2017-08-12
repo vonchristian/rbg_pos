@@ -7,7 +7,7 @@ function calculateOrderTotalCost() {
   var totalCostLessDiscount = document.getElementById('total_cost_less_discount');
   var change = document.getElementById('change');
   var result = totalCost - discountAmount;
-  var changeResult = cashTendered - totalCostLessDiscountValue;
+  var changeResult = cashTendered - result;
   change.value = changeResult;
   totalCostLessDiscount.value = result;
 }

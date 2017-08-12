@@ -39,4 +39,6 @@
           </div>
         </div>
         <hr>
-<%= link_to 'New Transfer', new_stock_transfer_path(@stock), class: "btn btn-primary" %>
+<% if policy(:stock_transfer).new? %>
+  <%= link_to 'New Transfer', new_stock_transfer_path(@stock), class: "btn btn-primary" %>
+<% end %>

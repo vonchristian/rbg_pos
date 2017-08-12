@@ -3,10 +3,12 @@ module Stocks
 		def new 
 			@stock = Stock.find(params[:stock_id])
 			@transfer = @stock.stock_transfers.build 
+			authorize @transfer
 		end 
 		def create 
 			@stock = Stock.find(params[:stock_id])
 			@transfer = @stock.stock_transfers.create(transfer_params)
+			authorize @transfer
 			@transfer.origin_branch = @stock.branch
 			if @transfer.valid?
 				@transfer.save 

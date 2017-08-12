@@ -22,7 +22,9 @@
                                   <% end %>
                                 </div>
                                 <div class="col-md-2">
-                                  <%=link_to 'New Product', new_product_path, class: "btn btn-primary pull-right" %>
+                                  <% if policy(:product).new? %>
+                                    <%=link_to 'New Product', new_product_path, class: "btn btn-primary pull-right" %>
+                                  <% end %>
                                 </div>
                               </div>
                             <div class="content table-responsive table-full-width">
@@ -35,6 +37,7 @@
                                       <th>Sold</th>
                                       <th> Transferred </th>
                                       <th> Returned </th>
+                                      <th> Under Warranty </th>
                                     	<th>In Stock</th>
                                     </thead>
                                     <tbody>
@@ -46,6 +49,8 @@
                                       <td> <%= number_to_currency product.sold_items_count, unit: "" %></td>
                                       <td> <%= number_to_currency product.transferred_stocks_count, unit: "" %></td>
                                       <td> <%= number_to_currency product.returned_items_count, unit: "" %></td>
+                                      <td> <%= number_to_currency product.items_under_warranty_count, unit: "" %></td>
+
                                       <td> <%= number_to_currency product.in_stock, unit: "" %></td>
                                       </tr>
                                       <% end %>

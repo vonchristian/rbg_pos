@@ -1,12 +1,13 @@
 class Order < ApplicationRecord
-  belongs_to :customer
+  belongs_to :customer, optional: true
+  belongs_to :branch, optional: true
+
   has_one :payment
   has_one :entry, as: :commercial_document, class_name: "AccountingModule::Entry"
   has_many :line_items, dependent: :destroy
   delegate :full_name, to: :customer, prefix: true
   delegate :total_cost, to: :payment, prefix: true, allow_nil: true
-  delegate :mode_of_payment, :discount_amount, :credit?, :cash?, :total_cost, :total_cost_less_discount, to: :payment,  allow_nil: true
-
+  delegate :mode_of_payment, :discount_amount, :stock_transfer?, :credit?, :cash?, :total_cost, :total_cost_less_discount, to: :payment,  allow_nil: true
   before_validation :set_date
   accepts_nested_attributes_for :payment
 

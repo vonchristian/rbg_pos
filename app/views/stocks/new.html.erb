@@ -1,3 +1,4 @@
+<div id="supplier-modal" class="modal fade"></div>c
 <div class="content">
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
@@ -6,15 +7,15 @@
           <h4 class="title">New Stock</h4>
           <p class="category">New stock details for this product</p>
         </div> 
-      <div class="content">
+        <div class="content">
 <%= simple_form_for [@product, @stock] do |f| %>
   <%= f.error_notification %>
   <%= f.input :stock_type, collection: Stock.stock_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons,  checked: Stock.stock_types.first, input_html: {id: "stock_type"} %>
+<span><label>Supplier</label><span class="pull-right"><%= link_to 'New Supplier', new_supplier_registration_path, remote: true %></span></span>
+  <%= f.input :supplier_id, collection: Supplier.all.map{|a| [a.business_name, a.id] }, prompt: "Select Supplier", label: false %>
 
-  <%= f.input :supplier_id, collection: Supplier.all.map{|a| [a.business_name, a.id] }, prompt: "Select Supplier" %>
-
-  <%= f.input :origin_branch_id, label: "Select Branch", collection: Branch.all.map{|a| [a.name, a.id] }, prompt: "Select Branch" %>
-  </div>
+  <%= f.input :origin_branch_id, label: "Origin Branch", collection: Branch.all.map{|a| [a.name, a.id] }, prompt: "Select Branch" %>
+ 
 
   <%= f.input :quantity %>
   <p> Cost Details </p>

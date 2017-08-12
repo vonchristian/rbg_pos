@@ -4,4 +4,5 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   belongs_to :branch, optional: true
+  enum role: [:proprietor, :sales_clerk, :stock_custodian]
 end

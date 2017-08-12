@@ -5,6 +5,7 @@ class Product < ApplicationRecord
 	has_many :stocks 
 	has_many :sold_items, through: :stocks, class_name: 'LineItem', source: :line_items
 	has_many :returned_items, through: :sold_items,  source: :sales_return
+	has_many :items_under_warranty, through: :sold_items, source: :sales_return
 
 	has_many :transferred_stocks, through: :stocks, source: :stock_transfers
 	has_attached_file :avatar,
@@ -32,5 +33,8 @@ class Product < ApplicationRecord
 	end
 	def returned_items_count 
 		returned_items.sum(:quantity)
+	end
+	def items_under_warranty_count
+		items_under_warranty.sum(:quantity)
 	end
 end

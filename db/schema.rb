@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170810082109) do
+ActiveRecord::Schema.define(version: 20170812035537) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -164,17 +164,6 @@ ActiveRecord::Schema.define(version: 20170810082109) do
     t.index ["name"], name: "index_products_on_name", unique: true
   end
 
-  create_table "refunds", force: :cascade do |t|
-    t.integer "refund_type"
-    t.text "remarks"
-    t.string "refundable_type"
-    t.bigint "refundable_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["refund_type"], name: "index_refunds_on_refund_type"
-    t.index ["refundable_type", "refundable_id"], name: "index_refunds_on_refundable_type_and_refundable_id"
-  end
-
   create_table "sales_returns", force: :cascade do |t|
     t.bigint "line_item_id"
     t.integer "sales_return_type"
@@ -274,13 +263,32 @@ ActiveRecord::Schema.define(version: 20170810082109) do
   end
 
   create_table "warranties", force: :cascade do |t|
-    t.string "warrantable_type"
-    t.bigint "warrantable_id"
-    t.datetime "date_received"
-    t.datetime "released_date"
+    t.string "barcode"
+    t.string "name"
+    t.string "remarks"
+    t.decimal "quantity"
+    t.bigint "sales_return_id"
+    t.bigint "supplier_id"
+    t.bigint "customer_id"
+    t.datetime "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["warrantable_type", "warrantable_id"], name: "index_warranties_on_warrantable_type_and_warrantable_id"
+    t.index ["customer_id"], name: "index_warranties_on_customer_id"
+    t.index ["sales_return_id"], name: "index_warranties_on_sales_return_id"
+    t.index ["supplier_id"], name: "index_warranties_on_supplier_id"
+  end
+
+  create_table "warranty_releases", force: :cascade do |t|
+    t.datetime "release_date"
+    t.bigint "user_id"
+    t.bigint "warranty_id"
+    t.bigint "customer_id"
+    t.string "remarks"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_warranty_releases_on_customer_id"
+    t.index ["user_id"], name: "index_warranty_releases_on_user_id"
+    t.index ["warranty_id"], name: "index_warranty_releases_on_warranty_id"
   end
 
   add_foreign_key "accounts", "accounts", column: "main_account_id"
@@ -306,4 +314,10 @@ ActiveRecord::Schema.define(version: 20170810082109) do
   add_foreign_key "stocks", "suppliers"
   add_foreign_key "units", "customers"
   add_foreign_key "users", "branches"
+  add_foreign_key "warranties", "customers"
+  add_foreign_key "warranties", "sales_returns"
+  add_foreign_key "warranties", "suppliers"
+  add_foreign_key "warranty_releases", "customers"
+  add_foreign_key "warranty_releases", "users"
+  add_foreign_key "warranty_releases", "warranties"
 end

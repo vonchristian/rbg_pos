@@ -19,4 +19,19 @@
           <%= @business.address %>
          <br>
          <%= link_to 'Update Business', edit_business_path(@business), class: "btn btn-danger btn-sm" %>
-       
+         <hr>
+         <h4> Employees </h4>
+         <%= link_to 'New Employee', new_user_registration_path, class: "btn btn-danger btn-sm" %>
+         <br>
+         <br>
+         <% @users.each do |user| %>
+            <div class="row">
+              <div class="col-md-4">
+                <%= user.email %>
+              </div>
+              <div class="col-md-4">
+                <%= user.role %>
+              </div>
+            </div>
+            <br>
+         <% end %>

@@ -38,7 +38,7 @@
                                       <% @stocks.each do |stock| %>
                                       <tr>
                                       <td><%=link_to stock.name, stock %><br>
-                                      <small class="text-muted"><%= stock.barcode %></td>
+                                      <small class="text-muted"><%= stock.barcode %></small></td>
                                       <td><%= stock.quantity %></td>
                                       <td><%= number_to_currency stock.unit_cost %></td>
                                       <td><%= number_to_currency stock.total_cost %></td>
@@ -48,6 +48,6 @@
                                       </tr>
                                       <% end %>
                                     </tbody>
-                                  </small>4
+                                  </table>
                                   <center> <%=paginate @stocks %></center>
 

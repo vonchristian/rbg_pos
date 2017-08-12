@@ -1,0 +1,61 @@
+<div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                              <div class="row">
+                                <div class="col-md-3">
+                                  <h4 class="title">Warranties</h4>
+                                  <p class="category">List of sales on warranty</p>
+                                </div>
+                                <div class="col-md-7">
+                                  <%=form_tag warranties_path, method: :get, id: "search-form" do %>
+                                    <div class="input-group">
+                                      <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search stock...", type: "search" %>
+                                      <span class="input-group-btn">
+                                        <%= button_tag(type: 'submit', class: "btn") do %>
+                                          <i class="icon-magnifier"></i>
+                                        <% end %>
+                                      </span>
+                                    </div>
+                                  <% end %>
+                                </div>
+                                
+                              </div>
+                            <div class="content table-responsive table-full-width">
+                                <table class="table table-striped">
+                                    <thead>
+                                      <th>Date </th>
+                                      <th> Item </th>
+                                      <th> Customer </th>
+                                    	<th>Quantity</th>
+                                      <th>Remarks</th>
+                                      <th></th>
+                                    </thead>
+                                    <tbody>
+                                      <% @warranties.each do |warranty| %>
+                                        <tr>
+                                          <td><%= warranty.date.strftime("%B %e, %Y") %></td>
+                                          <td><%= warranty.name %> <br>
+                                            <small class="text-muted"><%= warranty.barcode %></small>
+                                          </td>
+                                          <td><%= warranty.customer.try(:full_name) %></td>
+                                          <td><%= warranty.quantity %></td>
+                                          <td><%= warranty.remarks %></td>
+                                          <td>
+                                            <% if !warranty.released? %>
+                                              <% if policy(:warranty_release).new? %>
+                                                <%= link_to 'Release', warranty_releases_path(warranty), method: :create, class: "btn btn-warning" %>
+                                              <% end %>
+                                            <% elsif warranty.released? %>
+                                              <small class="text-success"> released on <%= warranty.warranty_release.release_date.strftime("%b %e, %Y") %></small>
+                                            <% end %>
+                                          </td>
+                                       
+                                      
+                                        </tr>
+                                      <% end %>
+                                    </tbody>
+                                  </table>
+                                  <center><%= paginate @warranties %></center>

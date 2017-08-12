@@ -5,9 +5,11 @@ class ProductsController < ApplicationController
 		else
 		  @products = Product.all.page(params[:page]).per(35)
 		end
+		authorize @products
 	end 
 	def new 
 		@product = Product.new 
+		authorize @product
 		@category = Category.new
 	end
 	def create 
@@ -21,6 +23,7 @@ class ProductsController < ApplicationController
 	end 
 	def show 
 		@product = Product.find(params[:id])
+		@stocks = @product.stocks.all.page(params[:page]).per(35)
 	end
 
 	private 
