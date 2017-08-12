@@ -18,8 +18,8 @@
         <%=image_tag("logo.png", height: 140, width: 140, class: 'img-circle img-responsive center-block') %>
         <br>
         <br>
-        <%= f.input :email, placeholder: "Email", input_html:{class: "form-control input-lg"}, label: false %>
-        <%= f.input :password, placeholder: "Password",  input_html:{class: "form-control input-lg"}, label: false  %>
+        <%= f.input :email, placeholder: "Email", input_html:{class: "form-control"}, label: false %>
+        <%= f.input :password, placeholder: "Password",  input_html:{class: "form-control"}, label: false  %>
         <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
         <hr>
         <%= f.submit "Sign in", class: "btn btn-success btn-flat btn-block btn-lg", data: {disable_with: "Signing in..."} %>
