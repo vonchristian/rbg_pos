@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170812035537) do
+ActiveRecord::Schema.define(version: 20170813224949) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 20170812035537) do
     t.string "avatar_content_type"
     t.integer "avatar_file_size"
     t.datetime "avatar_updated_at"
+    t.boolean "enable_interest", default: false
   end
 
   create_table "entries", force: :cascade do |t|
@@ -95,7 +96,9 @@ ActiveRecord::Schema.define(version: 20170812035537) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "entry_type"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
+    t.index ["entry_type"], name: "index_entries_on_entry_type"
   end
 
   create_table "job_orders", force: :cascade do |t|
@@ -206,12 +209,11 @@ ActiveRecord::Schema.define(version: 20170812035537) do
     t.datetime "updated_at", null: false
     t.decimal "retail_price"
     t.decimal "wholesale_price"
-    t.string "name"
     t.bigint "branch_id"
     t.integer "stock_type"
     t.bigint "origin_branch_id"
+    t.string "name"
     t.index ["branch_id"], name: "index_stocks_on_branch_id"
-    t.index ["name"], name: "index_stocks_on_name", unique: true
     t.index ["origin_branch_id"], name: "index_stocks_on_origin_branch_id"
     t.index ["product_id"], name: "index_stocks_on_product_id"
     t.index ["stock_type"], name: "index_stocks_on_stock_type"

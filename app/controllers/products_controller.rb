@@ -24,6 +24,8 @@ class ProductsController < ApplicationController
 	def show 
 		@product = Product.find(params[:id])
 		@stocks = @product.stocks.all.page(params[:page]).per(35)
+		@orders = @product.orders.all.page(params[:page]).per(35)
+
 	end
 
 	private 

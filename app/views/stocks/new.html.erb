@@ -14,9 +14,6 @@
 <span><label>Supplier</label><span class="pull-right"><%= link_to 'New Supplier', new_supplier_registration_path, remote: true %></span></span>
   <%= f.input :supplier_id, collection: Supplier.all.map{|a| [a.business_name, a.id] }, prompt: "Select Supplier", label: false %>
 
-  <%= f.input :origin_branch_id, label: "Origin Branch", collection: Branch.all.map{|a| [a.name, a.id] }, prompt: "Select Branch" %>
- 
-
   <%= f.input :quantity %>
   <p> Cost Details </p>
   <%= f.input :unit_cost %>

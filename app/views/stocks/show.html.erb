@@ -1,8 +1,10 @@
 <div class="content">
   <div class="col-md-6 col-md-offset-3">
     <div class="card">
+      <div class="header">
+         <h4 class="title"><%= @stock.name %></h4>
+      </div>
       <div class="content">
-        <h4><%= @stock.name %></h4>
         <div class="row">
           <div class="col-md-4">
             Quantity Received
@@ -38,7 +40,7 @@
             <%= @stock.in_stock %>
           </div>
         </div>
-        <hr>
-<% if policy(:stock_transfer).new? %>
-  <%= link_to 'New Transfer', new_stock_transfer_path(@stock), class: "btn btn-primary" %>
-<% end %>
+<!--         <hr>
+<%# if policy(:stock_transfer).new? %>
+  <%#= link_to 'New Transfer', new_stock_transfer_path(@stock), class: "btn btn-primary" %>
+<%# end %> -->

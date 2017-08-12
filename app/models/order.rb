@@ -56,19 +56,14 @@ class Order < ApplicationRecord
   	cost_of_goods_sold = AccountingModule::Account.find_by(name: "Cost of Goods Sold")
   	sales = AccountingModule::Account.find_by(name: "Sales")
   	merchandise_inventory = AccountingModule::Account.find_by(name: "Merchandise Inventory")
-    
-      AccountingModule::Entry.create(commercial_document: self, entry_date: self.date, description: "Payment for order", 
+    if cash?
+      AccountingModule::Entry.create!(entry_type: 'cash_order', commercial_document: self, entry_date: self.date, description: "Payment for order", 
       	debit_amounts_attributes: [{amount: self.total_cost_less_discount, account: cash_on_hand}, {amount: self.stock_cost, account: cost_of_goods_sold}], 
       	credit_amounts_attributes:[{amount: self.total_cost_less_discount, account: sales}, {amount: self.stock_cost, account: merchandise_inventory}])
-
-    # if self.cash?
-      # self.create_entry!(entry_date: self.date, description: "Cash Payment for order", 
-      # 	                 debit_amounts_attributes: [{amount: total_cost, account: cash_on_hand}, { amount: stock_cost, account: cost_of_goods_sold}], 
-      # 	                 credit_amounts_attributes:[{amount: total_cost, account: sales}, {amount: stock_cost, account: merchandise_inventory}])
-    # elsif self.credit?
-    #   self.create_entry!(entry_date: self.date, description: "Credit for order", 
-    #   	                 debit_amounts_attributes: [{amount: total_cost, account: accounts_receivable}, {amount: stock_cost, account: cost_of_goods_sold}], 
-    #   	                 credit_amounts_attributes:[{amount: total_cost, account: sales}, {amount: stock_cost, account: merchandise_inventory}])
-    # end
+    elsif credit? || stock_transfer?
+      AccountingModule::Entry.create!(entry_type: 'credit_order', commercial_document: self, entry_date: self.date, description: "Credit order", 
+        debit_amounts_attributes: [{amount: self.total_cost_less_discount, account: accounts_receivable}, {amount: self.stock_cost, account: cost_of_goods_sold}], 
+        credit_amounts_attributes:[{amount: self.total_cost_less_discount, account: sales}, {amount: self.stock_cost, account: merchandise_inventory}])
+    end
   end
 end

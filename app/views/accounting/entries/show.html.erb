@@ -1,9 +1,60 @@
-<%=@entry.commercial_document.try(:customer_full_name) %>
-<% @entry.debit_amounts.each do |debit_amount| %>
-	<%= debit_amount.amount %>
-	<%= debit_amount.account.name %>
-<% end %>
-<% @entry.credit_amounts.each do |credit_amount| %>
-	<%= credit_amount.amount %>
-	<%= credit_amount.account.name %>
-<% end %>
+<div class="content">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="card">
+        <div class="header">
+          <h4 class="title">Entry Details</h4>
+          <p class="category"> Details for this accounting entry </p>
+        </div>
+        <div class="content">
+        <div class="row">
+          <div class="col-md-6">
+            Customer/Supplier/Branch
+          </div>
+          <div class="col-md-6">
+            <%=@entry.commercial_document.try(:customer_full_name) %>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            Description
+          </div>
+          <div class="col-md-6">
+            <%=@entry.description %>
+          </div>
+        </div>
+         <br>
+        <div class="row">
+          <div class="col-md-6">
+            <i class="icon-calendar"></i> Date
+          </div>
+          <div class="col-md-6">
+            <%=@entry.entry_date.strftime("%B %e, %Y") %>
+          </div>
+        </div>
+        <hr>
+        <p class="category"> Debit </p>
+				<% @entry.debit_amounts.each do |debit_amount| %>
+				  <div class="row">
+				    <div class="col-md-5 col-md-offset-1">
+					    <%= debit_amount.account.try(:name) %>
+					  </div>
+					  <div class="col-md-5">
+					    <%= number_to_currency debit_amount.amount %>
+					  </div>
+					</div>
+					<br>
+				<% end %>
+				<p class="category"> Credit </p>
+				<% @entry.credit_amounts.each do |credit_amount| %>
+					<div class="row">
+				    <div class="col-md-5 col-md-offset-1">
+					    <%= credit_amount.account.try(:name) %>
+					  </div>
+					  <div class="col-md-5">
+					    <%= number_to_currency credit_amount.amount %>
+					  </div>
+					</div>
+					<br>
+				<% end %>

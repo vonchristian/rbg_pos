@@ -4,6 +4,7 @@ class Product < ApplicationRecord
 
 	has_many :stocks 
 	has_many :sold_items, through: :stocks, class_name: 'LineItem', source: :line_items
+	has_many :orders, through: :sold_items
 	has_many :returned_items, through: :sold_items,  source: :sales_return
 	has_many :items_under_warranty, through: :sold_items, source: :sales_return
 	has_many :released_warranties, through: :items_under_warranty, source: :warranty_release

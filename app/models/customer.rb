@@ -2,6 +2,7 @@ class Customer < ApplicationRecord
 	include PgSearch
 	pg_search_scope :text_search, against: [:first_name, :last_name, :contact_number, :address]
 	has_many :orders
+	has_many :entries, through: :orders
 	has_many :line_items, through: :orders
 	has_attached_file :avatar,
   styles: { large: "120x120>",
@@ -19,5 +20,8 @@ class Customer < ApplicationRecord
 	end
 	def purchases_count
 		orders.count
+	end
+	def accounts_receivable
+    entries.credit_order.map{|a| a.debit_amounts.pluck(:amount)}.sum
 	end
 end

@@ -1,5 +1,6 @@
 module AccountingModule
   class Entry < ApplicationRecord
+    enum entry_type: [:cash_order, :credit_order, :cash_stock, :credit_stock]
     belongs_to :commercial_document, :polymorphic => true
   
     has_many :credit_amounts, :extend => AmountsExtension, :class_name => 'AccountingModule::CreditAmount', :inverse_of => :entry, dependent: :destroy
