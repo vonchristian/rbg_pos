@@ -13,6 +13,19 @@ class UsersController < ApplicationController
 			render :new 
 		end 
 	end 
+	def edit 
+		@user = User.find(params[:id])
+	end
+	def update 
+		@user = User.find(params[:id])
+		@user.update(user_params)
+		if @user.save 
+			redirect_to settings_url, notice: "Employee info updated successfully."
+		else 
+			render :edit 
+		end 
+	end 
+
 
 	private
 	def user_params

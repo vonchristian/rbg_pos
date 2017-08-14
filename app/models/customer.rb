@@ -22,6 +22,6 @@ class Customer < ApplicationRecord
 		orders.count
 	end
 	def accounts_receivable
-    entries.credit_order.map{|a| a.debit_amounts.pluck(:amount)}.sum
+    entries.credit_order.map{|a| a.debit_amounts.pluck(:amount).sum}.sum
 	end
 end

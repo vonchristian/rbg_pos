@@ -18,7 +18,7 @@ class Stock < ApplicationRecord
   after_save :create_entry_for_stock
 
   def in_stock
-    quantity - stock_transfers.sum(:quantity)
+    quantity - stock_transfers.sum(:quantity) - line_items.sum(:quantity)
   end
   private 
   def set_date 

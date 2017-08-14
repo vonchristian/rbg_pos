@@ -13,7 +13,7 @@ class OrdersController < ApplicationController
 		@order = Order.new(order_params)
 		if @order.valid?
 			@order.add_line_items_from_cart(@cart)
-			@order.save
+			@order.save!
 			redirect_to @order, notice: "Order saved successfully."
 		else 
 			render :new 

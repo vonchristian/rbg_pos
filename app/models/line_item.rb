@@ -1,11 +1,11 @@
 class LineItem < ApplicationRecord
   has_one :sales_return
-  belongs_to :cart
-  belongs_to :stock
+  belongs_to :cart, optional: true
+  belongs_to :stock, optional: true
   belongs_to :order, optional: true
   
   delegate :barcode, :product_name, :product_unit, to: :stock
-  validate :exceeds_available_stock?
+  validate :exceeds_available_stock?, on: :create
   def unit_cost_and_quantity
   	unit_cost * quantity
   end
@@ -14,6 +14,6 @@ class LineItem < ApplicationRecord
   end
   private 
   def exceeds_available_stock?
-    errors[:base] << "Exceeded available stock" if quantity > stock.product_in_stock
+    errors[:base] << "Exceeded available stock" if quantity > stock.in_stock
   end
 end

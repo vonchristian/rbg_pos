@@ -11,7 +11,7 @@
                             <hr>
           <%=form_tag store_index_path, method: :get, id: "search-form" do %>
              <div class="input-group">
-               <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search...", type: "search" %>
+               <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", autofocus: true, placeholder: "Search...", type: "search" %>
                <span class="input-group-btn">
                  <%= button_tag(type: 'submit', class: "btn") do %>
                    <i class="icon-magnifier"></i>
@@ -19,38 +19,44 @@
                </span>
              </div>
            <% end %>
-              <%= simple_form_for @line_item do |f| %>
-              <% if @stocks.any?  %>
-                <% @stocks.each do |stock| %>
-                  <div class="row">
-                    <div class="col-md-2">
-                      <%= image_tag(stock.avatar.url(:medium), height: 50, width: 50, class: "img-square") %>
+              
+                <% if @stocks.any?  %>
+                  <% @stocks.each do |stock| %>
+                    <div class="row">
+                      <div class="col-md-2">
+                        <%= image_tag(stock.avatar.url(:medium), height: 50, width: 50, class: "img-square") %>
+                      </div>
+                      <div class="col-md-3">
+                        <%= stock.product_name %><br>
+                        <small class="text-muted"><%= stock.barcode.try(:upcase) %></small><br>
+                        <span class="text-danger"><%= number_to_currency stock.retail_price %></span>
+                      </div>
+                      <div class="col-md-2">
+                        <%=stock.in_stock %><br>
+                        <small class="text-success">IN STOCK</small>
+                      </div>
+                      <div class="col-md-2">
+                      <%= simple_form_for @line_item do |f| %>
+                        <%= f.input :quantity, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1 }, label: false, as: :string %>
+                        <%= f.input :unit_cost, input_html: { value: stock.retail_price, id: 'line_item_unit_cost' }, as: :hidden %>
+  	                    <%= f.input :total_cost, input_html: { id: 'line_item_total_cost', value: stock.retail_price }, as: :hidden %>
+  	                    <%= f.input :stock_id, input_html: { value: stock.id }, as: :hidden %>
+  	                  </div>
+  	                  <div class="col-md-2">
+                        <% if stock.in_stock > 0 %>
+                          <%= f.submit 'Add Item', class: "btn btn-primary btn-sm" %>
+                        <% elsif stock.in_stock <= 0 %>
+                          <span class="btn btn-xs btn-danger disabled"> Out of Stock </span>
+                        <% end %>
+                      <% end %>
+                      </div>
                     </div>
-                    <div class="col-md-3">
-                      <%= stock.product_name %><br>
-                      <small class="text-muted"><%= stock.barcode.try(:upcase) %></small><br>
-                      <span class="text-danger"><%= number_to_currency stock.retail_price %></span>
-                    </div>
-                    <div class="col-md-3">
-                      <%=stock.product_in_stock %><br>
-                      <small class="text-success">IN STOCK</small>
-                    </div>
-                    <div class="col-md-2">
-                      <%= f.input :quantity, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, label: false, as: :string %>
-          <%= f.input :unit_cost, input_html: { value: stock.retail_price, id: 'line_item_unit_cost' }, as: :hidden %>
-	                    <%= f.input :total_cost, input_html: { id: 'line_item_total_cost', value: stock.retail_price }, as: :hidden %>
-	                    <%= f.input :stock_id, input_html: { value: stock.id }, as: :hidden %>
-	                  </div>
-	                  <div class="col-md-1">
-                      <%= f.submit 'Add Item', class: "btn btn-primary btn-sm" %>
-                    </div>
-                  </div>
-                <br>
-                <% end %>
+                  <br>
+                  <% end %>
                 <% else %>
                   <p class="text-danger"> Product not found. </p>
                 <% end %>
-              <% end %>
+              
             </div>
           </div>
         </div>
@@ -98,7 +104,8 @@
                 </div>
               </div>
               <br>
-              <%= link_to 'Checkout', new_order_path, class: "btn-lg btn btn-success btn-block" %>
+              <%= link_to 'Checkout', new_order_path, class: "btn-lg btn btn-success btn-block active" %>
+              <br>
             </div>
         <% end %>
 

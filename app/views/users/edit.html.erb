@@ -1,0 +1,21 @@
+<div class="content">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="card">
+        <div class="header">
+           <h4 class="title">Edit Employee <%= @user.full_name %></h4>
+          <p class="category">Details for this new employee</p>
+        </div> 
+        <div class="content">
+<%= simple_form_for @user do |f| %> 
+  <%= f.error_notification %>
+  <%= f.input :first_name %>
+  <%= f.input :last_name %>
+  <%= f.input :email %>
+  <%= f.input :password %>
+  <%= f.input :password_confirmation, label: "Comfirm Password" %>
+  <% if current_user.proprietor? %>
+    <%= f.input :role, collection: User.roles.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
+  <% end %>
+  <%= f.submit "Save", class: "btn btn-danger" %>
+<% end %>
