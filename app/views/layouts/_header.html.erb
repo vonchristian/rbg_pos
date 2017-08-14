@@ -14,7 +14,7 @@
                        
 						<li>
                            
-                <%=link_to 'Sign out', destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
+                <%=link_to "Sign out (#{current_user.full_name})", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
 								
                            
                         </li>
