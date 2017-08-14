@@ -11,7 +11,7 @@ class Order < ApplicationRecord
   before_validation :set_date
   accepts_nested_attributes_for :payment
 
-  after_commit :create_entry_for_order
+  after_create_commit :create_entry_for_order
   def self.created_between(hash={})
     if hash[:from_date] && hash[:to_date]
       from_date = hash[:from_date].kind_of?(Time) ? hash[:from_date] : Time.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
