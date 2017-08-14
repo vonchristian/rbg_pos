@@ -18,6 +18,7 @@
           <br>
           <%= @business.address %>
          <br>
+         <br>
          <%= link_to 'Update Business', edit_business_path(@business), class: "btn btn-danger btn-sm" %>
          <hr>
          <h4> Employees </h4>
@@ -26,6 +27,9 @@
          <br>
          <% @users.each do |user| %>
             <div class="row">
+            <div class="col-md-4">
+                <%= user.full_name %>
+              </div>
               <div class="col-md-4">
                 <%= user.email %>
               </div>

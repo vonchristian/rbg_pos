@@ -5,4 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
   belongs_to :branch, optional: true
   enum role: [:proprietor, :sales_clerk, :stock_custodian]
+  def full_name 
+  	"#{first_name} #{last_name}"
+  end
 end

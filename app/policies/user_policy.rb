@@ -3,7 +3,7 @@ class UserPolicy < ApplicationPolicy
 		user.proprietor?
 	end 
 	def new?
-		user.proprietor?
+		user.proprietor? 
 	end 
 	def create?
 		new?
