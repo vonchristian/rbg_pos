@@ -16,7 +16,7 @@
           <hr>
           <%=link_to reports_sales_path(format: 'pdf', from_date: Time.zone.now.beginning_of_week, to_date: Time.zone.now.end_of_week) do %>
 	          <p class="category"> Weekly Sales </p>
-	          <small>Generate report of sales for this day <%=Time.zone.now.strftime("%B %e, %Y") %></small>
+	          <small>Generate report of weekly sales </small>
 	        <% end %>
           <hr>
           <%=link_to reports_sales_path(format: 'pdf', from_date: Time.zone.now.beginning_of_month, to_date: Time.zone.now.end_of_month) do %>
@@ -24,7 +24,7 @@
             <small>Generate report of sales for this month <%=Time.zone.now.strftime("%B %Y") %></small>
           <% end %>
           <hr>
-          <%=link_to reports_sales_path(format: 'pdf') do %>
+          <%=link_to reports_sales_path(format: 'pdf', from_date: Time.zone.now.beginning_of_year, to_date: Time.zone.now.end_of_year) do %>
 	          <p class="category"> Yearly Sales </p>
 	          <small>Generate report of sales for this year <%=Time.zone.now.year %></small>
 	        <% end %>
