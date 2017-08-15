@@ -34,6 +34,7 @@
                                       <th>Total Cost</th>
                                       <th> Price </th>
                                     	<th>Supplier</th>
+                                      <th></th>
                                     </thead>
                                     <tbody>
                                       <% @stocks.each do |stock| %>
@@ -46,6 +47,7 @@
                                       <td><%= number_to_currency stock.total_cost %></td>
                                       <td><%= number_to_currency stock.retail_price %></td>
                                       <td><%= stock.supplier_business_name %></td>
+                                      <td><%= link_to 'Edit', edit_stock_path(stock), class: "btn btn-warning btn-sm" %>
                                       
                                       </tr>
                                       <% end %>

@@ -40,7 +40,18 @@
             <%= @stock.in_stock %>
           </div>
         </div>
-<!--         <hr>
+        <br>
+        <div class="row">
+          <div class="col-md-4">
+            Supplier
+          </div>
+          <div class="col-md-8">
+            <%= @stock.supplier.try(:business_name) %>
+          </div>
+        </div>
+        <hr>
 <%# if policy(:stock_transfer).new? %>
   <%#= link_to 'New Transfer', new_stock_transfer_path(@stock), class: "btn btn-primary" %>
-<%# end %> -->
+<%# end %> 
+  <%= link_to 'Edit', edit_stock_path(@stock), class: "btn btn-warning btn-sm" %>
+

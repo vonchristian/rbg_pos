@@ -20,6 +20,17 @@ class StocksController < ApplicationController
 			render :new 
 		end 
 	end 
+	def edit 
+		@stock = Stock.find(params[:id])
+	end
+  def update 
+		@stock = Stock.find(params[:id])
+		@stock.update(stock_params)
+		if @stock.valid?
+			@stock.save 
+			redirect_to stocks_url, notice: 'Stock updated successfully.'
+		end
+	end
 	def show 
 		@stock = Stock.find(params[:id])
 	end

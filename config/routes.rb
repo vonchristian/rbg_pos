@@ -33,7 +33,7 @@ Rails.application.routes.draw do
   end
 
   resources :job_orders, only: [:index, :new, :create]
-  resources :stocks, only: [:index, :show] do 
+  resources :stocks, only: [:index, :show, :edit, :update] do 
     resources :transfers, only: [:new, :create], module: :stocks
   end
   resources :sales_returns, only: [:index]
