@@ -2,10 +2,10 @@
   <div class="col-md-12">
     <div class="card">
       <div class="content">
-        <h4>Branches </h4>
+        <h4 class="title">Branches </h4>
+        <p class="category">List of branches</p>
           <% Branch.all.each do |branch| %>
-          	<%= branch.name %>
-          	<br>
+          	<p><%= branch.name %></p>
           	<br>
           <% end %>
         <br>
@@ -21,7 +21,7 @@
          <br>
          <%= link_to 'Update Business', edit_business_path(@business), class: "btn btn-danger btn-sm" %>
          <hr>
-         <h4> Employees </h4>
+         <h4 class="title"> Employees </h4>
          <%= link_to 'New Employee', new_user_registration_path, class: "btn btn-danger btn-sm" %>
          <br>
          <br>
@@ -45,10 +45,6 @@
          <hr>
          <h4 class="title">Import Products </h4>
          <%= simple_form_for @registry, multipart: true, method: :create do |f| %>
-         <div class="input-group stylish-input-group">
             <%= f.input :spreadsheet, as: :file %>
-            <span class="input-group-btn">
-              <%= f.submit 'Import', class: 'form-control btn btn-primary' %>
-            </span>
-          </div>
+              <%= f.submit 'Import Products', class: 'btn btn-danger' %>
         <% end %>
