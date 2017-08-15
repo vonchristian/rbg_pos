@@ -42,3 +42,13 @@
             </div>
             <br>
          <% end %>
+         <hr>
+         <h4 class="title">Import Products </h4>
+         <%= simple_form_for @registry, multipart: true, method: :create do |f| %>
+         <div class="input-group stylish-input-group">
+            <%= f.input :spreadsheet, as: :file %>
+            <span class="input-group-btn">
+              <%= f.submit 'Import', class: 'form-control btn btn-primary' %>
+            </span>
+          </div>
+        <% end %>

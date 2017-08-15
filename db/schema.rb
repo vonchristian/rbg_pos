@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170814024418) do
+ActiveRecord::Schema.define(version: 20170815031440) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_stat_statements"
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -165,6 +166,15 @@ ActiveRecord::Schema.define(version: 20170814024418) do
     t.bigint "category_id"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["name"], name: "index_products_on_name", unique: true
+  end
+
+  create_table "registries", force: :cascade do |t|
+    t.string "spreadsheet_file_name"
+    t.string "spreadsheet_content_type"
+    t.integer "spreadsheet_file_size"
+    t.datetime "spreadsheet_updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "sales_returns", force: :cascade do |t|

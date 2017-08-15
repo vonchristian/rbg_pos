@@ -22,6 +22,16 @@ class Product < ApplicationRecord
   :url => "/system/:attachment/:id/:style/:filename"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
   validates :name, presence: true, uniqueness: true
+  def self.import(file)
+    spreadsheet = Roo::Spreadsheet.open(file.path)
+    header = spreadsheet.row(1)
+    (2..spreadsheet.last_row).each do |i|
+      row = Hash[[header, spreadsheet.row(i)].transpose]
+      prod = find_by(id: row["id"]) || new
+      member.attributes = row.to_hash
+      member.save!
+    end
+  end
 	def in_stock
 		((delivered_items_count + returned_items_count) - (sold_items_count - transferred_stocks_count)) - released_warranties_count
 	end 

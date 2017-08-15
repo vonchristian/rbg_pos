@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  authenticate :user, -> (user) { user.proprietor? } do
+    mount PgHero::Engine, at: "pghero"
+  end
   unauthenticated :user do
     root :to => 'store#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root
   end
@@ -44,4 +47,5 @@ Rails.application.routes.draw do
   resources :suppliers, only: [:index, :show]
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   resources :users, only: [:edit, :update]
+  resources :registries, only: [:create]
 end
