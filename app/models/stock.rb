@@ -9,7 +9,7 @@ class Stock < ApplicationRecord
   belongs_to :branch, optional: true
   has_many :line_items
   has_many :stock_transfers
-  validates :quantity, :unit_cost, :retail_price, :wholesale_price, presence: true, numericality: { greater_than: 0.1 }
+  validates :quantity, :unit_cost, :retail_price, :wholesale_price, presence: true, numericality: true
   
   delegate :name, :unit, :in_stock, to: :product, prefix: true, allow_nil: true
   delegate :avatar, to: :product, allow_nil: true

@@ -28,6 +28,6 @@ class Registry < ApplicationRecord
   	Supplier.find_or_create_by(business_name: row[8])
   end
   def create_or_find_stock(row)
-    find_product(row).stocks.create!(name: row[0], barcode: row[2], quantity: row[3], unit_cost: row[4], total_cost: row[5], retail_price: row[6], wholesale_price: row[6], stock_type: row[7], supplier: create_or_find_supplier(row))
+    find_product(row).stocks.create!(name: row[0], barcode: row[2].to_i.to_s, quantity: row[3], unit_cost: row[4], total_cost: row[5], retail_price: row[6], wholesale_price: row[6], stock_type: row[7], supplier: create_or_find_supplier(row))
   end
 end
