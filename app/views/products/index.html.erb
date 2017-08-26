@@ -5,11 +5,11 @@
                         <div class="card">
                             <div class="header">
                               <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                   <h4 class="title">Products</h4>
                                   <p class="category">List of products</p>
                                 </div>
-                                <div class="col-md-7">
+                                <div class="col-md-5">
                                   <%=form_tag products_path, method: :get, id: "search-form" do %>
                                     <div class="input-group">
                                       <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search product...", type: "search" %>
@@ -24,6 +24,12 @@
                                 <div class="col-md-2">
                                   <% if policy(:product).new? %>
                                     <%=link_to 'New Product', new_product_path, class: "btn btn-primary pull-right" %>
+                                  <% end %>
+                                </div>
+                                <div class="col-md-2">
+                                  <%= simple_form_for @registry, multipart: true, method: :create do |f| %>
+                                    <%= f.input :spreadsheet, as: :file, label: false %>
+                                      <%= f.submit 'Import Products', class: 'btn btn-danger btn-xs' %>
                                   <% end %>
                                 </div>
                               </div>

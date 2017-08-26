@@ -5,6 +5,7 @@ class ProductsController < ApplicationController
 		else
 		  @products = Product.all.page(params[:page]).per(35)
 		end
+		@registry = Registry.new
 		authorize @products
 	end 
 	def new 
