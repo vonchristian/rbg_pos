@@ -27,6 +27,8 @@ Rails.application.routes.draw do
   resources :accounting, only: [:index]
   namespace :accounting do 
     resources :entries, only: [:show]
+    resources :fund_transfers, only: [:new, :create]
+    resources :remittances, only: [:new, :create]
   end
   resources :line_items, only: [:destroy] do 
     resources :sales_returns, only: [:new, :create], module: :line_items

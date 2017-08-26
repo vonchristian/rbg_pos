@@ -1,5 +1,7 @@
 AccountingModule::Asset.create(account_code: 11100, name: "Cash and Cash Equivalents")
 AccountingModule::Asset.create(account_code: 11110, name: "Cash on Hand")
+AccountingModule::Asset.create(account_code: 111101, name: "Cash on Hand (Cashier)")
+
 AccountingModule::Asset.create(account_code: 11120, name: "Checks and Other Cash Items (COCI)")
 AccountingModule::Asset.create(account_code: 11130, name: "Cash in Bank")
 AccountingModule::Asset.create(account_code: 11140, name: "Cash in Cooperative Federation")

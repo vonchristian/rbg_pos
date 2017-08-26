@@ -1,11 +1,34 @@
+
+
 <div class="content">
   <div class="row">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="header">
+          <h3 class="title"> Cash Status </h3>
+          <p class="category"> status of cash on hand </p>
+          <h3 class="title"><center><%= number_to_currency AccountingModule::Asset.find_by(name: "Cash on Hand").balance %></center></h3>
+          <br>
+          <h4 class="title"> <center>CASH ON HAND PROPRIETOR </center></h4>
+            <%= link_to 'New Transfer', new_accounting_fund_transfer_path, class: "btn btn-primary" %>
+
+          <hr>
+          <h3 class="title"><center><%= number_to_currency AccountingModule::Asset.find_by(name: "Cash on Hand (Cashier)").balance %></center></h3>
+          <br>
+          <h4 class="title"><center>CASH ON HAND (TELLER)</center></h4>
+          <br>
+            <%= link_to 'New Remittance', new_accounting_remittance_path, class: "btn btn-primary" %>
+            <br>
+            <br>
+        </div>
+      </div>
+    </div>
     <div class="col-md-4">
       <div class="card">
       <div class="header">
         <h4 class="title">Entries </h4>
         <p class="category"> List of journal entries </p>
-          <% AccountingModule::Entry.all.each do |entry| %>
+          <% @entries.each do |entry| %>
             <div class="row">
               <div class="col-md-8">
                 <%= link_to entry.entry_date.strftime("%b %e, %Y"), accounting_entry_path(entry) %><br>
@@ -17,4 +40,5 @@
             </div>
             <br>
           <% end %>
+          <center><%= paginate @entries %></center>
       </div>

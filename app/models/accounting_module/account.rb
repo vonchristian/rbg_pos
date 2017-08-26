@@ -1,7 +1,7 @@
 module AccountingModule
   class Account < ApplicationRecord
     include PgSearch 
-    pg_search_scope :text_search, :against => [:name, :code]
+    pg_search_scope :text_search, :against => [:name, :account_code]
 
     
 

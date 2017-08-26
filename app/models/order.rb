@@ -51,7 +51,7 @@ class Order < ApplicationRecord
   	self.date ||= Time.zone.now 
   end
   def create_entry_for_order
-  	cash_on_hand = AccountingModule::Account.find_by(name: "Cash on Hand")
+  	cash_on_hand = AccountingModule::Account.find_by(name: "Cash on Hand (Cashier)")
   	accounts_receivable = AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current")
   	cost_of_goods_sold = AccountingModule::Account.find_by(name: "Cost of Goods Sold")
   	sales = AccountingModule::Account.find_by(name: "Sales")
