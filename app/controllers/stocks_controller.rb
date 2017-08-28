@@ -35,6 +35,13 @@ class StocksController < ApplicationController
 		@stock = Stock.find(params[:id])
 	end
 
+	def destroy 
+		@stock = Stock.find(params[:id])
+		authorize @stock
+		@stock.destroy 
+		redirect_to stocks_url, alert: "Stock deleted successfully."
+	end
+
 	private 
 	def stock_params
 		params.require(:stock).permit(:stock_type, :supplier_id, :unit_cost, :total_cost, :quantity, :retail_price, :wholesale_price, :barcode, :name, :origin_branch_id)

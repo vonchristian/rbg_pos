@@ -20,12 +20,13 @@
                                     <tbody>
                                       <% @orders.each do |order| %>
                                       <tr>
+                                      <% if order.line_items.count > 0 %>
                                         <td><%=link_to order.date.strftime("%B %e, %Y"), order %></td>
-                                        <td><%= order.customer_full_name.try(:titleize) %></td>
+                                        <td><%= order.customer.try(:full_name).try(:titleize) %></td>
                                         <td><span class="label label-<%=order.mode_of_payment_color%>"><%= order.mode_of_payment %></td>
                                         <td><%= number_to_currency order.discount_amount%></td>
                                         <td><%= number_to_currency order.line_items_total_cost %></td>
-
+                                      <% end %>
                                       </tr>
                                       <% end %>
                                     </tbody>

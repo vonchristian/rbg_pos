@@ -28,6 +28,22 @@ class ProductsController < ApplicationController
 		@orders = @product.orders.all.page(params[:page]).per(35)
 
 	end
+	def edit 
+		@product = Product.find(params[:id])
+		authorize @product
+	end 
+	def update 
+		@product = Product.find(params[:id])
+		authorize @product
+		@product.update(product_params)
+		if @product.valid?
+			@product.save 
+			redirect_to @product, notice: "Product updated successfully"
+		else
+			render :new 
+		end 
+	end 
+
 
 	private 
 	def product_params

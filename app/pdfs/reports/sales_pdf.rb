@@ -28,7 +28,7 @@ module Reports
     end
     def orders_data 
       [["DATE", "CUSTOMER", "MODE OF PAYMENT", "DISCOUNT", "TOTAL COST", "TOTAL COST LESS DISCOUNT"]] +
-      @orders_data ||= @orders.map{|o| [o.date.strftime("%B %e, %Y"), o.customer_full_name.upcase, o.mode_of_payment, price(o.discount_amount), price(o.total_cost), price(o.total_cost_less_discount)] }
+      @orders_data ||= @orders.map{|o| [o.date.strftime("%B %e, %Y"), o.customer.try(:full_name).try(:upcase), o.mode_of_payment, price(o.discount_amount), price(o.total_cost), price(o.total_cost_less_discount)] }
     end
   end 
 end
