@@ -25,27 +25,40 @@
                                   <%= link_to 'New Stock', new_product_stock_path(@product), class: "btn btn-round btn-primary pull-right" %>
                                 </div>
                               </div>
-                            <div class="content table-responsive table-full-width">
+                             <div class="content table-responsive table-full-width">
                                 <table class="table table-striped">
                                     <thead>
                                       
-                                      <th>Date</th>
-                                    	<th>Quantity</th>
-                                    	<th>Unit Cost</th>
-                                      <th>Total Cost</th>
+                                      <th>Product</th>
+                                      <th>Date </th>
+                                      <th>Quantity</th>
+                                      <% if current_user.proprietor? %>
+                                        <th>Unit Cost</th>
+                                        <th>Total Cost</th>
+                                      <% end %>
                                       <th> Price </th>
-                                    	<th>Supplier</th>
+                                      <th>Supplier</th>
+                                      <th></th>
                                     </thead>
                                     <tbody>
                                       <% @stocks.each do |stock| %>
                                       <tr>
-                                      <td><%=link_to stock.date.strftime("%B %e, %Y"), stock %><br>
+                                      <td><%=link_to stock.name, stock %><br>
                                       <small class="text-muted"><%= stock.barcode %></small></td>
+                                      <td><%= stock.date.strftime("%B %e, %Y") %></td>
                                       <td><%= stock.quantity %></td>
-                                      <td><%= number_to_currency stock.unit_cost %></td>
-                                      <td><%= number_to_currency stock.total_cost %></td>
+                                      <% if current_user.proprietor? %>
+                                        <td><%= number_to_currency stock.unit_cost %></td>
+                                        <td><%= number_to_currency stock.total_cost %></td>
+                                      <% end %>
                                       <td><%= number_to_currency stock.retail_price %></td>
-                                      <td><%= number_to_currency stock.supplier_business_name %></td>
+                                      <td><%= stock.supplier_business_name %></td>
+                                      <td><% if current_user.proprietor? %>
+                                      <%= link_to 'Edit', edit_stock_path(stock), class: "btn btn-warning btn-sm" %>
+                                          <%= link_to 'Delete', stock_path(stock), method: :delete, class: "btn btn-danger btn-xs", data: { confirm: "Are you sure you want to destroy this stock?"} %>
+                                        <% end %>
+                                        
+                                      </td>
                                       
                                       </tr>
                                       <% end %>
