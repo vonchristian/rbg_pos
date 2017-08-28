@@ -15,6 +15,7 @@ class OrdersController < ApplicationController
 			@order.add_line_items_from_cart(@cart)
 			@order.save!
 			redirect_to @order, notice: "Order saved successfully."
+			@order.create_entry_for_order
 		else 
 			render :new 
 		end 
@@ -29,6 +30,11 @@ class OrdersController < ApplicationController
           send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Order.pdf"
 			end
 		end
+	end
+	def destroy
+		@order = Order.find(params[:id])
+		@order.destroy
+		redirect_to orders_url, alert: "Order deleted successfully."
 	end
 
 	private 

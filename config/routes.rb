@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   	resources :stocks, only: [:new, :create]
   end
   resources :line_items, only: [:new, :create]
-  resources :orders, only: [:index, :show, :new, :create]
+  resources :orders, only: [:index, :show, :new, :create, :destroy]
   resources :carts, only: [:destroy]
   resources :categories, only: [:new, :create]
   resources :reports, only: [:index]

@@ -40,4 +40,6 @@
                 </div>
                 <hr>
                 <% end %>
-              
+               <% if current_user.proprietor? %>
+                <%= link_to 'Delete', order_path(@order), method: :delete, class: "btn btn-danger btn-xs", data: {confirm: "Are you sure you want to delete this order?"} %>
+               <% end %>
