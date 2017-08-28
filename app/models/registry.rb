@@ -29,7 +29,7 @@ class Registry < ApplicationRecord
   end
   def create_or_find_stock(row)
     if find_product(row).present?
-      find_product(row).stocks.create!(name: row[0], barcode: row[2].to_i.to_s, quantity: row[3], unit_cost: row[4], total_cost: row[5], retail_price: row[6], wholesale_price: row[6], stock_type: row[7], supplier: create_or_find_supplier(row))
+      find_product(row).stocks.create!(name: row[0], barcode: row[2].to_s, quantity: row[3], unit_cost: row[4], total_cost: row[5], retail_price: row[6], wholesale_price: row[6], stock_type: row[7], supplier: create_or_find_supplier(row))
     end
   end
 end
