@@ -1,6 +1,6 @@
 class ProductPolicy < ApplicationPolicy
 	def index?
-		user.proprietor? || user.stock_custodian? || user.sales_clerk?
+		true
 	end 
 	def new?
 		user.proprietor? || user.stock_custodian? || user.sales_clerk?

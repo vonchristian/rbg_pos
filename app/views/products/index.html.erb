@@ -66,4 +66,4 @@
                                       <% end %>
                                     </tbody>
                                   </table>
-                                  <center> <%=paginate @products %></center>
+                                  <center><%= paginate @products, :params => {:controller => "products", action: "index" } %></center>

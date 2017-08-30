@@ -1,13 +1,13 @@
 class ProductsController < ApplicationController
-	def index 
-		if params[:search].present?
-			@products = Product.text_search(params[:search]).page(params[:page]).per(35)
-		else
-		  @products = Product.all.page(params[:page]).per(35)
-		end
-		@registry = Registry.new
-		authorize @products
-	end 
+	def index
+    if params[:name].present?
+      @products = Product.search_by_name(params[:name]).page(params[:page]).per(30)
+    else
+      @products = Product.all.order(:name).page(params[:page]).per(30)
+    end
+    @registry = Registry.new
+  end
+  
 	def new 
 		@product = Product.new 
 		authorize @product
