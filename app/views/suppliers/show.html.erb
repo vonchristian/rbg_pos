@@ -2,3 +2,41 @@
 
 <h4> Accounts Payable </h4>
 <%= @supplier.accounts_payable %>
+
+<div class="content">
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="header">
+        <div class="row">
+          <div class="col-md-1">
+          </div>
+          <div class="col-md-9">
+            <h4 class="title"><%= @supplier.business_name.try(:upcase) %></h4>
+          </div>
+        </div>
+      </div>
+      <br>
+<div class="tabbable-line">
+        <ul class="nav nav-tabs">
+          <li class="active">
+            <a href="#tab_default_1" data-toggle="tab">
+            <i class="fa fa-user"></i> Info </a>
+          </li>
+          <li>
+            <a href="#supplier-deliveries" data-toggle="tab">
+            Deliveries </a>
+          </li>
+          <li>
+            <a href="#supplier-account" data-toggle="tab">
+            Account </a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="tab_default_1">
+            fdsfds
+          </div>
+         
+             <%=render 'suppliers/partials/deliveries' %>
+             <%=render 'suppliers/partials/account' %>
+

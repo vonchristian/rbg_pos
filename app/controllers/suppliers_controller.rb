@@ -9,5 +9,6 @@ class SuppliersController < ApplicationController
 	end 
 	def show 
 		@supplier = Supplier.find(params[:id])
+    @stocks = @supplier.delivered_stocks.page(params[:page]).per(35)
 	end
 end 

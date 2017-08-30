@@ -49,7 +49,9 @@ Rails.application.routes.draw do
     resources :releases, only: [:create], module: :warranties
   end
   resources :supplier_registrations, only: [:new, :create]
-  resources :suppliers, only: [:index, :show]
+  resources :suppliers, only: [:index, :show] do 
+    resources :payments, only: [:new, :create], module: :suppliers
+  end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   resources :users, only: [:edit, :update]
   resources :registries, only: [:create]
