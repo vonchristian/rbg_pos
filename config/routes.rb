@@ -11,7 +11,9 @@ Rails.application.routes.draw do
   root :to => 'store#index', :constraints => lambda { |request| request.env['warden'].user.role == 'proprietor' if request.env['warden'].user }, as: :prop_department_root
   root :to => 'products#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :stocks_department_root
 	resources :store, only: [:index]
-	resources :customers
+	resources :customers do 
+    resources :payments, only: [:new, :create], module: :customers
+  end
   resources :products, except: [:destroy] do 
   	resources :stocks, only: [:new, :create]
   end
@@ -29,6 +31,7 @@ Rails.application.routes.draw do
     resources :entries, only: [:show]
     resources :fund_transfers, only: [:new, :create]
     resources :remittances, only: [:new, :create]
+    resources :expenses, only: [:new, :create]
   end
   resources :line_items, only: [:destroy] do 
     resources :sales_returns, only: [:new, :create], module: :line_items

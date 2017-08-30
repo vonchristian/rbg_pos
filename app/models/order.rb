@@ -10,6 +10,7 @@ class Order < ApplicationRecord
   delegate :mode_of_payment, :discount_amount, :stock_transfer?, :credit?, :cash?, :total_cost, :total_cost_less_discount, to: :payment,  allow_nil: true
   before_validation :set_date
   accepts_nested_attributes_for :payment
+  validates :customer_id, presence: true
 
   def self.created_between(hash={})
     if hash[:from_date] && hash[:to_date]

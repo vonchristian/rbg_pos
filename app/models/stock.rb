@@ -26,7 +26,7 @@ class Stock < ApplicationRecord
   end
 
   def create_entry_for_stock
-    cash_on_hand = AccountingModule::Account.find_by(name: "Cash on Hand (Cashier")
+    cash_on_hand = AccountingModule::Account.find_by(name: "Cash on Hand")
     accounts_payable = AccountingModule::Account.find_by(name: 'Accounts Payable-Trade')
     merchandise_inventory = AccountingModule::Account.find_by(name: "Merchandise Inventory")
     

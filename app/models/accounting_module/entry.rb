@@ -1,8 +1,8 @@
 module AccountingModule
   class Entry < ApplicationRecord
-    enum entry_type: [:cash_order, :credit_order, :cash_stock, :credit_stock]
-    belongs_to :commercial_document, :polymorphic => true
-  
+    enum entry_type: [:cash_order, :credit_order, :cash_stock, :credit_stock, :customer_credit_payment, :expense]
+    belongs_to :commercial_document, :polymorphic => true, optional: true
+    belongs_to :user, optional: true
     has_many :credit_amounts, :extend => AmountsExtension, :class_name => 'AccountingModule::CreditAmount', :inverse_of => :entry, dependent: :destroy
     has_many :debit_amounts, :extend => AmountsExtension, :class_name => 'AccountingModule::DebitAmount', :inverse_of => :entry, dependent: :destroy
     has_many :credit_accounts, :through => :credit_amounts, :source => :account, :class_name => 'AccountingModule::Account'

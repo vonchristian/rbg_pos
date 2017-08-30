@@ -10,11 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170815031440) do
+ActiveRecord::Schema.define(version: 20170830031129) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "pg_stat_statements"
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -98,8 +97,10 @@ ActiveRecord::Schema.define(version: 20170815031440) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "entry_type"
+    t.bigint "user_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
     t.index ["entry_type"], name: "index_entries_on_entry_type"
+    t.index ["user_id"], name: "index_entries_on_user_id"
   end
 
   create_table "job_orders", force: :cascade do |t|
@@ -308,6 +309,7 @@ ActiveRecord::Schema.define(version: 20170815031440) do
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
   add_foreign_key "branches", "businesses"
+  add_foreign_key "entries", "users"
   add_foreign_key "job_orders", "customers"
   add_foreign_key "job_orders", "units"
   add_foreign_key "line_items", "carts"

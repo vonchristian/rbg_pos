@@ -3,6 +3,7 @@ class Customer < ApplicationRecord
 	pg_search_scope :text_search, against: [:first_name, :last_name, :contact_number, :address]
 	has_many :orders
 	has_many :entries, through: :orders
+  has_many :payments, as: :commercial_document, class_name: "AccountingModule::Entry"
 	has_many :line_items, through: :orders
 	has_attached_file :avatar,
   styles: { large: "120x120>",
@@ -22,6 +23,12 @@ class Customer < ApplicationRecord
 		orders.count
 	end
 	def accounts_receivable
-    entries.credit_order.map{|a| a.debit_amounts.pluck(:amount).sum}.sum
+    entries.credit_order.map{|a| a.debit_amounts.distinct.pluck(:amount).sum}.sum
 	end
+  def payments_total
+    payments.customer_credit_payment.map{|a| a.debit_amounts.distinct.pluck(:amount).sum}.sum
+  end
+  def balance_total
+    accounts_receivable - payments_total
+  end
 end

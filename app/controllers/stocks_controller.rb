@@ -28,7 +28,7 @@ class StocksController < ApplicationController
 		@stock.update(stock_params)
 		if @stock.valid?
 			@stock.save 
-			redirect_to stocks_url, notice: 'Stock updated successfully.'
+			redirect_to product_url(@stock.product), notice: 'Stock updated successfully.'
 		end
 	end
 	def show 

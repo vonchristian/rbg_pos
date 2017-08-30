@@ -1,0 +1,24 @@
+<div class="content">
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <div class="card">
+        <div class="content">
+          <div class="header">
+            <h3 class="title"> Expense Details </h3>
+          </div>
+        <div class="content">
+        <%= simple_form_for @entry, url: :accounting_expenses do |f| %>
+          <%= f.error_notification %>
+          <%= f.input :user_id, input_html: { value: current_user.id }, as: :hidden %>
+          <%= f.input :entry_date, label: 'Date', as: :string, input_html: { class: "datepicker" } %>
+
+          <%= f.input :reference_number %>
+          <%= f.input :description, placeholder: 'Describe expense', as: :text %>
+          <%= f.input :amount %>
+          <%= f.input :debit_account_id, input_html: { value: AccountingModule::Account.find_by(name: "Cash on Hand").id }, as: :hidden %>
+          <%= f.input :credit_account_id, label: "Account", collection: AccountingModule::Expense.all.map{|a| [a.name.titleize, a.id]}, prompt: "Select Expense Account" %>
+           
+          <%= f.submit "Save Expense", class: "btn btn-danger pull-right" %>
+          <br>
+          <br>
+        <% end %>

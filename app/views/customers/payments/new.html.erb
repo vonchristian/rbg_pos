@@ -1,0 +1,24 @@
+<div class="content">
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <div class="card">
+        <div class="content">
+          <div class="header">
+            <h4 class="title"> <%= @customer.full_name %> payment details </h4>
+          </div>
+        <div class="content">
+        <%= simple_form_for @entry, url: :customer_payments do |f| %>
+          <%= f.error_notification %>
+          <%= f.input :entry_date, label: 'Date', as: :string, input_html: { class: "datepicker" } %>
+          <%= f.input :customer_id, input_html: { value: @customer.id }, as: :hidden %>
+          <%= f.input :user_id, input_html: { value: current_user.id }, as: :hidden %>
+          <%= f.input :reference_number %>
+          <%= f.input :description, input_html: { value: "Payment of credit" } %>
+          <%= f.input :amount %>
+          <%= f.input :debit_account_id, input_html: { value: AccountingModule::Account.find_by(name: "Cash on Hand (Cashier)").id }, as: :hidden %>
+          <%= f.input :credit_account_id, input_html: { value: AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current").id }, as: :hidden %>
+           
+          <%= f.submit "Save Payment", class: "btn btn-primary pull-right" %>
+          <br>
+          <br>
+        <% end %>

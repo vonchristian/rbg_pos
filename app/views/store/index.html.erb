@@ -28,7 +28,7 @@
                       </div>
                       <div class="col-md-3">
                         <%= stock.product_name %><br>
-                        <small class="text-muted"><%= stock.barcode.try(:upcase) %></small><br>
+                        <small><b><%= stock.barcode.try(:upcase) %></b></small><br>
                         <span class="text-danger"><%= number_to_currency stock.retail_price %></span>
                       </div>
                       <div class="col-md-2">

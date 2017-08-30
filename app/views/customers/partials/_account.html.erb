@@ -1,7 +1,44 @@
 <div class="tab-pane" id="customer-account">
   <div class="content">
-    <h4 class="title"> Account Details </h4>
-      Accounts Receivable 
-      <%= @customer.accounts_receivable %>
+    <div class="row">
+      <div class="col-md-3">
+        <h4><%= number_to_currency @customer.accounts_receivable %></h4>
+        <small> ACCOUNTS RECEIVABLE</small>
+      </div>
+      <div class="col-md-3">
+        <h4><%= number_to_currency @customer.payments_total %></h4>
+        <small> PAYMENTS</small>
+      </div>
+      <div class="col-md-3">
+        <h4 class="text-danger"><%= number_to_currency @customer.balance_total %></h4>
+        <small class="text-danger"> BALANCE</small>
+      </div>
+      <div class="col-md-3">
+        <h4></h4>
+        <%= link_to 'New Payment', new_customer_payment_path(@customer), class: "btn btn-primary" %>
+      </div>
+    </div>
+    <hr>
+    <h4> Payments History </h4>
+    <div class="table table-responsive">
+      <table class="table table-hover table-striped">
+        <thead>
+          <tr>
+            <th> Date </th>
+            <th> Description </th>
+            <th> Amount </th>
+            <th> Employee </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @customer.payments.each do |payment| %>
+            <tr>
+              <td><%= payment.entry_date.strftime("%B %e, %Y") %></td>
+              <td><%= payment.description %></td>
+              <td><%= number_to_currency payment.debit_amounts.sum(:amount) %></td>
+              <td><%= payment.user.try(:full_name) %></td>
+            </tr>
+          <% end %>
+        </tbody>
   </div>
 </div>

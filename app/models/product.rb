@@ -53,4 +53,10 @@ class Product < ApplicationRecord
 	def released_warranties_count
 		released_warranties.sum(:quantity)
 	end
+  def update_stocks_name 
+    stocks.each do |stock|
+      stock.name = self.name 
+      stock.save 
+    end
+  end 
 end

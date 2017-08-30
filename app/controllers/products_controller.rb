@@ -38,6 +38,7 @@ class ProductsController < ApplicationController
 		@product.update(product_params)
 		if @product.valid?
 			@product.save 
+      @product.update_stocks_name
 			redirect_to @product, notice: "Product updated successfully"
 		else
 			render :new 

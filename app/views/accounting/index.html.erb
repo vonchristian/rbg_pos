@@ -22,12 +22,40 @@
             <br>
         </div>
       </div>
+      <div class="card">
+        <div class="content">
+          <div class="row">
+            <div class="col-md-6">
+              <h4 class="title">Expenses</h4>
+              <p class="category"> List of expenses </p>
+            </div>
+            <div class="col-md-6">
+              <%= link_to 'New Expense', new_accounting_expense_path, class: "btn btn-sm btn-danger pull-right" %>
+            </div>
+          </div>
+          <hr>
+          <% @expenses.each do |expense| %>
+            <div class="row">
+              <div class="col-md-8">
+                <%= expense.description %><br>
+                <small class="text-muted"> <%= expense.user.try(:full_name) %></small>
+              </div>
+              <div class="col-md-4">
+                <%= number_to_currency expense.debit_amounts.sum(:amount) %>
+              </div>
+            </div>
+            <br>
+          <% end %>
+          <center><%= paginate @expenses %></center>
+
+        </div>
+      </div>
     </div>
     <div class="col-md-4">
       <div class="card">
-      <div class="header">
-        <h4 class="title">Entries </h4>
-        <p class="category"> List of journal entries </p>
+        <div class="header">
+          <h4 class="title">Entries </h4>
+          <p class="category"> List of journal entries </p>
           <% @entries.each do |entry| %>
             <div class="row">
               <div class="col-md-8">
@@ -41,4 +69,7 @@
             <br>
           <% end %>
           <center><%= paginate @entries %></center>
+        </div>
       </div>
+
+
