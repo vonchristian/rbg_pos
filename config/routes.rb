@@ -15,7 +15,7 @@ Rails.application.routes.draw do
     resources :payments, only: [:new, :create], module: :customers
   end
   resources :products, except: [:destroy] do 
-  	resources :stocks, only: [:new, :create]
+  	resources :stocks, only: [:new, :create], module: :products
   end
   resources :line_items, only: [:new, :create]
   resources :orders, only: [:index, :show, :new, :create, :destroy]
@@ -38,7 +38,7 @@ Rails.application.routes.draw do
   end
 
   resources :job_orders, only: [:index, :new, :create]
-  resources :stocks, only: [:index, :show, :edit, :update, :destroy] do 
+  resources :stocks, only: [:new, :create, :index, :show, :edit, :update, :destroy] do 
     resources :transfers, only: [:new, :create], module: :stocks
   end
   resources :sales_returns, only: [:index]

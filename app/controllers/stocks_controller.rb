@@ -7,15 +7,15 @@ class StocksController < ApplicationController
 		end
 	end
 	def new 
-		@product = Product.find(params[:product_id])
-		@stock = @product.stocks.build 
+		@stock = Stock.new
 	end 
 	def create 
-		@product = Product.find(params[:product_id])
-		@stock = @product.stocks.create(stock_params)
+		
+		@stock = Stock.create(stock_params)
 		@stock.branch = current_user.branch
 		if @stock.save
-			redirect_to @product, notice: "Stock saved successfully."
+			redirect_to stocks_url, notice: "Stock saved successfully."
+      @stock.set_name
 		else 
 			render :new 
 		end 
@@ -29,6 +29,7 @@ class StocksController < ApplicationController
 		if @stock.valid?
 			@stock.save 
 			redirect_to product_url(@stock.product), notice: 'Stock updated successfully.'
+      @stock.set_name
 		end
 	end
 	def show 
@@ -44,6 +45,6 @@ class StocksController < ApplicationController
 
 	private 
 	def stock_params
-		params.require(:stock).permit(:stock_type, :supplier_id, :unit_cost, :total_cost, :quantity, :retail_price, :wholesale_price, :barcode, :name, :origin_branch_id)
+		params.require(:stock).permit(:product_id, :stock_type, :supplier_id, :unit_cost, :total_cost, :quantity, :retail_price, :wholesale_price, :barcode, :name, :origin_branch_id)
 	end 
 end

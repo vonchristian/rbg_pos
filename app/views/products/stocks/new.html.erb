@@ -8,9 +8,8 @@
           <p class="category">New stock details for this product</p>
         </div> 
         <div class="content">
-<%= simple_form_for @stock, url: :stocks do |f| %>
+<%= simple_form_for [@product, @stock] do |f| %>
   <%= f.error_notification %>
-  <%= f.input :product_id, collection: Product.all.order(:name).map{|a| [a.name, a.id] } %>
   <%= f.input :stock_type, collection: Stock.stock_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons,  checked: Stock.stock_types.first, input_html: {id: "stock_type"} %>
 <span><label>Supplier</label><span class="pull-right"><%= link_to 'New Supplier', new_supplier_registration_path, remote: true %></span></span>
   <%= f.input :supplier_id, collection: Supplier.all.map{|a| [a.business_name, a.id] }, prompt: "Select Supplier", label: false %>
@@ -25,7 +24,7 @@
   <%= f.input :retail_price %>
   <%= f.input :wholesale_price %>
   <%= f.input :barcode %>
-  <%= f.input :name, as: :hidden %>
+  <%= f.input :name, input_html: { value: @product.name }, as: :hidden %>
   <%= f.submit "Save Stock", class: "btn btn-primary" %>
 <% end %>
 

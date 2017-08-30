@@ -9,7 +9,8 @@ class Stock < ApplicationRecord
   belongs_to :branch, optional: true
   has_many :line_items
   has_many :stock_transfers
-  validates :quantity, :unit_cost, :retail_price, :wholesale_price, presence: true, numericality: true
+  validates :quantity, :unit_cost, :total_cost, :retail_price, :wholesale_price, presence: true, numericality: true
+  validates :product_id, presence: true
   
   delegate :name, :unit, :in_stock, to: :product, prefix: true, allow_nil: true
   delegate :avatar, to: :product, allow_nil: true
@@ -20,10 +21,15 @@ class Stock < ApplicationRecord
   def in_stock
     quantity - stock_transfers.sum(:quantity) - line_items.sum(:quantity)
   end
+  def set_name 
+    self.name = self.product.name
+    self.save
+  end
   private 
   def set_date 
   	self.date ||= Time.zone.now 
   end
+  
 
   def create_entry_for_stock
     cash_on_hand = AccountingModule::Account.find_by(name: "Cash on Hand")
