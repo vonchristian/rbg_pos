@@ -3,7 +3,7 @@ class SalesReturn < ApplicationRecord
   belongs_to :order, optional: true
   has_one :warranty, dependent: :destroy
   has_one :warranty_release, through: :warranty
-  enum sales_return_type: [:for_warranty, :refund_payment]
+  enum sales_return_type: [:for_warranty, :refund_payment, :return_to_stock]
   
   validates :remarks, presence: true
   validate :quantity_is_less_than_or_equal_to_line_item_quantity

@@ -1,4 +1,5 @@
 class Registry < ApplicationRecord
+  has_many :stocks, dependent: :destroy
 	has_attached_file :spreadsheet, :path => ":rails_root/public/system/:attachment/:id/:filename"
   do_not_validate_attachment_file_type :spreadsheet
 
@@ -29,7 +30,14 @@ class Registry < ApplicationRecord
   end
   def create_or_find_stock(row)
     if find_product(row).present?
-      find_product(row).stocks.create!(name: row[0], barcode: row[2].to_s, quantity: row[3], unit_cost: row[4], total_cost: row[5], retail_price: row[6], wholesale_price: row[6], stock_type: row[7], supplier: create_or_find_supplier(row))
+      find_product(row).stocks.find_or_create_by(date: self.created_at.strftime("%B %e, %Y"), registry: self, name: row[0], barcode: normalized_barcode(row), quantity: row[3], unit_cost: row[4], total_cost: row[5], retail_price: row[6], wholesale_price: row[6], stock_type: row[7], supplier: create_or_find_supplier(row))
+    end
+  end
+  def normalized_barcode(row)
+    if row[2].to_s.include?(".")
+      row[2].to_s.chop.gsub(".", "")
+    else
+      row[2].to_s 
     end
   end
 end

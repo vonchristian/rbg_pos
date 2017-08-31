@@ -4,26 +4,11 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="header">
-                              <div class="row">
-                                <div class="col-md-3">
-                                  <h4 class="title">Stocks</h4>
-                                  <p class="category">List of stocks</p>
-                                </div>
-                                <div class="col-md-7">
-                                  <%=form_tag stocks_path, method: :get, id: "search-form" do %>
-                                    <div class="input-group">
-                                      <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search stock...", type: "search" %>
-                                      <span class="input-group-btn">
-                                        <%= button_tag(type: 'submit', class: "btn") do %>
-                                          <i class="icon-magnifier"></i>
-                                        <% end %>
-                                      </span>
-                                    </div>
-                                  <% end %>
-                                </div>
-                                <div class="col-md-2">
-                                  <%= link_to 'New Stock', new_stock_path, class: "btn btn-primary" %>
-                                
+                              
+                                  <h4 class="title">Uploaded Stocks <%= @registry.created_at.strftime("%B %e, %Y") %>  </h4>
+                                  <p class="category">details of uploaded stocks</p>
+                                  <%= link_to 'Delete', registry_path(@registry), method: :delete, data: { confirm: "Are you sure you want to delete?" }, class: "btn btn-danger btn-sm" %>
+                              
                               </div>
                             <div class="content table-responsive table-full-width">
                                 <table class="table table-striped">
@@ -31,13 +16,13 @@
                                       
                                       <th>Product</th>
                                       <th>Date </th>
-                                    	<th>Quantity</th>
+                                      <th>Quantity</th>
                                       <% if current_user.proprietor? %>
-                                    	  <th>Unit Cost</th>
+                                        <th>Unit Cost</th>
                                         <th>Total Cost</th>
                                       <% end %>
                                       <th> Price </th>
-                                    	<th>Supplier</th>
+                                      <th>Supplier</th>
                                       <th></th>
                                     </thead>
                                     <tbody>

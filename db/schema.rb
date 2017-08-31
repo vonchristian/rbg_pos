@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170830031129) do
+ActiveRecord::Schema.define(version: 20170904100357) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -136,7 +136,11 @@ ActiveRecord::Schema.define(version: 20170830031129) do
     t.datetime "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "employee_id"
+    t.string "reference_number"
     t.index ["customer_id"], name: "index_orders_on_customer_id"
+    t.index ["employee_id"], name: "index_orders_on_employee_id"
+    t.index ["reference_number"], name: "index_orders_on_reference_number"
   end
 
   create_table "payments", force: :cascade do |t|
@@ -224,9 +228,11 @@ ActiveRecord::Schema.define(version: 20170830031129) do
     t.integer "stock_type"
     t.bigint "origin_branch_id"
     t.string "name"
+    t.bigint "registry_id"
     t.index ["branch_id"], name: "index_stocks_on_branch_id"
     t.index ["origin_branch_id"], name: "index_stocks_on_origin_branch_id"
     t.index ["product_id"], name: "index_stocks_on_product_id"
+    t.index ["registry_id"], name: "index_stocks_on_registry_id"
     t.index ["stock_type"], name: "index_stocks_on_stock_type"
     t.index ["supplier_id"], name: "index_stocks_on_supplier_id"
   end
@@ -316,6 +322,7 @@ ActiveRecord::Schema.define(version: 20170830031129) do
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "stocks"
   add_foreign_key "orders", "customers"
+  add_foreign_key "orders", "users", column: "employee_id"
   add_foreign_key "payments", "orders"
   add_foreign_key "products", "categories"
   add_foreign_key "sales_returns", "line_items"
@@ -326,6 +333,7 @@ ActiveRecord::Schema.define(version: 20170830031129) do
   add_foreign_key "stocks", "branches"
   add_foreign_key "stocks", "branches", column: "origin_branch_id"
   add_foreign_key "stocks", "products"
+  add_foreign_key "stocks", "registries"
   add_foreign_key "stocks", "suppliers"
   add_foreign_key "units", "customers"
   add_foreign_key "users", "branches"

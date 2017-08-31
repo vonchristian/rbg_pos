@@ -44,7 +44,7 @@
                                       <% @stocks.each do |stock| %>
                                       <tr>
                                       <td><%=link_to stock.name, stock %><br>
-                                      <small class="text-muted"><%= stock.barcode %></small></td>
+                                      <small><%= stock.barcode %></small></td>
                                       <td><%= stock.date.strftime("%B %e, %Y") %></td>
                                       <td><%= stock.quantity %></td>
                                       <% if current_user.proprietor? %>

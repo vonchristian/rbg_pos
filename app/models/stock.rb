@@ -2,8 +2,9 @@ class Stock < ApplicationRecord
 	include PgSearch
 	pg_search_scope :text_search, against: [:barcode, :name]
   enum stock_type: [:cash_purchase, :credit_purchase, :transferred, :old_stock]
-  has_one :entry, as: :commercial_document, class_name: "AccountingModule::Entry"
+  has_one :entry, as: :commercial_document, class_name: "AccountingModule::Entry", dependent: :destroy
   belongs_to :supplier, optional: true
+  belongs_to :registry, optional: true
   belongs_to :origin_branch, class_name: "Branch", foreign_key: 'origin_branch_id', optional: true
   belongs_to :product
   belongs_to :branch, optional: true
@@ -17,6 +18,7 @@ class Stock < ApplicationRecord
   delegate :business_name, to: :supplier, prefix: true, allow_nil: true
   before_validation :set_date
   after_create_commit :create_entry_for_stock
+  after_commit :destroy_entry, on: :destroy
 
   def in_stock
     quantity - stock_transfers.sum(:quantity) - line_items.sum(:quantity)
@@ -28,6 +30,9 @@ class Stock < ApplicationRecord
   private 
   def set_date 
   	self.date ||= Time.zone.now 
+  end
+  def destroy_entry 
+    entry.destroy
   end
   
 

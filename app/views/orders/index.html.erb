@@ -1,18 +1,34 @@
-<%= page_title="Orders" %>
 <div class="content">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="header">
-                                <h4 class="title">Orders</h4>
-                                <p class="category">List of orders</p>
+                              <div class="row">
+                                <div class="col-md-3">
+                                  <h4 class="title">Sales</h4>
+                                  <p class="category">List of sales</p>
+                                </div>
+                                <div class="col-md-7">
+                                  <%=form_tag orders_path, method: :get, id: "search-form" do %>
+                                    <div class="input-group">
+                                      <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search order...", type: "search" %>
+                                      <span class="input-group-btn">
+                                        <%= button_tag(type: 'submit', class: "btn") do %>
+                                          <i class="icon-magnifier"></i>
+                                        <% end %>
+                                      </span>
+                                    </div>
+                                  <% end %>
+                                </div>
+                              </div>
                             </div>
                             <div class="content table-responsive table-full-width">
                                 <table class="table table-striped">
                                     <thead>
                                       <th>Date</th>
                                     	<th>Customer</th>
+                                      <th> Items </th>
                                       <th>Mode of Payment / Type</th>
                                       <th>Discount</th>
                                       <th>Total Cost</th>
@@ -23,10 +39,15 @@
                                       <% if order.line_items.count > 0 %>
                                         <td><%=link_to order.date.strftime("%B %e, %Y"), order %></td>
                                         <td><%= order.customer.try(:full_name).try(:titleize) %></td>
-                                        <td><span class="label label-<%=order.mode_of_payment_color%>"><%= order.mode_of_payment %></td>
+                                        <td><%= order.line_items_name %></td>
+                                        <td><span class="label label-<%=order.mode_of_payment_color%>"><%= order.mode_of_payment %></span></td>
                                         <td><%= number_to_currency order.discount_amount%></td>
                                         <td><%= number_to_currency order.line_items_total_cost %></td>
                                       <% end %>
                                       </tr>
                                       <% end %>
                                     </tbody>
+                                  </table>
+                                <center> <%= paginate @orders %> </center>
+                              </div>
+

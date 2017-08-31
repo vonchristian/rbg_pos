@@ -1,6 +1,10 @@
 class OrdersController < ApplicationController
 	def index 
-		@orders = Order.all 
+    if params[:search].present?
+      @orders = Order.text_search(params[:search]).page(params[:page]).per(30)
+    else
+		  @orders = Order.all.order(created_at: :desc).page(params[:page]).per(30)
+    end
 		authorize @orders
 	end
 	def new 
@@ -11,6 +15,7 @@ class OrdersController < ApplicationController
 	def create 
 		@cart = current_cart
 		@order = Order.new(order_params)
+    @order.employee = current_user
 		if @order.valid?
 			@order.add_line_items_from_cart(@cart)
 			@order.save!
@@ -39,6 +44,6 @@ class OrdersController < ApplicationController
 
 	private 
 	def order_params 
-		params.require(:order).permit(:customer_id, :date, payment_attributes: [:mode_of_payment, :discount_amount, :cash_tendered, :change, :total_cost, :total_cost_less_discount])
+		params.require(:order).permit(:reference_number, :customer_id, :date, payment_attributes: [:mode_of_payment, :discount_amount, :cash_tendered, :change, :total_cost, :total_cost_less_discount])
 	end
 end

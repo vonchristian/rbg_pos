@@ -39,8 +39,12 @@ class StocksController < ApplicationController
 	def destroy 
 		@stock = Stock.find(params[:id])
 		authorize @stock
-		@stock.destroy 
-		redirect_to stocks_url, alert: "Stock deleted successfully."
+    if @stock.line_items.present?
+      redirect_to stocks_url, alert: "Stock has items sold. Stock cannot be deleted."
+    else
+		  @stock.destroy 
+		  redirect_to stocks_url, notice: "Stock deleted successfully."
+    end
 	end
 
 	private 

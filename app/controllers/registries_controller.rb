@@ -2,11 +2,20 @@ class RegistriesController < ApplicationController
 	def create
 		@registry = Registry.create(registry_params)
 		if @registry.save 
-			redirect_to settings_url, notice: 'Products imported successfully.'
+			redirect_to @registry, notice: 'Stocks imported successfully.'
 		else 
-			redirect_to settings_url, alert: 'Invalid file.'
+			redirect_to stocks_url, alert: 'Invalid file.'
 		end
 	end 
+  def show 
+    @registry = Registry.find(params[:id])
+    @stocks = @registry.stocks.all.page(params[:page]).per(35)
+  end
+  def destroy
+    @registry = Registry.find(params[:id])
+    @registry.destroy 
+    redirect_to products_url, notice: "Deleted successfully."
+  end
 
 	private 
 	def registry_params

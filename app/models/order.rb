@@ -1,6 +1,10 @@
 class Order < ApplicationRecord
+  include PgSearch
+  pg_search_scope :text_search, against: [:reference_number]
+
   belongs_to :customer, optional: true
   belongs_to :branch, optional: true
+  belongs_to :employee, class_name: "User", foreign_key: 'employee_id'
 
   has_one :payment, dependent: :destroy
   has_one :entry, as: :commercial_document, class_name: "AccountingModule::Entry", dependent: :destroy
@@ -8,10 +12,22 @@ class Order < ApplicationRecord
   delegate :full_name, to: :customer, prefix: true, allow_nil: true
   delegate :total_cost, to: :payment, prefix: true, allow_nil: true
   delegate :mode_of_payment, :discount_amount, :stock_transfer?, :credit?, :cash?, :total_cost, :total_cost_less_discount, to: :payment,  allow_nil: true
+  
   before_validation :set_date
+  
   accepts_nested_attributes_for :payment
+  
   validates :customer_id, presence: true
-
+  
+  def self.total_cost
+    all.sum(&:total_cost)
+  end
+  def self.total_discount_amount 
+    all.sum(&:discount_amount)
+  end
+  def self.total_cost_less_discount
+    all.sum(&:total_cost_less_discount)
+  end
   def self.created_between(hash={})
     if hash[:from_date] && hash[:to_date]
       from_date = hash[:from_date].kind_of?(Time) ? hash[:from_date] : Time.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
@@ -24,12 +40,16 @@ class Order < ApplicationRecord
   def line_items_total_cost
     line_items.sum(:total_cost)
   end
+
   def add_line_items_from_cart(cart)
   	cart.line_items.each do |line_item|
   		line_item.cart_id = nil 
   		self.line_items << line_item
   	end 
   end 
+  def line_items_name
+    line_items.map{|a| a.product_name }.to_s.gsub("[", "").gsub("]", "").gsub('"', "")
+  end
   
   def discounted?
   	payment && payment.discount_amount.present? && discount_amount > 0

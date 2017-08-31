@@ -9,7 +9,7 @@
         <div class="content">
           <h4 class="title"> Sales </h4>
           <hr>
-          <%=link_to reports_sales_path(format: 'pdf', from_date: Time.zone.now.yesterday.end_of_day.to_date.strftime("%B %e, %Y"), to_date: Date.today.end_of_day.to_date.strftime("%B %e, %Y")) do %>
+          <%=link_to reports_sales_path(format: 'pdf', from_date: Time.zone.now.beginning_of_day.strftime("%B %e, %Y"), to_date: Time.zone.now.end_of_day.strftime("%B %e, %Y")) do %>
 	          <p class="category"> Daily Sales </p>
 	          <small>Generate report of sales for this day <%=Time.zone.now.strftime("%B %e, %Y") %></small>
 	        <% end %>

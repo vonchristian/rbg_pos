@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
 	def index
-    if params[:name].present?
-      @products = Product.search_by_name(params[:name]).page(params[:page]).per(30)
+    if params[:search].present?
+      @products = Product.text_search(params[:search]).page(params[:page]).per(30)
     else
       @products = Product.all.order(:name).page(params[:page]).per(30)
     end
