@@ -22,6 +22,12 @@ class Product < ApplicationRecord
   :url => "/system/:attachment/:id/:style/:filename"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
   validates :name, presence: true
+  def self.most_bought
+    all
+  end
+  def number_of_sold_items
+    sold_items.count 
+  end
   def self.import(file)
     spreadsheet = Roo::Spreadsheet.open(file.path)
     header = spreadsheet.row(1)

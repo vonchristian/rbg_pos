@@ -1,0 +1,11 @@
+<div class="tab-pane" id="employee-account">
+  <div class="content">
+    <div class="row">
+      <div class="col-md-3">
+        <h4><%= number_to_currency @employee.orders.created_between(from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day).sum(&:total_cost) %></h4>
+        <small> SALES (<%= Time.zone.now.strftime("%B %e") %>)</small>
+      </div>
+    </div>
+  </div>
+</div>
+    

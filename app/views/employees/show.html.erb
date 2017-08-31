@@ -1,0 +1,38 @@
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="header">
+          <center><%= image_tag(@employee.avatar.url(:small), class: "img-circle") %> </center><br>
+          <h4 class="title"><center><%= @employee.full_name.try(:upcase) %> </center></h4>
+          <p class="category"><center><%= @employee.role.titleize %></center></p>
+        </div>
+        <div class="content">
+          <div class="tabbable-line">
+        <ul class="nav nav-tabs">
+          <li class="active">
+            <a href="#employee-info" data-toggle="tab">
+            <i class="fa fa-user"></i> Info </a>
+          </li>
+          <li>
+            <a href="#employee-orders" data-toggle="tab">
+            Orders </a>
+          </li>
+          <li>
+            <a href="#employee-account" data-toggle="tab">
+            Account </a>
+          </li>
+          <li>
+            <a href="#employee-report" data-toggle="tab">
+            Reports </a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          
+            <%= render 'employees/partials/info' %>
+             <%=render 'employees/partials/orders' %>
+             <%=render 'employees/partials/account' %>
+             <%= render 'employees/partials/reports' %>
+
+         
+

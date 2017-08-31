@@ -49,6 +49,18 @@
                         <p>Reports</p>
                     </a>
                 </li>
+                <li>
+                    <a href="/employees">
+                        <i class="icon-chart"></i>
+                        <p>Monitoring</p>
+                    </a>
+                </li>
+                <li class="<%='active' if current_page?(store_index_path) %>">
+                    <a href="/employees/<%=current_user.id%>">
+                        <i class="icon-home"></i>
+                        <p>Account</p>
+                    </a>
+                </li>
                 <hr>
                  <li>
                     <a href="/sales_returns">

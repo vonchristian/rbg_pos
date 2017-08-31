@@ -12,6 +12,7 @@ class Order < ApplicationRecord
   delegate :full_name, to: :customer, prefix: true, allow_nil: true
   delegate :total_cost, to: :payment, prefix: true, allow_nil: true
   delegate :mode_of_payment, :discount_amount, :stock_transfer?, :credit?, :cash?, :total_cost, :total_cost_less_discount, to: :payment,  allow_nil: true
+  delegate :full_name, to: :employee, prefix: true, allow_nil: true
   
   before_validation :set_date
   
@@ -30,8 +31,8 @@ class Order < ApplicationRecord
   end
   def self.created_between(hash={})
     if hash[:from_date] && hash[:to_date]
-      from_date = hash[:from_date].kind_of?(Time) ? hash[:from_date] : Time.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
-      to_date = hash[:to_date].kind_of?(Time) ? hash[:to_date] : Time.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
+      from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
+      to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
       where('date' => from_date..to_date)
     else
       all

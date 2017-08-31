@@ -1,0 +1,7 @@
+<div class="tab-pane active" id="employee-info">
+  <div class="content">
+    <% if current_user.proprietor? %>
+      <%= link_to 'Update Info', edit_employee_path(@employee), class: "btn btn-warning btn-sm" %>
+    <% end %>
+  </div>
+</div>

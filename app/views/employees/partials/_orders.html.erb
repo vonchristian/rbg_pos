@@ -1,0 +1,27 @@
+<div class="tab-pane" id="employee-orders">
+  <div class="content">
+    <div class="content table-responsive table-full-width">
+      <table class="table table-striped">
+        <thead>
+          
+          <th>Date</th>
+          <th>Customer</th>
+          <th>Items</th>
+          <th>Total Cost</th>
+        </thead>
+        <tbody>
+          <% @employee.orders.each do |order| %>
+            <tr>
+              <% if order.line_items.count > 0 %>
+              <td><%=link_to order.date.strftime("%B %e, %Y"), order %></td>
+              <td><%= order.customer_full_name.try(:titleize) %></td>
+              <td><%= order.line_items_name %></td>
+              <td><%= number_to_currency order.total_cost %></td>
+             <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div> 
+  </div>
+</div>

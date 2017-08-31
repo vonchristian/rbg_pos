@@ -1,0 +1,95 @@
+<div class="content">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="header">
+          <h4 class="title"> Employees </h4>
+        </div>
+        <div class="content">
+          <% @employees.each do |employee| %>
+            <%= link_to employee_path(employee) do %>
+              <div class="row">
+                <div class="col-md-2">
+                  <%= image_tag(employee.avatar.url(:small), class: "img-circle") %>
+                </div>
+                <div class="col-md-5">
+                  <%= employee.full_name %><br>
+                  <small><%= employee.role.titleize %></small>
+                </div>
+                <div class="col-md-3">
+                  <span class="text-primary"><%= number_to_currency employee.orders.created_between(from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day).sum(&:total_cost) %></span><br>
+                <small class="text-success"> SALES (<%= Time.zone.now.strftime("%b %e") %>) </small>
+                </div>
+              </div>
+              <br>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <div class="card">
+        <div class="header">
+          <h4 class="title">Top Sellers </h4>
+          <p class="category"> List of products most bought </p>
+        </div>
+        <div class="content">
+          <% @products.each do |product| %>
+            <div class="row">
+              <div class="col-md-2">
+                <%= image_tag(product.avatar.url(:small), class: "img-square") %>
+              </div>
+              <div class="col-md-7">
+                <%= product.name %>
+              </div>
+              <div class="col-md-2">
+                <%= product.number_of_sold_items %>
+              </div>
+            </div>
+            <br>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="header">
+          <h4 class="title"> SALES </h4>
+          <p class="category"> Sales processed this <%= Time.zone.now.strftime("%b %e") %></p>
+        </div>
+        <div class="content">
+          <h4 class="title"><center><%=number_to_currency Order.created_between(from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day).count, unit: '' %></center></h4>
+          <center>SALES COUNT</center>
+          <hr>
+          <h4 class="title"><center><%=number_to_currency Order.created_between(from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day).sum(&:total_cost_less_discount) %></center></h4>
+          <center>TOTAL SALES</center>
+          <hr>
+          <h4 class="title"><center><%=number_to_currency Order.created_between(from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day).sum(&:discount_amount) %></center></h4>
+          <center>TOTAL DISCOUNT GIVEN</center>
+      </div>
+    </div>
+    <div class="card">
+      <div class="header">
+        <h4 class="title"> New Customers </h4>
+        <p class="category"> List of new customers </p>
+      </div>
+      <div class="content">
+        <% @customers.each do |customer| %>
+          <%= link_to customer_path(customer) do %>
+            <div class="row">
+              <div class="col-md-3">
+                <%= image_tag(customer.avatar.url(:small), class: "img-circle") %>
+              </div>
+              <div class="col-md-8">
+                <%= customer.full_name %><br>
+                <small><%= customer.contact_number %></small>
+              </div>
+            </div>
+            <br>
+          <% end %>
+        <% end %>
+        <center><%=link_to 'View All', customers_path, class: "btn btn-primary" %></center>
+        <br>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

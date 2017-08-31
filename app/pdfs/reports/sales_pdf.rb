@@ -15,7 +15,9 @@ module Reports
     end
     def heading
       text 'SALES REPORT', align: :center, style: :bold
-      if @from_date && @to_date
+      if @from_date && @to_date && @from_date.strftime("%B %e, %Y") == @to_date.strftime("%B %e, %Y")
+        text "Date: #{@from_date.strftime('%B %e, %Y')}", align: :center
+      else
         text "From: #{@from_date.strftime('%B %e, %Y')} To: #{@to_date.strftime('%B %e, %Y')} ", align: :center
       end
       move_down 5
@@ -23,7 +25,10 @@ module Reports
     end 
     def orders_table
       move_down 10 
-        table(orders_data, header: false,  cell_style: { size: 10, font: "Helvetica", :inline_format => true}) do
+        table(orders_data, header: false,  cell_style: { size: 9, font: "Helvetica", :inline_format => true}) do
+           row(-1).font_style = :bold
+           row(-1).background_color = "DDDDDD"
+           row(-1).size = 10
       end
     end
     def orders_data 

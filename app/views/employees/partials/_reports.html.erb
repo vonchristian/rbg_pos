@@ -1,0 +1,8 @@
+<div class="tab-pane" id="employee-report">
+  <div class="content">
+    <%=link_to reports_sales_path(user_id: @employee.id, format: 'pdf', from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day) do %>
+            <p class="category"> Daily Sales </p>
+            <small>Generate report of sales for this day <%=Time.zone.now.strftime("%B %e, %Y") %></small>
+          <% end %>
+  </div>
+</div>
