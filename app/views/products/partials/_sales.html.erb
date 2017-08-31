@@ -4,10 +4,6 @@
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-            <div class="header">
-              <h4 class="title">Sales</h4>
-              <p class="category">List of sales</p>
-            </div>
             <div class="content table-responsive table-full-width">
               <table class="table table-striped">
                 <thead>
@@ -16,6 +12,7 @@
                   <th>Mode of Payment / Type</th>
                   <th>Discount</th>
                   <th>Total Cost</th>
+                  <th> Employee </th>
                 </thead>
                 <tbody>
                   <% @orders.each do |order| %>
@@ -25,11 +22,12 @@
                     <td><span class="label label-<%=order.mode_of_payment_color%>"><%= order.mode_of_payment %></span></td>
                     <td><%= number_to_currency order.discount_amount%></td>
                     <td><%= number_to_currency order.line_items_total_cost %></td>
-
+                    <td><%= order.employee_full_name %></td>
                   </tr>
                   <% end %>
                 </tbody>
               </table>
+              <center><%= paginate @orders %>
             </div>
           </div>
         </div>

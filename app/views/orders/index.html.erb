@@ -32,6 +32,7 @@
                                       <th>Mode of Payment / Type</th>
                                       <th>Discount</th>
                                       <th>Total Cost</th>
+                                      <th> Employee </th>
                                     </thead>
                                     <tbody>
                                       <% @orders.each do |order| %>
@@ -39,10 +40,24 @@
                                       <% if order.line_items.count > 0 %>
                                         <td><%=link_to order.date.strftime("%B %e, %Y"), order %></td>
                                         <td><%= order.customer.try(:full_name).try(:titleize) %></td>
-                                        <td><%= order.line_items_name %></td>
+                                        <td>
+                                          <% order.line_items.each do |line_item|  %>
+                                            <div class="row">
+                                              <div class="col-md-9">
+                                                <%= line_item.product_name %><br>
+                                                <small><i><%= line_item.barcode %></i></small>
+                                              </div>
+                                              <div class="col-md-1">
+                                                <span><%= line_item.quantity %></span>
+                                              </div>
+                                            </div>
+                                            <br>
+                                          <% end %>
+                                        </td>
                                         <td><span class="label label-<%=order.mode_of_payment_color%>"><%= order.mode_of_payment %></span></td>
                                         <td><%= number_to_currency order.discount_amount%></td>
                                         <td><%= number_to_currency order.line_items_total_cost %></td>
+                                        <td><%= order.employee.try(:full_name) %></td>
                                       <% end %>
                                       </tr>
                                       <% end %>

@@ -5,6 +5,8 @@ class LineItem < ApplicationRecord
   belongs_to :order, optional: true
   
   delegate :barcode, :product_name, :product_unit, to: :stock
+  delegate :name_and_barcode, to: :stock, prefix: true
+  
   validate :exceeds_available_stock?, on: :create
   after_create_commit :set_total_cost
   def unit_cost_and_quantity

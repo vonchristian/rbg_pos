@@ -51,6 +51,10 @@ class Order < ApplicationRecord
   def line_items_name
     line_items.map{|a| a.product_name }.to_s.gsub("[", "").gsub("]", "").gsub('"', "")
   end
+  def line_items_name_and_barcode
+    line_items.map{|a| a.stock_name_and_barcode }.to_s.gsub("[", "").gsub("]", "").gsub('"', "")
+  end
+
   
   def discounted?
   	payment && payment.discount_amount.present? && discount_amount > 0

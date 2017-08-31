@@ -9,6 +9,12 @@
         <div class="content">
 <%= simple_form_for @user do |f| %> 
   <%= f.error_notification %>
+  <%if @user.avatar.blank? %>
+            <center><%=image_tag("default.png", height: 80, width: 80, :class=>"img-square") %></center>
+          <% else %>
+            <center><%= image_tag @user.avatar.url(:large), class: 'center-block img-responsive img-rounded'%></center>
+          <% end %>
+          <center><%= f.input :avatar, as: :file, label: "Upload photo" %></center>
   <%= f.input :first_name %>
   <%= f.input :last_name %>
   <%= f.input :email %>

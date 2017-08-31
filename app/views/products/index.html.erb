@@ -66,4 +66,8 @@
                                       <% end %>
                                     </tbody>
                                   </table>
+                                  <% if current_page?(products_path) %>
                                   <center><%= paginate @products, :params => {:controller => "products", action: "index" } %></center>
+                                  <% else %>
+                                  <center><%= paginate @products, :params => {:controller => "products", action: "scope_index" } %></center>
+                                  <% end %>

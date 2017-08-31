@@ -15,9 +15,11 @@ class UsersController < ApplicationController
 	end 
 	def edit 
 		@user = User.find(params[:id])
+    authorize @user
 	end
 	def update 
 		@user = User.find(params[:id])
+    authorize @user
 		@user.update(user_params)
 		if @user.save 
 			redirect_to settings_url, notice: "Employee info updated successfully."
@@ -29,6 +31,6 @@ class UsersController < ApplicationController
 
 	private
 	def user_params
-		params.require(:user).permit(:email, :password, :password_confirmation, :role, :first_name, :last_name)
+		params.require(:user).permit(:avatar, :email, :password, :password_confirmation, :role, :first_name, :last_name)
 	end 
 end 

@@ -23,6 +23,9 @@ class Stock < ApplicationRecord
   def in_stock
     quantity - stock_transfers.sum(:quantity) - line_items.sum(:quantity)
   end
+  def name_and_barcode
+    "#{name} (#{barcode})"
+  end
   def set_name 
     self.name = self.product.name
     self.save

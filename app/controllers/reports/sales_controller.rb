@@ -3,7 +3,7 @@ module Reports
 		def index 
 			@from_date = DateTime.parse(params[:from_date])
       @to_date = DateTime.parse(params[:to_date])
-      @user = User.find(params[:user_id])
+      @user = User.find_by(id: params[:user_id])
       if @user.present?
         @orders = @user.orders.created_between(from_date: @from_date, to_date: @to_date)
       else

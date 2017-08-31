@@ -8,4 +8,10 @@ class UserPolicy < ApplicationPolicy
 	def create?
 		new?
 	end
+  def edit?
+    user.proprietor?
+  end
+  def update?
+    edit?
+  end
 end 
