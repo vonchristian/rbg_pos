@@ -58,4 +58,5 @@ Rails.application.routes.draw do
   resources :users, only: [:edit, :update]
   resources :registries, only: [:create, :show, :destroy]
   resources :employees, only: [:index, :show, :edit, :update]
+  resources :work_orders, only: [:index, :new, :create]
 end

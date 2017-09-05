@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170905013939) do
+ActiveRecord::Schema.define(version: 20170905063621) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "accessories", force: :cascade do |t|
+    t.bigint "product_unit_id"
+    t.decimal "quantity"
+    t.string "description"
+    t.string "serial_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_unit_id"], name: "index_accessories_on_product_unit_id"
+  end
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -157,6 +167,26 @@ ActiveRecord::Schema.define(version: 20170905013939) do
     t.index ["order_id"], name: "index_payments_on_order_id"
   end
 
+  create_table "product_unit_service_charges", force: :cascade do |t|
+    t.bigint "product_unit_id"
+    t.bigint "service_charge_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_unit_id"], name: "index_product_unit_service_charges_on_product_unit_id"
+    t.index ["service_charge_id"], name: "index_product_unit_service_charges_on_service_charge_id"
+  end
+
+  create_table "product_units", force: :cascade do |t|
+    t.string "description"
+    t.string "model_number"
+    t.string "serial_number"
+    t.text "physical_condition"
+    t.text "reported_problem"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "service_number"
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -183,6 +213,13 @@ ActiveRecord::Schema.define(version: 20170905013939) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "repairs", force: :cascade do |t|
+    t.text "symptoms_observed"
+    t.text "repair_description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "sales_returns", force: :cascade do |t|
     t.bigint "line_item_id"
     t.integer "sales_return_type"
@@ -197,6 +234,13 @@ ActiveRecord::Schema.define(version: 20170905013939) do
     t.index ["line_item_id"], name: "index_sales_returns_on_line_item_id"
     t.index ["order_id"], name: "index_sales_returns_on_order_id"
     t.index ["sales_return_type"], name: "index_sales_returns_on_sales_return_type"
+  end
+
+  create_table "service_charges", force: :cascade do |t|
+    t.string "description"
+    t.decimal "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "stock_transfers", force: :cascade do |t|
@@ -316,6 +360,7 @@ ActiveRecord::Schema.define(version: 20170905013939) do
     t.index ["warranty_id"], name: "index_warranty_releases_on_warranty_id"
   end
 
+  add_foreign_key "accessories", "product_units"
   add_foreign_key "accounts", "accounts", column: "main_account_id"
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
@@ -329,6 +374,8 @@ ActiveRecord::Schema.define(version: 20170905013939) do
   add_foreign_key "orders", "customers"
   add_foreign_key "orders", "users", column: "employee_id"
   add_foreign_key "payments", "orders"
+  add_foreign_key "product_unit_service_charges", "product_units"
+  add_foreign_key "product_unit_service_charges", "service_charges"
   add_foreign_key "products", "categories"
   add_foreign_key "sales_returns", "line_items"
   add_foreign_key "sales_returns", "orders"

@@ -1,0 +1,19 @@
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="header">
+          <h4 class="title"> Product Details </h4>
+          <p class="category">details </p>
+        </div>
+        <div class="content">
+
+<%= simple_form_for @work_order, url: :work_orders, html: { class: "form-horizontal" }, wrapper: :horizontal_form do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :description %>
+  <%= f.input :model_number %>
+  <%= f.input :serial_number %>
+  <%= f.input :physical_condition %>
+  <%= f.input :reported_problem, as: :text %>
+  <%= f.submit "Save" %>
+<% end %>
