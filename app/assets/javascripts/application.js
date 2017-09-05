@@ -17,4 +17,5 @@
 //= require moment
 //= require bootstrap-datetimepicker
 //= require pickers
+//= require select2
 //= require_tree .
