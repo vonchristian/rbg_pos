@@ -22,17 +22,25 @@
             <div class="col-md-6">
               <% @cart.line_items.each do |line_item| %>
                 <div class="row">
-                  <div class="col-md-2">
+                  <div class="col-md-1">
                     <%= line_item.quantity %>
                   </div>
-                  <div class="col-md-5">
+                  <div class="col-md-4">
                     <%=line_item.product_name %><br>
                     <span class="text-danger"><%= number_to_currency line_item.unit_cost %></span><br>
                     <small class="text-muted"><%= line_item.barcode.try(:upcase)%></small>
                   </div>
+                  <div class="col-md-2">
+                    <%= number_to_currency line_item.unit_cost %><br> <br />
+                    </div>
                   <div class="col-md-3">
+                    <%= simple_form_for line_item do |f| %>
+                    <%= f.input :markup_amount, as: :string, label: false, placeholder: 'Markup'%>
+                    <%= f.submit "Add Markup", class: "btn btn-default btn-sm" %>
+                    <% end %>
+                  </div>
+                  <div class="col-md-2">
                     <span class="pull-right"><%= number_to_currency line_item.total_cost %></span>
-
                   </div>
                 </div>
                 <hr>
@@ -51,6 +59,7 @@
                 </div>
                 <div class="col-md-4 col-md-offset-1">
               <%= simple_form_for @order, url: :orders, wrappers: :vertical_radio_and_checkboxes do |f| %>
+              <%= f.error_notification %>
                 <div class="row">
                   <div class="col-md-5">
                     <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Time.zone.now.strftime("%B %e, %Y")} %>

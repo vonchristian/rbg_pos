@@ -8,7 +8,7 @@ class LineItem < ApplicationRecord
   delegate :name_and_barcode, to: :stock, prefix: true
   
   validate :exceeds_available_stock?, on: :create
-  after_create_commit :set_total_cost
+  after_commit :set_total_cost, on: [:create, :update]
   def unit_cost_and_quantity
   	unit_cost * quantity
   end
@@ -20,6 +20,6 @@ class LineItem < ApplicationRecord
     errors[:base] << "Exceeded available stock" if quantity > stock.in_stock
   end
   def set_total_cost 
-    self.total_cost ||= self.quantity * self.unit_cost
+    self.total_cost = self.quantity * self.unit_cost + markup_amount
   end
 end

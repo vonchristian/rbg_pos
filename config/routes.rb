@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   resources :products, except: [:destroy] do 
   	resources :stocks, only: [:new, :create], module: :products
   end
-  resources :line_items, only: [:new, :create]
+  resources :line_items, only: [:new, :create, :edit, :update]
   resources :orders, only: [:index, :show, :new, :create, :destroy]
   resources :carts, only: [:destroy]
   resources :categories, only: [:new, :create]
