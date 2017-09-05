@@ -11,7 +11,7 @@
 // about supported directives.
 //
 //= require jquery
-//= require jquery-ujs
+//= require rails-ujs
 //= require jquery-ui
 //= require bootstrap-sprockets
 //= require moment
