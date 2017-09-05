@@ -9,6 +9,7 @@ class Stock < ApplicationRecord
   belongs_to :product
   belongs_to :branch, optional: true
   has_many :line_items
+  has_many :sales_returns, through: :line_items
   has_many :stock_transfers
   validates :quantity, :unit_cost, :total_cost, :retail_price, :wholesale_price, presence: true, numericality: true
   validates :product_id, presence: true
@@ -21,7 +22,7 @@ class Stock < ApplicationRecord
   after_commit :destroy_entry, on: :destroy
 
   def in_stock
-    quantity - stock_transfers.sum(:quantity) - line_items.sum(:quantity)
+    quantity - stock_transfers.sum(:quantity) - line_items.sum(:quantity) + sales_returns.sum(&:quantity)
   end
   def name_and_barcode
     "#{name} (#{barcode})"
