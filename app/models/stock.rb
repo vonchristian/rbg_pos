@@ -22,8 +22,9 @@ class Stock < ApplicationRecord
   after_commit :destroy_entry, on: :destroy
 
   def in_stock
-    quantity - stock_transfers.sum(:quantity) - line_items.sum(:quantity) + sales_returns.sum(&:quantity)
+    quantity - stock_transfers.sum(:quantity) - line_items.sum(&:quantity) + sales_returns.sum(&:quantity)
   end
+
   def name_and_barcode
     "#{name} (#{barcode})"
   end

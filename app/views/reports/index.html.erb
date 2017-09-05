@@ -29,3 +29,9 @@
 	          <small>Generate report of sales for this year <%=Time.zone.now.year %></small>
 	        <% end %>
           <hr>
+
+          <h4 class="title"> Accounts Receivables </h4>
+          <%=link_to reports_accounts_receivables_path(format: 'pdf') do %>
+            <p class="category"> Generate Report </p>
+            
+          <% end %>

@@ -25,6 +25,8 @@ Rails.application.routes.draw do
   resources :customer_registrations, only: [:new, :create]
   namespace :reports do 
     resources :sales, only: [:index]
+    resources :accounts_receivables, only: [:index]
+
   end
   resources :accounting, only: [:index]
   namespace :accounting do 

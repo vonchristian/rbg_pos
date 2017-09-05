@@ -17,7 +17,16 @@ class Customer < ApplicationRecord
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
   validates :first_name, :last_name, :contact_number, presence: true
   scope :recent, ->(num) { order('created_at DESC').limit(num) }
-	
+	def self.with_credits 
+    all.select{ |a| a.with_credits? }
+  end
+  def last_updated_at
+    if line_items.present?
+      line_items.last.created_at
+    else
+      created_at
+    end
+  end
   def full_name 
 		"#{first_name} #{last_name}"
 	end
@@ -33,4 +42,8 @@ class Customer < ApplicationRecord
   def balance_total
     accounts_receivable - payments_total
   end
+  def with_credits?
+    balance_total > 0
+  end
+
 end
