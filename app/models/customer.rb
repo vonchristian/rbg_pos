@@ -16,7 +16,9 @@ class Customer < ApplicationRecord
   :url => "/system/:attachment/:id/:style/:filename"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
   validates :first_name, :last_name, :contact_number, presence: true
-	def full_name 
+  scope :recent, ->(num) { order('created_at DESC').limit(num) }
+	
+  def full_name 
 		"#{first_name} #{last_name}"
 	end
 	def purchases_count

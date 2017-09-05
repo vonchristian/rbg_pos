@@ -1,6 +1,17 @@
-87777777777777754=oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooook
-   <div class="col-md-12">
-      <%= f.submit "Save Customer", class: "btn btn-primary pull-right" %>
-    </div>
-  </div>
+<div class="content">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="card">
+        <div class="header">
+          <h4 class="title">Edit Customer</h4>
+          <p class="category">Edit customer details</p>
+        </div> 
+      <div class="content">
+<%= simple_form_for @customer do |f| %> 
+  <%= f.error_notification %>
+  <%= f.input :first_name %>
+  <%= f.input :last_name %>
+  <%= f.input :contact_number %>
+  <%= f.input :address %>
+  <%= f.submit "Save Customer", class: "btn btn-primary" %>
 <% end %>

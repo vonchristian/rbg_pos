@@ -23,7 +23,7 @@ class Product < ApplicationRecord
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
   validates :name, presence: true
   def self.most_bought
-    all
+    all.to_a.sort_by(&:number_of_sold_items).reverse
   end
   def number_of_sold_items
     sold_items.count 
