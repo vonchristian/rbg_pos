@@ -1,19 +1,19 @@
 class ProductsController < ApplicationController
 	def index
     if params[:search].present?
-      @products = Product.text_search(params[:search]).page(params[:page]).per(30)
+      @products = Product.text_search(params[:search]).page(params[:page]).per(20)
     else
       @products = Product.all.order(:name).page(params[:page]).per(30)
-      @low_on_stock_products = Kaminari.paginate_array(Product.low_on_stock).page(params[:page]).per(30)
+      @low_on_stock_products = Kaminari.paginate_array(Product.low_on_stock).page(params[:page]).per(20)
     end
     @registry = Registry.new
   end
 
   def out_of_stock 
-    @out_of_stock_products = Kaminari.paginate_array(Product.out_of_stock).page(params[:page]).per(30)
+    @out_of_stock_products = Kaminari.paginate_array(Product.out_of_stock).page(params[:page]).per(20)
   end
   def low_on_stock 
-    @low_on_stock_products = Kaminari.paginate_array(Product.low_on_stock).page(params[:page]).per(30)
+    @low_on_stock_products = Kaminari.paginate_array(Product.low_on_stock).page(params[:page]).per(20)
   end
 	def new 
 		@product = Product.new 
