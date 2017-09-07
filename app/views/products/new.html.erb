@@ -24,6 +24,7 @@
   <%= f.input :unit %>
   <%= f.input :retail_price, as: :string %>
   <%= f.input :wholesale_price, as: :string %>
+  <%= f.input :low_stock_count, as: :string, input_html: { value: 0 } %>
   <div class="row">
   <div class="col-md-6">
       <%=link_to "Cancel", products_path, class: "btn btn-default pull-left" %>

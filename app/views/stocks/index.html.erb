@@ -44,7 +44,15 @@
                                       <% @stocks.each do |stock| %>
                                       <tr>
                                       <td><%=link_to stock.name, stock %><br>
-                                      <small><%= stock.barcode %></small></td>
+                                      <small><%= stock.barcode %></small>
+                                      <% if stock.sold? %>
+                                        <span class="label label-danger"> Sold </span>
+                                      <% else %>
+                                        <span class="label label-success"> <%= stock.in_stock.to_i %> left </span>
+
+                                      <% end %>
+
+                                      </td>
                                       <td><%= stock.date.strftime("%B %e, %Y") %></td>
                                       <td><%= stock.quantity %></td>
                                       <% if current_user.proprietor? %>

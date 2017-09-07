@@ -22,12 +22,35 @@ class Product < ApplicationRecord
   :url => "/system/:attachment/:id/:style/:filename"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
   validates :name, presence: true
+  def self.low_on_stock
+    all.select{ |a| a.low_on_stock? }
+  end
+  def self.out_of_stock
+    all.select{ |a| a.out_of_stock? }
+  end
   def self.most_bought
     all.to_a.sort_by(&:number_of_sold_items).reverse
   end
   def number_of_sold_items
     sold_items.count 
   end
+  def low_on_stock?
+    !out_of_stock? && low_stock_count > in_stock
+  end
+  def out_of_stock?
+    in_stock <= 0
+  end
+  def badge_color
+    if out_of_stock?
+      "danger"
+    elsif low_on_stock?
+      "warning"
+    else
+      "success"
+    end
+  end
+        
+
   def self.import(file)
     spreadsheet = Roo::Spreadsheet.open(file.path)
     header = spreadsheet.row(1)

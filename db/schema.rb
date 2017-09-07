@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170905063621) do
+ActiveRecord::Schema.define(version: 20170907035106) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -200,6 +200,7 @@ ActiveRecord::Schema.define(version: 20170905063621) do
     t.integer "avatar_file_size"
     t.datetime "avatar_updated_at"
     t.bigint "category_id"
+    t.decimal "low_stock_count", default: "0.0"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["name"], name: "index_products_on_name", unique: true
   end

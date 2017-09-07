@@ -20,7 +20,17 @@ class Stock < ApplicationRecord
   before_validation :set_date
   after_create_commit :create_entry_for_stock
   after_commit :destroy_entry, on: :destroy
-
+  def badge_color
+    if sold?
+      'danger'
+    else
+      'success'
+    end
+  end
+  
+  def sold?
+    in_stock.zero?
+  end
   def in_stock
     quantity - stock_transfers.sum(:quantity) - line_items.sum(&:quantity) + sales_returns.sum(&:quantity)
   end

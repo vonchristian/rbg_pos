@@ -24,8 +24,8 @@
                             <div class="header">
                               <div class="row">
                                 <div class="col-md-2">
-                                  <h4 class="title">Products</h4>
-                                  <p class="category">List of products</p>
+                                  <h4 class="title">Low on Stock Products</h4>
+                                  <p class="category">List of low on stock products</p>
                                 </div>
                                 <div class="col-md-5">
                                   <%=form_tag products_path, method: :get, id: "search-form" do %>
@@ -39,35 +39,25 @@
                                     </div>
                                   <% end %>
                                 </div>
-                                <div class="col-md-2">
-                                  <% if policy(:product).new? %>
-                                    <%=link_to 'New Product', new_product_path, class: "btn btn-primary pull-right" %>
-                                  <% end %>
-                                </div>
-                                <div class="col-md-2">
-                                  <%= simple_form_for @registry, multipart: true, method: :create do |f| %>
-                                    <%= f.input :spreadsheet, as: :file, label: false %>
-                                      <%= f.submit 'Import Products', class: 'btn btn-danger btn-xs' %>
-                                  <% end %>
-                                </div>
+                                
                               </div>
                             <div class="content table-responsive table-full-width">
                                 <table class="table table-striped">
                                     <thead>
                                       
                                       <th>Name</th>
-                                    	<th>Price</th>
-                                    	<th>Deliveries</th>
+                                      <th>Price</th>
+                                      <th>Deliveries</th>
                                       <th>Sold</th>
                                       <th> Transferred </th>
                                       <th> Sales Return </th>
                                       <th> Under Warranty </th>
                                       <th> Released Warranty </th>
 
-                                    	<th>In Stock</th>
+                                      <th>In Stock</th>
                                     </thead>
                                     <tbody>
-                                      <% @products.each do |product| %>
+                                      <% @low_on_stock_products.each do |product| %>
                                       <tr>
                                       <td><%=link_to product.name, product %> <span class="label label-<%=product.badge_color%>"><%= product.in_stock.to_i %> <%=product.unit %> left </span></td>
                                       <td><%= number_to_currency product.retail_price %></td>
@@ -85,7 +75,7 @@
                                     </tbody>
                                   </table>
                                   <% if current_page?(products_path) %>
-                                  <center><%= paginate @products, :params => {:controller => "products", action: "index" } %></center>
+                                  <center><%= paginate @low_on_stock_products, :params => {:controller => "products", action: "index" } %></center>
                                   <% else %>
-                                  <center><%= paginate @products, :params => {:controller => "products", action: "scope_index" } %></center>
+                                  <center><%= paginate @low_on_stock_products, :params => {:controller => "products", action: "scope_index" } %></center>
                                   <% end %>
