@@ -74,8 +74,4 @@
                                       <% end %>
                                     </tbody>
                                   </table>
-                                  <% if current_page?(products_path) %>
-                                  <center><%= paginate @out_of_stock_products, :params => {:controller => "products", action: "index" } %></center>
-                                  <% else %>
-                                  <center><%= paginate @out_of_stock_products, :params => {:controller => "products", action: "scope_index" } %></center>
-                                  <% end %>
+                                  <center><%= paginate @out_of_stock_products, :params => {:controller => "products", action: "out_of_stock" } %></center>
