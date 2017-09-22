@@ -9,6 +9,9 @@ class LineItem < ApplicationRecord
   
   validate :exceeds_available_stock?, on: :create
   after_commit :set_total_cost, on: [:create, :update]
+  def self.total_cost
+    all.sum(&:unit_cost_and_quantity)
+  end
   def unit_cost_and_quantity
   	unit_cost * quantity
   end

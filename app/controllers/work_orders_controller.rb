@@ -1,5 +1,8 @@
+require 'rqrcode'
+
 class WorkOrdersController < ApplicationController
   def index 
+    @qr = RQRCode::QRCode.new( 'https://github.com/whomwah/rqrcode')
   end
   def new 
     @work_order = WorkOrderForm.new 
@@ -13,6 +16,7 @@ class WorkOrdersController < ApplicationController
       render :new 
     end 
   end 
+
 
   private 
   def work_order_params

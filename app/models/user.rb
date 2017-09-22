@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
   belongs_to :branch, optional: true
   has_many :orders, foreign_key: 'employee_id'
-  enum role: [:proprietor, :sales_clerk, :stock_custodian]
+  enum role: [:proprietor, :sales_clerk, :stock_custodian, :computer_technician]
   has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",

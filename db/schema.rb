@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170907035106) do
+ActiveRecord::Schema.define(version: 20170912004931) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -137,9 +137,11 @@ ActiveRecord::Schema.define(version: 20170907035106) do
     t.datetime "updated_at", null: false
     t.bigint "order_id"
     t.decimal "markup_amount", default: "0.0"
+    t.bigint "work_order_id"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
     t.index ["order_id"], name: "index_line_items_on_order_id"
     t.index ["stock_id"], name: "index_line_items_on_stock_id"
+    t.index ["work_order_id"], name: "index_line_items_on_work_order_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -202,7 +204,6 @@ ActiveRecord::Schema.define(version: 20170907035106) do
     t.bigint "category_id"
     t.decimal "low_stock_count", default: "0.0"
     t.index ["category_id"], name: "index_products_on_category_id"
-    t.index ["name"], name: "index_products_on_name", unique: true
   end
 
   create_table "registries", force: :cascade do |t|
@@ -242,6 +243,8 @@ ActiveRecord::Schema.define(version: 20170907035106) do
     t.decimal "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "charge_type"
+    t.index ["charge_type"], name: "index_service_charges_on_charge_type"
   end
 
   create_table "stock_transfers", force: :cascade do |t|
@@ -305,6 +308,21 @@ ActiveRecord::Schema.define(version: 20170907035106) do
     t.index ["customer_id"], name: "index_units_on_customer_id"
   end
 
+  create_table "updates", force: :cascade do |t|
+    t.string "updateable_type"
+    t.bigint "updateable_id"
+    t.string "type"
+    t.string "title"
+    t.string "content"
+    t.datetime "date"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["type"], name: "index_updates_on_type"
+    t.index ["updateable_type", "updateable_id"], name: "index_updates_on_updateable_type_and_updateable_id"
+    t.index ["user_id"], name: "index_updates_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -361,6 +379,28 @@ ActiveRecord::Schema.define(version: 20170907035106) do
     t.index ["warranty_id"], name: "index_warranty_releases_on_warranty_id"
   end
 
+  create_table "work_order_service_charges", force: :cascade do |t|
+    t.bigint "service_charge_id"
+    t.bigint "work_order_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["service_charge_id"], name: "index_work_order_service_charges_on_service_charge_id"
+    t.index ["work_order_id"], name: "index_work_order_service_charges_on_work_order_id"
+  end
+
+  create_table "work_orders", force: :cascade do |t|
+    t.integer "status"
+    t.bigint "product_unit_id"
+    t.bigint "technician_id"
+    t.bigint "customer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_work_orders_on_customer_id"
+    t.index ["product_unit_id"], name: "index_work_orders_on_product_unit_id"
+    t.index ["status"], name: "index_work_orders_on_status"
+    t.index ["technician_id"], name: "index_work_orders_on_technician_id"
+  end
+
   add_foreign_key "accessories", "product_units"
   add_foreign_key "accounts", "accounts", column: "main_account_id"
   add_foreign_key "amounts", "accounts"
@@ -372,6 +412,7 @@ ActiveRecord::Schema.define(version: 20170907035106) do
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "stocks"
+  add_foreign_key "line_items", "work_orders"
   add_foreign_key "orders", "customers"
   add_foreign_key "orders", "users", column: "employee_id"
   add_foreign_key "payments", "orders"
@@ -389,6 +430,7 @@ ActiveRecord::Schema.define(version: 20170907035106) do
   add_foreign_key "stocks", "registries"
   add_foreign_key "stocks", "suppliers"
   add_foreign_key "units", "customers"
+  add_foreign_key "updates", "users"
   add_foreign_key "users", "branches"
   add_foreign_key "warranties", "customers"
   add_foreign_key "warranties", "sales_returns"
@@ -396,4 +438,9 @@ ActiveRecord::Schema.define(version: 20170907035106) do
   add_foreign_key "warranty_releases", "customers"
   add_foreign_key "warranty_releases", "users"
   add_foreign_key "warranty_releases", "warranties"
+  add_foreign_key "work_order_service_charges", "service_charges"
+  add_foreign_key "work_order_service_charges", "work_orders"
+  add_foreign_key "work_orders", "customers"
+  add_foreign_key "work_orders", "product_units"
+  add_foreign_key "work_orders", "users", column: "technician_id"
 end

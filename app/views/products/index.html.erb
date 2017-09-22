@@ -69,7 +69,7 @@
                                     <tbody>
                                       <% @products.each do |product| %>
                                       <tr>
-                                      <td><%=link_to product.name, product %> <span class="label label-<%=product.badge_color%>"><%= product.in_stock.to_i %> <%=product.unit %> left </span></td>
+                                      <td><%=link_to product.name, product %></td>
                                       <td><%= number_to_currency product.retail_price %></td>
                                       <td> <%= number_to_currency product.delivered_items_count, unit: "" %></td>
                                       <td> <%= number_to_currency product.sold_items_count, unit: "" %></td>

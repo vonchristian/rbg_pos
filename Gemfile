@@ -43,6 +43,7 @@ gem 'barby'
 gem 'prawn-print'
 gem 'simple-line-icons-rails'
 gem 'select2-rails'
+gem 'rqrcode'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
