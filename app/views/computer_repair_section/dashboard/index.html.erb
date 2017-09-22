@@ -1,0 +1,99 @@
+<div class="content">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 border-right">
+        <div class="card">
+        <div class="header">
+          <h4 class="title"> Received 
+          <%= link_to 'New', new_computer_repair_section_work_order_path %>
+          </h4>
+        </div>
+        <div class="content">
+          <% WorkOrder.received.each do |work_order| %>
+          <%=link_to computer_repair_section_work_order_path(work_order) do %>
+           <div class="row">
+              <div class="col-md-9">
+                <%= work_order.product_unit.description %><br>
+                <%= work_order.customer.full_name %>
+              </div>
+              <div class="col-md-2">
+                <span class="pull-right"><%= image_tag(work_order.technician.avatar.url(:small), class: "img-circle", height: 40, width: 40) %></span>
+              </div>
+            </div>
+            <br>
+          <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+      <div class="col-md-3 border-left">
+        <div class="card">
+        <div class="header">
+          <h4 class="title"> Work in Progress </h4>
+        </div>
+        <div class="content">
+          <% WorkOrder.work_in_progress.each do |work_order| %>
+          <%=link_to computer_repair_section_work_order_path(work_order) do %>
+           <div class="row">
+              <div class="col-md-10">
+                <%= work_order.product_unit.description %><br>
+                <%= work_order.customer.full_name %>
+              </div>
+              <div class="col-md-2">
+                <span class="pull-right"><%= image_tag(work_order.technician.avatar.url(:thumb), class: "img-circle", height: 35, width: 35) %></span>
+              </div>
+            </div>
+            <br>
+          <% end %>
+          <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 border-right">
+        <div class="card">
+        <div class="header">
+          <h4 class="title"> Done </h4>
+        </div>
+         <div class="content">
+          <% WorkOrder.work_in_progress.each do |work_order| %>
+          <%=link_to computer_repair_section_work_order_path(work_order) do %>
+           <div class="row">
+              <div class="col-md-9">
+                <%= work_order.product_unit.description %><br>
+                <%= work_order.customer.full_name %>
+              </div>
+              <div class="col-md-2">
+                <span class="pull-right"><%= image_tag(work_order.technician.avatar.url(:small), class: "img-circle", height: 40, width: 40) %></span>
+              </div>
+            </div>
+            <br>
+          <% end %>
+          <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 border-right">
+        <div class="card">
+          <div class="header">
+            <h4 class="title"> Released </h4>
+          </div>
+          <div class="content">
+            <% WorkOrder.work_in_progress.each do |work_order| %>
+              <%=link_to computer_repair_section_work_order_path(work_order) do %>
+                  <div class="row">
+                    <div class="col-md-9">
+                    <%= work_order.product_unit.description %><br>
+                    <%= work_order.customer.full_name %>
+                    </div>
+                    <div class="col-md-2">
+                    <span class="pull-right"><%= image_tag(work_order.technician.avatar.url(:small), class: "img-circle", height: 40, width: 40) %></span>
+                    </div>
+                  </div>
+                  <br>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

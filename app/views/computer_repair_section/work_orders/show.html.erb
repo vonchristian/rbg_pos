@@ -1,0 +1,42 @@
+<%= simple_form_for @work_order, url: :computer_repair_section_work_order do |f| %>
+  <%= f.input :status, collection: WorkOrder.statuses.keys.to_a.map{|a| [a.titleize, a]} %>
+  <%= f.submit "Change Status" %>
+<% end %>
+
+<%= simple_form_for Update.new, url: :computer_repair_section_work_order_updates do |f| %>
+  <%= f.input :title %>
+  <%= f.input :content, label: false, placeholder: 'Content' %>
+  <%= f.input :date, input_html: { value: Time.zone.now } %>
+  <%= f.input :updateable_id, input_html: { value: @work_order.id } %>
+  <%= f.input :type, collection: Update.types %>
+  <%= f.input :updateable_type, input_html: { value: @work_order.class } %>
+  <%= f.submit "Update" %>
+<% end %>
+
+<% @work_order.work_order_updates.each do |update| %>
+  <div class="row">
+    <div class="col-md-2">
+    <% if update.user.present? %>
+      <%= image_tag(update.user.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %>
+    <% end %>
+    </div>
+    <div class="col-md-6">
+    <% if update.date %>
+      <%= update.date.strftime("%A %I::%M %p") %><br>
+    <% end %>
+      <p><b><%= update.title %></b></p>
+      <%= update.content %><br>
+      <span class="label label-warning"><%= update.type.try(:titleize).try(:downcase) %></span>
+    </div>
+  </div>
+  <hr>
+  <% end %>
+
+  <%= link_to 'Add Charges', new_computer_repair_section_work_order_service_charge_path(@work_order) %>
+
+  <% @work_order.service_charges.each do |charge| %>
+    <%= charge.description %>
+    <%= charge.amount %>
+  <% end %>
+<%=link_to 'Add Stocks', new_computer_repair_section_work_order_spare_part_path(@work_order) %>
+<%= @work_order.total_spare_parts_cost %>

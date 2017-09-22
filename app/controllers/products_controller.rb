@@ -7,6 +7,13 @@ class ProductsController < ApplicationController
       @low_on_stock_products = Kaminari.paginate_array(Product.low_on_stock).page(params[:page]).per(20)
     end
     @registry = Registry.new
+    respond_to do |format|
+      format.html
+      format.pdf do 
+        pdf = ProductsPdf.new(@products, view_context)
+          send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Products PDF Report.pdf"
+      end
+    end
   end
 
   def out_of_stock 

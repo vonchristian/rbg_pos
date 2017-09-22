@@ -1,0 +1,22 @@
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="header">
+          <h4 class="title"> Product Details </h4>
+          <p class="category">details </p>
+        </div>
+        <div class="content">
+
+<%= simple_form_for @work_order, url: :computer_repair_section_work_orders, html: { class: "form-horizontal" }, wrapper: :horizontal_form do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :customer_id, collection: Customer.all.map{|a| [a.full_name, a.id] } %>
+  <%= f.simple_fields_for :product_unit do |ff| %>
+  <%= ff.input :description, label: "Manufacturer/Description" %>
+  <%= ff.input :model_number %>
+  <%= ff.input :serial_number %>
+  <%= ff.input :physical_condition %>
+  <%= ff.input :reported_problem, as: :text %>
+  <% end %>
+  <%= f.submit "Save" %>
+<% end %>

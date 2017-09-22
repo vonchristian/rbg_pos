@@ -1,0 +1,2 @@
+class ActionTaken < Update 
+end 

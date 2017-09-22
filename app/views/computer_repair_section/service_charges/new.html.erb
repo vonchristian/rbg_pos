@@ -1,0 +1,8 @@
+<% ServiceCharge.regular.each do |service_charge| %>
+  <%= service_charge.description %>
+  <%= number_to_currency service_charge.amount %>
+  <%= simple_form_for [@work_order, @charge], url: :computer_repair_section_work_order_service_charges do |f| %>
+    <%= f.input :service_charge_id, input_html: { value: service_charge.id } %>
+  <%= f.submit "Add" %>
+  <% end %>
+<% end %>
