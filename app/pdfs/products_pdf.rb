@@ -12,7 +12,7 @@ class ProductsPdf < Prawn::Document
     @view_context.number_to_currency(number, :unit => "P ")
   end
   def heading 
-    text "Inventory Report", align: :center
+    text "INVENTORY REPORT", align: :center
     move_down 5
     stroke_horizontal_rule
     move_down 10
