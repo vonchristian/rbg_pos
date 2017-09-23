@@ -1,2 +1,2 @@
-class Diagnosis < Update 
+class Diagnosis < Post
 end

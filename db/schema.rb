@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170923055003) do
+ActiveRecord::Schema.define(version: 20170923121008) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -169,6 +169,30 @@ ActiveRecord::Schema.define(version: 20170923055003) do
     t.index ["order_id"], name: "index_payments_on_order_id"
   end
 
+  create_table "pg_search_documents", force: :cascade do |t|
+    t.text "content"
+    t.string "searchable_type"
+    t.bigint "searchable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable_type_and_searchable_id"
+  end
+
+  create_table "posts", force: :cascade do |t|
+    t.string "updateable_type"
+    t.bigint "updateable_id"
+    t.string "type"
+    t.string "title"
+    t.string "content"
+    t.datetime "date"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["type"], name: "index_posts_on_type"
+    t.index ["updateable_type", "updateable_id"], name: "index_posts_on_updateable_type_and_updateable_id"
+    t.index ["user_id"], name: "index_posts_on_user_id"
+  end
+
   create_table "product_unit_service_charges", force: :cascade do |t|
     t.bigint "product_unit_id"
     t.bigint "service_charge_id"
@@ -317,21 +341,6 @@ ActiveRecord::Schema.define(version: 20170923055003) do
     t.index ["customer_id"], name: "index_units_on_customer_id"
   end
 
-  create_table "updates", force: :cascade do |t|
-    t.string "updateable_type"
-    t.bigint "updateable_id"
-    t.string "type"
-    t.string "title"
-    t.string "content"
-    t.datetime "date"
-    t.bigint "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["type"], name: "index_updates_on_type"
-    t.index ["updateable_type", "updateable_id"], name: "index_updates_on_updateable_type_and_updateable_id"
-    t.index ["user_id"], name: "index_updates_on_user_id"
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -427,6 +436,7 @@ ActiveRecord::Schema.define(version: 20170923055003) do
   add_foreign_key "orders", "customers"
   add_foreign_key "orders", "users", column: "employee_id"
   add_foreign_key "payments", "orders"
+  add_foreign_key "posts", "users"
   add_foreign_key "product_unit_service_charges", "product_units"
   add_foreign_key "product_unit_service_charges", "service_charges"
   add_foreign_key "products", "categories"
@@ -443,7 +453,6 @@ ActiveRecord::Schema.define(version: 20170923055003) do
   add_foreign_key "technician_work_orders", "users", column: "technician_id"
   add_foreign_key "technician_work_orders", "work_orders"
   add_foreign_key "units", "customers"
-  add_foreign_key "updates", "users"
   add_foreign_key "users", "branches"
   add_foreign_key "warranties", "customers"
   add_foreign_key "warranties", "sales_returns"

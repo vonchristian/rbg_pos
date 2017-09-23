@@ -5,8 +5,9 @@
         <div class="header">
           <div class="row">
             <div class="col-md-7">
-              <h4 class="title condensed-text"><%= @work_order.description %> </h4>
-              <br>
+              <h4 class="title condensed-text"><%= @work_order.description.try(:upcase) %> </h4>
+              <small>STATUS <span class="label label-default"> <%= @work_order.status %></span></small>
+              <br><br>
               <% @work_order.technicians.each do |technician| %>
                 <span data-toggle="tooltip" title="<%=technician.first_name %>" data-placement="top">
                     <%= image_tag(technician.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %>
@@ -71,7 +72,11 @@
             </div>
             <div class="col-md-5 col-md-offset-1">
               <p class="condensed-text">REPORTS </p>
-              <%= link_to 'Service Form', computer_repair_section_work_order_path(@work_order, format: 'pdf'), class: "btn btn-xs btn-default" %>
+              <%= link_to 'SERVICE TAG', computer_repair_section_work_order_path(@work_order, format: 'pdf'), class: "label label-default"  %>
+              <%= link_to 'SERVICE FORM', computer_repair_section_work_order_path(@work_order, format: 'pdf'), class: "label label-default"  %>
+              
+              <%= link_to 'CHARGE INVOICE', computer_repair_section_work_order_path(@work_order, format: 'pdf'), class: "label label-default" %>
+
             </div>
           </div>
         </div>
@@ -158,8 +163,8 @@
   <div class="card">
     <div class="content">
       <div class="content">
-        <%= simple_form_for Update.new, url: :computer_repair_section_work_order_updates do |f| %>
-          <%= f.input :type, label: false, collection: Update.types.map{|a| [a.titleize, a]}, prompt: 'Select Update Type' %>
+        <%= simple_form_for Post.new, url: :computer_repair_section_work_order_updates do |f| %>
+          <%= f.input :type, label: false, collection: Post.types.map{|a| [a.titleize, a]}, prompt: 'Select Update Type' %>
           <%= f.input :title, label: false, placeholder: 'Title', required: true %>
           <%= f.input :content, label: false, placeholder: 'Content', as: :text, input_html: { rows: 4, class: "input-xs" }%>
           <%= f.input :date, input_html: { value: Time.zone.now }, as: :hidden %>

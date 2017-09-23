@@ -1,2 +1,2 @@
-class Observation < Update 
+class Observation < Post
 end 

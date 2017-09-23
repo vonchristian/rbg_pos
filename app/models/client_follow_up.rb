@@ -1,2 +1,2 @@
-class ClientFollowUp < Update
+class ClientFollowUp < Post
 end

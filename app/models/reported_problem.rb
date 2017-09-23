@@ -1,2 +1,0 @@
-class ReportedProblem < Update 
-end

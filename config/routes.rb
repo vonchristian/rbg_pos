@@ -10,7 +10,8 @@ Rails.application.routes.draw do
   root :to => 'store#index', :constraints => lambda { |request| request.env['warden'].user.role == 'sales_clerk' if request.env['warden'].user }, as: :sales_department_root
   root :to => 'store#index', :constraints => lambda { |request| request.env['warden'].user.role == 'proprietor' if request.env['warden'].user }, as: :prop_department_root
   root :to => 'products#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :stocks_department_root
-	resources :store, only: [:index]
+  root :to => 'computer_repair_section/dashboard#index', :constraints => lambda { |request| request.env['warden'].user.role == 'technician' if request.env['warden'].user }, as: :technician_root
+  resources :store, only: [:index]
 	resources :customers do 
     resources :payments, only: [:new, :create], module: :customers
   end
@@ -73,5 +74,5 @@ Rails.application.routes.draw do
     resources :work_order_service_charges, only: [:destroy]
     resources :work_order_updates, only: [:new, :create]
   end
-  resources :technicians, only: [:show]
+  resources :knowledge_center, only: [:index]
 end

@@ -1,2 +1,2 @@
-class ActionTaken < Update 
+class ActionTaken < Post 
 end 

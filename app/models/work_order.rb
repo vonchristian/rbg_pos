@@ -1,9 +1,13 @@
 class WorkOrder < ApplicationRecord
+  include PgSearch
+  pg_search_scope :text_search, against: [:service_number, :reported_problem, :physical_condition]
+  multisearchable :against => [:description, :model_number, :serial_number,
+    :updates_content, :reported_problem, :physical_condition, :service_number]
   belongs_to :product_unit
   belongs_to :customer, optional: true
   has_many :technician_work_orders, dependent: :destroy
   has_many :technicians, through: :technician_work_orders
-  has_many :work_order_updates, as: :updateable, class_name: "Update", dependent: :destroy
+  has_many :work_order_updates, as: :updateable, class_name: "Post", dependent: :destroy
   has_many :work_order_service_charges, dependent: :destroy
   has_many :service_charges, through: :work_order_service_charges
   has_many :spare_parts, class_name: "LineItem", foreign_key: 'work_order_id', dependent: :destroy
@@ -11,8 +15,9 @@ class WorkOrder < ApplicationRecord
   accepts_nested_attributes_for :product_unit
   delegate :description, :model_number, :serial_number, to: :product_unit, allow_nil: true
   delegate :full_name, :address, :contact_number, to: :customer, allow_nil: true, prefix: true
-
-  
+  def updates_content
+    work_order_updates.pluck(:content)
+  end
   def total_spare_parts_cost
     spare_parts.total_cost
   end
@@ -34,5 +39,11 @@ class WorkOrder < ApplicationRecord
     else 
      work_order.service_number =  "#{1.to_s.rjust(12, '0')}"
     end
+  end
+  def diagnoses
+    work_order_updates.diagnosis
+  end
+  def actions_taken
+    work_order_updates.actions_taken
   end
 end

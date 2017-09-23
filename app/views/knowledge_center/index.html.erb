@@ -1,0 +1,80 @@
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="header">
+          <div class="row">
+            <div class="col-md-3">
+              <h4 class="title condensed-text"> KNOWLEDGE CENTER </h4>
+            </div>
+            <div class="col-md-6">
+              <%=form_tag knowledge_center_index_path, method: :get, id: "search-form" do %>
+                <div class="input-group">
+                  <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search product...", type: "search" %>
+                  <span class="input-group-btn">
+                    <%= button_tag(type: 'submit', class: "btn no-padding") do %>
+                      <i class="icon-magnifier"></i>
+                    <% end %>
+                  </span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <% if params[:search].blank? %>
+          <div class="content">
+            <div class="table table-responsive">
+              <table class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>Problem</th>
+                    <th>Diagnosis</th>
+                    <th>Solution</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @work_orders.all.each do |work_order| %>
+                    <tr>
+                      <td width="250px">
+                        <%= work_order.reported_problem %><br><br>
+                        <% work_order.technicians.each do |technician| %>
+                          <span data-toggle="tooltip" title="<%=technician.first_name %>" data-placement="top">
+                            <%= image_tag(technician.avatar.url(:large), class: "img-circle", height: 45, width: 45) %> &nbsp;
+                          </span>
+                        <% end %>
+                      </td>
+                      <td>
+                          <% work_order.diagnoses.each do |diagnosis| %>
+                            <%=link_to diagnosis.content, computer_repair_section_work_order_path(work_order) %>
+                          <% end %>
+                      </td>
+                       <td>
+                          <% work_order.actions_taken.each do |diagnosis| %>
+                            <%=diagnosis.content %>
+                          <% end %>
+                      </td>
+
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+          <ul>
+<% @searches.each do |pg_search_document| %>
+    <% if pg_search_document.searchable_type == "WorkOrder" %>
+      <p class='condensed-text'> <%= link_to pg_search_document.content, computer_repair_section_work_order_path(id: pg_search_document.searchable_id) %></p>
+    <p class="text-black"><%= pg_search_document.searchable_type %></p>
+    <% elsif pg_search_document.searchable_type == "Post" %>
+      <p class='condensed-text'> <%= link_to pg_search_document.content, computer_repair_section_work_order_path(id: pg_search_document.searchable.updateable_id) %></p>
+    <p class="text-black"><%= pg_search_document.searchable_type %></p>
+      <% end %>
+  <hr>
+  
+<% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
