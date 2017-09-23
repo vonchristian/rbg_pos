@@ -19,3 +19,6 @@
 //= require pickers
 //= require select2
 //= require_tree .
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})

@@ -1,42 +1,191 @@
-<%= simple_form_for @work_order, url: :computer_repair_section_work_order do |f| %>
-  <%= f.input :status, collection: WorkOrder.statuses.keys.to_a.map{|a| [a.titleize, a]} %>
-  <%= f.submit "Change Status" %>
-<% end %>
-
-<%= simple_form_for Update.new, url: :computer_repair_section_work_order_updates do |f| %>
-  <%= f.input :title %>
-  <%= f.input :content, label: false, placeholder: 'Content' %>
-  <%= f.input :date, input_html: { value: Time.zone.now } %>
-  <%= f.input :updateable_id, input_html: { value: @work_order.id } %>
-  <%= f.input :type, collection: Update.types %>
-  <%= f.input :updateable_type, input_html: { value: @work_order.class } %>
-  <%= f.submit "Update" %>
-<% end %>
-
+<div class="content">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="header">
+          <div class="row">
+            <div class="col-md-7">
+              <h4 class="title condensed-text"><%= @work_order.description %> </h4>
+              <br>
+              <% @work_order.technicians.each do |technician| %>
+                <span data-toggle="tooltip" title="<%=technician.first_name %>" data-placement="top">
+                    <%= image_tag(technician.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %>
+                </span>
+              <% end %><br>
+              <small class="condensed-text">TECHNICIANS</small>
+            </div>
+            <div class="col-md-5">
+              <%= simple_form_for @work_order, url: :computer_repair_section_work_order do |f| %>
+                <div class="row">
+                  <div class="col-md-7">
+                    <%= f.input :status, label: false, collection: WorkOrder.statuses.keys.to_a.map{|a| [a.titleize, a]} %>
+                  </div>
+                  <div class="col-md-3">
+                    <%= f.submit "Update Status", class: "btn btn-primary btn-sm" %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="content">
+          <div class="row">
+            <div class="col-md-6">
+              <p class="condensed-text"> DETAILS </p>
+              <div class="row">
+                <div class="col-md-6">
+                  Customer 
+                </div>
+                <div class="col-md-6">
+                  <%= @work_order.customer_full_name %>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-md-6">
+                  Date Received 
+                </div>
+                <div class="col-md-6">
+                  <%= @work_order.created_at.strftime("%B %e, %Y") %>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-md-6">
+                  Reported Problem 
+                </div>
+                <div class="col-md-6">
+                  <%= @work_order.reported_problem %>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-md-6">
+                  Elapsed Time
+                </div>
+                <div class="col-md-6">
+                  <%= distance_of_time_in_words(@work_order.created_at, Time.zone.now) %>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-5 col-md-offset-1">
+              <p class="condensed-text">REPORTS </p>
+              <%= link_to 'Service Form', computer_repair_section_work_order_path(@work_order, format: 'pdf'), class: "btn btn-xs btn-default" %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="header">
+              <div class="row">
+                <div class="col-md-8">
+                  <p class="condensed-text title"> SERVICE CHARGES </p>
+                </div>
+                <div class="col-md-4">
+                  <%= link_to 'Add Charges', new_computer_repair_section_work_order_service_charge_path(@work_order) %>
+                </div>
+              </div> 
+            </div>
+            <div class="content">
+              <% @work_order.service_charges.each do |charge| %>
+                <div class="row">
+                  <div class="col-md-8">
+                    <%= charge.description %>
+                  </div>
+                  <div class="col-md-3">
+                    <%= number_to_currency charge.amount %>
+                  </div>
+                </div>
+                <br>
+              <% end %>
+              <hr>
+              <div class="row">
+                <div class="col-md-8">
+                  <p class="condensed-text"> TOTAL </p>
+                </div>
+                <div class="col-md-3">
+                  <%= number_to_currency @work_order.total_service_charges_cost %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <div class="header">
+              <div class="row">
+                <div class="col-md-8">
+                  <p class="condensed-text title"> SPARE PARTS </p>
+                </div>
+                <div class="col-md-4">
+                  <%=link_to 'Add Stocks', new_computer_repair_section_work_order_spare_part_path(@work_order) %>
+                </div>
+              </div>
+            </div>
+            <div class="content">
+              <% @work_order.spare_parts.each do |spare_part| %>
+                <div class="row">
+                  <div class="col-md-2">
+                    <%= spare_part.quantity %>
+                  </div>
+                  <div class="col-md-7">
+                    <%= spare_part.product_name %>
+                  </div>
+                  <div class="col-md-2">
+                    <%= number_to_currency spare_part.total_cost %>
+                  </div>
+                </div>
+                <br>
+              <% end %>
+              <hr>
+              <div class="row">
+                <div class="col-md-7 col-md-offset-2">
+                  <p class="condensed-text">TOTAL </p>
+                </div>
+                <div class="col-md-2">
+                  <%= number_to_currency @work_order.total_spare_parts_cost %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<div class="col-md-4">
+  <div class="card">
+    <div class="content">
+      <div class="content">
+        <%= simple_form_for Update.new, url: :computer_repair_section_work_order_updates do |f| %>
+          <%= f.input :type, label: false, collection: Update.types.map{|a| [a.titleize, a]}, prompt: 'Select Update Type' %>
+          <%= f.input :title, label: false, placeholder: 'Title', required: true %>
+          <%= f.input :content, label: false, placeholder: 'Content', as: :text, input_html: { rows: 4, class: "input-xs" }%>
+          <%= f.input :date, input_html: { value: Time.zone.now }, as: :hidden %>
+          <%= f.input :updateable_id, input_html: { value: @work_order.id }, as: :hidden %>
+          <%= f.input :updateable_type, input_html: { value: @work_order.class }, as: :hidden %>
+          <%= f.submit "Update", class: "btn btn-primary btn-block" %>
+        <% end %>
+  <br>
+  <hr>
+  <p class="condensed-text">UPDATES </p>
 <% @work_order.work_order_updates.each do |update| %>
   <div class="row">
     <div class="col-md-2">
     <% if update.user.present? %>
-      <%= image_tag(update.user.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %>
+      <%= image_tag(update.user.avatar.url(:medium), class: "img-circle", height: 40, width: 40) %>
     <% end %>
     </div>
-    <div class="col-md-6">
-    <% if update.date %>
-      <%= update.date.strftime("%A %I::%M %p") %><br>
-    <% end %>
-      <p><b><%= update.title %></b></p>
+    <div class="col-md-10">
+    
+      <small class="condensed-text"><b><%= update.title.try(:upcase) %></b></small><br>
       <%= update.content %><br>
       <span class="label label-warning"><%= update.type.try(:titleize).try(:downcase) %></span>
+      <% if update.date %>
+      <small class='text-black pull-right'><i class="fa fa-clock-o"></i> <%= update.date.strftime("%b %e, %l:%M %p") %></small><br>
+    <% end %>
     </div>
   </div>
   <hr>
   <% end %>
-
-  <%= link_to 'Add Charges', new_computer_repair_section_work_order_service_charge_path(@work_order) %>
-
-  <% @work_order.service_charges.each do |charge| %>
-    <%= charge.description %>
-    <%= charge.amount %>
-  <% end %>
-<%=link_to 'Add Stocks', new_computer_repair_section_work_order_spare_part_path(@work_order) %>
-<%= @work_order.total_spare_parts_cost %>

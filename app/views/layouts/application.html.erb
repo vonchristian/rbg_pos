@@ -16,6 +16,9 @@
       <%=render 'layouts/stock_custodian_sidebar' %>
     <% elsif current_user.sales_clerk? %>
       <%=render 'layouts/sales_clerk_sidebar' %>
+     <% elsif current_user.technician? %>
+      <%=render 'layouts/technician_sidebar' %>
+
     <% end %>
      <div class="main-panel">
     <%= render 'layouts/header' %>

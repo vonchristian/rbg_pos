@@ -1,0 +1,2 @@
+class ClientFollowUp < Update
+end

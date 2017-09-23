@@ -1,0 +1,2 @@
+class Diagnosis < Update 
+end

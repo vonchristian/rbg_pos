@@ -1,0 +1,2 @@
+class ReportedProblem < Update 
+end

@@ -1,0 +1,89 @@
+<div class="content">
+  <div class="card">
+    <div class="header">
+      <p class="title condensed-text"> Add Service Charge </p>
+    </div>
+    <div class="content">
+      <%=link_to computer_repair_section_work_order_path(@work_order), class: "btn btn-" do %>
+        <i class="fa fa-chevron-left"></i> Back 
+      <% end %>
+      <hr>
+      <div class="row">
+        <div class="col-md-6 border-right">
+          <p class="condensed-text"> REGULAR CHARGES </p>
+          <hr>
+          <% ServiceCharge.regular.each do |service_charge| %>
+            <div class="row">
+              <div class="col-md-5">
+                <%= service_charge.description %>
+              </div>
+              <div class="col-md-2">
+                <%= number_to_currency service_charge.amount %>
+              </div>
+              <div class="col-md-3">
+                <%= simple_form_for [@work_order, @charge], url: :computer_repair_section_work_order_service_charges do |f| %>
+                  <%= f.input :service_charge_id, input_html: { value: service_charge.id }, as: :hidden %>
+                <% if @work_order.service_charges.include?(service_charge) %>
+                  <span classs="">
+                    <%=link_to computer_repair_section_work_order_service_charge_path(@work_order.work_order_service_charges.find_by(service_charge: service_charge)), class: 'no-padding', method: :delete do %>
+                      <span data-toggle="tooltip" data-placement="top" title="Remove"><i class="fa fa-toggle-on fa-2x text-success"></i></span>
+                    <% end %>
+                  </span>
+                <% else %>
+                  <%= f.submit "Add",  class: 'no-padding', title: 'Verify' do %>
+                    <i class="fa fa-toggle-off fa-2x"></i>
+                  <% end %>
+                <% end %>
+              <% end %>
+              </div>
+            </div>
+            <br>
+          <% end %>
+        </div>
+        <div class="col-md-6">
+          <p class="condensed-text"> CURRENT CHARGES </p>
+          <% @work_order.service_charges.each do |charge| %>
+              <div class="row">
+                <div class="col-md-7 col-md-offset-1">
+                  <%= charge.description %>
+                </div>
+                <div class="col-md-2">
+                  <%= number_to_currency charge.amount %>
+                </div>
+                <div class="col-md-1">
+                  <%=link_to computer_repair_section_work_order_service_charge_path(@work_order.work_order_service_charges.find_by(service_charge: charge)), class: 'no-padding', method: :delete do %>
+                      <span data-toggle="tooltip" data-placement="top" title="Remove"><i class="fa fa-trash text-danger"></i></span>
+                  <% end %>
+                </div>
+              </div>
+              <br>
+            <% end %>
+            <hr>
+            <div class="row">
+              <div class="col-md-7 col-md-offset-1">
+                <p class="condensed-text"> TOTAL </p>
+              </div>
+              <div class="col-md-2">
+                <%= number_to_currency @work_order.total_service_charges_cost %>
+              </div>
+            </div>
+            <hr>
+            <small class="condensed-text">ADDITIONAL CHARGE</small>
+          <%= simple_form_for [@work_order,ServiceCharge.new], url: :computer_repair_section_work_order_additional_charges do |f| %>
+            <div class="row">
+              <div class="col-md-6">
+                <%= f.input :description, label: false, placeholder: 'Description', input_html: { class: "input-sm"} %>
+              </div>
+              <div class="col-md-3">
+                <%= f.input :amount, label: false, placeholder: 'Amount' %>
+              </div>
+              <div class="col-md-2">
+                <%= f.submit "Add Charge", class: "btn btn-primary" %>
+              </div>
+          <% end %>
+          <hr>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

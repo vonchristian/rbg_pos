@@ -1,0 +1,2 @@
+class Observation < Update 
+end 

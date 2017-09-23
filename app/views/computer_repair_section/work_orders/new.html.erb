@@ -1,13 +1,11 @@
 <div class="content">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-10">
       <div class="card">
         <div class="header">
-          <h4 class="title"> Product Details </h4>
-          <p class="category">details </p>
+          <h4 class="title condensed-text"> PRODUCT DETAILS </h4>
         </div>
         <div class="content">
-
 <%= simple_form_for @work_order, url: :computer_repair_section_work_orders, html: { class: "form-horizontal" }, wrapper: :horizontal_form do |f| %>
   <%= f.error_notification %>
   <%= f.input :customer_id, collection: Customer.all.map{|a| [a.full_name, a.id] } %>
@@ -15,8 +13,8 @@
   <%= ff.input :description, label: "Manufacturer/Description" %>
   <%= ff.input :model_number %>
   <%= ff.input :serial_number %>
-  <%= ff.input :physical_condition %>
-  <%= ff.input :reported_problem, as: :text %>
   <% end %>
+  <%= f.input :physical_condition %>
+  <%= f.input :reported_problem, as: :text %>
   <%= f.submit "Save" %>
 <% end %>

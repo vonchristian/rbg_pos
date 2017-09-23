@@ -1,23 +1,58 @@
 <div class="content">
-  <div class="container">
+  <div class="card">
+    <div class="content">
+      <div class="row">
+        <div class="col-md-3 border-right">
+          <p><small class="condensed-text">VIEW PER TECHNICIAN</small></p>
+          <% User.technician.each do |technician| %>
+            <%=link_to computer_repair_section_dashboard_index_path(technician: technician) do %>
+              <span data-toggle="tooltip" title="<%=technician.first_name %>" data-placement="top">
+                <%= image_tag(technician.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %> &nbsp;
+              </span>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="col-md-3 border-right">
+          <p><small class="condensed-text">VIEW PER DEPARTMENT</small></p>
+        </div>
+        <div class="col-md-3 border-right">
+          <p><small class="condensed-text">VIEW PER DATE</small></p>
+        </div>
+      </div>
+      <br>
+    </div>
+  </div>
+<div class="content">
     <div class="row">
       <div class="col-md-3 border-right">
         <div class="card">
         <div class="header">
-          <h4 class="title"> Received 
-          <%= link_to 'New', new_computer_repair_section_work_order_path %>
-          </h4>
+          <div class="row">
+            <div class="col-md-8">
+              <h4 class="title condensed-text"><span class="label label-default"><%= WorkOrder.received.count %></span> &nbsp; RECEIVED </h4>
+            </div>
+            <div class="col-md-4">
+              <%= link_to new_computer_repair_section_work_order_path do %>
+                <span class="text-primary pull-right" data-toggle="tooltip" title="New Work Order" data-placement="top"><i class="fa fa-plus-circle fa-2x"></i></span>
+              <% end %>
+            </div>
+          </div>
         </div>
+        <hr>
         <div class="content">
-          <% WorkOrder.received.each do |work_order| %>
+          <% @work_orders.received.each do |work_order| %>
           <%=link_to computer_repair_section_work_order_path(work_order) do %>
            <div class="row">
-              <div class="col-md-9">
-                <%= work_order.product_unit.description %><br>
-                <%= work_order.customer.full_name %>
-              </div>
               <div class="col-md-2">
-                <span class="pull-right"><%= image_tag(work_order.technician.avatar.url(:small), class: "img-circle", height: 40, width: 40) %></span>
+                <span data-toggle="tooltip" title="<%=work_order.technicians.first.first_name %>" data-placement="top">
+                  <%= image_tag(work_order.technicians.first.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %>
+                </span>
+              </div>
+              <div class="col-md-10">
+                <span class="text-black condensed-text"><b><%= work_order.product_unit.description.try(:upcase) %></b></span><br>
+                <span class='text-danger'><%= work_order.reported_problem %></span><br>
+                <span class="text-black"> <%= work_order.customer_full_name %></span><br>
+                <span class='text-black'><small><%= work_order.created_at.strftime("%b %e, %l:%M %p") %></small></span>
               </div>
             </div>
             <br>
@@ -29,21 +64,25 @@
       <div class="col-md-3 border-left">
         <div class="card">
         <div class="header">
-          <h4 class="title"> Work in Progress </h4>
+          <h4 class="title condensed-text"> <span class="label label-warning"><%= WorkOrder.work_in_progress.count %> </span> &nbsp; WORK IN PROGRESS </h4>
         </div>
+        <hr>
         <div class="content">
-          <% WorkOrder.work_in_progress.each do |work_order| %>
+          <% @work_orders.work_in_progress.each do |work_order| %>
           <%=link_to computer_repair_section_work_order_path(work_order) do %>
            <div class="row">
               <div class="col-md-10">
-                <%= work_order.product_unit.description %><br>
-                <%= work_order.customer.full_name %>
-              </div>
-              <div class="col-md-2">
-                <span class="pull-right"><%= image_tag(work_order.technician.avatar.url(:thumb), class: "img-circle", height: 35, width: 35) %></span>
+                <span class="text-black condensed-text"><b><%= work_order.product_unit.description.try(:upcase) %></b></span><br>
+                <%= work_order.customer.full_name %><br>
+                <span class="text-black"><%= distance_of_time_in_words(work_order.created_at, Time.zone.now) %></span><br><br>
+                <% work_order.technicians.each do |technician| %>
+                  <span data-toggle="tooltip" title="<%=technician.first_name %>" data-placement="top">
+                    <%= image_tag(technician.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %> &nbsp;
+                  </span>
+                <% end %>
               </div>
             </div>
-            <br>
+            <hr>
           <% end %>
           <% end %>
           </div>
@@ -52,21 +91,24 @@
       <div class="col-md-3 border-right">
         <div class="card">
         <div class="header">
-          <h4 class="title"> Done </h4>
+          <h4 class="title"> <span class="label label-success"><%= WorkOrder.done.count %> </span> &nbsp; Done </h4>
         </div>
          <div class="content">
-          <% WorkOrder.work_in_progress.each do |work_order| %>
+          <% @work_orders.done.each do |work_order| %>
           <%=link_to computer_repair_section_work_order_path(work_order) do %>
            <div class="row">
-              <div class="col-md-9">
-                <%= work_order.product_unit.description %><br>
-                <%= work_order.customer.full_name %>
-              </div>
-              <div class="col-md-2">
-                <span class="pull-right"><%= image_tag(work_order.technician.avatar.url(:small), class: "img-circle", height: 40, width: 40) %></span>
+              <div class="col-md-10">
+                <span class="text-black condensed-text"><b><%= work_order.product_unit.description.try(:upcase) %></b></span><br>
+                <%= work_order.customer.full_name %><br>
+                <span class="text-black"><%= distance_of_time_in_words(work_order.created_at, Time.zone.now) %></span><br><br>
+                <% work_order.technicians.each do |technician| %>
+                  <span data-toggle="tooltip" title="<%=technician.first_name %>" data-placement="top">
+                    <%= image_tag(technician.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %> &nbsp;
+                  </span>
+                <% end %>
               </div>
             </div>
-            <br>
+            <hr>
           <% end %>
           <% end %>
           </div>
@@ -78,15 +120,16 @@
             <h4 class="title"> Released </h4>
           </div>
           <div class="content">
-            <% WorkOrder.work_in_progress.each do |work_order| %>
+            <% @work_orders.released.each do |work_order| %>
               <%=link_to computer_repair_section_work_order_path(work_order) do %>
                   <div class="row">
                     <div class="col-md-9">
-                    <%= work_order.product_unit.description %><br>
-                    <%= work_order.customer.full_name %>
+                    <p class="text-black condensed-text"><%= work_order.product_unit.description %></p>
+                    <%= work_order.customer.full_name %><br>
+                    <span class='text-black'><small><%= work_order.updated_at.strftime("%b %e, %l:%M %p") %></small></span>
                     </div>
                     <div class="col-md-2">
-                    <span class="pull-right"><%= image_tag(work_order.technician.avatar.url(:small), class: "img-circle", height: 40, width: 40) %></span>
+                    <span class="pull-right"></span>
                     </div>
                   </div>
                   <br>
@@ -97,3 +140,7 @@
         </div>
       </div>
     </div>
+  </div>
+<script type="text/javascript">
+  
+</script>

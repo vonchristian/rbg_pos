@@ -21,5 +21,6 @@
   <%= f.input :password %>
   <%= f.input :password_confirmation, label: "Comfirm Password" %>
   <%= f.input :role, collection: User.roles.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
+  <%= f.input :designation %>
   <%= f.submit "Save", class: "btn btn-danger" %>
 <% end %>

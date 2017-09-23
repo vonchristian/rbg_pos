@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170912004931) do
+ActiveRecord::Schema.define(version: 20170923055003) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -296,6 +296,15 @@ ActiveRecord::Schema.define(version: 20170912004931) do
     t.index ["business_name"], name: "index_suppliers_on_business_name", unique: true
   end
 
+  create_table "technician_work_orders", force: :cascade do |t|
+    t.bigint "technician_id"
+    t.bigint "work_order_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["technician_id"], name: "index_technician_work_orders_on_technician_id"
+    t.index ["work_order_id"], name: "index_technician_work_orders_on_work_order_id"
+  end
+
   create_table "units", force: :cascade do |t|
     t.string "brand"
     t.string "model"
@@ -344,6 +353,7 @@ ActiveRecord::Schema.define(version: 20170912004931) do
     t.string "avatar_content_type"
     t.integer "avatar_file_size"
     t.datetime "avatar_updated_at"
+    t.string "designation"
     t.index ["branch_id"], name: "index_users_on_branch_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -391,14 +401,15 @@ ActiveRecord::Schema.define(version: 20170912004931) do
   create_table "work_orders", force: :cascade do |t|
     t.integer "status"
     t.bigint "product_unit_id"
-    t.bigint "technician_id"
     t.bigint "customer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "reported_problem"
+    t.string "physical_condition"
+    t.string "service_number"
     t.index ["customer_id"], name: "index_work_orders_on_customer_id"
     t.index ["product_unit_id"], name: "index_work_orders_on_product_unit_id"
     t.index ["status"], name: "index_work_orders_on_status"
-    t.index ["technician_id"], name: "index_work_orders_on_technician_id"
   end
 
   add_foreign_key "accessories", "product_units"
@@ -429,6 +440,8 @@ ActiveRecord::Schema.define(version: 20170912004931) do
   add_foreign_key "stocks", "products"
   add_foreign_key "stocks", "registries"
   add_foreign_key "stocks", "suppliers"
+  add_foreign_key "technician_work_orders", "users", column: "technician_id"
+  add_foreign_key "technician_work_orders", "work_orders"
   add_foreign_key "units", "customers"
   add_foreign_key "updates", "users"
   add_foreign_key "users", "branches"
@@ -442,5 +455,4 @@ ActiveRecord::Schema.define(version: 20170912004931) do
   add_foreign_key "work_order_service_charges", "work_orders"
   add_foreign_key "work_orders", "customers"
   add_foreign_key "work_orders", "product_units"
-  add_foreign_key "work_orders", "users", column: "technician_id"
 end

@@ -62,12 +62,16 @@ Rails.application.routes.draw do
   resources :registries, only: [:create, :show, :destroy]
   resources :employees, only: [:index, :show, :edit, :update]
   resources :work_orders, only: [:index, :new, :create]
+  resources :work_order_statuses, only: [:edit, :update]
   namespace :computer_repair_section do 
     resources :dashboard, only: [:index]
     resources :work_orders do 
-      resources :service_charges
+      resources :service_charges, only: [:new, :create], module: :work_orders
+      resources :additional_charges, only: [:new, :create], module: :work_orders
       resources :spare_parts
     end
+    resources :work_order_service_charges, only: [:destroy]
     resources :work_order_updates, only: [:new, :create]
   end
+  resources :technicians, only: [:show]
 end
