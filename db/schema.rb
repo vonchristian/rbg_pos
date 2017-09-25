@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170923121008) do
+ActiveRecord::Schema.define(version: 20170925054656) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,7 +22,9 @@ ActiveRecord::Schema.define(version: 20170923121008) do
     t.string "serial_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "work_order_id"
     t.index ["product_unit_id"], name: "index_accessories_on_product_unit_id"
+    t.index ["work_order_id"], name: "index_accessories_on_work_order_id"
   end
 
   create_table "accounts", force: :cascade do |t|
@@ -138,9 +140,11 @@ ActiveRecord::Schema.define(version: 20170923121008) do
     t.bigint "order_id"
     t.decimal "markup_amount", default: "0.0"
     t.bigint "work_order_id"
+    t.bigint "user_id"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
     t.index ["order_id"], name: "index_line_items_on_order_id"
     t.index ["stock_id"], name: "index_line_items_on_stock_id"
+    t.index ["user_id"], name: "index_line_items_on_user_id"
     t.index ["work_order_id"], name: "index_line_items_on_work_order_id"
   end
 
@@ -403,7 +407,9 @@ ActiveRecord::Schema.define(version: 20170923121008) do
     t.bigint "work_order_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
     t.index ["service_charge_id"], name: "index_work_order_service_charges_on_service_charge_id"
+    t.index ["user_id"], name: "index_work_order_service_charges_on_user_id"
     t.index ["work_order_id"], name: "index_work_order_service_charges_on_work_order_id"
   end
 
@@ -422,6 +428,7 @@ ActiveRecord::Schema.define(version: 20170923121008) do
   end
 
   add_foreign_key "accessories", "product_units"
+  add_foreign_key "accessories", "work_orders"
   add_foreign_key "accounts", "accounts", column: "main_account_id"
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
@@ -432,6 +439,7 @@ ActiveRecord::Schema.define(version: 20170923121008) do
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "stocks"
+  add_foreign_key "line_items", "users"
   add_foreign_key "line_items", "work_orders"
   add_foreign_key "orders", "customers"
   add_foreign_key "orders", "users", column: "employee_id"
@@ -461,6 +469,7 @@ ActiveRecord::Schema.define(version: 20170923121008) do
   add_foreign_key "warranty_releases", "users"
   add_foreign_key "warranty_releases", "warranties"
   add_foreign_key "work_order_service_charges", "service_charges"
+  add_foreign_key "work_order_service_charges", "users"
   add_foreign_key "work_order_service_charges", "work_orders"
   add_foreign_key "work_orders", "customers"
   add_foreign_key "work_orders", "product_units"

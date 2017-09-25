@@ -69,10 +69,15 @@ Rails.application.routes.draw do
     resources :work_orders do 
       resources :service_charges, only: [:new, :create], module: :work_orders
       resources :additional_charges, only: [:new, :create], module: :work_orders
-      resources :spare_parts
+      resources :spare_parts, only: [:new, :create]
+      resources :service_claim_tags, only: [:show]
+      resources :payments, module: :work_orders, only: [:new, :create]
     end
     resources :work_order_service_charges, only: [:destroy]
     resources :work_order_updates, only: [:new, :create]
   end
   resources :knowledge_center, only: [:index]
+  resources :product_units, shallow: true do 
+    resources :accessories, only: [:new, :create]
+  end
 end

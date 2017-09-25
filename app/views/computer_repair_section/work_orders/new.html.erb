@@ -1,13 +1,16 @@
+        <div id="customer-modal" class="modal fade"></div>
+
 <div class="content">
   <div class="row">
-    <div class="col-md-10">
+    <div class="col-md-8 col-md-offset-2">
       <div class="card">
         <div class="header">
-          <h4 class="title condensed-text"> PRODUCT DETAILS </h4>
+          <h4 class="title condensed-text"> WORK ORDER DETAILS </h4>
         </div>
         <div class="content">
 <%= simple_form_for @work_order, url: :computer_repair_section_work_orders, html: { class: "form-horizontal" }, wrapper: :horizontal_form do |f| %>
   <%= f.error_notification %>
+  <span class="pull-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span>
   <%= f.input :customer_id, collection: Customer.all.map{|a| [a.full_name, a.id] } %>
   <%= f.simple_fields_for :product_unit do |ff| %>
   <%= ff.input :description, label: "Manufacturer/Description" %>
@@ -16,5 +19,5 @@
   <% end %>
   <%= f.input :physical_condition %>
   <%= f.input :reported_problem, as: :text %>
-  <%= f.submit "Save" %>
+  <%= f.submit "Save Work Order", class: "btn btn-primary" %>
 <% end %>

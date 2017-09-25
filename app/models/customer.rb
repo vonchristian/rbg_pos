@@ -5,6 +5,7 @@ class Customer < ApplicationRecord
 	has_many :entries, through: :orders
   has_many :payments, as: :commercial_document, class_name: "AccountingModule::Entry"
 	has_many :line_items, through: :orders
+  has_many :work_orders
 	has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",
@@ -17,6 +18,9 @@ class Customer < ApplicationRecord
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
   validates :first_name, :last_name, :contact_number, presence: true
   scope :recent, ->(num) { order('created_at DESC').limit(num) }
+  def work_order_payments
+     
+  end
 	def self.with_credits 
     all.select{ |a| a.with_credits? }
   end
@@ -34,10 +38,12 @@ class Customer < ApplicationRecord
 		orders.count
 	end
 	def accounts_receivable
-    entries.credit_order.map{|a| a.debit_amounts.distinct.pluck(:amount).sum}.sum
+    entries.credit_order.map{|a| a.debit_amounts.distinct.pluck(:amount).sum}.sum + 
+    work_orders.sum(&:accounts_receivable)
 	end
   def payments_total
-    payments.customer_credit_payment.map{|a| a.debit_amounts.distinct.pluck(:amount).sum}.sum
+    payments.customer_credit_payment.map{|a| a.debit_amounts.distinct.pluck(:amount).sum}.sum +
+    work_orders.payments_total
   end
   def balance_total
     accounts_receivable - payments_total

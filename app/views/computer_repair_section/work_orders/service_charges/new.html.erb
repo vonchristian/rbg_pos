@@ -23,6 +23,7 @@
               <div class="col-md-3">
                 <%= simple_form_for [@work_order, @charge], url: :computer_repair_section_work_order_service_charges do |f| %>
                   <%= f.input :service_charge_id, input_html: { value: service_charge.id }, as: :hidden %>
+                  <%= f.input :user_id, input_html: { value: current_user.id }, as: :hidden %>
                 <% if @work_order.service_charges.include?(service_charge) %>
                   <span classs="">
                     <%=link_to computer_repair_section_work_order_service_charge_path(@work_order.work_order_service_charges.find_by(service_charge: service_charge)), class: 'no-padding', method: :delete do %>

@@ -1,0 +1,21 @@
+<div class="content">
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <div class="card">
+        <div class="header">
+          <h4 class="title condensed-text"> Add Accessory Details </h4>
+        </div>
+        <div class="content">
+          <%= simple_form_for [@product_unit, @accessory] do |f| %>
+            <%= f.error_notification %>
+            <%= f.input :description %>
+            <%= f.input :quantity %>
+            <%= f.input :serial_number %>
+            <%= f.input :work_order_id, input_html: { value: @work_order.id }, as: :hidden %>
+            <%= f.submit "Save Accessory", class: "btn btn-primary" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

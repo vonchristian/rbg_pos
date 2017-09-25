@@ -31,13 +31,23 @@
           </tr>
         </thead>
         <tbody>
-          <% @customer.payments.each do |payment| %>
+          <% @customer.payments.customer_credit_payment.each do |payment| %>
             <tr>
               <td><%= payment.entry_date.strftime("%B %e, %Y") %></td>
               <td><%= payment.description %></td>
               <td><%= number_to_currency payment.debit_amounts.sum(:amount) %></td>
               <td><%= payment.user.try(:full_name) %></td>
             </tr>
+          <% end %>
+          <% @customer.work_orders.each do |work_order| %>
+          <% work_order.payments.each do |payment| %>
+            <tr>
+              <td><%= payment.entry_date.strftime("%B %e, %Y") %></td>
+              <td><%= payment.description %></td>
+              <td><%= number_to_currency payment.debit_amounts.sum(:amount) %></td>
+              <td><%= payment.user.try(:full_name) %></td>
+            </tr>
+          <% end %>
           <% end %>
         </tbody>
   </div>

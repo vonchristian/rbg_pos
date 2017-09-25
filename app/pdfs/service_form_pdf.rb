@@ -1,5 +1,5 @@
 require 'barby'
-require 'barby/barcode/code_128'
+require 'barby/barcode/code_39'
 require 'barby/outputter/prawn_outputter'
 class ServiceFormPdf < Prawn::Document 
   def initialize(work_order, view_context)
@@ -8,13 +8,21 @@ class ServiceFormPdf < Prawn::Document
     @view_context = view_context
     heading
     barcode
-    customer_details
-    product_details
-    diagnosis_details
-    actions_taken_details
-    charges_details
-    spare_parts_details
-    summary_details
+    move_down 5
+    stroke_horizontal_rule
+    move_down 5
+    bounding_box [0, 700], width: 310 do
+      customer_details
+      product_details
+      reported_problem
+      diagnosis_details
+      actions_taken_details
+    end
+    bounding_box [335, 700], width: 520 do
+      charges_details
+      spare_parts_details
+      summary_details
+    end
   end 
   
   private
@@ -29,7 +37,7 @@ class ServiceFormPdf < Prawn::Document
         barcode = Barby::Code39.new(@work_order.service_number)
         barcode.annotate_pdf(self, height: 40)
         move_down 3
-        text "SERVICE NUMBER: #{@work_order.service_number}", size: 8, style: :bold
+        text "SERVICE TAG NUMBER: #{@work_order.service_number}", size: 8, style: :bold
 
       end
     end
@@ -42,7 +50,7 @@ class ServiceFormPdf < Prawn::Document
     move_down 20
     text "CUSTOMER DETAILS", style: :bold
     move_down 2
-    table(customer_details_data, cell_style: { size: 11, font: "Helvetica", inline_format: true, :padding => [2,0,0,0]}, column_widths: [20, 150, 150]) do
+    table(customer_details_data, cell_style: { size: 11, font: "Helvetica", inline_format: true, :padding => [2,0,0,0]}, column_widths: [10, 150, 150]) do
         cells.borders = []
         # column(0).background_color = "CCCCCC"
     end
@@ -50,34 +58,53 @@ class ServiceFormPdf < Prawn::Document
     stroke_horizontal_rule
   end
   def customer_details_data
-    @customer_details_data ||=  [["","Customer",  "#{@work_order.customer_full_name}"]] +
+    @customer_details_data ||=  [["","Customer",  "#{@work_order.customer_full_name.try(:upcase)}"]] +
                                 [["", "Address", "#{@work_order.customer_address}"]] +
                                 [["", "Contact NUmber",  "#{@work_order.customer_contact_number}"]]
   end
   def product_details 
     move_down 5
     text "PRODUCT DETAILS", style: :bold
-    table(product_details_data, cell_style: { size: 11, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [20, 150, 150]) do
+    table(product_details_data, cell_style: { size: 11, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [10, 150, 150]) do
         cells.borders = []
         # column(0).background_color = "CCCCCC"
     end
     move_down 5
     stroke_horizontal_rule
+    move_down 5
   end
   def product_details_data
     @product_details_data ||=  [["", "Description",  "#{@work_order.description}"]] +
                                 [["", "Model Number", "#{@work_order.model_number.try(:upcase)}"]] +
                                 [["", "Serial Number", "#{@work_order.serial_number.try(:upcase)}"]] + 
                                 [["", "Physical Condition", "#{@work_order.physical_condition}"]] +
-                                [["", "Reported Problem", "#{@work_order.reported_problem}"]]
+                                [["", "<b>ACCESSORIES</b>"]] +
+                                @work_order.accessories.map{|a| ["","", "#{a.quantity.to_i} - #{a.description} <i>(#{a.serial_number})</i>"] }
+  end
+  def reported_problem 
+    text "REPORTED PROBLEM", style: :bold
+    table(reported_problem_data, cell_style: { size: 11, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [10, 150, 150]) do
+        cells.borders = []
+        # column(0).background_color = "CCCCCC"
+    end
+    move_down 5
+    stroke_horizontal_rule
+    move_down 5
+  end
+  def reported_problem_data 
+    @reported_problem_data ||= [["", "", "#{@work_order.reported_problem}"]] 
   end
   def diagnosis_details
     move_down 5
     text "DIAGNOSIS", style: :bold
-    table(diagnosis_details_data, cell_style: { size: 11, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [20, 150,  330]) do
-        cells.borders = []
-        column(0).size = 10
-        # column(0).background_color = "CCCCCC"
+    if @work_order.diagnoses.present?
+      table(diagnosis_details_data, cell_style: { size: 11, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [10, 150,  150]) do
+          cells.borders = []
+          column(0).size = 10
+          # column(0).background_color = "CCCCCC"
+      end
+    else
+      text "No Diagnosis Yet"
     end
     move_down 5
     stroke_horizontal_rule
@@ -88,70 +115,65 @@ class ServiceFormPdf < Prawn::Document
   def actions_taken_details
     move_down 5
     text "ACTIONS TAKEN", style: :bold
-    table(actions_taken_details_data, cell_style: { size: 11, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [20, 150,  330]) do
-        cells.borders = []
-        column(0).size = 10
-        # column(0).background_color = "CCCCCC"
+    if @work_order.actions_taken.present?
+      table(actions_taken_details_data, cell_style: { size: 11, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [10, 150,  150]) do
+          cells.borders = []
+          column(0).size = 10
+          # column(0).background_color = "CCCCCC"
+      end
+    else
+      text "No Actions Taken Yet"
     end
     move_down 5
     stroke_horizontal_rule
+
   end
   def actions_taken_details_data
     @actions_taken_details_data ||= @work_order.actions_taken.map{|a| ["", a.created_at.strftime("%b %e, %l:%M %p"),  a.content]}
   end
   def charges_details
     move_down 15
-    text "SERVICE CHARGES", style: :bold
+    text "SERVICE CHARGES", style: :bold, size: 10
     if @work_order.service_charges.present?
-      move_down 10
-      table(charge_details_data, cell_style: { size: 11, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [20, 150, 150]) do
+      table(charge_details_data, cell_style: { size: 10, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [10, 120, 50]) do
           cells.borders = []
           # column(0).background_color = "CCCCCC"
       end
     end
-    move_down 5
-    stroke_horizontal_rule
+    move_down 10
   end
   def charge_details_data
-    @charge_details_data ||= @work_order.service_charges.map{|a| ["", a.description, price(a.amount)] } +
-    [["", "_____________________", "___________"]] +
-    [["", "TOTAL", "#{price(@work_order.total_service_charges_cost)}"]]
+    @charge_details_data ||= @work_order.service_charges.map{|a| ["", a.description, price(a.amount)] }
   end
   def spare_parts_details
-    move_down 15
-    text "SPARE PARTS", style: :bold
+    text "SPARE PARTS", style: :bold, size: 10
     if @work_order.spare_parts.present?
-      move_down 10
-      table(spare_part_details_data, cell_style: { size: 11, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [20, 50, 150, 150]) do
+      table(spare_part_details_data, cell_style: { size: 10, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [10, 120, 50]) do
           cells.borders = []
           # column(0).background_color = "CCCCCC"
       end
     end
-    move_down 5
-    stroke_horizontal_rule
-  end
+    move_down 10
+end
   def spare_part_details_data
-    @spare_part_details_data ||= @work_order.spare_parts.map{|a| ["", a.quantity, a.product_name, price(a.total_cost)] } +
-    [["","_______", "__________________", "___________"]] +
-    [["", "TOTAL","",  "#{price(@work_order.total_spare_parts_cost)}"]]
+    @spare_part_details_data ||= @work_order.spare_parts.map{|a| ["", a.product_name, price(a.total_cost)] }
   end
   def summary_details
     move_down 10
     text "SUMMARY", style: :bold
      move_down 5
-      table(summary_data, cell_style: { size: 11, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [20, 200, 290]) do
+      table(summary_data, cell_style: { size: 10, font: "Helvetica", inline_format: true, :padding => [5,0,0,0]}, column_widths: [10, 120, 70]) do
           cells.borders = []
           row(-1).background_color = "FEC708"
-          row(-1).size = 14
+          row(-1).size = 12
+          row(-2).background_color = "FEC708"
       end
-      move_down 5
-    stroke_horizontal_rule
   end
   def summary_data
-    @summary_data ||=  [["", "TOTAL SERVICE CHARGES", "#{price(@work_order.total_service_charges_cost)}"]] +
-                       [["", "TOTAL SPARE PARTS", "#{price(@work_order.total_spare_parts_cost)}"]] +
-                       [["", "_________________________", "___________"]] +
-                       [["", "<b>TOTAL</b>", "<b>#{price(@work_order.total_charges_cost)}</b>"]]
+    @summary_data ||=  [["", "SERVICE CHARGES", "#{price(@work_order.total_service_charges_cost)}"]] +
+                       [["", "SPARE PARTS", "#{price(@work_order.total_spare_parts_cost)}"]] +
+                       [["", "<b>TOTAL</b>", "<b>#{price(@work_order.total_charges_cost)}</b>"]] +
+                       [["", "", ""]]
 
 
   end

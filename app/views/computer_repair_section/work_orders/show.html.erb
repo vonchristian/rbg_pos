@@ -69,10 +69,33 @@
                   <%= distance_of_time_in_words(@work_order.created_at, Time.zone.now) %>
                 </div>
               </div>
+              <br>
+              <div class="row">
+                <div class="col-md-6">
+                  <p class="condensed-text"> <span class="label label-success"><%= @work_order.accessories.count %> </span> &nbsp; ACCESSORIES </p> 
+                </div>
+                <div class="col-md-6">
+                  <%=link_to 'Add Accessories', new_product_unit_accessory_path(@work_order.product_unit, work_order_id: @work_order.id) %>
+                </div>
+              </div>
+              <br />
+                <% @work_order.accessories.each do |accessory| %>
+              <div class="row">
+                <div class="col-md-6">
+                  <%=accessory.quantity.to_i %>
+                </div>
+                <div class="col-md-6">
+                  <%= accessory.description %><br>
+                  <small><%= accessory.serial_number.try(:upcase) %></small>
+                </div>
+              </div>
+              <br>
+              <% end %>
+
             </div>
             <div class="col-md-5 col-md-offset-1">
               <p class="condensed-text">REPORTS </p>
-              <%= link_to 'SERVICE TAG', computer_repair_section_work_order_path(@work_order, format: 'pdf'), class: "label label-default"  %>
+              <%= link_to 'SERVICE CLAIM TAG', computer_repair_section_work_order_service_claim_tag_path(@work_order, format: 'pdf'), class: "label label-default"  %>
               <%= link_to 'SERVICE FORM', computer_repair_section_work_order_path(@work_order, format: 'pdf'), class: "label label-default"  %>
               
               <%= link_to 'CHARGE INVOICE', computer_repair_section_work_order_path(@work_order, format: 'pdf'), class: "label label-default" %>
@@ -97,22 +120,50 @@
             <div class="content">
               <% @work_order.service_charges.each do |charge| %>
                 <div class="row">
-                  <div class="col-md-8">
+                  <div class="col-md-1 hidden-xs">
+                  </div>
+                  <div class="col-md-7 col-xs-8">
                     <%= charge.description %>
                   </div>
-                  <div class="col-md-3">
-                    <%= number_to_currency charge.amount %>
+                  <div class="col-md-4 col-xs-4">
+                    <span class="pull-right"><%= number_to_currency charge.amount %></span>
                   </div>
                 </div>
                 <br>
               <% end %>
-              <hr>
-              <div class="row">
+               <div class="row">
                 <div class="col-md-8">
-                  <p class="condensed-text"> TOTAL </p>
+                  <p class="condensed-text title"> SPARE PARTS </p>
                 </div>
-                <div class="col-md-3">
-                  <%= number_to_currency @work_order.total_service_charges_cost %>
+                <div class="col-md-4">
+                  <%=link_to 'Add Parts', new_computer_repair_section_work_order_spare_part_path(@work_order) %>
+                </div>
+              </div>
+              <br>
+              <% @work_order.spare_parts.each do |spare_part| %>
+                <div class="row">
+                  <div class="col-md-1">
+                  </div>
+                  <div class="col-md-1">
+                    <%= spare_part.quantity.to_i %>
+                  </div>
+                  <div class="col-md-7">
+                    <%= spare_part.product_name %>
+                  </div>
+                  <div class="col-md-3">
+                    <span class="pull-right"><%= number_to_currency spare_part.total_cost %></span>
+                  </div>
+                </div>
+                <br>
+              <% end %>
+              <div class="row">
+                <div class="col-md-1">
+                </div>
+                <div class="col-md-7">
+                  <h4 class="condensed-text"><b> TOTAL </b> </h4>
+                </div>
+                <div class="col-md-4">
+                  <h4 class="pull-right"><%= number_to_currency @work_order.total_charges_cost %></h4>
                 </div>
               </div>
             </div>
@@ -123,37 +174,60 @@
             <div class="header">
               <div class="row">
                 <div class="col-md-8">
-                  <p class="condensed-text title"> SPARE PARTS </p>
+                  <p class="condensed-text title"> PAYMENT DETAILS </p>
                 </div>
                 <div class="col-md-4">
-                  <%=link_to 'Add Stocks', new_computer_repair_section_work_order_spare_part_path(@work_order) %>
+                  <% if @work_order.balance_total > 0 %>
+                    <%=link_to 'New Payment', new_computer_repair_section_work_order_payment_path(@work_order) %>
+                  <% end %>
                 </div>
               </div>
             </div>
             <div class="content">
-              <% @work_order.spare_parts.each do |spare_part| %>
+              <div class="row">
+                <div class="col-md-6">
+                  <p class="condensed-text"> RECEIVABLES </p>
+                </div> 
+                <div class="col-md-6">
+                  <p class="condensed-text pull-right"> <%=number_to_currency @work_order.accounts_receivable %></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <p class="condensed-text"> PAYMENTS </p>
+                </div> 
+                <div class="col-md-6">
+                  <p class="condensed-text pull-right"> <%=number_to_currency @work_order.payments_total %></p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-6">
+                  <p class="condensed-text"> BALANCE </p>
+                </div> 
+                <div class="col-md-6">
+                  <p class="condensed-text pull-right"> <%=number_to_currency @work_order.balance_total %></p>
+                </div>
+              </div>
+              <hr>
+              
+              <p class="condensed-text"> PAYMENT HISTORY </p>
+              <% @work_order.entries.work_order_payment.each do |payment| %>
                 <div class="row">
-                  <div class="col-md-2">
-                    <%= spare_part.quantity %>
+                  <div class="col-md-3">
+                    <span data-toggle="tooltip" title="<%=payment.user.try(:first_name) %>" data-placement="top">
+                    <%= image_tag(payment.user.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %>
+                </span>
                   </div>
-                  <div class="col-md-7">
-                    <%= spare_part.product_name %>
+                  <div class="col-md-4">
+                    <%= payment.entry_date.strftime("%b %e, %l:%M %p") %>
                   </div>
-                  <div class="col-md-2">
-                    <%= number_to_currency spare_part.total_cost %>
+                  <div class="col-md-4">
+                    <span class="pull-right"><%= number_to_currency payment.debit_amounts.distinct.sum(&:amount) %></span>
                   </div>
                 </div>
                 <br>
               <% end %>
-              <hr>
-              <div class="row">
-                <div class="col-md-7 col-md-offset-2">
-                  <p class="condensed-text">TOTAL </p>
-                </div>
-                <div class="col-md-2">
-                  <%= number_to_currency @work_order.total_spare_parts_cost %>
-                </div>
-              </div>
             </div>
           </div>
         </div>

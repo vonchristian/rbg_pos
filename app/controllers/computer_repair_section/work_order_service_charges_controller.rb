@@ -17,6 +17,7 @@ module ComputerRepairSection
     def destroy 
       @charge = WorkOrderServiceCharge.find(params[:id])
       @charge.destroy 
+      @charge.remove_entry
       redirect_to new_computer_repair_section_work_order_service_charge_url(@charge.work_order), notice: "Removed successfully."
     end
 

@@ -35,15 +35,15 @@
                 <tbody>
                   <% @work_orders.all.each do |work_order| %>
                     <tr>
-                      <td width="250px">
-                        <%= work_order.reported_problem %><br><br>
+                      <td width="400px">
+                        <%=link_to work_order.reported_problem, computer_repair_section_work_order_path(work_order) %><br><br>
                         <% work_order.technicians.each do |technician| %>
                           <span data-toggle="tooltip" title="<%=technician.first_name %>" data-placement="top">
-                            <%= image_tag(technician.avatar.url(:large), class: "img-circle", height: 45, width: 45) %> &nbsp;
+                            <%= image_tag(technician.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %> &nbsp;
                           </span>
                         <% end %>
                       </td>
-                      <td>
+                      <td width="400px">
                           <% work_order.diagnoses.each do |diagnosis| %>
                             <%=link_to diagnosis.content, computer_repair_section_work_order_path(work_order) %>
                           <% end %>

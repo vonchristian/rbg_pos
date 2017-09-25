@@ -40,6 +40,7 @@
                         <%= f.input :quantity, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1 }, label: false, as: :string %>
                         <%= f.input :unit_cost, input_html: { value: stock.retail_price, id: 'line_item_unit_cost' }, as: :hidden %>
                         <%= f.input :stock_id, input_html: { value: stock.id }, as: :hidden %>
+                        <%= f.input :user_id, input_html: { value: current_user.id}, as: :hidden %>
                       </div>
                       <div class="col-md-2">
                         <% if stock.in_stock > 0 %>

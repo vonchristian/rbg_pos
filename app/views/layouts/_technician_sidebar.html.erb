@@ -1,26 +1,30 @@
 <div class="sidebar" data-background-color="white" data-active-color="success">
   <div class="sidebar-wrapper">
-            <div class="logo">
-                <a href="/" class="simple-text">
-                    RBG STORE
-                </a>
-            </div>
-
-            <ul class="nav">
-                <li class="<%='active' if current_page?(computer_repair_section_dashboard_index_path) %>">
-                    <a href="/computer_repair_section/dashboard">
-                        <i class="icon-home"></i>
-                        <p>Dashboard</p>
-                    </a>
-                </li>
-                <li class="<%='active' if current_page?(knowledge_center_index_path) %>">
-                    <a href="/knowledge_center">
-                        <i class="icon-grid"></i>
-                        <p>Knowledge Center</p>
-                    </a>
-                </li>
-          
-               
-            </ul>
-      </div>
+    <div class="logo">
+        <a href="/" class="simple-text">
+            RBG STORE
+        </a>
     </div>
+
+    <ul class="nav">
+      <li class="<%='active' if current_page?(computer_repair_section_dashboard_index_path) %>">
+          <a href="/computer_repair_section/dashboard">
+              <i class="icon-home"></i>
+              <p>Work Orders</p>
+          </a>
+      </li>
+      <li class="<%='active' if current_page?(knowledge_center_index_path) %>">
+          <a href="/knowledge_center">
+              <i class="icon-grid"></i>
+              <p>Knowledge Center</p>
+          </a>
+      </li>
+     <li class="<%='active' if current_page?(customers_path) %>">
+          <a href="/customers">
+              <i class="icon-people"></i>
+              <p>Customers</p>
+          </a>
+      </li>
+    </ul>
+  </div>
+</div>
