@@ -13,6 +13,7 @@ class ProductsPdf < Prawn::Document
   end
   def heading 
     text "INVENTORY REPORT", align: :center
+    text "As of: #{Time.zone.now.strftime("%B %e, %Y")}"
     move_down 5
     stroke_horizontal_rule
     move_down 10
