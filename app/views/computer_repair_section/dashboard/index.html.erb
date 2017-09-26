@@ -11,13 +11,13 @@
               </span>
             <% end %>
           <% end %>
+          <br>
         </div>
         <div class="col-md-3 border-right">
           <p><small class="condensed-text">VIEW PER DEPARTMENT</small></p>
         </div>
         <div class="col-md-3 border-right">
           <p><small class="condensed-text">VIEW PER DATE</small></p>
-          <%= link_to 'Yesterday', computer_repair_section_dashboard_index_path(from_date: Time.zone.now.beginning_of_day.yesterday.beginning_of_day, to_date: Time.zone.now.yesterday.end_of_day) %>
           <%= link_to 'This Day', computer_repair_section_dashboard_index_path(from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day) %>
           <%= link_to 'This Week', computer_repair_section_dashboard_index_path(from_date: Time.zone.now.beginning_of_week, to_date: Time.zone.now.end_of_week) %>
           <%= link_to 'This Month', computer_repair_section_dashboard_index_path(from_date: Time.zone.now.beginning_of_month, to_date: Time.zone.now.end_of_month) %>

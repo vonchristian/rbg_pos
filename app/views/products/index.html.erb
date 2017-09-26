@@ -47,11 +47,11 @@
                                 <div class="col-md-2">
                                   <%= simple_form_for @registry, multipart: true, method: :create do |f| %>
                                     <%= f.input :spreadsheet, as: :file, label: false %>
-                                      <%= f.submit 'Import Products', class: 'btn btn-danger btn-xs' %>
+                                      <%= f.submit 'Import Products', class: 'btn btn-danger btn-xs pull-right' %>
                                   <% end %>
                                 </div>
                                 <div class="col-md-2">
-                                 
+                                   <%= link_to 'Inventory Report', products_path(format: 'pdf') %>
                                 </div>
                               </div>
                             <div class="content table-responsive table-full-width">

@@ -13,7 +13,7 @@ class OrderPdf < Prawn::Document
     @view_context.number_to_currency(number, :unit => "P ")
   end
   def unit_cost_detail(unit_cost)
-    if unit_cost.zero?
+    if unit_cost > 0
       price(unit_cost)
     else
       "FREE"

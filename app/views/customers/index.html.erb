@@ -1,3 +1,4 @@
+
 <div class="content">
             <div class="container-fluid">
                 <div class="row">
@@ -11,12 +12,12 @@
                                 </div>
                                 <div class="col-md-7">
                                   <%=form_tag customers_path, method: :get, id: "search-form" do %>
-                                    <div class="input-group">
+                                    <div class="input-group stylish-input-group">
                                       <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search product...", type: "search" %>
-                                      <span class="input-group-btn">
-                                        <%= button_tag(type: 'submit', class: "btn") do %>
-                                          <i class="icon-magnifier"></i>
-                                        <% end %>
+                                      <span class="input-group-addon">
+                                       <button type="submit">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button> 
                                       </span>
                                     </div>
                                   <% end %>
