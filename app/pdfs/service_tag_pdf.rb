@@ -26,7 +26,7 @@ class ServiceTagPdf < Prawn::Document
         barcode = Barby::Code39.new(@work_order.service_number)
         barcode.annotate_pdf(self, height: 40)
         move_down 3
-        text "SERVICE NUMBER: #{@work_order.service_number}", size:10, style: :bold
+        text  "##{@work_order.service_number}", size: 18, style: :bold
 
       end
     end
@@ -85,6 +85,6 @@ class ServiceTagPdf < Prawn::Document
   end
   def message 
     move_down 10
-    text "Marketing message, contact info, UPSELL"
+    
   end
 end 

@@ -3,12 +3,20 @@ class LineItem < ApplicationRecord
   belongs_to :cart, optional: true
   belongs_to :stock, optional: true
   belongs_to :order, optional: true
+  belongs_to :work_order, optional: true
+
   
   delegate :barcode, :product_name, :product_unit, to: :stock
   delegate :name_and_barcode, to: :stock, prefix: true
   
   validate :exceeds_available_stock?, on: :create
   after_commit :set_total_cost, on: [:create, :update]
+  def self.not_stock_transfer
+    all.select{|a| !a.stock_transfer? }
+  end
+  def stock_transfer?
+    order.stock_transfer?
+  end
   def self.total_cost
     all.sum(&:unit_cost_and_quantity)
   end
@@ -17,6 +25,12 @@ class LineItem < ApplicationRecord
   end
   def returned?
     sales_return.present?
+  end
+  def remove_entry
+    entry = work_order.entries.work_order_credit.where(user_id: self.user_id).last
+    if entry.present?
+      entry.destroy
+    end
   end
   private 
   def exceeds_available_stock?

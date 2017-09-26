@@ -3,4 +3,5 @@ class ProductUnit < ApplicationRecord
   include PgSearch
   multisearchable :against => [:description, :model_number, :serial_number]
   has_many :accessories
+  validates :description, presence: true
 end

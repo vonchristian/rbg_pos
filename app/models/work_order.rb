@@ -12,12 +12,23 @@ class WorkOrder < ApplicationRecord
   has_many :work_order_service_charges, dependent: :destroy
   has_many :service_charges, through: :work_order_service_charges
   has_many :spare_parts, class_name: "LineItem", foreign_key: 'work_order_id', dependent: :destroy
-  has_many :accessories
+  has_many :accessories, dependent: :destroy
   enum status: [:received, :work_in_progress, :done, :released]
   accepts_nested_attributes_for :product_unit
   delegate :description, :model_number, :serial_number, to: :product_unit, allow_nil: true
   delegate :full_name, :address, :contact_number, to: :customer, allow_nil: true, prefix: true
   has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document
+  validates :description, :physical_condition, :reported_problem, :service_number, presence: true
+  validates :customer_id, presence: true
+  def self.from(hash={})
+      if hash[:from_date] && hash[:to_date]
+       from_date = hash[:from_date].kind_of?(Time) ? hash[:from_date] : Time.parse(hash[:from_date])
+        to_date = hash[:to_date].kind_of?(Time) ? hash[:to_date] : Time.parse(hash[:to_date])
+        where('created_at' => from_date..to_date)
+      else
+        all
+      end
+    end
   def self.payments
     select{ |a| a.payments }
   end
@@ -60,10 +71,10 @@ class WorkOrder < ApplicationRecord
     (self.created_at - Time.zone.now) /86400
   end
   def self.generate_number_for(work_order)
-    if self.last.present? && self.last.service_number.present?
-      work_order.service_number = "#{self.last.service_number.succ.rjust(12, '0')}"
-    else 
-     work_order.service_number =  "#{1.to_s.rjust(12, '0')}"
+    unless WorkOrder.any?
+      work_order.service_number =  "#{1.to_s.rjust(12, '0')}"
+    else
+      work_order.service_number = "#{WorkOrder.last.service_number.succ.rjust(12, '0')}"
     end
   end
   def diagnoses
@@ -90,7 +101,7 @@ class WorkOrder < ApplicationRecord
     merchandise_inventory = AccountingModule::Account.find_by(name: "Merchandise Inventory")
 
 
-    entries.work_order_credit.create(entry_date: spare_part.created_at, 
+    entries.work_order_credit.create(entry_date: spare_part.created_at,
       description: "Spare parts installed", 
       user_id: spare_part.user_id, 
       debit_amounts_attributes: [{amount: spare_part.total_cost, account: accounts_receivable}, {amount: spare_part.total_cost, account: cost_of_goods_sold}], 

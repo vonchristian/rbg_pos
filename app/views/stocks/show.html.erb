@@ -3,6 +3,12 @@
     <div class="card">
       <div class="header">
          <h4 class="title"><%= @stock.name %></h4>
+         <% if @stock.sold? %>
+                                        <span class="label label-danger"> Sold </span>
+                                      <% else %>
+                                        <span class="label label-success"> <%= @stock.in_stock.to_i %> left </span>
+
+                                      <% end %>
       </div>
       <div class="content">
         <div class="row">
@@ -49,6 +55,17 @@
             <%= @stock.supplier.try(:business_name) %>
           </div>
         </div>
+        <% if @stock.sold? %>
+        <br>
+          <div class="row">
+          <div class="col-md-4">
+            Date Sold
+          </div>
+          <div class="col-md-8">
+            <%= @stock.line_items.last.created_at.strftime("%B %e, %Y") %>
+          </div>
+        </div>
+        <% end %>
         <hr>
 <%# if policy(:stock_transfer).new? %>
   <%#= link_to 'New Transfer', new_stock_transfer_path(@stock), class: "btn btn-primary" %>

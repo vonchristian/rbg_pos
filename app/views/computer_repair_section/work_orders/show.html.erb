@@ -16,15 +16,17 @@
               <small class="condensed-text">TECHNICIANS</small>
             </div>
             <div class="col-md-5">
-              <%= simple_form_for @work_order, url: :computer_repair_section_work_order do |f| %>
-                <div class="row">
-                  <div class="col-md-7">
-                    <%= f.input :status, label: false, collection: WorkOrder.statuses.keys.to_a.map{|a| [a.titleize, a]} %>
+              <% if current_user.technician? || current_user.proprietor? %>
+                <%= simple_form_for @work_order, url: :computer_repair_section_work_order do |f| %>
+                  <div class="row">
+                    <div class="col-md-7">
+                      <%= f.input :status, label: false, collection: WorkOrder.statuses.keys.to_a.map{|a| [a.titleize, a]} %>
+                    </div>
+                    <div class="col-md-3">
+                      <%= f.submit "Update Status", class: "btn btn-primary btn-sm" %>
+                    </div>
                   </div>
-                  <div class="col-md-3">
-                    <%= f.submit "Update Status", class: "btn btn-primary btn-sm" %>
-                  </div>
-                </div>
+                <% end %>
               <% end %>
             </div>
           </div>
@@ -95,10 +97,15 @@
             </div>
             <div class="col-md-5 col-md-offset-1">
               <p class="condensed-text">REPORTS </p>
-              <%= link_to 'SERVICE CLAIM TAG', computer_repair_section_work_order_service_claim_tag_path(@work_order, format: 'pdf'), class: "label label-default"  %>
-              <%= link_to 'SERVICE FORM', computer_repair_section_work_order_path(@work_order, format: 'pdf'), class: "label label-default"  %>
+              <%= link_to 'CLAIM TAG', computer_repair_section_work_order_service_claim_tag_path(@work_order, format: 'pdf'), class: "label label-default"  %><br><br>
+              <small class="condensed-text">RELEASE FORM</small><br>
+              <% if @work_order.done? || @work_order.released? %>
+                <%= link_to 'RELEASE FORM', computer_repair_section_work_order_path(@work_order, format: 'pdf'), class: "label label-default"  %>
+              <% else %>
+              <small class="text-danger"> Work Order status is <span class="label label-danger"><%= @work_order.status%></span> and cannot be released yet </small>
+              <% end %>
               
-              <%= link_to 'CHARGE INVOICE', computer_repair_section_work_order_path(@work_order, format: 'pdf'), class: "label label-default" %>
+              <%#= link_to 'CHARGE INVOICE', computer_repair_section_work_order_path(@work_order, format: 'pdf'), class: "label label-default" %>
 
             </div>
           </div>
@@ -147,10 +154,10 @@
                   <div class="col-md-1">
                     <%= spare_part.quantity.to_i %>
                   </div>
-                  <div class="col-md-7">
+                  <div class="col-md-7 col-xs-6">
                     <%= spare_part.product_name %>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-3 col-xs-5">
                     <span class="pull-right"><%= number_to_currency spare_part.total_cost %></span>
                   </div>
                 </div>

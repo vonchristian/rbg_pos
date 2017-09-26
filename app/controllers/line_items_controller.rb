@@ -11,7 +11,7 @@ class LineItemsController < ApplicationController
 	def destroy 
 		@line_item = LineItem.find(params[:id])
 		@line_item.destroy 
-		redirect_to orders_url, notice: 'Line item returned successfully.'
+		redirect_to orders_url, notice: 'removed successfully.'
 	end
   def update 
     @line_item = LineItem.find(params[:id])

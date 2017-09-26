@@ -9,7 +9,6 @@ module ComputerRepairSection
       if @work_order.valid?
         @work_order.save 
         @work_order.technician_work_orders.create(technician: current_user)
-        WorkOrder.generate_number_for(@work_order)
         redirect_to computer_repair_section_work_order_url(@work_order), notice: "Received successfully."
         @work_order.received!
       else 
@@ -42,7 +41,7 @@ module ComputerRepairSection
 
     private 
     def work_order_params
-      params.require(:work_order).permit(:status, :customer_id, :reported_problem, :physical_condition, product_unit_attributes: [:description, :model_number, :serial_number])
+      params.require(:work_order).permit(:service_number, :status, :customer_id, :reported_problem, :physical_condition, product_unit_attributes: [:description, :model_number, :serial_number])
     end 
   end 
 end 

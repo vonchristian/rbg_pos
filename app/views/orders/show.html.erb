@@ -10,7 +10,11 @@
                                 <i class="icon-calendar"></i> <%= @order.date.strftime("%B %e, %Y") %><br>
 
                                 Mode of Payment 
-                                <p class="label label-<%= @order.mode_of_payment_color%>"><%= @order.mode_of_payment %></p>
+                                <% if !@order.internal_use? %>
+                                  <p class="label label-<%= @order.mode_of_payment_color%>"><%= @order.mode_of_payment %></p>
+                                <% else %>
+                                  <span class="label label-warning"> for internal use </span>
+                                <% end %>
 
 
 

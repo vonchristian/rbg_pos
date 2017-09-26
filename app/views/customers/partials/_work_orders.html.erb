@@ -8,6 +8,7 @@
           <th>Product</th>
           <th>Reported Problem</th>
           <th>Status</th>
+          <th>Total Cost</th>
         </tr>
       </thead>
       <tbody>
@@ -17,6 +18,7 @@
             <td><%= link_to work_order.product_unit.try(:description), computer_repair_section_work_order_path(work_order) %></td>
             <td><%= work_order.reported_problem %></td>
             <td><%= work_order.status %></td>
+            <td><%= number_to_currency work_order.total_charges_cost %></td>
           </tr>
         <% end %>
       </tbody>

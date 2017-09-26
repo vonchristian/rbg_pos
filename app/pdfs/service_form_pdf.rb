@@ -32,12 +32,12 @@ class ServiceFormPdf < Prawn::Document
   def barcode
 
       bounding_box [340, 770], width: 150 do
-        text "SERVICE FORM"
-        move_down 40
+        text "SERVICE RELEASE FORM"
+        move_down 30
         barcode = Barby::Code39.new(@work_order.service_number)
-        barcode.annotate_pdf(self, height: 40)
+        barcode.annotate_pdf(self, height: 30)
         move_down 3
-        text "SERVICE TAG NUMBER: #{@work_order.service_number}", size: 8, style: :bold
+        text  "##{@work_order.service_number}", size: 18
 
       end
     end
@@ -91,9 +91,13 @@ class ServiceFormPdf < Prawn::Document
     stroke_horizontal_rule
     move_down 5
   end
+
   def reported_problem_data 
-    @reported_problem_data ||= [["", "", "#{@work_order.reported_problem}"]] 
+    @reported_problem_data ||= [["", "", "#{@work_order.reported_problem}"]] +
+    [["",  "<b>TECHNICIANS</b>" ]] +
+    @work_order.technicians.map{ |a| ["", "", a.full_name] }
   end
+
   def diagnosis_details
     move_down 5
     text "DIAGNOSIS", style: :bold
@@ -129,7 +133,7 @@ class ServiceFormPdf < Prawn::Document
 
   end
   def actions_taken_details_data
-    @actions_taken_details_data ||= @work_order.actions_taken.map{|a| ["", a.created_at.strftime("%b %e, %l:%M %p"),  a.content]}
+    @actions_taken_details_data ||= @work_order.actions_taken.map{|a| ["", "#{a.created_at.strftime("%b %e, %l:%M %p")}",  "#{a.content} -  #{a.user.try(:full_name)}"]}
   end
   def charges_details
     move_down 15

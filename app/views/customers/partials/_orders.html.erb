@@ -7,6 +7,7 @@
           <th>Date</th>
         	<th>Customer</th>
         	<th>Items</th>
+          <th> Type </th>
         	<th>Total Cost</th>
           <th>Employee </th>
         </thead>
@@ -17,6 +18,7 @@
 	            <td><%=link_to order.date.strftime("%B %e, %Y"), order %></td>
 	            <td><%= order.customer_full_name.try(:titleize) %></td>
 	            <td><%= order.line_items_name %></td>
+              <td><span class="label label-<%=order.mode_of_payment_color%>"><%= order.mode_of_payment %></span></td>
 	            <td><%= number_to_currency order.total_cost %></td>
               <td><%= order.employee.try(:full_name) %></td>
 	           <% end %>

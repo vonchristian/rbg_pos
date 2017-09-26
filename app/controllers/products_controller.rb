@@ -3,7 +3,7 @@ class ProductsController < ApplicationController
     if params[:search].present?
       @products = Product.text_search(params[:search]).page(params[:page]).per(20)
     else
-      @products = Product.all.order(:name).page(params[:page]).per(30)
+      @products = Product.includes([:stocks, :sold_items]).all.order(:name).page(params[:page]).per(20)
       @low_on_stock_products = Kaminari.paginate_array(Product.low_on_stock).page(params[:page]).per(20)
     end
     @registry = Registry.new

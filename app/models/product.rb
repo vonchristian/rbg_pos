@@ -10,7 +10,7 @@ class Product < ApplicationRecord
 	has_many :items_under_warranty, through: :sales_returns, source: :warranty #forwarded items to supplier
 	has_many :released_warranties, through: :items_under_warranty, source: :warranty_release
 
-	has_many :transferred_stocks, through: :stocks, source: :stock_transfers
+
 	has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",
@@ -22,6 +22,7 @@ class Product < ApplicationRecord
   :url => "/system/:attachment/:id/:style/:filename"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
   validates :name, presence: true
+
   def self.low_on_stock
     all.select{ |a| a.low_on_stock? }
   end
@@ -61,8 +62,11 @@ class Product < ApplicationRecord
       member.save!
     end
   end
+  def transferred_stocks 
+    orders.stock_transfers
+  end
 	def in_stock
-		((delivered_items_count + returned_items_count) - (sold_items_count - transferred_stocks_count)) - released_warranties_count
+		((delivered_items_count + returned_items_count) - (sold_items_count)) - released_warranties_count
 	end 
 	def sold_items_count
 		sold_items.sum(:quantity)
@@ -71,7 +75,11 @@ class Product < ApplicationRecord
 		stocks.sum(:quantity)
 	end
 	def transferred_stocks_count
-		transferred_stocks.sum(:quantity)
+    if transferred_stocks.any?
+		  transferred_stocks.sum(&:total_quantity)
+    else 
+      0
+    end
 	end
 	def returned_items_count 
 		returned_items.sum(:quantity)

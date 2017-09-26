@@ -1,6 +1,46 @@
+
 <div class="content">
+  <div class="card">
   <div class="row">
-    <div class="col-md-4 col-md-offset-4">
+    <div class="col-md-8">
+       <div class="content table-responsive table-full-width">
+      <table class="table table-striped">
+        <thead>
+          <th>Date</th>
+          <th>Customer</th>
+          <th>Items</th>
+          <th> Type </th>
+          <th>Total Cost</th>
+          <th>Employee </th>
+        </thead>
+        <tbody>
+          <% @customer.orders.each do |order| %>
+            <tr>
+              <% if order.line_items.count > 0 %>
+              <td><%=link_to order.date.strftime("%B %e, %Y"), order %></td>
+              <td><%= order.customer_full_name.try(:titleize) %></td>
+              <td><%= order.line_items_name %></td>
+              <td><span class="label label-<%=order.mode_of_payment_color%>"><%= order.mode_of_payment %></span></td>
+              <td><%= number_to_currency order.total_cost %></td>
+              <td><%= order.employee.try(:full_name) %></td>
+             <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+        <hr>
+        <% @customer.work_orders.each do |work_order| %>
+          <tr>
+            <td>#<%= work_order.service_number %> </td>
+            <td><%= link_to work_order.product_unit.try(:description), computer_repair_section_work_order_path(work_order) %></td>
+            <td><%= work_order.reported_problem %></td>
+            <td><%= work_order.status %></td>
+            <td><%= number_to_currency work_order.total_charges_cost %> </td>
+          </tr>
+        <% end %>
+      </table>
+    </div> 
+  </div>
+    <div class="col-md-4">
       <div class="card">
         <div class="content">
           <div class="header">

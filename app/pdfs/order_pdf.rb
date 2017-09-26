@@ -12,6 +12,13 @@ class OrderPdf < Prawn::Document
 	def price(number)
     @view_context.number_to_currency(number, :unit => "P ")
   end
+  def unit_cost_detail(unit_cost)
+    if unit_cost.zero?
+      price(unit_cost)
+    else
+      "FREE"
+    end
+  end
 	def heading 
 		text "Order Details", align: :center
 		move_down 5
@@ -23,10 +30,16 @@ class OrderPdf < Prawn::Document
 		text "Date:                          #{@order.date.strftime("%B %e, %Y")}"
 		if @order.stock_transfer?
 		  text "Order Type:                #{@order.mode_of_payment.try(:titleize)}"
-		else
+		elsif @order.internal_use?
+      text "Order Type:               For Internal Use"
+    else
 		  text "Mode of Payment:     #{@order.mode_of_payment.try(:titleize)}"
 		end
 		text "Number of Items:      #{@order.line_items.count}"
+    text "Reference Number:     #{@order.reference_number}"
+    if @order.internal_use?
+      text "Technician:                #{@order.technician.try(:full_name)}"
+    end
 		move_down 5
 		# text "Total Cost:                  #{price(@order.total_cost)}"
 		# text "Discount:                    #{price(@order.discount_amount)}"
@@ -44,7 +57,7 @@ class OrderPdf < Prawn::Document
 
     def line_items_data 
       [["PRODUCT", "BARCODE", "QUANTITY", "UNIT COST", "TOTAL COST"]] +
-      @line_items_data ||= @order.line_items.map{|e| [e.stock.try(:name), e.stock.try(:barcode), e.quantity,price(e.unit_cost), price(e.total_cost)] } +
+      @line_items_data ||= @order.line_items.map{|e| [e.stock.try(:name), e.stock.try(:barcode), e.quantity,unit_cost_detail(e.unit_cost), price(e.total_cost)] } +
       [["TOTAL", "", "", "", "#{price(@order.total_cost)}"]]
     end
 

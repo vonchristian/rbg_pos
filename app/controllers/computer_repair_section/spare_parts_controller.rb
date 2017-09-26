@@ -18,6 +18,12 @@ module ComputerRepairSection
         render :new 
       end 
     end 
+    def destroy 
+    @line_item = LineItem.find(params[:id])
+    @line_item.destroy 
+    @line_item.remove_entry
+    redirect_to new_computer_repair_section_work_order_spare_part_url(@line_item.work_order), notice: "Removed successfully"
+  end
 
     private 
     def spare_part_params

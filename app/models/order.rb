@@ -5,6 +5,7 @@ class Order < ApplicationRecord
   belongs_to :customer, optional: true
   belongs_to :branch, optional: true
   belongs_to :employee, class_name: "User", foreign_key: 'employee_id'
+  belongs_to :technician, class_name: "User", foreign_key: 'technician_id', optional: true
 
   has_one :payment, dependent: :destroy
   has_one :entry, as: :commercial_document, class_name: "AccountingModule::Entry", dependent: :destroy
@@ -19,7 +20,12 @@ class Order < ApplicationRecord
   accepts_nested_attributes_for :payment
   
   validates :customer_id, presence: true
-  
+  def self.stock_transfers
+    all.select{ |a| a.stock_transfer? }
+  end
+  def total_quantity
+    line_items.sum(&:quantity)
+  end
   def self.total_cost
     all.sum(&:total_cost)
   end
@@ -71,19 +77,21 @@ class Order < ApplicationRecord
     line_items.sum(&:unit_cost_and_quantity)
   end
   def create_entry_for_order
-    cash_on_hand = AccountingModule::Account.find_by(name: "Cash on Hand (Cashier)")
-    accounts_receivable = AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current")
-    cost_of_goods_sold = AccountingModule::Account.find_by(name: "Cost of Goods Sold")
-    sales = AccountingModule::Account.find_by(name: "Sales")
-    merchandise_inventory = AccountingModule::Account.find_by(name: "Merchandise Inventory")
-    if cash?
-      AccountingModule::Entry.create!(entry_type: 'cash_order', commercial_document: self, entry_date: self.date, description: "Payment for order", 
-        debit_amounts_attributes: [{amount: self.total_cost_less_discount, account: cash_on_hand}, {amount: self.stock_cost, account: cost_of_goods_sold}], 
-        credit_amounts_attributes:[{amount: self.total_cost_less_discount, account: sales}, {amount: self.stock_cost, account: merchandise_inventory}])
-    elsif credit? || stock_transfer?
-      AccountingModule::Entry.create!(entry_type: 'credit_order', commercial_document: self, entry_date: self.date, description: "Credit order", 
-        debit_amounts_attributes: [{amount: self.total_cost_less_discount, account: accounts_receivable}, {amount: self.stock_cost, account: cost_of_goods_sold}], 
-        credit_amounts_attributes:[{amount: self.total_cost_less_discount, account: sales}, {amount: self.stock_cost, account: merchandise_inventory}])
+    unless self.internal_use?
+      cash_on_hand = AccountingModule::Account.find_by(name: "Cash on Hand (Cashier)")
+      accounts_receivable = AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current")
+      cost_of_goods_sold = AccountingModule::Account.find_by(name: "Cost of Goods Sold")
+      sales = AccountingModule::Account.find_by(name: "Sales")
+      merchandise_inventory = AccountingModule::Account.find_by(name: "Merchandise Inventory")
+      if cash?
+        AccountingModule::Entry.create!(entry_type: 'cash_order', commercial_document: self, entry_date: self.date, description: "Payment for order", 
+          debit_amounts_attributes: [{amount: self.total_cost_less_discount, account: cash_on_hand}, {amount: self.stock_cost, account: cost_of_goods_sold}], 
+          credit_amounts_attributes:[{amount: self.total_cost_less_discount, account: sales}, {amount: self.stock_cost, account: merchandise_inventory}])
+      elsif credit? || stock_transfer?
+        AccountingModule::Entry.create!(entry_type: 'credit_order', commercial_document: self, entry_date: self.date, description: "Credit order", 
+          debit_amounts_attributes: [{amount: self.total_cost_less_discount, account: accounts_receivable}, {amount: self.stock_cost, account: cost_of_goods_sold}], 
+          credit_amounts_attributes:[{amount: self.total_cost_less_discount, account: sales}, {amount: self.stock_cost, account: merchandise_inventory}])
+      end
     end
   end
   private 

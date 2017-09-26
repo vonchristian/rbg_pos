@@ -17,6 +17,24 @@
         </div>
         <div class="col-md-3 border-right">
           <p><small class="condensed-text">VIEW PER DATE</small></p>
+          <%= link_to 'Yesterday', computer_repair_section_dashboard_index_path(from_date: Time.zone.now.beginning_of_day.yesterday.beginning_of_day, to_date: Time.zone.now.yesterday.end_of_day) %>
+          <%= link_to 'This Day', computer_repair_section_dashboard_index_path(from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day) %>
+          <%= link_to 'This Week', computer_repair_section_dashboard_index_path(from_date: Time.zone.now.beginning_of_week, to_date: Time.zone.now.end_of_week) %>
+          <%= link_to 'This Month', computer_repair_section_dashboard_index_path(from_date: Time.zone.now.beginning_of_month, to_date: Time.zone.now.end_of_month) %>
+
+
+        </div>
+        <div class="col-md-3">
+          <%=form_tag computer_repair_section_dashboard_index_path, method: :get, id: "search-form" do %>
+            <div class="input-group">
+              <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search Repairs...", type: "search" %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', class: "btn") do %>
+                  <i class="icon-magnifier"></i>
+                <% end %>
+              </span>
+            </div>
+          <% end %>
         </div>
       </div>
       <br>
@@ -48,16 +66,20 @@
                   <%= image_tag(work_order.technicians.first.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %>
                 </span>
               </div>
-              <div class="col-md-10">
+              <div class="col-md-8">
                 <span class="text-black condensed-text"><b><%= work_order.product_unit.description.try(:upcase) %></b></span><br>
                 <span class='text-danger'><%= work_order.reported_problem %></span><br>
                 <span class="text-black"> <%= work_order.customer_full_name %></span><br>
                 <span class='text-black'><small><%= work_order.created_at.strftime("%b %e, %l:%M %p") %></small></span>
               </div>
+              <div class="col-md-2">
+                <span class="text-black"><b>#<%=work_order.service_number.gsub("0", "") %></b></span>
+              </div>
             </div>
             <br>
           <% end %>
           <% end %>
+          <center><%=paginate @work_orders,  :params => {:controller => "computer_repair_section/dashboard", action: "index" } %></center>
         </div>
       </div>
     </div>
@@ -81,10 +103,14 @@
                   </span>
                 <% end %>
               </div>
+              <div class="col-md-2">
+                <span class="text-black"><b>#<%=work_order.service_number.gsub("0", "") %></b></span>
+              </div>
             </div>
             <hr>
           <% end %>
           <% end %>
+          <center><%=paginate @work_orders,  :params => {:controller => "computer_repair_section/dashboard", action: "index" } %></center>
           </div>
         </div>
       </div>
@@ -107,10 +133,14 @@
                   </span>
                 <% end %>
               </div>
+              <div class="col-md-2">
+                <span class="text-black"><b>#<%=work_order.service_number.gsub("0", "") %></b></span>
+              </div>
             </div>
             <hr>
           <% end %>
           <% end %>
+          <center><%=paginate @work_orders,  :params => {:controller => "computer_repair_section/dashboard", action: "index" } %></center>
           </div>
         </div>
       </div>
@@ -123,18 +153,24 @@
             <% @work_orders.released.each do |work_order| %>
               <%=link_to computer_repair_section_work_order_path(work_order) do %>
                   <div class="row">
-                    <div class="col-md-9">
+                    <div class="col-md-10">
                     <p class="text-black condensed-text"><%= work_order.product_unit.description %></p>
                     <%= work_order.customer.full_name %><br>
-                    <span class='text-black'><small><%= work_order.updated_at.strftime("%b %e, %l:%M %p") %></small></span>
+                    <span class='text-black'><small><%= work_order.updated_at.strftime("%b %e, %l:%M %p") %></small></span><br><br>
+                    <% work_order.technicians.each do |technician| %>
+                      <span data-toggle="tooltip" title="<%=technician.first_name %>" data-placement="top">
+                        <%= image_tag(technician.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %> &nbsp;
+                      </span>
+                    <% end %>
                     </div>
                     <div class="col-md-2">
-                    <span class="pull-right"></span>
+                      <span class="text-black"><b>#<%=work_order.service_number.gsub("0", "") %></b></span>
                     </div>
                   </div>
                   <br>
                 <% end %>
               <% end %>
+              <center><%=paginate @work_orders,  :params => {:controller => "computer_repair_section/dashboard", action: "index" } %></center>
             </div>
           </div>
         </div>

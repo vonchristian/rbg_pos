@@ -35,8 +35,8 @@
                     </div>
                   <div class="col-md-3">
                     <%= simple_form_for line_item do |f| %>
-                    <%= f.input :markup_amount, as: :string, label: false, placeholder: 'Markup'%>
-                    <%= f.submit "Add Markup", class: "btn btn-default btn-sm" %>
+                    <%= f.input :markup_amount, as: :string, label: false, placeholder: 'Markup/Discount'%>
+                    <%= f.submit "Add Markup or Discount", class: "btn btn-default btn-sm" %>
                     <% end %>
                   </div>
                   <div class="col-md-2">
@@ -72,6 +72,8 @@
 
                 <%= f.simple_fields_for :payment do |p| %>
                   <%= p.input :mode_of_payment, input_html: { checked: 'Cash', id: 'mode-of-payment' }, collection: Payment.mode_of_payments.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons, checked: Payment.mode_of_payments.first %>
+                 
+                     <%= f.input :internal_use, input_html: { id: 'internal-use' } %>
                     <div id='cash-payment-details'>
                       <div class="row">
                         
@@ -97,9 +99,13 @@
                       </div>
                     </div>
                 <% end %>
+                 <div id='internal-use-details'>
+                            <%= f.input :technician_id, collection: User.technician.map{|a| [a.full_name, a.id] } %>
+                          </div>
                 <div class="row">
                         <div class="col-md-12">
                           <%= f.input :reference_number %>
+
                         </div>
                       </div>
               <%= f.submit "Save Order", class: "btn btn-primary btn-block btn-lg active" %>
@@ -113,6 +119,19 @@
        details_div.style['display'] = 'block';
      } else {
        details_div.style['display'] = 'none';
+     }
+  };
+</script>
+<script>
+  var internal_use_checkbox = document.getElementById('internal-use');
+  var internal_use_details_div = document.getElementById('internal-use-details');
+  var details_div = document.getElementById('cash-payment-details');
+  internal_use_checkbox.onchange = function() {
+     if(this.checked) {
+       internal_use_details_div.style['display'] = 'block';
+       details_div.style['display'] = 'none';
+     } else {
+       internal_use_details_div.style['display'] = 'none';
      }
   };
 </script>

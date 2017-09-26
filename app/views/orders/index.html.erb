@@ -39,7 +39,12 @@
                                       <tr>
                                       <% if order.line_items.count > 0 %>
                                         <td><%=link_to order.date.strftime("%B %e, %Y"), order %></td>
-                                        <td><%= order.customer.try(:full_name).try(:titleize) %></td>
+                                        <td><%= order.customer.try(:full_name).try(:titleize) %>
+                                          <% if order.reference_number.present? %>
+                                            <br>
+                                            <b>#<%=order.reference_number %></b>
+                                          <% end %>
+                                        </td>
                                         <td>
                                           <% order.line_items.each do |line_item|  %>
                                             <div class="row">

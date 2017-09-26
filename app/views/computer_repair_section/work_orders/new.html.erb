@@ -19,5 +19,6 @@
   <% end %>
   <%= f.input :physical_condition %>
   <%= f.input :reported_problem, as: :text %>
+  <%= f.input :service_number, input_html: { value: WorkOrder.generate_number_for(@work_order) } %>
   <%= f.submit "Save Work Order", class: "btn btn-primary" %>
 <% end %>
