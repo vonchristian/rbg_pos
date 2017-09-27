@@ -39,6 +39,12 @@ module ComputerRepairSection
       end 
     end 
 
+    def destroy
+      @work_order = WorkOrder.find(params[:id])
+      @work_order.destroy
+      redirect_to computer_repair_section_dashboard_index_url, notice: "Deleted successfully."
+    end 
+
     private 
     def work_order_params
       params.require(:work_order).permit(:service_number, :status, :customer_id, :reported_problem, :physical_condition, product_unit_attributes: [:description, :model_number, :serial_number])
