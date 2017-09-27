@@ -56,6 +56,15 @@
             <%= number_to_currency @product.released_warranties_count, unit: "" %>
           </div>
         </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            In Stock
+          </div>
+          <div class="col-md-6">
+            <%= number_to_currency @product.in_stock, unit: "" %>
+          </div>
+        </div>
       </div>
     </div>
     <% if current_user.proprietor? %>

@@ -31,6 +31,7 @@
                                       
                                       <th>Product</th>
                                       <th>Date </th>
+                                      <th> Date Sold </th>
                                     	<th>Quantity</th>
                                       <% if current_user.proprietor? %>
                                     	  <th>Unit Cost</th>
@@ -54,7 +55,14 @@
 
                                       </td>
                                       <td><%= stock.date.strftime("%B %e, %Y") %></td>
-                                      <td><%= stock.quantity %></td>
+                                     
+                                        <td>
+                                           <% if stock.sold? %>
+                                          <%= stock.line_items.last.created_at.strftime("%B %e, %Y") %>
+                                           <% end %>
+ 
+                                          </td>
+                                                                            <td><%= stock.quantity %></td>
                                       <% if current_user.proprietor? %>
                                         <td><%= number_to_currency stock.unit_cost %></td>
                                         <td><%= number_to_currency stock.total_cost %></td>
