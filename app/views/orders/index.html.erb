@@ -9,7 +9,7 @@
                                   <h4 class="title">Sales</h4>
                                   <p class="category">List of sales</p>
                                 </div>
-                                <div class="col-md-7">
+                                <div class="col-md-5">
                                   <%=form_tag orders_path, method: :get, id: "search-form" do %>
                                     <div class="input-group">
                                       <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search order...", type: "search" %>
@@ -21,6 +21,24 @@
                                     </div>
                                   <% end %>
                                 </div>
+                                <div class="col-md-4">
+                                 <%= form_tag({:action => "index", controller: "orders"}, {:method => :get})  do %>
+                                  <div class="row">
+                                    <div class="col-md-5">
+                                      <div class="form-group">
+                                        <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                      <div class="form-group">
+                                        <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                      <button type="submit" class="btn btn-success active"> Go </button>
+                                    </div>
+                                  </div>
+                                <% end %>
                               </div>
                             </div>
                             <div class="content table-responsive table-full-width">

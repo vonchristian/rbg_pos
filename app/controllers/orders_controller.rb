@@ -2,6 +2,10 @@ class OrdersController < ApplicationController
 	def index 
     if params[:search].present?
       @orders = Order.text_search(params[:search]).page(params[:page]).per(30)
+    elsif params[:from_date].present? && params[:to_date].present?
+      @from_date = Time.parse(params[:from_date])
+      @to_date = Time.parse(params[:to_date])
+      @orders = Order.ordered_on(from_date: @from_date, to_date: @to_date).page(params[:page]).per(30)
     else
 		  @orders = Order.all.order(created_at: :desc).page(params[:page]).per(30)
     end
