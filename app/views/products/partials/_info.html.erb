@@ -1,6 +1,63 @@
 <div class="tab-pane active" id="product-info">
   <div class="content">
     Product Info
+    <div class="row">
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-6">
+            Delivered Items
+          </div>
+          <div class="col-md-6">
+            <%= number_to_currency @product.delivered_items_count, unit: "" %>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            Sold Items
+          </div>
+          <div class="col-md-6">
+            <%= number_to_currency @product.sold_items_count, unit: "" %>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            Transferred Stocks
+          </div>
+          <div class="col-md-6">
+            <%= number_to_currency @product.transferred_stocks_count, unit: "" %>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            Returned Items 
+          </div>
+          <div class="col-md-6">
+            <%= number_to_currency @product.returned_items_count, unit: "" %>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            Under Warranty
+          </div>
+          <div class="col-md-6">
+            <%= number_to_currency @product.items_under_warranty_count, unit: "" %>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            Released Warranty
+          </div>
+          <div class="col-md-6">
+            <%= number_to_currency @product.released_warranties_count, unit: "" %>
+          </div>
+        </div>
+      </div>
+    </div>
     <% if current_user.proprietor? %>
       <%= link_to 'Edit', edit_product_path(@product), class: "btn btn-warning btn-sm" %>
     <% end %>
