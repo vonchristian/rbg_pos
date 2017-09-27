@@ -2,7 +2,7 @@
   <div class="card">
     <div class="content">
       <div class="row">
-        <div class="col-md-3 border-right">
+        <div class="col-md-6 border-right">
           <p><small class="condensed-text">VIEW PER TECHNICIAN</small></p>
           <% User.technician.each do |technician| %>
             <%=link_to computer_repair_section_dashboard_index_path(technician: technician) do %>
@@ -12,9 +12,6 @@
             <% end %>
           <% end %>
           <br>
-        </div>
-        <div class="col-md-3 border-right">
-          <p><small class="condensed-text">VIEW PER DEPARTMENT</small></p>
         </div>
         <div class="col-md-3 border-right">
           <p><small class="condensed-text">VIEW PER DATE</small></p>

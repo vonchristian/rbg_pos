@@ -257,21 +257,28 @@
   <br>
   <hr>
   <p class="condensed-text">UPDATES </p>
-<% @work_order.work_order_updates.each do |update| %>
+<% @work_order.work_order_updates.each do |work_update| %>
+
   <div class="row">
     <div class="col-md-2">
-    <% if update.user.present? %>
-      <%= image_tag(update.user.avatar.url(:medium), class: "img-circle", height: 40, width: 40) %>
+    <% if work_update.user.present? %>
+      <%= image_tag(work_update.user.avatar.url(:medium), class: "img-circle", height: 40, width: 40) %>
     <% end %>
     </div>
     <div class="col-md-10">
-    
-      <small class="condensed-text"><b><%= update.title.try(:upcase) %></b></small><br>
-      <%= update.content %><br>
-      <span class="label label-warning"><%= update.type.try(:titleize).try(:downcase) %></span>
-      <% if update.date %>
-      <small class='text-black pull-right'><i class="fa fa-clock-o"></i> <%= update.date.strftime("%b %e, %l:%M %p") %></small><br>
+   
+      <small class="condensed-text"><b><%= work_update.title.try(:upcase) %></b></small><br>
+      <%= work_update.content %><br>
+       <% if work_update.id? %>
+      <%= link_to computer_repair_section_work_order_update_path(work_update), method: :delete do %>
+        <span class="text-danger" title="Remove" data-placement="top" data-toggle="tooltip"><i class="fa fa-trash"></i> </span>
+      <% end %>
     <% end %>
+      <span class="label label-warning"><%= work_update.type.try(:titleize).try(:downcase) %></span>
+      <% if work_update.date %>
+      <small class='text-black pull-right'><i class="fa fa-clock-o"></i> <%= work_update.date.strftime("%b %e, %l:%M %p") %></small><br>
+    <% end %>
+     
     </div>
   </div>
   <hr>

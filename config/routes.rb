@@ -66,6 +66,7 @@ Rails.application.routes.draw do
   resources :work_order_statuses, only: [:edit, :update]
   namespace :computer_repair_section do 
     resources :dashboard, only: [:index]
+
     resources :work_orders do 
       resources :service_charges, only: [:new, :create], module: :work_orders
       resources :additional_charges, only: [:new, :create], module: :work_orders
@@ -74,7 +75,7 @@ Rails.application.routes.draw do
       resources :payments, module: :work_orders, only: [:new, :create]
     end
     resources :work_order_service_charges, only: [:destroy]
-    resources :work_order_updates, only: [:new, :create]
+    resources :work_order_updates, only: [:new, :create, :edit, :update, :destroy]
   end
   resources :knowledge_center, only: [:index]
   resources :product_units, shallow: true do 

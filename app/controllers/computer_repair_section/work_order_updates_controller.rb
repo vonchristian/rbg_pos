@@ -11,7 +11,24 @@ module ComputerRepairSection
         redirect_to computer_repair_section_work_order_url(@work_order_update.updateable), alert: "Update not accepted. Please complete update details."
       end
     end
-
+    def edit 
+      @post = Post.find(params[:id])
+    end 
+    def update 
+      @post = Post.find(params[:id])
+      @post.update(update_params)
+      if @post.valid?
+        @post.save 
+        redirect_to computer_repair_section_work_order_url(@work_order_update.updateable), notice: "Update info updated successfully."
+      else 
+        render :edit 
+      end 
+    end
+    def destroy 
+      @post = Post.find(params[:id])
+      @post.destroy 
+      redirect_to computer_repair_section_work_order_url(@post.updateable), notice: "Update info updated successfully."
+    end
     private 
     def update_params
       params.require(:post).permit(:type, :title, :content, :date, :updateable_id, :updateable_type)
