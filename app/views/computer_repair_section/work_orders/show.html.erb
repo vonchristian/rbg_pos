@@ -7,6 +7,7 @@
             <div class="col-md-7">
               <h4 class="title condensed-text"><%= @work_order.description.try(:upcase) %> </h4>
               <small>STATUS <span class="label label-default"> <%= @work_order.status %></span></small>
+              <%= link_to 'Update Info', edit_computer_repair_section_work_order_path(@work_order), class: "btn btn-xs btn-warning" %>
               <br><br>
               <% @work_order.technicians.each do |technician| %>
                 <span data-toggle="tooltip" title="<%=technician.first_name %>" data-placement="top">

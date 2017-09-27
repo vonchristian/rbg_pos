@@ -8,7 +8,7 @@
           <h4 class="title condensed-text"> WORK ORDER DETAILS </h4>
         </div>
         <div class="content">
-<%= simple_form_for @work_order, url: :computer_repair_section_work_orders, html: { class: "form-horizontal" }, wrapper: :horizontal_form do |f| %>
+<%= simple_form_for @work_order, url: :computer_repair_section_work_order, html: { class: "form-horizontal" }, wrapper: :horizontal_form do |f| %>
   <%= f.error_notification %>
   <span class="pull-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span>
   <%= f.input :customer_id, collection: Customer.all.map{|a| [a.full_name, a.id] } %>
@@ -20,7 +20,7 @@
   <%= f.input :physical_condition %>
   <%= f.input :reported_problem, as: :text %>
   <%= f.input :service_number, input_html: { value: WorkOrder.generate_number_for(@work_order) }, as: :hidden %>
-  <%= f.submit "Save Work Order", class: "btn btn-primary" %>
+  <%= f.submit "Update Work Order", class: "btn btn-primary" %>
 <% end %>
 <script type="text/javascript">
   $(document).ready(function() {
