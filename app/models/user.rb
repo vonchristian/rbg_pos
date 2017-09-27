@@ -17,7 +17,7 @@ class User < ApplicationRecord
   default_url: ":style/profile_default.jpg",
   :path => ":rails_root/public/system/:attachment/:id/:style/:filename",
   :url => "/system/:attachment/:id/:style/:filename"
-  validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
+  do_not_validate_attachment_file_type :avatar
   def full_name 
   	"#{first_name} #{last_name}"
   end
