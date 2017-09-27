@@ -22,7 +22,7 @@ set :shared_paths, ['config/database.yml', 'config/secrets.yml', 'log', 'tmp/log
 # set :forward_agent, true     # SSH forward_agent.
 
 # This task is the environment that is loaded for most commands, such as
-# `mina deploy` or `mina rake`.
+# `mina deploy` or c`mina rake`.
 task :environment do
   # If you're using rbenv, use this to load the rbenv environment.
   # Be sure to commit your .ruby-version or .rbenv-version to your repository.
