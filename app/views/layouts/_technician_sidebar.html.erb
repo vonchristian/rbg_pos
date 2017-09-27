@@ -25,6 +25,18 @@
               <p>Customers</p>
           </a>
       </li>
+      <li class="<%='active' if current_page?(products_path) %>">
+                    <a href="/products">
+                        <i class="icon-tag"></i>
+                        <p>Products</p>
+                    </a>
+                </li>
+                <li class="<%='active' if current_page?(stocks_path) %>">
+                    <a href="/stocks">
+                        <i class="icon-layers"></i>
+                        <p>Stocks</p>
+                    </a>
+                </li>
     </ul>
   </div>
 </div>
