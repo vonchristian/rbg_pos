@@ -12,3 +12,4 @@ bind "unix://#{shared_dir}/tmp/sockets/puma.sock"
 pidfile "#{shared_dir}/tmp/pids/puma.pid"
 
 prune_bundler
+  
