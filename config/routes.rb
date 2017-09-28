@@ -81,4 +81,5 @@ Rails.application.routes.draw do
   resources :product_units, shallow: true do 
     resources :accessories, only: [:new, :create]
   end
+  resources :warranties, only: [:edit, :update]
 end

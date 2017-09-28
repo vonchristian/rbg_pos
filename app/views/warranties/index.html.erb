@@ -32,6 +32,7 @@
                                     	<th>Quantity</th>
                                       <th>Remarks</th>
                                       <th></th>
+                                      <th></th>
                                     </thead>
                                     <tbody>
                                       <% @warranties.each do |warranty| %>
@@ -52,6 +53,7 @@
                                               <small class="text-success"> released on <%= warranty.warranty_release.release_date.strftime("%b %e, %Y") %></small>
                                             <% end %>
                                           </td>
+                                          <td><%= link_to 'Edit', edit_warranty_path(warranty) %> </td>
                                        
                                       
                                         </tr>
