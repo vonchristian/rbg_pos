@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170926110825) do
+ActiveRecord::Schema.define(version: 20170928004135) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -425,6 +425,10 @@ ActiveRecord::Schema.define(version: 20170926110825) do
     t.string "reported_problem"
     t.string "physical_condition"
     t.string "service_number"
+    t.boolean "under_warranty", default: false
+    t.integer "supplier_id"
+    t.datetime "purchase_date"
+    t.datetime "expiry_date"
     t.index ["customer_id"], name: "index_work_orders_on_customer_id"
     t.index ["product_unit_id"], name: "index_work_orders_on_product_unit_id"
     t.index ["status"], name: "index_work_orders_on_status"

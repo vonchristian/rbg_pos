@@ -8,6 +8,7 @@
                     <%= f.input :title, label: false, placeholder: 'Title', required: true %>
                     <%= f.input :content, label: false, placeholder: 'Content', as: :text, input_html: { rows: 4, class: "input-xs" }%>
                     <%= f.input :date, input_html: { value: Time.zone.now }, as: :hidden %>
+                    
                     <%= f.submit "Update", class: "btn btn-primary btn-block" %>
                   <% end %>
         </div>

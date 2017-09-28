@@ -47,7 +47,7 @@ module ComputerRepairSection
 
     private 
     def work_order_params
-      params.require(:work_order).permit(:service_number, :status, :customer_id, :reported_problem, :physical_condition, product_unit_attributes: [:description, :model_number, :serial_number])
+      params.require(:work_order).permit(:under_warranty, :supplier_id, :purchase_date, :expiry_date, :service_number, :status, :customer_id, :reported_problem, :physical_condition, product_unit_attributes: [:description, :model_number, :serial_number])
     end 
   end 
 end 

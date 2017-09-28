@@ -17,7 +17,7 @@ class WorkOrder < ApplicationRecord
   accepts_nested_attributes_for :product_unit
   delegate :description, :model_number, :serial_number, to: :product_unit, allow_nil: true
   delegate :full_name, :address, :contact_number, to: :customer, allow_nil: true, prefix: true
-  has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document
+  has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
   validates :description, :physical_condition, :reported_problem, :service_number, presence: true
   validates :customer_id, presence: true
   def self.from(hash={})
