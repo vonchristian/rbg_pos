@@ -27,7 +27,6 @@
     <%= f.input :expiry_date, as: :string, input_html: { class: "datepicker" } %>
   </div>
 
-  <%= f.input :service_number, input_html: { value: WorkOrder.generate_number_for(@work_order) }, as: :hidden %>
   <%= f.submit "Save Work Order", class: "btn btn-primary" %>
 <% end %>
 </div>

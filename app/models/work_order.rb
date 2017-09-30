@@ -18,8 +18,9 @@ class WorkOrder < ApplicationRecord
   delegate :description, :model_number, :serial_number, to: :product_unit, allow_nil: true
   delegate :full_name, :address, :contact_number, to: :customer, allow_nil: true, prefix: true
   has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
-  validates :description, :physical_condition, :reported_problem, :service_number, presence: true
+  validates :description, :physical_condition, :reported_problem, presence: true
   validates :customer_id, presence: true
+  after_commit :set_service_number, on: [:create, :update]
   def self.from(hash={})
       if hash[:from_date] && hash[:to_date]
        from_date = hash[:from_date].kind_of?(Time) ? hash[:from_date] : Time.parse(hash[:from_date])
@@ -70,13 +71,7 @@ class WorkOrder < ApplicationRecord
   def elapsed_time
     (self.created_at - Time.zone.now) /86400
   end
-  def self.generate_number_for(work_order)
-    unless WorkOrder.any?
-      work_order.service_number =  "#{1.to_s.rjust(12, '0')}"
-    else
-      work_order.service_number = "#{WorkOrder.last.service_number.succ.rjust(12, '0')}"
-    end
-  end
+  
   def diagnoses
     work_order_updates.diagnosis
   end
@@ -106,5 +101,10 @@ class WorkOrder < ApplicationRecord
       user_id: spare_part.user_id, 
       debit_amounts_attributes: [{amount: spare_part.total_cost, account: accounts_receivable}, {amount: spare_part.total_cost, account: cost_of_goods_sold}], 
       credit_amounts_attributes:[{amount: spare_part.total_cost, account: sales}, {amount: spare_part.total_cost, account: merchandise_inventory}])
+  end
+  private
+  def set_service_number
+    self.service_number = nil
+    self.service_number = self.id.to_s.rjust(12, '0')
   end
 end
