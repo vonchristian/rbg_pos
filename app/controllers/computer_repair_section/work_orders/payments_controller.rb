@@ -18,7 +18,7 @@ module ComputerRepairSection
 
       private 
       def entry_params
-        params.require(:accounting_module_work_order_payment_form).permit(:user_id, :work_order_id, :entry_date, :reference_number, :description, :debit_account_id, :credit_account_id, :amount)
+        params.require(:accounting_module_work_order_payment_form).permit(:user_id, :discount_amount, :work_order_id, :entry_date, :reference_number, :description, :debit_account_id, :credit_account_id, :amount)
       end
     end
   end

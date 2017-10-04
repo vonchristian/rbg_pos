@@ -1,9 +1,10 @@
+require 'will_paginate/array'
 class ProductsController < ApplicationController
 	def index
     if params[:search].present?
-      @products = Product.text_search(params[:search]).page(params[:page]).per(20)
+      @products = Product.text_search(params[:search]).paginate(page: params[:page], per_page: 20)
     else
-      @products = Product.joins([:stocks, :sold_items]).all.order(:name).page(params[:page]).per(20)
+      @products = Product.joins([:stocks, :sold_items]).all.order(:name).paginate(page: params[:page], per_page: 20)
     end
     @registry = Registry.new
     respond_to do |format|
@@ -16,10 +17,10 @@ class ProductsController < ApplicationController
   end
 
   def out_of_stock 
-    @out_of_stock_products = Kaminari.paginate_array(Product.out_of_stock).page(params[:page]).per(20)
+    @out_of_stock_products = (Product.out_of_stock).paginate(page: params[:page], per_page: 35)
   end
   def low_on_stock 
-    @low_on_stock_products = Kaminari.paginate_array(Product.low_on_stock).page(params[:page]).per(20)
+    @low_on_stock_products = (Product.low_on_stock).paginate(page: params[:page], per_page: 35)
   end
 	def new 
 		@product = Product.new 
@@ -37,8 +38,8 @@ class ProductsController < ApplicationController
 	end 
 	def show 
 		@product = Product.find(params[:id])
-		@stocks = @product.stocks.all.page(params[:page]).per(35)
-		@orders = @product.orders.all.page(params[:page]).per(35)
+		@stocks = @product.stocks.all.paginate(page: params[:page], per_page: 30)
+		@orders = @product.orders.all.paginate(page: params[:page], per_page: 30)
 
 	end
 	def edit 
@@ -57,6 +58,11 @@ class ProductsController < ApplicationController
 			render :new 
 		end 
 	end 
+  def destroy 
+    @product = Product.find(params[:id])
+    @product.destroy 
+    redirect_to products_url notice: "Product removed successfully"
+  end
 
 
 	private 

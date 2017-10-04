@@ -22,6 +22,7 @@ class ServiceFormPdf < Prawn::Document
       charges_details
       spare_parts_details
       summary_details
+      payment_details
     end
   end 
   
@@ -74,7 +75,8 @@ class ServiceFormPdf < Prawn::Document
     move_down 5
   end
   def product_details_data
-    @product_details_data ||=  [["", "Description",  "#{@work_order.description}"]] +
+    @product_details_data ||=  [["", "Date Released",  "#{@work_order.updated_at.strftime("%B %e, %Y")}"]] + 
+                                [["", "Description",  "#{@work_order.description}"]] +
                                 [["", "Model Number", "#{@work_order.model_number.try(:upcase)}"]] +
                                 [["", "Serial Number", "#{@work_order.serial_number.try(:upcase)}"]] + 
                                 [["", "Physical Condition", "#{@work_order.physical_condition}"]] +
@@ -180,5 +182,19 @@ end
                        [["", "", ""]]
 
 
+  end
+  def payment_details 
+    move_down 10
+    text "PAYMENT DETAILS", style: :bold, size: 10
+    move_down 5
+      table(payment_data, cell_style: { size: 10, font: "Helvetica", inline_format: true, :padding => [5,0,0,0]}, column_widths: [10, 120, 70]) do
+          cells.borders = []
+    end
+  end
+  def payment_data
+    @payment_date ||= [["", "RECEIVABLES", "#{price(@work_order.accounts_receivable)}"]] +
+                      [["", "CASH PAYMENTS", "#{price(@work_order.payments_total)}"]] +
+                      [["", "DISCOUNTS", "#{price(@work_order.discounts_total)}"]] +
+                      [["", "BALANCE", "#{price(@work_order.balance_total)}"]]
   end
 end 

@@ -1,9 +1,9 @@
 class WarrantiesController < ApplicationController
 	def index 
 		if params[:search].present?
-			@warranties = Warranty.text_search(params[:search]).page(params[:page]).per(35)
+			@warranties = Warranty.text_search(params[:search]).paginate(page: params[:page], per_page: 35)
 		else
-			@warranties = Warranty.all.page(params[:page]).per(35)
+			@warranties = Warranty.all.paginate(page: params[:page], per_page: 35)
 		end 
 	end 
   def edit 

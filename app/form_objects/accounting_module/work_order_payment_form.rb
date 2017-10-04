@@ -8,7 +8,8 @@ module AccountingModule
                   :user_id,
                   :debit_account_id,
                   :credit_account_id,
-                  :amount 
+                  :amount,
+                  :discount_amount
     validates :entry_date, :description,  presence: true
     validates :amount, presence: true, numericality: true
     def save 
@@ -19,9 +20,21 @@ module AccountingModule
 
     private 
     def create_entry 
-      AccountingModule::Entry.work_order_payment.create!(user_id: user_id, commercial_document_id: work_order_id, commercial_document_type: "WorkOrder", entry_date: entry_date, reference_number: reference_number, description: description,
+      if discount_amount.nil?
+        AccountingModule::Entry.work_order_payment.create!(user_id: user_id, commercial_document_id: work_order_id, commercial_document_type: "WorkOrder", entry_date: entry_date, reference_number: reference_number, description: description,
         credit_amounts_attributes: [amount: amount, account_id: credit_account_id],
         debit_amounts_attributes: [amount: amount, account_id: debit_account_id])
+      elsif discount_amount
+        AccountingModule::Entry.work_order_payment.create!(user_id: user_id, commercial_document_id: work_order_id, commercial_document_type: "WorkOrder", entry_date: entry_date, reference_number: reference_number, description: description,
+        credit_amounts_attributes:  [{amount: amount, account_id: credit_account_id}, { amount: discount_amount, account_id: discount_credit_account_id }],
+        debit_amounts_attributes: [{amount: amount, account_id: debit_account_id}, {amount: discount_amount, account_id: discount_debit_account_id}])
+      end
     end 
+    def discount_debit_account_id
+      AccountingModule::Account.find_by(name: "Sales Discounts").id
+    end 
+    def discount_credit_account_id
+      AccountingModule::Asset.find_by(name: "Cash on Hand (Cashier)").id
+    end
   end 
 end

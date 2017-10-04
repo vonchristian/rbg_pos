@@ -9,7 +9,7 @@ class RegistriesController < ApplicationController
 	end 
   def show 
     @registry = Registry.find(params[:id])
-    @stocks = @registry.stocks.all.page(params[:page]).per(35)
+    @stocks = @registry.stocks.all.paginate(page: params[:page], per_page: 35)
   end
   def destroy
     @registry = Registry.find(params[:id])

@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 	resources :customers do 
     resources :payments, only: [:new, :create], module: :customers
   end
-  resources :products, except: [:destroy] do 
+  resources :products do 
     match "/out_of_stock" => "products#out_of_stock",  via: [:get], on: :collection
     match "/low_on_stock" => "products#low_on_stock",  via: [:get], on: :collection
 

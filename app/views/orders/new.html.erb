@@ -72,8 +72,9 @@
 
                 <%= f.simple_fields_for :payment do |p| %>
                   <%= p.input :mode_of_payment, input_html: { checked: 'Cash', id: 'mode-of-payment' }, collection: Payment.mode_of_payments.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons, checked: Payment.mode_of_payments.first %>
-                 
-                     <%= f.input :internal_use, input_html: { id: 'internal-use' } %>
+                    <% if current_user.proprietor? %>
+                      <%= f.input :internal_use, input_html: { id: 'internal-use' } %>
+                    <% end %>
                     <div id='cash-payment-details'>
                       <div class="row">
                         
@@ -99,9 +100,11 @@
                       </div>
                     </div>
                 <% end %>
+                <% if current_user.proprietor? %>
                  <div id='internal-use-details'>
                             <%= f.input :technician_id, collection: User.technician.map{|a| [a.full_name, a.id] } %>
                           </div>
+                <% end %>
                 <div class="row">
                         <div class="col-md-12">
                           <%= f.input :reference_number %>

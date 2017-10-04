@@ -10,6 +10,9 @@ class ServiceTagPdf < Prawn::Document
     barcode
     customer_details
     product_details
+    if @work_order.under_warranty?
+      warranty_details
+    end
     reported_problem
     message
   end 
@@ -63,13 +66,31 @@ class ServiceTagPdf < Prawn::Document
     move_down 5
   end
   def product_details_data
-    @product_details_data ||=  [["", "Description",  "#{@work_order.description}"]] +
+    @product_details_data ||=   [["", "Date Received",  "#{@work_order.created_at.strftime("%B %e, %Y")}"]] + 
+                                [["", "Description",  "#{@work_order.description}"]] +
                                 [["", "Model Number", "#{@work_order.model_number.try(:upcase)}"]] +
                                 [["", "Serial Number", "#{@work_order.serial_number.try(:upcase)}"]] + 
                                 [["", "Physical Condition", "#{@work_order.physical_condition}"]] +
                                 [["", "<b>ACCESSORIES</b>"]] +
                                 @work_order.accessories.map{|a| ["","", "#{a.quantity.to_i} - #{a.description} <i>(#{a.serial_number})</i>"] }
   end
+  def warranty_details
+    text "WARRANTY DETAILS", style: :bold, size: 10
+    table(warranty_details_data, cell_style: { size: 11, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [20, 150, 200]) do
+        cells.borders = []
+        # column(0).background_color = "CCCCCC"
+    end
+    move_down 5
+    stroke_horizontal_rule
+    move_down 5
+  end
+  def warranty_details_data 
+    @warranty_details_data ||= [["", "Supplier", "#{@work_order.supplier.try(:business_name)}"]] +
+                               [["", "Purchase Date", "#{@work_order.purchase_date.strftime("%B %e, %Y")}"]] +
+                               [["", "Warranty Expiry Date", "#{@work_order.expiry_date.strftime("%B %e, %Y")}"]]
+
+  end
+
   def reported_problem 
     text "REPORTED PROBLEM", style: :bold
     table(reported_problem_data, cell_style: { size: 11, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [20, 150, 200]) do

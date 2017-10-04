@@ -42,10 +42,12 @@
   	                    <%= f.input :stock_id, input_html: { value: stock.id }, as: :hidden %>
   	                  </div>
   	                  <div class="col-md-2">
-                        <% if stock.in_stock > 0 %>
+                        <% if stock.in_stock > 0 && !stock.under_warranty? %>
                           <%= f.submit 'Add Item', class: "btn btn-primary btn-sm" %>
                         <% elsif stock.in_stock <= 0 %>
                           <span class="btn btn-xs btn-danger disabled"> Out of Stock </span>
+                        <% elsif stock.under_warranty? %>
+                          <span class="btn btn-xs btn-warning disabled"> Under Warranty </span>
                         <% end %>
                       <% end %>
                       </div>

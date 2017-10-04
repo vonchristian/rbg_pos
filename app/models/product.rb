@@ -2,7 +2,7 @@ class Product < ApplicationRecord
 	include PgSearch
 	pg_search_scope :text_search, against: [:name]
 
-	has_many :stocks 
+	has_many :stocks, dependent: :destroy
 	has_many :sold_items, through: :stocks, class_name: 'LineItem', source: :line_items
 	has_many :orders, through: :sold_items
 	has_many :sales_returns, through: :sold_items

@@ -16,4 +16,9 @@ class Supplier < ApplicationRecord
   def balance_total
     accounts_payable - payments_total
   end
+  # def self.merge(original)
+  #   original.delivered_stocks <<
+  #   original.entries << 
+  #   original.payments <<
+  # end
 end

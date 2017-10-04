@@ -1,9 +1,10 @@
 class WorkOrder < ApplicationRecord
   include PgSearch
-  pg_search_scope :text_search, against: [:service_number, :reported_problem, :physical_condition]
+  pg_search_scope :text_search, against: [:service_number, :reported_problem, :physical_condition, :customer_name, :product_name]
   multisearchable :against => [:description, :model_number, :serial_number,
-    :updates_content, :reported_problem, :physical_condition, :service_number]
+    :updates_content, :reported_problem, :physical_condition, :service_number, :customer_name, :product_name]
   belongs_to :product_unit
+  belongs_to :supplier, optional: true
   has_many :accessories
   belongs_to :customer, optional: true
   has_many :technician_work_orders, dependent: :destroy
@@ -20,7 +21,7 @@ class WorkOrder < ApplicationRecord
   has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
   validates :description, :physical_condition, :reported_problem, presence: true
   validates :customer_id, presence: true
-  after_commit :set_service_number, on: [:create, :update]
+  after_commit :set_service_number, :set_customer_name, :set_product_name, on: [:create, :update]
   def self.from(hash={})
       if hash[:from_date] && hash[:to_date]
        from_date = hash[:from_date].kind_of?(Time) ? hash[:from_date] : Time.parse(hash[:from_date])
@@ -43,14 +44,19 @@ class WorkOrder < ApplicationRecord
   end
   def payments
     entries.work_order_payment
+
   end
 
   def payments_total
-    entries.work_order_payment.map{|a| a.debit_amounts.distinct.pluck(:amount).sum}.sum
+    AccountingModule::Account.find_by_name('Accounts Receivables Trade - Current').credit_entries.where(commercial_document: self).distinct.pluck(:amount).sum - discounts_total
+    # entries.work_order_payment.map{|a| a.debit_amounts.distinct.pluck(:amount).sum}.sum
+  end
+  def discounts_total
+    AccountingModule::Account.find_by_name('Sales Discounts').debit_entries.where(commercial_document: self).distinct.pluck(:amount).sum
   end
 
   def balance_total
-    accounts_receivable - payments_total
+    accounts_receivable - discounts_total - payments_total
   end
 
   def updates_content
@@ -106,5 +112,11 @@ class WorkOrder < ApplicationRecord
   def set_service_number
     self.service_number = nil
     self.service_number = self.id.to_s.rjust(12, '0')
+  end
+  def set_customer_name 
+    self.customer_name = self.customer.full_name
+  end
+  def set_product_name 
+    self.product_name = self.product_unit.description
   end
 end

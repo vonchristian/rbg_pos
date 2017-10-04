@@ -8,9 +8,9 @@ class Stock < ApplicationRecord
   belongs_to :origin_branch, class_name: "Branch", foreign_key: 'origin_branch_id', optional: true
   belongs_to :product
   belongs_to :branch, optional: true
-  has_many :line_items
+  has_many :line_items, dependent: :destroy
   has_many :sales_returns, through: :line_items
-  has_many :stock_transfers
+  has_many :stock_transfers, dependent: :destroy
   validates :quantity, :unit_cost, :total_cost, :retail_price, :wholesale_price, presence: true, numericality: true
   validates :product_id, presence: true
   
@@ -20,6 +20,13 @@ class Stock < ApplicationRecord
   before_validation :set_date
   after_create_commit :create_entry_for_stock
   after_commit :destroy_entry, on: :destroy
+  def under_warranty?
+    if quantity == 1
+      line_items.map {|a| a.sales_return.present? }
+    else
+      false
+    end
+  end
   def badge_color
     if sold?
       'danger'

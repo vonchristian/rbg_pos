@@ -74,4 +74,4 @@
                                       <% end %>
                                     </tbody>
                                   </table>
-                                  <center><%= paginate @out_of_stock_products, :params => {:controller => "products", action: "out_of_stock" } %></center>
+                                  <center><%= will_paginate @out_of_stock_products, :params => {:controller => "products", action: "out_of_stock" } %></center>

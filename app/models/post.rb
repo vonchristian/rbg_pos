@@ -6,7 +6,7 @@ class Post < ApplicationRecord
   belongs_to :user
   validates :title, :type, :date, :content, presence: true
   def self.types 
-    ["ActionTaken", "Observation", "Diagnosis", "ClientFollowUp"]
+    ["ActionTaken", "Observation", "Diagnosis", "ClientFollowUp", "TechnicianNote"]
   end
 
   def self.diagnosis

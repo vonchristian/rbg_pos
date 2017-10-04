@@ -1,9 +1,9 @@
 class StocksController < ApplicationController 
 	def index 
 		if params[:search].present?
-			@stocks= Stock.text_search(params[:search]).page(params[:page]).per(35)
+			@stocks= Stock.text_search(params[:search]).paginate(page: params[:page], per_page: 20)
 		else
-		  @stocks = Stock.all.page(params[:page]).per(35)
+		  @stocks = Stock.all.paginate(page: params[:page], per_page: 20)
 		end
 	end
 	def new 
@@ -14,7 +14,7 @@ class StocksController < ApplicationController
 		@stock = Stock.create(stock_params)
 		@stock.branch = current_user.branch
 		if @stock.save
-			redirect_to stocks_url, notice: "Stock saved successfully."
+			redirect_to new_stock_url, notice: "Stock saved successfully."
       @stock.set_name
 		else 
 			render :new 

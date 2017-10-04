@@ -34,3 +34,10 @@ add under warranty on work orders
  products index show transferred count done
 
  inventory report weekly
+
+
+
+
+ Export per category, per product to excel
+
+ column product_name, price, serial number, status
