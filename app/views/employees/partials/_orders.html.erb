@@ -10,7 +10,7 @@
           <th>Total Cost</th>
         </thead>
         <tbody>
-          <% @employee.orders.each do |order| %>
+          <% @orders.each do |order| %>
             <tr>
               <% if order.line_items.count > 0 %>
               <td><%=link_to order.date.strftime("%B %e, %Y"), order %></td>
@@ -22,6 +22,7 @@
           <% end %>
         </tbody>
       </table>
+      <center><%= will_paginate @orders %></center>
     </div> 
   </div>
 </div>
