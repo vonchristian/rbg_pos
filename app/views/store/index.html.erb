@@ -46,6 +46,7 @@
                           <%= f.submit 'Add Item', class: "btn btn-primary btn-sm" %>
                         <% elsif stock.in_stock <= 0 %>
                           <span class="btn btn-xs btn-danger disabled"> Out of Stock </span>
+                        <% end %>
                       <% end %>
                       </div>
                     </div>
