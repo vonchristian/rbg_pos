@@ -108,6 +108,12 @@ class WorkOrder < ApplicationRecord
       debit_amounts_attributes: [{amount: spare_part.total_cost, account: accounts_receivable}, {amount: spare_part.total_cost, account: cost_of_goods_sold}], 
       credit_amounts_attributes:[{amount: spare_part.total_cost, account: sales}, {amount: spare_part.total_cost, account: merchandise_inventory}])
   end
+  def create_order(spare_part)
+    order = Order.create(customer: self.customer, date: Time.zone.now, employee_id: spare_part.user_id )
+    order.line_items << spare_part
+    Payment.create(mode_of_payment: 'credit', order: order, total_cost: spare_part.total_cost)
+  end
+
   private
   def set_service_number
     self.service_number = nil

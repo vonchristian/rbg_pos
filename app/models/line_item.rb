@@ -34,6 +34,11 @@ class LineItem < ApplicationRecord
       entry.destroy
     end
   end
+  def remove_order 
+    if order.present? && order.line_items.count == 1
+      order.destroy
+    end
+  end
   private 
   def exceeds_available_stock?
     errors[:base] << "Exceeded available stock" if quantity > stock.in_stock
