@@ -12,7 +12,7 @@
           <th>Employee </th>
         </thead>
 	      <tbody>
-	        <% @customer.orders.each do |order| %>
+	        <% @customer.orders.order(date: :asc).each do |order| %>
 	          <tr>
 	            <% if order.line_items.count > 0 %>
 	            <td><%=link_to order.date.strftime("%B %e, %Y"), order %></td>

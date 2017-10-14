@@ -43,7 +43,7 @@
                         <%= f.input :search, input_html: { value: params[:search] }, as: :hidden %>
   	                  </div>
   	                  <div class="col-md-2">
-                        <% if stock.in_stock > 0 && !stock.under_warranty? %>
+                        <% if stock.in_stock > 0  %>
                           <%= f.submit 'Add Item', class: "btn btn-primary btn-sm" %>
                         <% elsif stock.in_stock <= 0 %>
                           <span class="btn btn-xs btn-danger disabled"> Out of Stock </span>
