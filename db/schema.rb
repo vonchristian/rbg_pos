@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171004032018) do
+ActiveRecord::Schema.define(version: 20171014011252) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -141,6 +141,7 @@ ActiveRecord::Schema.define(version: 20171004032018) do
     t.decimal "markup_amount", default: "0.0"
     t.bigint "work_order_id"
     t.bigint "user_id"
+    t.string "search"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
     t.index ["order_id"], name: "index_line_items_on_order_id"
     t.index ["stock_id"], name: "index_line_items_on_stock_id"

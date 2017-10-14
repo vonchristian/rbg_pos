@@ -11,6 +11,8 @@ class LineItem < ApplicationRecord
   
   validate :exceeds_available_stock?, on: :create
   after_commit :set_total_cost, on: [:create, :update]
+  def search 
+  end
   def self.not_stock_transfer
     all.select{|a| !a.stock_transfer? }
   end

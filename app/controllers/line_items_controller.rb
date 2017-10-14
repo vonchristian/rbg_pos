@@ -2,8 +2,9 @@ class LineItemsController < ApplicationController
 	def create 
 		@cart = current_cart
 		@line_item = @cart.line_items.create(line_item_params)
+    @search = params[:search].to_s
 		if @line_item.save 
-		  redirect_to store_index_url, notice: "added successfully"
+		  redirect_to "/store?&search=#{params[:line_item][:search]}", notice: "added successfully"
 		else 
 			redirect_to store_index_url, alert: 'Quantity exceeded available stocks'
 		end
@@ -25,6 +26,6 @@ class LineItemsController < ApplicationController
 
 	private 
 	def line_item_params
-		params.require(:line_item).permit(:stock_id, :unit_cost, :total_cost, :quantity, :markup_amount)
+		params.require(:line_item).permit(:stock_id, :unit_cost, :total_cost, :quantity, :markup_amount, :search)
 	end
 end

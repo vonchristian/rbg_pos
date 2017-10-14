@@ -9,6 +9,7 @@ class Stock < ApplicationRecord
   belongs_to :product
   belongs_to :branch, optional: true
   has_many :line_items, dependent: :destroy
+  has_many :work_orders, through: :line_items, source: :work_order
   has_many :sales_returns, through: :line_items
   has_many :stock_transfers, dependent: :destroy
   validates :quantity, :unit_cost, :total_cost, :retail_price, :wholesale_price, presence: true, numericality: true
@@ -39,7 +40,7 @@ class Stock < ApplicationRecord
     in_stock.zero?
   end
   def in_stock
-    quantity - stock_transfers.sum(:quantity) - line_items.sum(&:quantity) + sales_returns.sum(&:quantity)
+    quantity - stock_transfers.sum(:quantity) - line_items.sum(&:quantity)  + sales_returns.sum(&:quantity)
   end
 
   def name_and_barcode
