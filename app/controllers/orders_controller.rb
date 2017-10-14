@@ -7,7 +7,7 @@ class OrdersController < ApplicationController
       @to_date = Time.parse(params[:to_date])
       @orders = Order.ordered_on(from_date: @from_date, to_date: @to_date).paginate(page: params[:page], per_page: 35)
     else
-		  @orders = Order.all.order(created_at: :desc).paginate(page: params[:page], per_page: 35)
+		  @orders = Order.all.order(date: :desc).paginate(page: params[:page], per_page: 35)
     end
 		authorize @orders
 	end
