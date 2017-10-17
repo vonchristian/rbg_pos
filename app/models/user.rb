@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :orders, foreign_key: 'employee_id'
   has_many :technician_work_orders, foreign_key: 'technician_id'
   has_many :work_orders, through: :technician_work_orders
+  has_many :entries, class_name: "AccountingModule::Entry", foreign_key: 'recorder_id'
   enum role: [:proprietor, :sales_clerk, :stock_custodian, :technician]
   has_attached_file :avatar,
   styles: { large: "120x120>",
@@ -21,4 +22,11 @@ class User < ApplicationRecord
   def full_name 
   	"#{first_name} #{last_name}"
   end
+  def cash_on_hand_account
+    if proprietor?
+      AccountingModule::Asset.find_by(name: "Cash on Hand")
+    elsif sales_clerk?
+      AccountingModule::Asset.find_by(name: "Cash on Hand (Cashier)")
+    end 
+  end 
 end

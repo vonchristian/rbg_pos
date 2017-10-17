@@ -7,6 +7,8 @@
           <p class="category"> Generate reports </p>
         </div>
         <div class="content">
+          <%= link_to 'Inventory Report', products_path(format: 'pdf') %>
+          <hr>
           <h4 class="title"> Sales </h4>
           <hr>
           <%=link_to reports_sales_path(user_id: nil, format: 'pdf', from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day) do %>

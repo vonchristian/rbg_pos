@@ -82,4 +82,9 @@ Rails.application.routes.draw do
     resources :accessories, only: [:new, :create]
   end
   resources :warranties, only: [:edit, :update]
+  resources :branches, only: [:index, :show] do 
+    resources :stock_transfers, only: [:new, :create], module: :branches
+    resources :line_items, only: [:create], module: :branches
+  end
+  resources :stock_transfers, only: [:index, :show, :destroy]
 end

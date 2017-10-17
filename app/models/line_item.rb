@@ -4,6 +4,7 @@ class LineItem < ApplicationRecord
   belongs_to :stock, optional: true
   belongs_to :order, optional: true
   belongs_to :work_order, optional: true
+  belongs_to :stock_transfer, optional: true
 
   
   delegate :barcode, :product_name, :product_unit, to: :stock

@@ -103,6 +103,7 @@ class WorkOrder < ApplicationRecord
 
 
     entries.work_order_credit.create(entry_date: spare_part.created_at,
+      recorder_id: spare_part.user_id,
       description: "Spare parts installed", 
       user_id: spare_part.user_id, 
       debit_amounts_attributes: [{amount: spare_part.total_cost, account: accounts_receivable}, {amount: spare_part.total_cost, account: cost_of_goods_sold}], 

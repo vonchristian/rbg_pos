@@ -31,15 +31,6 @@
         <br>
         <div class="row">
           <div class="col-md-4">
-            Transferred
-          </div>
-          <div class="col-md-8">
-            <%= @stock.stock_transfers.sum(:quantity) %>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-md-4">
             In Stock
           </div>
           <div class="col-md-8">
@@ -67,9 +58,7 @@
         </div>
         <% end %>
         <hr>
-<%# if policy(:stock_transfer).new? %>
-  <%#= link_to 'New Transfer', new_stock_transfer_path(@stock), class: "btn btn-primary" %>
-<%# end %> 
+
 <% if current_user.proprietor? %>
   <%= link_to 'Edit', edit_stock_path(@stock), class: "btn btn-warning btn-sm" %>
 <% end %>

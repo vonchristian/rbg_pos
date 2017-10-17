@@ -17,8 +17,9 @@
                   <small><%= employee.role.titleize %></small>
                 </div>
                 <div class="col-md-3">
-                  <span class="text-primary"><%= number_to_currency employee.orders.created_between(from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day).sum(&:total_cost) %></span><br>
-                <small class="text-success"> SALES (<%= Time.zone.now.strftime("%b %e") %>) </small>
+                  <% if employee.cash_on_hand_account.present? %>
+                    <span class="text-primary"><%= number_to_currency employee.cash_on_hand_account.balance(recorder_id: employee.id ) %> </span>
+                  <% end %>
                 </div>
               </div>
               <br>

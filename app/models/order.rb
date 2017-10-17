@@ -36,13 +36,13 @@ class Order < ApplicationRecord
     line_items.sum(&:quantity)
   end
   def self.total_cost
-    all.sum(&:total_cost)
+    all.map{|a| a.total_cost }.compact.sum
   end
   def self.total_discount_amount 
-    all.sum(&:discount_amount)
+    all.map{|a| a.discount_amount}.compact.sum
   end
   def self.total_cost_less_discount
-    all.sum(&:total_cost_less_discount)
+    all.map{|a| a.total_cost_less_discount}.compact.sum
   end
   def self.created_between(hash={})
     if hash[:from_date] && hash[:to_date]
@@ -87,17 +87,17 @@ class Order < ApplicationRecord
   end
   def create_entry_for_order
     unless self.internal_use?
-      cash_on_hand = AccountingModule::Account.find_by(name: "Cash on Hand (Cashier)")
+      cash_on_hand = User.find_by(id: self.employee_id).cash_on_hand_account
       accounts_receivable = AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current")
       cost_of_goods_sold = AccountingModule::Account.find_by(name: "Cost of Goods Sold")
       sales = AccountingModule::Account.find_by(name: "Sales")
       merchandise_inventory = AccountingModule::Account.find_by(name: "Merchandise Inventory")
       if cash?
-        AccountingModule::Entry.create!(entry_type: 'cash_order', commercial_document: self, entry_date: self.date, description: "Payment for order", 
+        AccountingModule::Entry.create!(recorder_id: self.employee_id, entry_type: 'cash_order', commercial_document: self, entry_date: self.date, description: "Payment for order", 
           debit_amounts_attributes: [{amount: self.total_cost_less_discount, account: cash_on_hand}, {amount: self.stock_cost, account: cost_of_goods_sold}], 
           credit_amounts_attributes:[{amount: self.total_cost_less_discount, account: sales}, {amount: self.stock_cost, account: merchandise_inventory}])
       elsif credit? || stock_transfer?
-        AccountingModule::Entry.create!(entry_type: 'credit_order', commercial_document: self, entry_date: self.date, description: "Credit order", 
+        AccountingModule::Entry.create!(recorder_id: self.employee_id, entry_type: 'credit_order', commercial_document: self, entry_date: self.date, description: "Credit order", 
           debit_amounts_attributes: [{amount: self.total_cost_less_discount, account: accounts_receivable}, {amount: self.stock_cost, account: cost_of_goods_sold}], 
           credit_amounts_attributes:[{amount: self.total_cost_less_discount, account: sales}, {amount: self.stock_cost, account: merchandise_inventory}])
       end

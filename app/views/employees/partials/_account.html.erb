@@ -2,10 +2,59 @@
   <div class="content">
     <div class="row">
       <div class="col-md-3">
-        <h4><%= number_to_currency @employee.orders.created_between(from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day).sum(&:total_cost) %></h4>
-        <small> SALES (<%= Time.zone.now.strftime("%B %e") %>)</small>
+        <% if @employee.cash_on_hand_account.present? %>
+          <h4><%= number_to_currency @employee.cash_on_hand_account.balance(recorder_id: @employee.id) %></h4>
+          <small> CASH ON HAND</small>
+
+        <% end %>
       </div>
     </div>
+    <div class="table table-responsive">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th> Details </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @entries.each do |entry| %>
+            <tr>
+              <td><%=entry.entry_date.strftime("%B %e, %Y")%></td>
+              <td><%= entry.description %></td>
+              <td>
+                <p> DEBIT </p>
+                <% entry.debit_amounts.each do |d| %>
+                  <div class="row">
+                    <div class="col-md-8">
+                      <%=d.account.try(:name) %>
+                    </div>
+                    <div class="col-md-3">
+                      <span class="pull-right"><%= number_to_currency d.amount %></span>
+                    </div>
+                  </div>
+                  <br>
+                <% end %>
+                <p> CREDIT </p>
+                <% entry.credit_amounts.each do |d| %>
+                  <div class="row">
+                    <div class="col-md-8">
+                      <%=d.account.try(:name) %>
+                    </div>
+                    <div class="col-md-3">
+                      <span class="pull-right"><%= number_to_currency d.amount %></span>
+                    </div>
+                  </div>
+                  <br>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <center><%= paginate @entries %></center>
   </div>
 </div>
     

@@ -15,6 +15,7 @@ module Products
       @product = Product.find(params[:product_id])
       @stock = @product.stocks.create(stock_params)
       @stock.branch = current_user.branch
+      @stock.employee = current_user
       if @stock.save
         redirect_to new_product_stock_url(@product), notice: "Stock saved successfully."
       else 

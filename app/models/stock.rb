@@ -5,13 +5,14 @@ class Stock < ApplicationRecord
   has_one :entry, as: :commercial_document, class_name: "AccountingModule::Entry", dependent: :destroy
   belongs_to :supplier, optional: true
   belongs_to :registry, optional: true
+  belongs_to :employee, class_name: "User", foreign_key: 'employee_id'
   belongs_to :origin_branch, class_name: "Branch", foreign_key: 'origin_branch_id', optional: true
   belongs_to :product
   belongs_to :branch, optional: true
   has_many :line_items, dependent: :destroy
   has_many :work_orders, through: :line_items, source: :work_order
   has_many :sales_returns, through: :line_items
-  has_many :stock_transfers, dependent: :destroy
+  has_many :stock_transfers, through: :line_items, source: :stock_transfer
   validates :quantity, :unit_cost, :total_cost, :retail_price, :wholesale_price, presence: true, numericality: true
   validates :product_id, presence: true
   
@@ -40,7 +41,7 @@ class Stock < ApplicationRecord
     in_stock.zero?
   end
   def in_stock
-    quantity - stock_transfers.sum(:quantity) - line_items.sum(&:quantity)  + sales_returns.sum(&:quantity)
+    quantity - line_items.sum(&:quantity)  + sales_returns.sum(&:quantity)
   end
 
   def name_and_barcode
@@ -50,6 +51,7 @@ class Stock < ApplicationRecord
     self.name = self.product.name
     self.save
   end
+  
   private 
   def set_date 
   	self.date ||= Time.zone.now 
@@ -63,11 +65,11 @@ class Stock < ApplicationRecord
     cash_on_hand = AccountingModule::Account.find_by(name: "Cash on Hand")
     accounts_payable = AccountingModule::Account.find_by(name: 'Accounts Payable-Trade')
     merchandise_inventory = AccountingModule::Account.find_by(name: "Merchandise Inventory")
-    
+
     if cash_purchase? 
-      AccountingModule::Entry.create!(entry_type: 'cash_stock', commercial_document: self, entry_date: self.date, description: "Cash Purchase of stocks", debit_amounts_attributes: [amount: self.total_cost, account: merchandise_inventory], credit_amounts_attributes:[amount: self.total_cost, account: cash_on_hand])
+      AccountingModule::Entry.create!(recorder_id: self.employee_id, entry_type: 'cash_stock', commercial_document: self, entry_date: self.date, description: "Cash Purchase of stocks", debit_amounts_attributes: [amount: self.total_cost, account: merchandise_inventory], credit_amounts_attributes:[amount: self.total_cost, account: cash_on_hand])
     elsif transferred? || credit_purchase? || old_stock?
-      AccountingModule::Entry.create!(entry_type: 'credit_stock', commercial_document: self, entry_date: self.date, description: "Credit/Transferred/Old  stocks", debit_amounts_attributes: [amount: self.total_cost, account: merchandise_inventory], credit_amounts_attributes:[amount: self.total_cost, account: accounts_payable])
+      AccountingModule::Entry.create!(recorder_id: self.employee_id, entry_type: 'credit_stock', commercial_document: self, entry_date: self.date, description: "Credit/Transferred/Old  stocks", debit_amounts_attributes: [amount: self.total_cost, account: merchandise_inventory], credit_amounts_attributes:[amount: self.total_cost, account: accounts_payable])
     end
   end
 end

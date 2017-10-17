@@ -1,0 +1,37 @@
+<div class="content">
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="header">
+        <div class="row">
+          <div class="col-md-1">
+          </div>
+          <div class="col-md-9">
+            <h4 class="title"><%= @branch.name.try(:upcase) %></h4>
+          </div>
+        </div>
+      </div>
+      <br>
+<div class="tabbable-line">
+        <ul class="nav nav-tabs">
+          <li class="active">
+            <a href="#customer-info" data-toggle="tab">
+            <i class="fa fa-user"></i> Info </a>
+          </li>
+          <li>
+            <a href="#branch-stock-transfer" data-toggle="tab">
+            Stock Transfers </a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <%= render 'branches/partials/stock_transfers' %>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+         

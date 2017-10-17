@@ -1,0 +1,117 @@
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-7">
+        <div class="card">
+          <div class="content">
+          <div class="header">
+                     <h4 class="title"><span class="icon-basket-loaded"></span> Stock Transfer Details</h4>
+                                <p class="category">Search for stock to transfer. </p>
+                            </div>
+                            <hr>
+          <%=form_tag new_branch_stock_transfer_path(@branch), method: :get, id: "search-form" do %>
+             <div class="input-group">
+               <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", autofocus: true, placeholder: "Search...", type: "search" %>
+               <span class="input-group-btn">
+                 <%= button_tag(type: 'submit', class: "btn") do %>
+                   <i class="icon-magnifier"></i>
+                 <% end %>
+               </span>
+             </div>
+           <% end %>
+              
+                <% if @stocks.any?  %>
+                  <% @stocks.each do |stock| %>
+                    <div class="row">
+                      <div class="col-md-2">
+                        <%= image_tag(stock.avatar.url(:medium), height: 50, width: 50, class: "img-square") %>
+                      </div>
+                      <div class="col-md-3">
+                        <%= stock.product_name %><br>
+                        <small><b><%= stock.barcode.try(:upcase) %></b></small><br>
+                        <span class="text-danger"><%= number_to_currency stock.retail_price %></span>
+                      </div>
+                      <div class="col-md-2">
+                        <%= stock.in_stock %><br>
+                        <small class="text-success">IN STOCK</small>
+                      </div>
+                      <div class="col-md-2">
+                      <%= simple_form_for @line_item, url: :branch_line_items do |f| %>
+                        <%= f.input :quantity, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1 }, label: false, as: :string %>
+                        <%= f.input :unit_cost, input_html: { value: stock.retail_price, id: 'line_item_unit_cost' }, as: :hidden %>
+                        <%= f.input :stock_id, input_html: { value: stock.id }, as: :hidden %>
+                        <%= f.input :search, input_html: { value: params[:search] }, as: :hidden %>
+                      </div>
+                      <div class="col-md-2">
+                        <% if stock.in_stock > 0  %>
+                          <%= f.submit 'Add Item', class: "btn btn-primary btn-sm" %>
+                        <% elsif stock.in_stock <= 0 %>
+                          <span class="btn btn-xs btn-danger disabled"> Out of Stock </span>
+                        <% end %>
+                      <% end %>
+                      </div>
+                    </div>
+                  <br>
+                  <% end %>
+                <% else %>
+                  <p class="text-danger"> Product not found. </p>
+                <% end %>
+              
+            </div>
+          </div>
+        </div>
+        <% if @cart.line_items.any? %>
+        <div class="col-md-5">
+          <div class="card">
+            <div class="content">
+              <div class="header">
+                <div class="row">
+                  <div class="col-md-9">
+                    <h4 class="title"><span class="icon-basket-loaded"></span> Cart</h4>
+                    <p class="category"><span class="badge"><%= @cart.line_items.count %> </span> line items in cart</p>
+                  </div>
+                  <div class="col-md-3">
+                    <span class="pull-right"><%= link_to 'Empty Cart', cart_path(@cart), method: :delete, class: "btn btn-danger btn-sm" %>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <% @cart.line_items.each do |line_item| %>
+                <div class="row">
+                  <div class="col-md-2">
+                    <%= line_item.quantity %> 
+                  </div>
+                  <div class="col-md-5">
+                    <%=line_item.product_name %><br>
+                    <span class="text-danger"><%= number_to_currency line_item.unit_cost %></span><br>
+                    
+                  </div>
+                  <div class="col-md-3">
+                    <span class="pull-right"><%= number_to_currency line_item.total_cost %></span>
+                  </div>
+                </div>
+                <hr>
+              <% end %>
+              <div class="row">
+                <div class="col-md-5">
+                  <h4 class="title"> Total </h4>
+                </div>
+                <div class="col-md-5">
+                  <h4 class="title pull-right">
+                    <%= number_to_currency @cart.total_cost %>
+                  </h4>
+                </div>
+              </div>
+              <br>
+              <%= simple_form_for StockTransfer.new, url: :branch_stock_transfers do |f| %>
+                <%= f.input :destination_branch_id, input_html: { value: @branch.id }, as: :hidden %>
+                <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+
+                <%= f.submit 'Transfer Stocks', class: "btn-lg btn btn-success btn-block active" %>
+              <% end %>
+              <br>
+            </div>
+        <% end %>
+
+

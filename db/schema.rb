@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171014011252) do
+ActiveRecord::Schema.define(version: 20171017075452) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -110,8 +110,10 @@ ActiveRecord::Schema.define(version: 20171014011252) do
     t.datetime "updated_at", null: false
     t.integer "entry_type"
     t.bigint "user_id"
+    t.bigint "recorder_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
     t.index ["entry_type"], name: "index_entries_on_entry_type"
+    t.index ["recorder_id"], name: "index_entries_on_recorder_id"
     t.index ["user_id"], name: "index_entries_on_user_id"
   end
 
@@ -142,9 +144,11 @@ ActiveRecord::Schema.define(version: 20171014011252) do
     t.bigint "work_order_id"
     t.bigint "user_id"
     t.string "search"
+    t.bigint "stock_transfer_id"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
     t.index ["order_id"], name: "index_line_items_on_order_id"
     t.index ["stock_id"], name: "index_line_items_on_stock_id"
+    t.index ["stock_transfer_id"], name: "index_line_items_on_stock_transfer_id"
     t.index ["user_id"], name: "index_line_items_on_user_id"
     t.index ["work_order_id"], name: "index_line_items_on_work_order_id"
   end
@@ -167,7 +171,7 @@ ActiveRecord::Schema.define(version: 20171014011252) do
   create_table "payments", force: :cascade do |t|
     t.bigint "order_id"
     t.integer "mode_of_payment"
-    t.decimal "discount_amount"
+    t.decimal "discount_amount", default: "0.0"
     t.decimal "cash_tendered"
     t.decimal "change"
     t.decimal "total_cost"
@@ -287,7 +291,9 @@ ActiveRecord::Schema.define(version: 20171014011252) do
     t.bigint "origin_branch_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "employee_id"
     t.index ["destination_branch_id"], name: "index_stock_transfers_on_destination_branch_id"
+    t.index ["employee_id"], name: "index_stock_transfers_on_employee_id"
     t.index ["origin_branch_id"], name: "index_stock_transfers_on_origin_branch_id"
     t.index ["stock_id"], name: "index_stock_transfers_on_stock_id"
   end
@@ -310,7 +316,9 @@ ActiveRecord::Schema.define(version: 20171014011252) do
     t.bigint "origin_branch_id"
     t.string "name"
     t.bigint "registry_id"
+    t.bigint "employee_id"
     t.index ["branch_id"], name: "index_stocks_on_branch_id"
+    t.index ["employee_id"], name: "index_stocks_on_employee_id"
     t.index ["origin_branch_id"], name: "index_stocks_on_origin_branch_id"
     t.index ["product_id"], name: "index_stocks_on_product_id"
     t.index ["registry_id"], name: "index_stocks_on_registry_id"
@@ -444,10 +452,12 @@ ActiveRecord::Schema.define(version: 20171014011252) do
   add_foreign_key "amounts", "entries"
   add_foreign_key "branches", "businesses"
   add_foreign_key "entries", "users"
+  add_foreign_key "entries", "users", column: "recorder_id"
   add_foreign_key "job_orders", "customers"
   add_foreign_key "job_orders", "units"
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "orders"
+  add_foreign_key "line_items", "stock_transfers"
   add_foreign_key "line_items", "stocks"
   add_foreign_key "line_items", "users"
   add_foreign_key "line_items", "work_orders"
@@ -464,11 +474,13 @@ ActiveRecord::Schema.define(version: 20171014011252) do
   add_foreign_key "stock_transfers", "branches", column: "destination_branch_id"
   add_foreign_key "stock_transfers", "branches", column: "origin_branch_id"
   add_foreign_key "stock_transfers", "stocks"
+  add_foreign_key "stock_transfers", "users", column: "employee_id"
   add_foreign_key "stocks", "branches"
   add_foreign_key "stocks", "branches", column: "origin_branch_id"
   add_foreign_key "stocks", "products"
   add_foreign_key "stocks", "registries"
   add_foreign_key "stocks", "suppliers"
+  add_foreign_key "stocks", "users", column: "employee_id"
   add_foreign_key "technician_work_orders", "users", column: "technician_id"
   add_foreign_key "technician_work_orders", "work_orders"
   add_foreign_key "units", "customers"

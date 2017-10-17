@@ -26,6 +26,7 @@
   <%= f.input :wholesale_price %>
   <%= f.input :barcode %>
   <%= f.input :name, as: :hidden %>
+  <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
   <%= f.submit "Save Stock", class: "btn btn-primary" %>
 <% end %>
 <script>

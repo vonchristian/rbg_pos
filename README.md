@@ -41,3 +41,5 @@ add under warranty on work orders
  Export per category, per product to excel
 
  column product_name, price, serial number, status
+
+ create separate account for stock transfer
