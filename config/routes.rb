@@ -61,7 +61,9 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   resources :users, only: [:edit, :update]
   resources :registries, only: [:create, :show, :destroy]
-  resources :employees, only: [:index, :show, :edit, :update]
+  resources :employees, only: [:index, :show, :edit, :update] do 
+    resources :remittances, only: [:new, :create], module: :employees
+  end
   resources :work_orders, only: [:index, :new, :create]
   resources :work_order_statuses, only: [:edit, :update]
   namespace :computer_repair_section do 

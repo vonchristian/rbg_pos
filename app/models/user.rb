@@ -8,6 +8,7 @@ class User < ApplicationRecord
   has_many :technician_work_orders, foreign_key: 'technician_id'
   has_many :work_orders, through: :technician_work_orders
   has_many :entries, class_name: "AccountingModule::Entry", foreign_key: 'recorder_id'
+  has_many :fund_transfers, class_name: "AccountingModule::Entry", as: :commercial_document
   enum role: [:proprietor, :sales_clerk, :stock_custodian, :technician]
   has_attached_file :avatar,
   styles: { large: "120x120>",
@@ -21,6 +22,9 @@ class User < ApplicationRecord
   do_not_validate_attachment_file_type :avatar
   def full_name 
   	"#{first_name} #{last_name}"
+  end
+   def fund_transfer_total
+    fund_transfers.fund_transfer.map{ |a| a.debit_amounts.distinct.sum(:amount) }.sum
   end
   def cash_on_hand_account
     if proprietor?

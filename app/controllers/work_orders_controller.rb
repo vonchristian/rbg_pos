@@ -2,7 +2,16 @@ require 'rqrcode'
 
 class WorkOrdersController < ApplicationController
   def index 
-    @qr = RQRCode::QRCode.new( 'https://github.com/whomwah/rqrcode')
+    @from_date = DateTime.parse(params[:from_date])
+    @to_date = DateTime.parse(params[:to_date])
+    @work_orders = WorkOrder.from(from_date: @from_date, to_date: @to_date).order(created_at: :desc)
+    respond_to do |format|
+      format.html 
+      format.pdf do 
+        pdf = WorkOrderPdf.new(@work_orders, @from_date, @to_date, view_context)
+        send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Work Order.pdf"
+      end 
+    end 
   end
   def new 
     @work_order = WorkOrderForm.new 

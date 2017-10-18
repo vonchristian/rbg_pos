@@ -22,11 +22,38 @@ class WorkOrder < ApplicationRecord
   validates :description, :physical_condition, :reported_problem, presence: true
   validates :customer_id, presence: true
   after_commit :set_service_number, :set_customer_name, :set_product_name, on: [:create, :update]
+  def self.total_charges_cost(hash ={} )
+    if hash[:from_date] && hash[:to_date]
+       from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date])
+        to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date])
+        where('created_at' => (from_date.beginning_of_day)..(to_date.end_of_day)).sum(&:total_charges_cost)
+    else
+      all.sum(&:total_charges_cost)        
+    end
+  end
+  def self.total_spare_parts_cost(hash ={} )
+    if hash[:from_date] && hash[:to_date]
+       from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date])
+        to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date])
+        where('created_at' => (from_date.beginning_of_day)..(to_date.end_of_day)).sum(&:total_spare_parts_cost)
+    else
+      all.sum(&:total_spare_parts_cost)        
+    end
+  end
+  def self.total_service_charges_cost(hash ={} )
+    if hash[:from_date] && hash[:to_date]
+       from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date])
+        to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date])
+        where('created_at' => (from_date.beginning_of_day)..(to_date.end_of_day)).sum(&:total_service_charges_cost)
+    else
+      all.sum(&:total_service_charges_cost)        
+    end
+  end
   def self.from(hash={})
       if hash[:from_date] && hash[:to_date]
-       from_date = hash[:from_date].kind_of?(Time) ? hash[:from_date] : Time.parse(hash[:from_date])
-        to_date = hash[:to_date].kind_of?(Time) ? hash[:to_date] : Time.parse(hash[:to_date])
-        where('created_at' => from_date..to_date)
+       from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date])
+        to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date])
+        where('created_at' => (from_date.beginning_of_day)..(to_date.end_of_day))
       else
         all
       end
@@ -36,6 +63,9 @@ class WorkOrder < ApplicationRecord
   end
   def self.payments_total 
     all.sum(&:payments_total)
+  end
+  def technicians_name 
+    technicians.map{|a| a.full_name }.join(",")
   end
   def accounts_receivable
     spare_parts = entries.work_order_credit.map{|a| a.debit_amounts.distinct.pluck(:amount).sum}.sum

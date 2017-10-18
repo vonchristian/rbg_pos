@@ -1,8 +1,8 @@
 module ComputerRepairSection 
   class DashboardController < ApplicationController
     def index 
-      @from_date = params[:from_date] || Time.zone.now.beginning_of_week
-      @to_date = params[:to_date] || Time.zone.now.end_of_week
+      @from_date = params[:from_date] || DateTime.now.beginning_of_week
+      @to_date = params[:to_date] || DateTime.now.end_of_week
       if params[:technician].present?
         @technician = User.find(params[:technician])
         @work_orders = @technician.work_orders.paginate(page: params[:page], per_page: 20)
