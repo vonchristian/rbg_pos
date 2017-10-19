@@ -28,7 +28,6 @@ task :environment do
   # If you're using rbenv, use this to load the rbenv environment.
   # Be sure to commit your .ruby-version or .rbenv-version to your repository.
   invoke :'rbenv:load'
-
   # For those using RVM, use this to load an RVM version@gemset.
   # invoke :'rvm:use[ruby-1.9.3-p125@default]'
 end
@@ -78,7 +77,7 @@ end
 
 #########################################
 desc "Deploys the current version to the server."
-task :deploy do
+task :deploy => :environment do
   deploy do
     # Put things that will set up an empty directory into a fully set-up
     # instance of your project.

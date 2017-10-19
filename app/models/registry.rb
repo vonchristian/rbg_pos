@@ -24,14 +24,14 @@ class Registry < ApplicationRecord
   end
   def create_or_find_product(row)
     if find_product(row).blank?
-      Product.find_or_create_by(name: row[0], unit: row[1])
+      Product.find_or_create_by!(name: row[0], unit: row[1])
     end
   end
   def create_or_find_supplier(row)
-  	Supplier.find_or_create_by(business_name: row[8])
+  	Supplier.find_or_create_by!(business_name: row[8])
   end
   def create_or_find_stock(row)
-    find_product(row).stocks.find_or_create_by(date: self.created_at.strftime("%B %e, %Y"), registry: self, name: find_product(row).name,  barcode: normalized_barcode(row), quantity: row[3], unit_cost: row[4], total_cost: row[5], retail_price: row[6], wholesale_price: row[6], stock_type: row[7], supplier: create_or_find_supplier(row))
+    find_product(row).stocks.find_or_create_by!(date: self.created_at.strftime("%B %e, %Y"), registry: self, name: find_product(row).name,  barcode: normalized_barcode(row), quantity: row[3], unit_cost: row[4], total_cost: row[5], retail_price: row[6], wholesale_price: row[6], stock_type: row[7], supplier: create_or_find_supplier(row))
   end
   def normalized_barcode(row)
     if row[2].to_s.include?(".")

@@ -5,7 +5,7 @@ class Stock < ApplicationRecord
   has_one :entry, as: :commercial_document, class_name: "AccountingModule::Entry", dependent: :destroy
   belongs_to :supplier, optional: true
   belongs_to :registry, optional: true
-  belongs_to :employee, class_name: "User", foreign_key: 'employee_id'
+  belongs_to :employee, class_name: "User", foreign_key: 'employee_id', optional: true
   belongs_to :origin_branch, class_name: "Branch", foreign_key: 'origin_branch_id', optional: true
   belongs_to :product
   belongs_to :branch, optional: true
