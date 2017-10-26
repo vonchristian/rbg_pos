@@ -11,6 +11,12 @@
         <br>
           <%=link_to 'New Branch', new_branch_path, class: "btn btn-danger btn-sm" %>
           <hr>
+          <% Section.all.each do |section| %>
+            <p><%= section.name %></p>
+            <br>
+          <% end %>
+          <%=link_to 'New Section', new_section_path, class: "btn btn-danger btn-sm" %>
+          <hr>
         <h4> Business Info </h4>
           <%= @business.name %>
           <br>
@@ -34,7 +40,8 @@
                 <%= user.email %>
               </div>
               <div class="col-md-2">
-                <%= user.role %>
+                <%= user.role %><br>
+                <%= user.section.try(:name) %>
               </div>
               <div class="col-md-2">
                 <%=link_to 'Edit Info', edit_user_path(user), class: "btn btn-danger btn-xs" %>

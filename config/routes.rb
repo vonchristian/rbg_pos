@@ -89,4 +89,5 @@ Rails.application.routes.draw do
     resources :line_items, only: [:create], module: :branches
   end
   resources :stock_transfers, only: [:index, :show, :destroy]
+  resources :sections, only: [:new, :create]
 end

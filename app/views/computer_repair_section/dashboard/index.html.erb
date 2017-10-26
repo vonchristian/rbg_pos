@@ -12,6 +12,16 @@
             <% end %>
           <% end %>
           <br>
+          <br>
+          <p><small class="condensed-text">VIEW PER SECTION</small></p>
+           <% Section.all.each do |section| %>
+            <%=link_to computer_repair_section_dashboard_index_path(section_id: section.id) do %>
+              <span data-toggle="tooltip" title="<%=section.name %>" data-placement="top">
+                <%= section.name %>
+              </span>
+            <% end %>
+          <% end %>
+
         </div>
         <div class="col-md-3 border-right">
           <p><small class="condensed-text">VIEW PER DATE</small></p>
@@ -63,14 +73,14 @@
                   <%= image_tag(work_order.technicians.first.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %>
                 </span>
               </div>
-              <div class="col-md-8">
+              <div class="col-md-7">
                 <span class="text-black condensed-text"><b><%= work_order.product_unit.description.try(:upcase) %></b></span><br>
                 <span class='text-danger'><%= work_order.reported_problem %></span><br>
                 <span class="text-black"> <%= work_order.customer_full_name %></span><br>
                 <span class='text-black'><small><%= work_order.created_at.strftime("%b %e, %l:%M %p") %></small></span>
               </div>
               <div class="col-md-2">
-                <span class="text-black"><b>#<%=work_order.service_number.sub(/^0+/, "") %></b></span>
+                <small class="text-black"><b>#<%=work_order.service_number.sub(/^0+/, "") %></b></small>
               </div>
             </div>
             <br>
@@ -90,7 +100,7 @@
           <% @work_orders.work_in_progress.each do |work_order| %>
           <%=link_to computer_repair_section_work_order_path(work_order) do %>
            <div class="row">
-              <div class="col-md-10">
+              <div class="col-md-9">
                 <span class="text-black condensed-text"><b><%= work_order.product_unit.description.try(:upcase) %></b></span><br>
                 <%= work_order.customer.full_name %><br>
                 <span class="text-black"><%= distance_of_time_in_words(work_order.created_at, Time.zone.now) %></span><br><br>
@@ -101,7 +111,7 @@
                 <% end %>
               </div>
               <div class="col-md-2">
-                <span class="text-black"><b>#<%=work_order.service_number.gsub("0", "") %></b></span>
+                <small class="text-black"><b>#<%=work_order.service_number.sub(/^0+/, "") %></b></small>
               </div>
             </div>
             <hr>
@@ -120,7 +130,7 @@
           <% @work_orders.done.each do |work_order| %>
           <%=link_to computer_repair_section_work_order_path(work_order) do %>
            <div class="row">
-              <div class="col-md-10">
+              <div class="col-md-9">
                 <span class="text-black condensed-text"><b><%= work_order.product_unit.description.try(:upcase) %></b></span><br>
                 <%= work_order.customer.full_name %><br>
                 <span class="text-black"><%= distance_of_time_in_words(work_order.created_at, Time.zone.now) %></span><br><br>
@@ -131,7 +141,7 @@
                 <% end %>
               </div>
               <div class="col-md-2">
-                <span class="text-black"><b>#<%=work_order.service_number.gsub("0", "") %></b></span>
+                <small class="text-black"><b>#<%=work_order.service_number.sub(/^0+/, "") %></b></small>
               </div>
             </div>
             <hr>
@@ -150,7 +160,7 @@
             <% @work_orders.released.each do |work_order| %>
               <%=link_to computer_repair_section_work_order_path(work_order) do %>
                   <div class="row">
-                    <div class="col-md-10">
+                    <div class="col-md-9">
                     <p class="text-black condensed-text"><%= work_order.product_unit.description %></p>
                     <%= work_order.customer.full_name %><br>
                     <span class='text-black'><small><%= work_order.updated_at.strftime("%b %e, %l:%M %p") %></small></span><br><br>
@@ -161,7 +171,7 @@
                     <% end %>
                     </div>
                     <div class="col-md-2">
-                      <span class="text-black"><b>#<%=work_order.service_number.gsub("0", "") %></b></span>
+                      <small class="text-black"><b>#<%=work_order.service_number.sub(/^0+/, "") %></b></small>
                     </div>
                   </div>
                   <br>

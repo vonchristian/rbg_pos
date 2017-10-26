@@ -21,6 +21,7 @@
   <%= f.input :physical_condition %>
   <%= f.input :reported_problem, as: :text %>
   <%= f.input :under_warranty %>
+  <%= f.input :section_id, input_html: { value: current_user.try(:section_id) }, as: :hidden %>
   <div id="warranty-details" display="none">
     <%= f.input :supplier_id, collection: Supplier.all.map{|a| [a.business_name, a.id] } %>
     <%= f.input :purchase_date, as: :string, input_html: { class: "datepicker" } %>

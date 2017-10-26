@@ -5,6 +5,7 @@ class WorkOrder < ApplicationRecord
     :updates_content, :reported_problem, :physical_condition, :service_number, :customer_name, :product_name]
   belongs_to :product_unit
   belongs_to :supplier, optional: true
+  belongs_to :section, optional: true
   has_many :accessories
   belongs_to :customer, optional: true
   has_many :technician_work_orders, dependent: :destroy
@@ -21,7 +22,7 @@ class WorkOrder < ApplicationRecord
   has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
   validates :description, :physical_condition, :reported_problem, presence: true
   validates :customer_id, presence: true
-  after_commit :set_service_number, :set_customer_name, :set_product_name, on: [:create, :update]
+  after_commit :set_service_number, :set_customer_name, :set_product_name, :set_section, on: [:create, :update]
   def self.total_charges_cost(hash ={} )
     if hash[:from_date] && hash[:to_date]
        from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date])
@@ -156,4 +157,10 @@ class WorkOrder < ApplicationRecord
   def set_product_name 
     self.product_name = self.product_unit.description
   end
+  def set_section
+    section = technicians.first.section
+    if section.present?
+      self.section = section
+    end 
+  end 
 end

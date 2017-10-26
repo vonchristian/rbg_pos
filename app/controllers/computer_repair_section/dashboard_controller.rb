@@ -8,6 +8,8 @@ module ComputerRepairSection
         @work_orders = @technician.work_orders.paginate(page: params[:page], per_page: 20)
       elsif params[:search].present?
         @work_orders = WorkOrder.text_search(params[:search]).paginate(page: params[:page], per_page: 20)
+      elsif params[:section_id].present?
+        @work_orders = Section.find(params[:section_id]).work_orders.paginate(page: params[:page], per_page: 20)
       else
         @work_orders = WorkOrder.from(from_date: @from_date, to_date: @to_date).paginate(page: params[:page], per_page: 20)
       end
