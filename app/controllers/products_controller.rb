@@ -2,15 +2,15 @@ require 'will_paginate/array'
 class ProductsController < ApplicationController
 	def index
     if params[:search].present?
-      @products = Product.text_search(params[:search]).paginate(page: params[:page], per_page: 20)
+      @products = Product.text_search(params[:search]).paginate(page: params[:page], per_page: 50)
     else
-      @products = Product.joins([:stocks, :sold_items]).all.order(:name).paginate(page: params[:page], per_page: 20)
+      @products = Product.joins([:stocks, :sold_items]).all.order(:name).paginate(page: params[:page], per_page: 50)
     end
     @registry = Registry.new
     respond_to do |format|
       format.html
       format.pdf do 
-        pdf = ProductsPdf.new(@products = Product.joins([:stocks, :sold_items]).all, view_context)
+        pdf = ProductsPdf.new(Product.joins([:stocks, :sold_items]).all.order(:name), view_context)
           send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Products PDF Report.pdf"
       end
     end

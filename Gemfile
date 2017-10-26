@@ -30,7 +30,6 @@ gem 'momentjs-rails', '>= 2.9.0'
 gem 'datetimepicker-rails', github: 'zpaulovics/datetimepicker-rails', branch: 'master', submodules: true
 gem 'dragonfly'
 gem 'pg_search'
-gem 'kaminari'
 gem 'paperclip'
 gem 'avatar_magick', '~> 1.0.1'
 gem 'pundit'

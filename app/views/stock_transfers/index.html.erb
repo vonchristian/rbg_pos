@@ -15,7 +15,7 @@
             </tr>
           </thead>
           <tbody>
-            <% @stock_transfers.each do |stock_transfer| %>
+            <% @stock_transfers.order(date: :desc).each do |stock_transfer| %>
               <tr>
                 <td><%= link_to stock_transfer.date.strftime("%B %e, %Y"), stock_transfer %></td>
                 <td><%= link_to stock_transfer.destination_branch.try(:name), stock_transfer %></td>
@@ -40,5 +40,5 @@
           </tbody>
         </table>
       </div>
-      <center><%= paginate @stock_transfers %></center>
+      <center><%= will_paginate @stock_transfers %></center>
     </div>
