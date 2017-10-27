@@ -1,7 +1,7 @@
 module AccountingModule
   class Entry < ApplicationRecord
     enum entry_type: [:cash_order, :credit_order, :cash_stock, :credit_stock, :customer_credit_payment, :expense, :supplier_credit_payment,
-      :work_order_credit, :work_order_payment, :work_order_service_charge, :stock_transfer, :fund_transfer]
+      :work_order_credit, :work_order_payment, :work_order_service_charge, :stock_transfer, :fund_transfer, :other_sale]
     belongs_to :commercial_document, :polymorphic => true, optional: true
     belongs_to :user, optional: true
     belongs_to :recorder, class_name: "User", optional: true

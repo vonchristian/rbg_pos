@@ -55,7 +55,7 @@
                                     <tbody>
                                       <% @orders.each do |order| %>
                                       <tr>
-                                      <% if order.line_items.count > 0 %>
+                                      <% if order.line_items.count > 0 || order.description.present? %>
                                         <td><%=link_to order.date.strftime("%B %e, %Y"), order %></td>
                                         <td><%= order.customer.try(:full_name).try(:titleize) %>
                                           <% if order.reference_number.present? %>
@@ -64,6 +64,7 @@
                                           <% end %>
                                         </td>
                                         <td>
+                                          <%= order.description %>
                                           <% order.line_items.each do |line_item|  %>
                                             <div class="row">
                                               <div class="col-md-9">
@@ -79,7 +80,7 @@
                                         </td>
                                         <td><span class="label label-<%=order.mode_of_payment_color%>"><%= order.mode_of_payment %></span></td>
                                         <td><%= number_to_currency order.discount_amount%></td>
-                                        <td><%= number_to_currency order.line_items_total_cost %></td>
+                                        <td><%= number_to_currency order.total_cost %></td>
                                         <td><%= order.employee.try(:full_name) %></td>
                                       <% end %>
                                       </tr>

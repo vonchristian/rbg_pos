@@ -47,8 +47,8 @@ class WorkOrderPdf < Prawn::Document
     end
   end
   def work_orders_data
-    [["DATE", "CUSTOMER", "UNIT",  "STATUS", "REPORTED PROBLEM", "TECHNICIANS", "SPARE PARTS", "CHARGES", "TOTAL COST"]] +
-    @table_data ||= @work_orders.map{|a| [a.created_at.strftime("%B %e, %Y"), a.customer_name, a.product_unit.try(:description), a.status.try(:titleize), a.reported_problem, a.technicians_name, price(a.total_spare_parts_cost), price(a.total_service_charges_cost), price(a.total_charges_cost)]} +
+    [["DATE", "CUSTOMER", "#", "UNIT",  "STATUS", "REPORTED PROBLEM", "TECHNICIANS", "SPARE PARTS", "CHARGES", "TOTAL COST"]] +
+    @table_data ||= @work_orders.map{|a| [a.created_at.strftime("%B %e, %Y"), a.customer_name, a.service_number, a.product_unit.try(:description), a.status.try(:titleize), a.reported_problem, a.technicians_name, price(a.total_spare_parts_cost), price(a.total_service_charges_cost), price(a.total_charges_cost)]} +
   [["", "", "", "", "", "", "#{price(@work_orders.total_spare_parts_cost(from_date: @from_date, to_date: @to_date))}", "#{price(@work_orders.total_service_charges_cost(from_date: @from_date, to_date: @to_date))}", "#{price(@work_orders.total_charges_cost(from_date: @from_date, to_date: @to_date))}"]]
   end
 end 

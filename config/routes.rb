@@ -90,4 +90,5 @@ Rails.application.routes.draw do
   end
   resources :stock_transfers, only: [:index, :show, :destroy]
   resources :sections, only: [:new, :create]
+  resources :other_sales, only: [:new, :create]
 end

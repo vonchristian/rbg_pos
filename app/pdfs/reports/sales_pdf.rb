@@ -13,6 +13,13 @@ module Reports
     def price(number)
       @view_context.number_to_currency(number, :unit => "P ")
     end
+    def order_description(order)
+      if order.line_items.present?
+        order.line_items_name
+      elsif order.description.present?
+        order.description
+      end
+    end
     def heading
       text 'SALES REPORT', align: :center, style: :bold
       if @from_date && @to_date && @from_date.strftime("%B %e, %Y") == @to_date.strftime("%B %e, %Y")
@@ -33,7 +40,7 @@ module Reports
     end
     def orders_data 
       [["DATE", "CUSTOMER", "ITEMS", "MODE OF PAYMENT", "DISCOUNT", "TOTAL COST", "TOTAL COST LESS DISCOUNT"]] +
-      @orders_data ||= @orders.map{|o| [o.date.strftime("%B %e, %Y"), o.customer.try(:full_name).try(:upcase), o.line_items_name, o.mode_of_payment, price(o.discount_amount), price(o.total_cost), price(o.total_cost_less_discount)] } +
+      @orders_data ||= @orders.map{|o| [o.date.strftime("%B %e, %Y"), o.customer.try(:full_name).try(:upcase), order_description(o), o.mode_of_payment, price(o.discount_amount), price(o.total_cost), price(o.total_cost_less_discount)] } +
       [["TOTAL", "", "", "", "#{price(@orders.total_discount_amount)}", "#{price(@orders.total_cost)}", "#{price(@orders.total_cost_less_discount)}"]]
     end
   end 
