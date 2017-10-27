@@ -15,7 +15,7 @@
           <%= f.input :reference_number %>
           <%= f.input :description, input_html: { value: "Payment of Work Order" } %>
           <%= f.input :amount, input_html: { value: @work_order.balance_total }, as: :string %>
-          <%= f.input :discount_amount, label: "Discount",  as: :string %>
+          <%= f.input :discount_amount, label: "Discount",  as: :string, input_html: {value: 0 } %>
           <%= f.input :debit_account_id, input_html: { value: AccountingModule::Account.find_by(name: "Cash on Hand (Cashier)").id }, as: :hidden %>
           <%= f.input :credit_account_id, input_html: { value: AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current").id }, as: :hidden %>
            

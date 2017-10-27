@@ -280,8 +280,10 @@
               <% @work_order.entries.work_order_payment.each do |payment| %>
                 <div class="row">
                   <div class="col-md-3">
-                    <span data-toggle="tooltip" title="<%=payment.user.try(:first_name) %>" data-placement="top">
-                    <%= image_tag(payment.user.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %>
+                    <% if payment.recorder.present? %>
+                      <span data-toggle="tooltip" title="<%=payment.recorder.try(:first_name) %>" data-placement="top">
+                      <%= image_tag(payment.recorder.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %>
+                    <% end %>
                 </span>
                   </div>
                   <div class="col-md-4">
