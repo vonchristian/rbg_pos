@@ -3,17 +3,14 @@
     <div class="row">
       <div class="col-md-3">
         <% if @employee.cash_on_hand_account.present?  && !@employee.proprietor? %>
-                    <span class="text-primary"><%= number_to_currency @employee.cash_on_hand_account.balance(recorder_id: employee.id )  - @employee.fund_transfer_total %> </span>
-                  <% elsif @employee.cash_on_hand_account.present? && @employee.proprietor? %>
-                    <span class="text-primary"><%= number_to_currency @employee.cash_on_hand_account.balance(recorder_id: employee.id )  + AccountingModule::Entry.fund_transfer.total %> </span>
-                    
-                  <% end %>
+          <span class="text-primary"><%= number_to_currency @employee.cash_on_hand_account.balance(recorder_id: @employee.id )  - @employee.fund_transfer_total %> </span>
+        <% elsif @employee.cash_on_hand_account.present? && @employee.proprietor? %>
+          <span class="text-primary"><%= number_to_currency @employee.cash_on_hand_account.balance(recorder_id: @employee.id )  + AccountingModule::Entry.fund_transfer.total %> </span>
+         <% end %>
           <small> CASH ON HAND</small>
           <% if current_user.proprietor? %>
             <%=link_to "New Remittance", new_employee_remittance_path(@employee), class: "btn btn-success btn-sm" %>
           <% end %>
-
-        <% end %>
       </div>
     </div>
     <div class="table table-responsive">
@@ -64,4 +61,3 @@
     <center><%= will_paginate @entries %></center>
   </div>
 </div>
-    
