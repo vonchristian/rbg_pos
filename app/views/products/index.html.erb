@@ -51,7 +51,7 @@
                                   <% end %>
                                 </div>
                                 <div class="col-md-2">
-                                  <%= link_to "View (PDF)", products_path(format: 'pdf'), class: "btn btn-default btn-xs pull-right" %>
+                                  <%= link_to "View (PDF)", products_path(format: 'pdf', page: params[:page]), class: "btn btn-default btn-xs pull-right" %>
                                 </div>
                               </div>
                             <div class="content table-responsive table-full-width">
@@ -72,4 +72,14 @@
                                       <% end %>
                                     </tbody>
                                   </table>
-                                  <center><%= will_paginate @products %></center>
+                                  <center>
+                                    <%= will_paginate @products, renderer: WillPaginateHelper::ProductRootedLinkRenderer, format: :html  %>                      
+                                  </center>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    

@@ -10,7 +10,7 @@ class ProductsController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do 
-        pdf = ProductsPdf.new(Product.joins([:stocks, :sold_items]).all.order(:name), view_context)
+        pdf = ProductsPdf.new(@products.paginate(page: params[:page]), view_context)
           send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Products PDF Report.pdf"
       end
     end

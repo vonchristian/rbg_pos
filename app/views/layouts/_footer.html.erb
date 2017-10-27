@@ -1,0 +1,22 @@
+<footer class="footer">
+            <div class="container-fluid">
+                <nav class="pull-left">
+                    <ul>
+
+                        <li>
+                            <a href="#">
+                                INVENTORY MANAGEMENT PLATFORM
+                            </a>
+                        </li>
+                        <li>
+                          <a href="">
+                            <span>Enjoy the rest of your <%= Time.zone.now.strftime("%A") %>, <b><%=current_user.first_name %>. </b> </span>
+                          </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="copyright pull-right">
+                    © <%= Time.zone.now.year %> Developed with <i class="fa fa-heart heart"></i> by <a href="#">ITWORX Technology Services</a>
+                </div>
+            </div>
+</footer>

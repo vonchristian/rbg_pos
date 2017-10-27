@@ -7,9 +7,6 @@
           <p class="category"> Generate reports </p>
         </div>
         <div class="content">
-          <%= Product.all.count %> 
-          <%= link_to "Inventory Report", products_path(format: 'pdf') %>
-          <hr>
           <h4 class="title"> Services </h4>
           <p class="category">Generate report for services</p><br>
           <p>Select Dates:</p>
@@ -21,7 +18,7 @@
                   </div>
                 </div>
                 <div class="col-md-3">
-                  <div class="form-group">
+                  <div clasps="form-group">
                     <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
                   </div>
                 </div>
