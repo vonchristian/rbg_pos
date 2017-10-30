@@ -29,7 +29,7 @@
           <th>Total Cost</th>
         </thead>
         <tbody>
-          <% @orders.each do |order| %>
+          <% @orders.order(date: :desc).each do |order| %>
             <tr>
                                       <% if order.line_items.count > 0 || order.description.present? %>
                                         <td><%=link_to order.date.strftime("%B %e, %Y"), order %></td>
