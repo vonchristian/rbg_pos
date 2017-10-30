@@ -13,7 +13,7 @@ pidfile "#{shared_dir}/tmp/pids/puma.pid"
 
 prune_bundler
 preload_app!
-on_worker_boot do
+on_worker_boot do 
   ActiveRecord::Base.establish_connection
 end
-
+  

@@ -17,7 +17,7 @@ module Customers
 
     private 
     def entry_params
-      params.require(:accounting_module_customer_payment_form).permit(:user_id, :customer_id, :entry_date, :reference_number, :description, :debit_account_id, :credit_account_id, :amount)
+      params.require(:accounting_module_customer_payment_form).permit(:user_id, :customer_id, :entry_date, :reference_number, :description, :debit_account_id, :credit_account_id, :amount, :discount_amount)
     end
   end
 end

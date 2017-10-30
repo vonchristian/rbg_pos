@@ -1,5 +1,24 @@
 <div class="tab-pane" id="employee-orders">
   <div class="content">
+    <p class="category">Generate report for sales</p><br>
+          <%= form_tag({:action => "index", controller: "reports/sales", format: 'pdf'}, {:method => :get})  do %>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div clasps="form-group">
+                    <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
+                    <%=text_field_tag :user_id,  @employee.id, hidden: true %>
+                  </div>
+              </div>
+                <div class="col-md-1">
+                  <button type="submit" class="btn btn-success"> Generate</button>
+                </div>
+              </div>
+            <% end %>
     <div class="content table-responsive table-full-width">
       <table class="table table-striped">
         <thead>
@@ -12,13 +31,35 @@
         <tbody>
           <% @orders.each do |order| %>
             <tr>
-              <% if order.line_items.count > 0 %>
-              <td><%=link_to order.date.strftime("%B %e, %Y"), order %></td>
-              <td><%= order.customer_full_name.try(:titleize) %></td>
-              <td><%= order.line_items_name %></td>
-              <td><%= number_to_currency order.total_cost_less_discount %></td>
-             <% end %>
-            </tr>
+                                      <% if order.line_items.count > 0 || order.description.present? %>
+                                        <td><%=link_to order.date.strftime("%B %e, %Y"), order %></td>
+                                        <td><%= order.customer.try(:full_name).try(:titleize) %>
+                                          <% if order.reference_number.present? %>
+                                            <br>
+                                            <b>#<%=order.reference_number %></b>
+                                          <% end %>
+                                        </td>
+                                        <td>
+                                          <%= order.description %>
+                                          <% order.line_items.each do |line_item|  %>
+                                            <div class="row">
+                                              <div class="col-md-9">
+                                                <%= line_item.product_name %><br>
+                                                <small><i><%= line_item.barcode %></i></small>
+                                              </div>
+                                              <div class="col-md-1">
+                                                <span><%= line_item.quantity %></span>
+                                              </div>
+                                            </div>
+                                            <br>
+                                          <% end %>
+                                        </td>
+                                        <td><span class="label label-<%=order.mode_of_payment_color%>"><%= order.mode_of_payment %></span></td>
+                                        <td><%= number_to_currency order.discount_amount%></td>
+                                        <td><%= number_to_currency order.total_cost %></td>
+                                        <td><%= order.employee.try(:full_name) %></td>
+                                      <% end %>
+                                      </tr>
           <% end %>
         </tbody>
       </table>
