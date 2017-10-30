@@ -56,7 +56,7 @@
                                         </td>
                                         <td><span class="label label-<%=order.mode_of_payment_color%>"><%= order.mode_of_payment %></span></td>
                                         <td><%= number_to_currency order.discount_amount%></td>
-                                        <td><%= number_to_currency order.total_cost %></td>
+                                        <td><%= number_to_currency order.total_cost_less_discount %></td>
                                         <td><%= order.employee.try(:full_name) %></td>
                                       <% end %>
                                       </tr>

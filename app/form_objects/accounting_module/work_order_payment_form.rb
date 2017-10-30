@@ -39,7 +39,7 @@ module AccountingModule
     end
      def create_order
       order = Order.create!(description: "payment of service ##{WorkOrder.find_by(id: work_order_id).service_number}", customer_id: WorkOrder.find_by(id: work_order_id).customer_id, date: entry_date, employee_id: user_id)
-      Payment.create(mode_of_payment: 'cash', order: order, discount_amount: discount_amount, total_cost: amount)
+      Payment.create(mode_of_payment: 'cash', order: order, discount_amount: discount_amount, total_cost: amount.to_f + discount_amount.to_f, total_cost_less_discount: amount)
     end
   end 
 end
