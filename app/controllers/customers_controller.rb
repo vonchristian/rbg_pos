@@ -1,42 +1,47 @@
-class CustomersController < ApplicationController 
-	def index 
+class CustomersController < ApplicationController
+	def index
 		if params[:search].present?
 			@customers = Customer.text_search(params[:search]).paginate(page: params[:page], per_page: 20)
-		else 
+		else
 			@customers = Customer.all.paginate(page: params[:page], per_page: 35)
 		end
-	end 
-	def new 
-		@customer = Customer.new 
-	end 
-	def create 
+	end
+	def new
+		@customer = Customer.new
+	end
+	def create
 		@customer = Customer.create(customer_params)
 		if @customer.valid?
-			@customer.save 
+			@customer.save
 			redirect_to customers_url, notice: "Customer saved successfully"
-		else 
-			render :new 
-		end 
-	end 
-	def show 
+		else
+			render :new
+		end
+	end
+	def show
 		@customer = Customer.find(params[:id])
 	end
-  def edit 
+  def edit
     @customer = Customer.find(params[:id])
   end
-  def update 
+  def update
     @customer = Customer.find(params[:id])
     @customer.update(customer_params)
     if @customer.valid?
-      @customer.save 
+      @customer.save
       redirect_to @customer, notice: 'Customer information updated successfully.'
-    else 
-      render :edit 
-    end 
-  end 
+    else
+      render :edit
+    end
+  end
+  def destroy
+    @customer = Customer.find(params[:id])
+    @customer.destroy
+    redirect_to customers_url, alert: "Customer destroyed successfully"
+  end
 
-	private 
+	private
 	def customer_params
 		params.require(:customer).permit(:first_name, :last_name, :contact_number, :address)
-	end 
-end 
+	end
+end

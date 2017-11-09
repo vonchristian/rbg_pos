@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171027033826) do
+ActiveRecord::Schema.define(version: 20171109171624) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -163,6 +163,7 @@ ActiveRecord::Schema.define(version: 20171027033826) do
     t.boolean "internal_use", default: false
     t.bigint "technician_id"
     t.string "description"
+    t.string "barcode"
     t.index ["customer_id"], name: "index_orders_on_customer_id"
     t.index ["employee_id"], name: "index_orders_on_employee_id"
     t.index ["reference_number"], name: "index_orders_on_reference_number"
@@ -241,6 +242,7 @@ ActiveRecord::Schema.define(version: 20171027033826) do
     t.bigint "category_id"
     t.decimal "low_stock_count", default: "0.0"
     t.index ["category_id"], name: "index_products_on_category_id"
+    t.index ["name"], name: "index_products_on_name", unique: true
   end
 
   create_table "registries", force: :cascade do |t|

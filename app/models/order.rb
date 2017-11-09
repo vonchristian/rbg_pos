@@ -20,11 +20,12 @@ class Order < ApplicationRecord
   accepts_nested_attributes_for :payment
 
   validates :customer_id, presence: true
+
   def self.ordered_on(hash={})
       if hash[:from_date] && hash[:to_date]
-        from_date = hash[:from_date].kind_of?(Time) ? hash[:from_date] : Time.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
-        to_date = hash[:to_date].kind_of?(Time) ? hash[:to_date] : Time.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
-        where('date' => (from_date.beginning_of_day - 1.second)..(to_date.end_of_day))
+        from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : Chronic.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
+        to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : Chronic.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
+        where('date' => (from_date.beginning_of_day)..(to_date.end_of_day))
       else
         all
       end
@@ -46,9 +47,9 @@ class Order < ApplicationRecord
   end
   def self.created_between(hash={})
     if hash[:from_date] && hash[:to_date]
-      from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
-      to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
-      where('date' => from_date..to_date)
+      from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : Chronic.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
+      to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : Chronic.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
+      where('date' => (from_date.beginning_of_day)..(to_date.end_of_day))
     else
       all
     end

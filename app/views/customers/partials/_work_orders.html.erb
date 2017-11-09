@@ -1,27 +1,31 @@
 <div class="tab-pane" id="customer-work-orders">
-  Work Orders 
-  <div class="table table-responsive">
-    <table class="table table-hover table-striped">
-      <thead>
-        <tr>
-          <th>Service Tag</th>
-          <th>Product</th>
-          <th>Reported Problem</th>
-          <th>Status</th>
-          <th>Total Cost</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @customer.work_orders.each do |work_order| %>
+  <div class="content">
+    <h3 class="title">Work Orders </h3>
+    <p class="category">List of work orders </p>
+    <hr>
+    <div class="table table-responsive">
+      <table class="table table-hover table-striped">
+        <thead>
           <tr>
-            <td>#<%= work_order.service_number %> </td>
-            <td><%= link_to work_order.product_unit.try(:description), computer_repair_section_work_order_path(work_order) %></td>
-            <td><%= work_order.reported_problem %></td>
-            <td><%= work_order.status %></td>
-            <td><%= number_to_currency work_order.total_charges_cost %></td>
+            <th>Service Tag</th>
+            <th>Product</th>
+            <th>Reported Problem</th>
+            <th>Status</th>
+            <th>Total Cost</th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% @customer.work_orders.each do |work_order| %>
+            <tr>
+              <td>#<%= work_order.service_number %> </td>
+              <td><%= link_to work_order.product_unit.try(:description), computer_repair_section_work_order_path(work_order) %></td>
+              <td><%= work_order.reported_problem %></td>
+              <td><%= work_order.status %></td>
+              <td><%= number_to_currency work_order.total_charges_cost %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

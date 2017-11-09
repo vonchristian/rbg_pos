@@ -45,7 +45,7 @@
               <p class="condensed-text"> DETAILS </p>
               <div class="row">
                 <div class="col-md-6">
-                  Customer 
+                  Customer
                 </div>
                 <div class="col-md-6">
                   <%= @work_order.customer_full_name %>
@@ -63,7 +63,7 @@
               <br>
               <div class="row">
                 <div class="col-md-6">
-                  Date Received 
+                  Date Received
                 </div>
                 <div class="col-md-6">
                   <%= @work_order.created_at.strftime("%B %e, %Y") %>
@@ -72,7 +72,7 @@
               <br>
               <div class="row">
                 <div class="col-md-6">
-                  Reported Problem 
+                  Reported Problem
                 </div>
                 <div class="col-md-6">
                   <%= @work_order.reported_problem %>
@@ -113,14 +113,14 @@
                 </div>
                 <div class="col-md-6">
                   <%= @work_order.expiry_date.strftime("%B %e, %Y") %>
-                  
+
                 </div>
               </div>
               <br>
               <% end %>
               <div class="row">
                 <div class="col-md-6">
-                  <p class="condensed-text"> <span class="label label-success"><%= @work_order.accessories.count %> </span> &nbsp; ACCESSORIES </p> 
+                  <p class="condensed-text"> <span class="label label-success"><%= @work_order.accessories.count %> </span> &nbsp; ACCESSORIES </p>
                 </div>
                 <div class="col-md-6">
                   <%=link_to 'Add Accessories', new_product_unit_accessory_path(@work_order.product_unit, work_order_id: @work_order.id) %>
@@ -150,7 +150,7 @@
               <% else %>
               <small class="text-danger"> Work Order status is <span class="label label-danger"><%= @work_order.status%></span> and cannot be released yet </small>
               <% end %>
-              
+
               <%#= link_to 'CHARGE INVOICE', computer_repair_section_work_order_path(@work_order, format: 'pdf'), class: "label label-default" %>
 
             </div>
@@ -170,7 +170,7 @@
                     <%= link_to 'Add Charges', new_computer_repair_section_work_order_service_charge_path(@work_order) %>
                   <% end %>
                 </div>
-              </div> 
+              </div>
             </div>
             <div class="content">
               <% @work_order.service_charges.each do |charge| %>
@@ -235,8 +235,8 @@
                 </div>
                 <div class="col-md-4">
                   <% if current_user.proprietor? || current_user.sales_clerk? %>
-                    <% if @work_order.balance_total > 0 && !@work_order.released? %>
-                      <%=link_to 'New Payment', new_computer_repair_section_work_order_payment_path(@work_order) %>
+                    <% if !@work_order.released? %>
+                      <%=link_to 'New Payment / Advance Payment', new_computer_repair_section_work_order_payment_path(@work_order) %>
                     <% end %>
                   <% end %>
                 </div>
@@ -246,7 +246,7 @@
               <div class="row">
                 <div class="col-md-6">
                   <p class="condensed-text"> RECEIVABLES </p>
-                </div> 
+                </div>
                 <div class="col-md-6">
                   <p class="condensed-text pull-right"> <%=number_to_currency @work_order.accounts_receivable %></p>
                 </div>
@@ -254,7 +254,7 @@
               <div class="row">
                 <div class="col-md-6">
                   <p class="condensed-text"> CASH PAYMENTS </p>
-                </div> 
+                </div>
                 <div class="col-md-6">
                   <p class="condensed-text pull-right"> <%=number_to_currency @work_order.payments_total %></p>
                 </div>
@@ -262,7 +262,7 @@
                <div class="row">
                 <div class="col-md-6">
                   <p class="condensed-text text-danger"> DISCOUNTS </p>
-                </div> 
+                </div>
                 <div class="col-md-6">
                   <p class="condensed-text pull-right text-danger"> <%=number_to_currency @work_order.discounts_total %></p>
                 </div>
@@ -271,20 +271,21 @@
               <div class="row">
                 <div class="col-md-6">
                   <p class="condensed-text"> BALANCE </p>
-                </div> 
+                </div>
                 <div class="col-md-6">
                   <p class="condensed-text pull-right"> <%=number_to_currency @work_order.balance_total %></p>
                 </div>
               </div>
               <hr>
-              
+
               <p class="condensed-text"> PAYMENT HISTORY </p>
               <% @work_order.entries.work_order_payment.each do |payment| %>
                 <div class="row">
                   <div class="col-md-3">
                     <% if payment.recorder.present? %>
                       <span data-toggle="tooltip" title="<%=payment.recorder.try(:first_name) %>" data-placement="top">
-                      <%= image_tag(payment.recorder.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %>
+                      <%= image_tag(payment.recorder.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %><br>
+                      <small><%= payment.recorder.full_name %></small>
                     <% end %>
                 </span>
                   </div>
@@ -327,7 +328,7 @@
     <% end %>
     </div>
     <div class="col-md-10">
-   
+
       <small class="condensed-text"><b><%= work_update.title.try(:upcase) %></b></small><br>
       <%= work_update.content %><br>
        <% if work_update.id? %>
@@ -339,7 +340,7 @@
       <% if work_update.date %>
       <small class='text-black pull-right'><i class="fa fa-clock-o"></i> <%= work_update.date.strftime("%b %e, %l:%M %p") %></small><br>
     <% end %>
-     
+
     </div>
   </div>
   <hr>

@@ -21,7 +21,7 @@
                     <span class="text-primary"><%= number_to_currency employee.cash_on_hand_account.balance(recorder_id: employee.id )  - employee.fund_transfer_total %> </span>
                   <% elsif employee.cash_on_hand_account.present? && employee.proprietor? %>
                     <span class="text-primary"><%= number_to_currency employee.cash_on_hand_account.balance(recorder_id: employee.id )  + AccountingModule::Entry.fund_transfer.total %> </span>
-                    
+
                   <% end %>
                 </div>
               </div>
@@ -93,7 +93,7 @@
           <% end %>
         <% end %>
         <center><%=link_to 'View All Customers', customers_path, class: "btn btn-default" %></center>
-        <br> 
+        <br>
       </div>
     </div>
   </div>

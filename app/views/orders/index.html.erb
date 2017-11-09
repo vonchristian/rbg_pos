@@ -51,6 +51,7 @@
                                       <th>Discount</th>
                                       <th>Total Cost</th>
                                       <th> Employee </th>
+                                      <th>Reference Number</th>
                                     </thead>
                                     <tbody>
                                       <% @orders.each do |order| %>
@@ -58,10 +59,6 @@
                                       <% if order.line_items.count > 0 || order.description.present? %>
                                         <td><%=link_to order.date.strftime("%B %e, %Y"), order %></td>
                                         <td><%= order.customer.try(:full_name).try(:titleize) %>
-                                          <% if order.reference_number.present? %>
-                                            <br>
-                                            <b>#<%=order.reference_number %></b>
-                                          <% end %>
                                         </td>
                                         <td>
                                           <%= order.description %>
@@ -76,12 +73,13 @@
                                               </div>
                                             </div>
                                             <br>
-                                          <% end %>
-                                        </td>
+                                          </td>
+                                        <% end %>
                                         <td><span class="label label-<%=order.mode_of_payment_color%>"><%= order.mode_of_payment %></span></td>
                                         <td><%= number_to_currency order.discount_amount%></td>
                                         <td><%= number_to_currency order.total_cost %></td>
                                         <td><%= order.employee.try(:full_name) %></td>
+                                        <td><%= order.reference_number %></td>
                                       <% end %>
                                       </tr>
                                       <% end %>

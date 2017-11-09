@@ -3,7 +3,7 @@
     <div class="content table-responsive table-full-width">
       <table class="table table-striped">
         <thead>
-          
+
           <th>Date</th>
         	<th>Customer</th>
         	<th>Items</th>
@@ -14,18 +14,30 @@
 	      <tbody>
 	        <% @customer.orders.order(date: :desc).each do |order| %>
 	          <tr>
-	            <% if order.line_items.count > 0 %>
+	            <% if order.line_items.count > 0  || order.description %>
 	            <td><%=link_to order.date.strftime("%B %e, %Y"), order %></td>
 	            <td><%= order.customer_full_name.try(:titleize) %></td>
-	            <td><%= order.line_items_name %></td>
+
+	            <td>
+                <% if order.line_items.present? %>
+                <%= order.line_items_name %>
+                  <% elsif order.description.present? %>
+                  <%= order.description %>
+                <% end %>
+                </td>
               <td><span class="label label-<%=order.mode_of_payment_color%>"><%= order.mode_of_payment %></span></td>
 	            <td><%= number_to_currency order.total_cost %></td>
-              <td><%= order.employee.try(:full_name) %></td>
+              <td><%= order.employee.try(:full_name)%></td>
+              <td>
+                <% if current_user.proprietor? %>
+                <%= link_to 'Delete', order_path(order), method: :delete, class: "btn btn-danger btn-xs", data: {confirm: "Are you sure you want to delete this order?"} %>
+               <% end %>
+              </td>
 	           <% end %>
 	          </tr>
 	        <% end %>
 	      </tbody>
 	    </table>
-    </div> 
+    </div>
   </div>
 </div>

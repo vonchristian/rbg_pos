@@ -331,6 +331,7 @@ DEPENDENCIES
   byebug
   capybara
   capybara-webkit
+  chronic
   coffee-rails (~> 4.2)
   database_cleaner
   datetimepicker-rails!

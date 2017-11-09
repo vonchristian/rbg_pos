@@ -7,6 +7,7 @@ end
 
 gem 'rails', '~> 5.1.3'
 gem 'pghero'
+gem 'chronic'
 gem 'pg_query', '>= 0.9.0'
 gem "spreadsheet"
 gem 'pg', '~> 0.18'
