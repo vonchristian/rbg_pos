@@ -1,13 +1,13 @@
 module Reports
 	class SalesController < ApplicationController
 		def index
-			@from_date = Chronic.parse(params[:from_date])
-      @to_date = Chronic.parse(params[:to_date])
+			@from_date = Chronic.parse(params[:from_date].to_date)
+      @to_date = Chronic.parse(params[:to_date].to_date)
       @user = User.find_by(id: params[:user_id])
       if @user.present?
-        @orders = @user.orders.created_between(from_date: @from_date, to_date: @to_date)
+        @orders = @user.orders.ordered_on(from_date: @from_date, to_date: @to_date)
       else
-			  @orders = Order.created_between(from_date: @from_date, to_date: @to_date)
+			  @orders = Order.ordered_on(from_date: @from_date, to_date: @to_date)
       end
 			respond_to do |format|
 				format.pdf do

@@ -30,8 +30,8 @@ class Order < ApplicationRecord
 
   def self.ordered_on(hash={})
     if hash[:from_date] && hash[:to_date]
-      from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : Chronic.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
-      to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : Chronic.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
+      from_date = Chronic.parse(hash[:from_date].to_date)
+      to_date = Chronic.parse(hash[:to_date].to_date)
       where('date' => (from_date.beginning_of_day)..(to_date.end_of_day))
     else
       all
