@@ -235,9 +235,7 @@
                 </div>
                 <div class="col-md-4">
                   <% if current_user.proprietor? || current_user.sales_clerk? %>
-                    <% if !@work_order.released? %>
-                      <%=link_to 'New Payment / Advance Payment', new_computer_repair_section_work_order_payment_path(@work_order) %>
-                    <% end %>
+                    <%=link_to 'New Payment / Advance Payment', new_computer_repair_section_work_order_payment_path(@work_order) %>
                   <% end %>
                 </div>
               </div>

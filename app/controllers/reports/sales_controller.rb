@@ -11,7 +11,7 @@ module Reports
       end
 			respond_to do |format|
 				format.pdf do
-					pdf = Reports::SalesPdf.new(@from_date, @to_date, @orders, view_context)
+					pdf = Reports::SalesPdf.new(@from_date, @to_date, @orders, @user, view_context)
 					send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Sales Report.pdf'
 		    end
 		  end

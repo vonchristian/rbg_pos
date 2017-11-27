@@ -55,7 +55,8 @@
           <%= f.input :reference_number %>
           <%= f.input :description, input_html: { value: "Payment of credit" } %>
           <%= f.input :amount %>
-          <%= f.input :debit_account_id, input_html: { value: AccountingModule::Account.find_by(name: "Cash on Hand (Cashier)").id }, as: :hidden %>
+          <%= f.input :discount_amount, as: :string, input_html: { value: 0 } %>
+          <%= f.input :debit_account_id, input_html: { value: current_user.cash_on_hand_account.id }, as: :hidden %>
           <%= f.input :credit_account_id, input_html: { value: AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current").id }, as: :hidden %>
            
           <%= f.submit "Save Payment", class: "btn btn-primary pull-right" %>
