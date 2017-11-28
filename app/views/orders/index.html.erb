@@ -55,33 +55,32 @@
                                     </thead>
                                     <tbody>
                                       <% @orders.each do |order| %>
-                                      <tr>
-                                      <% if order.line_items.count > 0 || order.description.present? %>
-                                        <td><%=link_to order.date.strftime("%B %e, %Y"), order %></td>
-                                        <td><%= order.customer.try(:full_name).try(:titleize) %>
-                                        </td>
-                                        <td>
-                                          <%= order.description %>
-                                          <% order.line_items.each do |line_item|  %>
-                                            <div class="row">
-                                              <div class="col-md-9">
-                                                <%= line_item.product_name %><br>
-                                                <small><i><%= line_item.barcode %></i></small>
-                                              </div>
-                                              <div class="col-md-1">
-                                                <span><%= line_item.quantity %></span>
-                                              </div>
-                                            </div>
-                                            <br>
-                                          </td>
-                                        <% end %>
-                                        <td><span class="label label-<%=order.mode_of_payment_color%>"><%= order.mode_of_payment %></span></td>
-                                        <td><%= number_to_currency order.discount_amount%></td>
-                                        <td><%= number_to_currency order.total_cost %></td>
-                                        <td><%= order.employee.try(:full_name) %></td>
-                                        <td><%= order.reference_number %></td>
-                                      <% end %>
-                                      </tr>
+                                        <tr>
+                                          <% if order.line_items.count > 0 || order.description.present? %>
+                                            <td><%=link_to order.date.strftime("%B %e, %Y"), order %></td>
+                                            <td><%= order.customer.try(:full_name).try(:titleize) %></td>
+                                            <td>
+                                              <%= order.description %>
+                                              <% order.line_items.each do |line_item|  %>
+                                                <div class="row">
+                                                  <div class="col-md-9">
+                                                    <%= line_item.product_name %><br>
+                                                    <small><i><%= line_item.barcode %></i></small>
+                                                  </div>
+                                                  <div class="col-md-1">
+                                                    <span><%= line_item.quantity %></span>
+                                                  </div>
+                                                </div>
+                                                <br>
+                                              <% end %>
+                                            </td>
+                                            <td><span class="label label-<%=order.mode_of_payment_color%>"><%= order.mode_of_payment %></span></td>
+                                            <td><%= number_to_currency order.discount_amount%></td>
+                                            <td><%= number_to_currency order.total_cost %></td>
+                                            <td><%= order.employee.try(:full_name) %></td>
+                                            <td><%= order.reference_number %></td>
+                                          <% end %>
+                                        </tr>
                                       <% end %>
                                     </tbody>
                                   </table>

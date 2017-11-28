@@ -11,12 +11,12 @@
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                       
+
 						<li>
-                           
-                <%=link_to "Sign out (#{current_user.full_name})", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
-								
-                           
+
+                <%=link_to "Sign out (#{current_user.full_name} - #{current_user.role.titleize})", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
+
+
                         </li>
                     </ul>
 

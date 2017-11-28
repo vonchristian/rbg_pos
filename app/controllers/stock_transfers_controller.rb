@@ -1,20 +1,20 @@
 class StockTransfersController < ApplicationController
-  def index 
-    @stock_transfers = StockTransfer.order(date: :desc).all.paginate(page: (params[:page]), per_page: 35)
+  def index
+    @stock_transfers = StockTransfer.all.order(date: :desc).paginate(page: (params[:page]), per_page: 35)
   end
-  def show 
+  def show
     @stock_transfer = StockTransfer.find(params[:id])
     respond_to do |format|
       format.html
-      format.pdf do 
+      format.pdf do
         pdf = StockTransferPdf.new(@stock_transfer, view_context)
           send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Order.pdf"
       end
-    end 
-  end 
-  def destroy 
+    end
+  end
+  def destroy
     @stock_transfer = StockTransfer.find(params[:id])
-    @stock_transfer.destroy 
+    @stock_transfer.destroy
     redirect_to branch_url(@stock_transfer.destination_branch), notice: "Stock transfer deleted successfully"
   end
 end
