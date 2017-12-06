@@ -74,4 +74,4 @@
 
           <% end %>
           <hr>
-           <%= link_to 'Inventory (Excel)', products_path(Product.all, format: 'xlsx'), class: "btn btn-primary" %>
+           <%= link_to 'Inventory (Excel)', reports_products_path(Product.all, format: 'xlsx'), class: "btn btn-primary" %>
