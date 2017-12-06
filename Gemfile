@@ -6,6 +6,9 @@ git_source(:github) do |repo_name|
 end
 
 gem 'rails', '~> 5.1.3'
+gem 'rubyzip', '~> 1.1.0'
+gem 'axlsx', '2.1.0.pre'
+gem 'axlsx_rails'
 gem 'pghero'
 gem 'chronic'
 gem 'pg_query', '>= 0.9.0'

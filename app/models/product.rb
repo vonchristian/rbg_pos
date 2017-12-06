@@ -33,7 +33,7 @@ class Product < ApplicationRecord
     all.to_a.sort_by(&:number_of_sold_items).reverse
   end
   def number_of_sold_items
-    sold_items.count 
+    sold_items.count
   end
   def low_on_stock?
     !out_of_stock? && low_stock_count > in_stock
@@ -50,7 +50,7 @@ class Product < ApplicationRecord
       "success"
     end
   end
-        
+
 
   def self.import(file)
     spreadsheet = Roo::Spreadsheet.open(file.path)
@@ -62,12 +62,14 @@ class Product < ApplicationRecord
       member.save!
     end
   end
-  def transferred_stocks 
+
+  def transferred_stocks
     orders.stock_transfers
   end
+
 	def in_stock
 		((delivered_items_count + returned_items_count) - (sold_items_count)) - released_warranties_count
-	end 
+	end
 	def sold_items_count
 		sold_items.sum(:quantity)
 	end
@@ -77,11 +79,11 @@ class Product < ApplicationRecord
 	def transferred_stocks_count
     if transferred_stocks.any?
 		  transferred_stocks.sum(&:total_quantity)
-    else 
+    else
       0
     end
 	end
-	def returned_items_count 
+	def returned_items_count
 		returned_items.sum(:quantity)
 	end
 	def items_under_warranty_count
@@ -90,10 +92,10 @@ class Product < ApplicationRecord
 	def released_warranties_count
 		released_warranties.sum(:quantity)
 	end
-  def update_stocks_name 
+  def update_stocks_name
     stocks.each do |stock|
-      stock.name = self.name 
-      stock.save 
+      stock.name = self.name
+      stock.save
     end
-  end 
+  end
 end

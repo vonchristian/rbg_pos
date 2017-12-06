@@ -71,5 +71,7 @@
           <h4 class="title"> Accounts Receivables </h4>
           <%=link_to reports_accounts_receivables_path(format: 'pdf') do %>
             <p class="category"> Generate Report </p>
-            
+
           <% end %>
+          <hr>
+           <%= link_to 'Inventory (Excel)', products_path(@products, format: 'xlsx'), class: "btn btn-primary" %>
