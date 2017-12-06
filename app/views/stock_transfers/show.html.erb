@@ -16,12 +16,19 @@
                   <div class="col-md-2">
                     <%= line_item.quantity %> <%= line_item.product_unit %>
                   </div>
-                  <div class="col-md-5">
+                  <div class="col-md-4">
                     <%=line_item.product_name %><br>
                     <small class="text-muted"><%= line_item.barcode %></small>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-2">
                     <span class="pull-right"><%= number_to_currency line_item.total_cost %></span>
+                  </div>
+                  <div class="col-md-3">
+                    <% if line_item.sales_return.present? %>
+                      <span class="badge bg-red"> Item Returned </span>
+                    <% else %>
+                      <%= link_to 'Return', new_line_item_stock_transfer_sales_return_path(line_item), class: "btn btn-danger" %>
+                    <% end %>
                   </div>
                 </div>
                 <hr>

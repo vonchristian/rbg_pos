@@ -41,6 +41,7 @@ Rails.application.routes.draw do
   end
   resources :line_items, only: [:destroy] do
     resources :sales_returns, only: [:new, :create], module: :line_items
+    resources :stock_transfer_sales_returns, only: [:new, :create], module: :line_items
   end
 
   resources :job_orders, only: [:index, :new, :create]

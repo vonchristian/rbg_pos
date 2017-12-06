@@ -6,13 +6,12 @@ class LineItem < ApplicationRecord
   belongs_to :work_order, optional: true
   belongs_to :stock_transfer, optional: true
 
-  
   delegate :barcode, :product_name, :product_unit, to: :stock
   delegate :name_and_barcode, to: :stock, prefix: true
-  
+
   validate :exceeds_available_stock?, on: :create
   after_commit :set_total_cost, on: [:create, :update]
-  def search 
+  def search
   end
   def self.not_stock_transfer
     all.select{|a| !a.stock_transfer? }
@@ -35,16 +34,16 @@ class LineItem < ApplicationRecord
       entry.destroy
     end
   end
-  def remove_order 
+  def remove_order
     if order.present? && order.line_items.count == 1
       order.destroy
     end
   end
-  private 
+  private
   def exceeds_available_stock?
     errors[:base] << "Exceeded available stock" if quantity > stock.in_stock
   end
-  def set_total_cost 
+  def set_total_cost
     self.total_cost = self.quantity * self.unit_cost + markup_amount
   end
 end

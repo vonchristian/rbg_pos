@@ -1,29 +1,29 @@
-class OtherSalesForm 
-  include ActiveModel::Model 
+class OtherSalesForm
+  include ActiveModel::Model
   attr_accessor :description, :reference_number, :recorder_id, :amount, :date, :customer_id
   validates :amount, :description, :customer_id, :date, presence: true
-  
-  def save 
-    ActiveRecord::Base.transaction do 
+
+  def save
+    ActiveRecord::Base.transaction do
       save_other_sales
       create_order
-    end 
-  end 
+    end
+  end
 
-  private 
+  private
   def save_other_sales
     AccountingModule::Entry.other_sale.create!(recorder_id: recorder_id, entry_date: date, reference_number: reference_number, description: description,
       credit_amounts_attributes: [amount: amount, account: credit_account],
       debit_amounts_attributes: [amount: amount, account: debit_account])
-  end 
+  end
   def credit_account
     AccountingModule::Account.find_by(name: "Other Income")
   end
-  def debit_account 
+  def debit_account
     User.find_by(id: recorder_id).cash_on_hand_account
   end
    def create_order
-    order = Order.create!(description: description, customer_id: customer_id, date: date, employee_id: recorder_id)
+    order = Order.create!(description: description, customer_id: customer_id, date: date, employee_id: recorder_id, reference_number: reference_number)
     Payment.create(mode_of_payment: 'cash', order: order, total_cost: amount)
   end
 end

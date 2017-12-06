@@ -5,11 +5,11 @@
         <div class="header">
           <h4 class="title">New Sales Return</h4>
           <p class="category">Details for this new sales return</p>
-        </div> 
+        </div>
         <div class="content">
 				<%= simple_form_for [@line_item, @sales_return], url: :line_item_sales_returns do |f| %>
 				  <%= f.error_notification %>
-				  <%= f.input :quantity, input_html: { value: @line_item.quantity } %> 
+				  <%= f.input :quantity, input_html: { value: @line_item.quantity } %>
 				  <%= f.input :sales_return_type, collection: SalesReturn.sales_return_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
 				  <%= f.input :remarks, as: :text %>
 				  <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
