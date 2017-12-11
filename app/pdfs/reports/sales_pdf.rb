@@ -55,9 +55,9 @@ module Reports
         @orders_data ||= @employee.orders.ordered_on(from_date: (@from_date.beginning_of_day), to_date: @to_date.end_of_day).map{|o| [o.date.strftime("%B %e, %Y"), o.customer.try(:full_name).try(:upcase), order_description(o), o.mode_of_payment, price(o.discount_amount), price(o.total_cost), price(o.total_cost_less_discount)] } +
         [["TOTAL", "", "", "", "#{price(@orders.total_discount_amount)}", "#{price(@orders.total_cost)}", "#{price(@orders.total_cost_less_discount)}"]]
       else
-         [["DATE", "CUSTOMER", "ITEMS", "MODE OF PAYMENT", "DISCOUNT", "TOTAL COST", "TOTAL COST LESS DISCOUNT"]] +
-        @orders_data ||= @orders.ordered_on(from_date: (@from_date.beginning_of_day), to_date: @to_date.end_of_day).map{|o| [o.date.strftime("%B %e, %Y"), o.customer.try(:full_name).try(:upcase), order_description(o), o.mode_of_payment, price(o.discount_amount), price(o.total_cost), price(o.total_cost_less_discount)] } +
-        [["TOTAL", "", "", "", "#{price(@orders.total_discount_amount)}", "#{price(@orders.total_cost)}", "#{price(@orders.total_cost_less_discount)}"]]
+         [["DATE", "CUSTOMER", "ITEMS", "MODE OF PAYMENT", "DISCOUNT", "TOTAL COST", "TOTAL COST LESS DISCOUNT", "INCOME"]] +
+        @orders_data ||= @orders.ordered_on(from_date: (@from_date.beginning_of_day), to_date: @to_date.end_of_day).map{|o| [o.date.strftime("%B %e, %Y"), o.customer.try(:full_name).try(:upcase), order_description(o), o.mode_of_payment, price(o.discount_amount), price(o.total_cost), price(o.total_cost_less_discount), price(o.income)] } +
+        [["TOTAL", "", "", "", "#{price(@orders.total_discount_amount)}", "#{price(@orders.total_cost)}", "#{price(@orders.total_cost_less_discount)}", "#{price(@orders.map{|a| a.income}.sum) }"]]
       end
     end
     def orders_summary
@@ -66,7 +66,9 @@ module Reports
         [["TOTAL CREDIT SALES", "#{price(@employee.orders.ordered_on(from_date: (@from_date.beginning_of_day), to_date: @to_date.end_of_day).credit.sum(&:total_cost_less_discount))}"]]
       else
         [["TOTAL CASH SALES", "#{price(@orders.ordered_on(from_date: (@from_date.beginning_of_day), to_date: @to_date.end_of_day).cash.sum(&:total_cost_less_discount))}"]] +
-        [["TOTAL CREDIT SALES", "#{price(@orders.ordered_on(from_date: (@from_date.beginning_of_day), to_date: @to_date.end_of_day).credit.sum(&:total_cost_less_discount))}"]]
+        [["TOTAL CREDIT SALES", "#{price(@orders.ordered_on(from_date: (@from_date.beginning_of_day), to_date: @to_date.end_of_day).credit.sum(&:total_cost_less_discount))}"]] +
+         [["TOTAL INCOME (CASH)", "#{price(@orders.ordered_on(from_date: (@from_date.beginning_of_day), to_date: @to_date.end_of_day).cash.sum(&:income))}"]] +
+          [["TOTAL INCOME (CREDIT)", "#{price(@orders.ordered_on(from_date: (@from_date.beginning_of_day), to_date: @to_date.end_of_day).credit.sum(&:income))}"]]
       end
     end
   end

@@ -19,6 +19,10 @@ class LineItem < ApplicationRecord
   def stock_transfer?
     order.stock_transfer?
   end
+  def cost_of_goods_sold
+    stock.unit_cost * quantity
+  end
+
   def self.total_cost
     all.sum(&:unit_cost_and_quantity)
   end

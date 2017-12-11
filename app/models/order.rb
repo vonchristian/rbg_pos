@@ -96,6 +96,15 @@ class Order < ApplicationRecord
   def stock_cost
     line_items.sum(&:unit_cost_and_quantity)
   end
+
+  def cost_of_goods_sold
+    line_items.sum(&:cost_of_goods_sold)
+  end
+
+  def income
+    total_cost_less_discount - cost_of_goods_sold
+  end
+
   def create_entry_for_order
     unless self.internal_use?
       cash_on_hand = User.find_by(id: self.employee_id).cash_on_hand_account
