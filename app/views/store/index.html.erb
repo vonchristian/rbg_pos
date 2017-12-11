@@ -26,7 +26,7 @@
                </span>
              </div>
            <% end %>
-              
+
                 <% if @stocks.any?  %>
                   <% @stocks.each do |stock| %>
                     <div class="row">
@@ -60,10 +60,11 @@
                     </div>
                   <br>
                   <% end %>
+
                 <% else %>
                   <p class="text-danger"> Product not found. </p>
                 <% end %>
-              
+
             </div>
           </div>
         </div>
@@ -87,12 +88,12 @@
               <% @cart.line_items.each do |line_item| %>
                 <div class="row">
                   <div class="col-md-2">
-                    <%= line_item.quantity %> 
+                    <%= line_item.quantity %>
                   </div>
                   <div class="col-md-5">
                     <%=line_item.product_name %><br>
                     <span class="text-danger"><%= number_to_currency line_item.unit_cost %></span><br>
-                    
+
                   </div>
                   <div class="col-md-3">
                     <span class="pull-right"><%= number_to_currency line_item.total_cost %></span>

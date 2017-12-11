@@ -48,6 +48,6 @@ class OrdersController < ApplicationController
 
 	private
 	def order_params
-		params.require(:order).permit(:internal_use, :technician_id, :reference_number, :customer_id, :date, payment_attributes: [:internal_use, :technician_id, :mode_of_payment, :discount_amount, :cash_tendered, :change, :total_cost, :total_cost_less_discount])
+		params.require(:order).permit(:search_term, :internal_use, :technician_id, :reference_number, :customer_id, :date, payment_attributes: [:internal_use, :technician_id, :mode_of_payment, :discount_amount, :cash_tendered, :change, :total_cost, :total_cost_less_discount])
 	end
 end

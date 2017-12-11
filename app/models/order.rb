@@ -1,6 +1,6 @@
 class Order < ApplicationRecord
   include PgSearch
-  pg_search_scope :text_search, against: [:reference_number]
+  pg_search_scope :text_search, against: [:reference_number, :search_term]
 
   belongs_to :customer, optional: true
   belongs_to :branch, optional: true
@@ -11,6 +11,7 @@ class Order < ApplicationRecord
   has_one :entry, as: :commercial_document, class_name: "AccountingModule::Entry", dependent: :destroy
   has_many :line_items, dependent: :destroy
   delegate :full_name, to: :customer, prefix: true, allow_nil: true
+  delegate :full_name, to: :technician, prefix: true, allow_nil: true
   delegate :total_cost, to: :payment, prefix: true, allow_nil: true
   delegate :mode_of_payment, :discount_amount, :stock_transfer?, :credit?, :cash?, :total_cost, :total_cost_less_discount, to: :payment,  allow_nil: true
   delegate :full_name, to: :employee, prefix: true, allow_nil: true
@@ -20,6 +21,7 @@ class Order < ApplicationRecord
   accepts_nested_attributes_for :payment
 
   validates :customer_id, presence: true
+
   def self.cash
     all.select{|a| a.cash? }
   end
@@ -116,5 +118,4 @@ class Order < ApplicationRecord
   def set_date
   	self.date ||= Time.zone.now
   end
-
 end
