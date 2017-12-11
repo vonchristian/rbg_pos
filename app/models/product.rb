@@ -1,7 +1,7 @@
 class Product < ApplicationRecord
 	include PgSearch
 	pg_search_scope :text_search, against: [:name]
-
+  belongs_to :category, optional: true
 	has_many :stocks, dependent: :destroy
 	has_many :sold_items, through: :stocks, class_name: 'LineItem', source: :line_items
 	has_many :orders, through: :sold_items
@@ -23,6 +23,7 @@ class Product < ApplicationRecord
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
   validates :name, presence: true
 
+  delegate :name, to: :category, prefix: true, allow_nil: true
   def self.low_on_stock
     all.select{ |a| a.low_on_stock? }
   end

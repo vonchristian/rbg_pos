@@ -1,7 +1,14 @@
 wb = xlsx_package.workbook
 wb.add_worksheet(name: "Products") do |sheet|
   sheet.add_row ["Product Name", "Deliveries", "Sold", "In Stock"]
-  @products.each do |product|
-    sheet.add_row [product.name,product.delivered_items_count, product.sold_items_count, product.in_stock]
+  @categories.each do |category|
+    sheet.add_row ["CATEGORY:", category.name.try(:upcase)]
+    category.products.each do |product|
+      sheet.add_row [product.name,product.delivered_items_count, product.sold_items_count, product.in_stock]
+    end
   end
+    sheet.add_row ["CATEGORY:", "UNCATEGORIZED PRODUCTS"]
+    @products.each do |product|
+      sheet.add_row [product.name,product.delivered_items_count, product.sold_items_count, product.in_stock]
+    end
 end

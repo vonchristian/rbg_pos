@@ -3,6 +3,15 @@
     Product Info
     <div class="row">
       <div class="col-md-6">
+         <div class="row">
+          <div class="col-md-6">
+            Category
+          </div>
+          <div class="col-md-6">
+            <%= @product.category_name %>
+          </div>
+        </div>
+        <br>
         <div class="row">
           <div class="col-md-6">
             Delivered Items
@@ -32,7 +41,7 @@
         <br>
         <div class="row">
           <div class="col-md-6">
-            Returned Items 
+            Returned Items
           </div>
           <div class="col-md-6">
             <%= number_to_currency @product.returned_items_count, unit: "" %>

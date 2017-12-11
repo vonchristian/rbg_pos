@@ -6,6 +6,7 @@ class ProductsController < ApplicationController
     else
       @products = Product.all.order(:name).paginate(page: params[:page], per_page: 65)
     end
+    @categories = Category.all
     @registry = Registry.new
     respond_to do |format|
       format.html
