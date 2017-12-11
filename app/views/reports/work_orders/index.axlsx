@@ -1,0 +1,7 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Work Orders") do |sheet|
+  sheet.add_row ["Customer", "Product", "Reported Problem", "Days Elapsed", "Service Number", "Technicians"]
+  @work_orders.each do |work_order|
+    sheet.add_row [work_order.customer_name, work_order.product_name, work_order.reported_problem, distance_of_time_in_words(work_order.created_at, Time.zone.now), work_order.service_number.sub(/^0+/, ""), work_order.technicians.map{|a| a.full_name }.join(",") ]
+  end
+end
