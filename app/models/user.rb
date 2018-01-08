@@ -21,9 +21,14 @@ class User < ApplicationRecord
   :path => ":rails_root/public/system/:attachment/:id/:style/:filename",
   :url => "/system/:attachment/:id/:style/:filename"
   do_not_validate_attachment_file_type :avatar
-  def full_name 
+  def full_name
   	"#{first_name} #{last_name}"
   end
+
+  def cash_on_hand_account_balance
+    cash_on_hand_account.balance(recorder_id: self.id)
+  end
+
    def fund_transfer_total
     fund_transfers.fund_transfer.map{ |a| a.debit_amounts.distinct.sum(:amount) }.sum
   end
@@ -32,6 +37,6 @@ class User < ApplicationRecord
       AccountingModule::Asset.find_by(name: "Cash on Hand")
     elsif sales_clerk?
       AccountingModule::Asset.find_by(name: "Cash on Hand (Cashier)")
-    end 
-  end 
+    end
+  end
 end

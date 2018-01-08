@@ -95,4 +95,5 @@ Rails.application.routes.draw do
   resources :sections, only: [:new, :create]
   resources :other_sales, only: [:new, :create]
   resources :entries, only: [:destroy]
+  resources :capital_withdrawals, only: [:new, :create]
 end

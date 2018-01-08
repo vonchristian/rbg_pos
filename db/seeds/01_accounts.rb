@@ -186,6 +186,7 @@ AccountingModule::Equity.create(account_code: 30620, name: 'Coop. Education and 
 AccountingModule::Equity.create(account_code: 30630, name: 'Community Development Fund')
 AccountingModule::Equity.create(account_code: 30640, name: 'Optional Fund')
 AccountingModule::Equity.create(account_code: 30700, name: 'Unrealized Gains/Losses')
+AccountingModule::Equity.create(account_code: 30800, name: 'Drawings Account')
 #Revenue
 
 AccountingModule::Revenue.create(account_code: 40000, name: 'Revenue Items')
