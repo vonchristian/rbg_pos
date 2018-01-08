@@ -20,7 +20,7 @@ warranty - replace
          - repair
 
 orders search item
-cash flow report for cashier 
+cash flow report for cashier
 
 show FREE on pdf DONE
 
@@ -43,3 +43,9 @@ add under warranty on work orders
  column product_name, price, serial number, status
 
  create separate account for stock transfer
+
+
+Item returned
+  deffective
+  return to supplier
+

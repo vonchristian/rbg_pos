@@ -13,7 +13,7 @@
           </tr>
         </thead>
         <tbody>
-          <% @branch.stock_transfers.each do |stock_transfer| %>
+          <% @branch.stock_transfers.order(date: :desc).each do |stock_transfer| %>
             <tr>
               <td><%= link_to stock_transfer.date.strftime("%B %e, %Y"), stock_transfer %></td>
               <td>
