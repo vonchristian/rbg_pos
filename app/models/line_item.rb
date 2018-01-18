@@ -6,13 +6,17 @@ class LineItem < ApplicationRecord
   belongs_to :work_order, optional: true
   belongs_to :stock_transfer, optional: true
 
-  delegate :barcode, :product_name, :product_unit, to: :stock
+  delegate :barcode, :product_name, :product_unit, :unit_cost, :supplier_business_name, :category_name, :stock_type, :retail_price, to: :stock
   delegate :name_and_barcode, to: :stock, prefix: true
 
   validate :exceeds_available_stock?, on: :create
   after_commit :set_total_cost, on: [:create, :update]
   def search
   end
+  def purchase_cost
+    stock.unit_cost
+  end
+
   def self.not_stock_transfer
     all.select{|a| !a.stock_transfer? }
   end

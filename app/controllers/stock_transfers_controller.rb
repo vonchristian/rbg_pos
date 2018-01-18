@@ -6,6 +6,7 @@ class StockTransfersController < ApplicationController
     @stock_transfer = StockTransfer.find(params[:id])
     respond_to do |format|
       format.html
+      format.xls
       format.pdf do
         pdf = StockTransferPdf.new(@stock_transfer, view_context)
           send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Order.pdf"

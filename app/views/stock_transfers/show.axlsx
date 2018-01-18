@@ -1,0 +1,7 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Stock Transfer") do |sheet|
+  sheet.add_row ["Product Name", "Unit", "Barcode","Quantity", "Unit Cost", "Total Cost", "Retail Price", "Stock type", "Supplier", "Category"]
+  @stock_transfer.line_items.each do |line_item|
+    sheet.add_row [line_item.product_name, line_item.product_unit, line_item.barcode, line_item.quantity, line_item.purchase_cost, line_item.cost_of_goods_sold, line_item.retail_price, line_item.stock_type, line_item.supplier_business_name, line_item.category_name ]
+  end
+end

@@ -5,13 +5,13 @@ class Registry < ApplicationRecord
 
   after_create_commit :parse_for_records
 
-  private 
+  private
   def parse_for_records
     book = Spreadsheet.open(spreadsheet.path)
     sheet = book.worksheet(0)
     transaction do
       sheet.each 1 do |row|
-        if !row[0].nil? 
+        if !row[0].nil?
           create_or_find_product(row)
           create_or_find_supplier(row)
           create_or_find_stock(row)
@@ -24,7 +24,7 @@ class Registry < ApplicationRecord
   end
   def create_or_find_product(row)
     if find_product(row).blank?
-      Product.find_or_create_by!(name: row[0], unit: row[1])
+      Product.find_or_create_by!(name: row[0], unit: row[1], category: create_or_find_category(row))
     end
   end
   def create_or_find_supplier(row)
@@ -37,7 +37,10 @@ class Registry < ApplicationRecord
     if row[2].to_s.include?(".")
       row[2].to_s.chop.gsub(".", "")
     else
-      row[2].to_s 
+      row[2].to_s
     end
+  end
+  def create_or_find_category(row)
+    Category.find_or_create_by(name: row[9])
   end
 end
