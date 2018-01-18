@@ -1,0 +1,43 @@
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="header">
+          <div class="row">
+            <div class="col-md-1">
+              <%=image_tag(@product.avatar.url(:medium), class: "img-square", height: 50, width: 50) %>
+            </div>
+            <div class="col-md-9">
+              <h4 class="title"><%= @product.name.try(:upcase) %></h4>
+              <p class="category"> <%= @product.description %> </p>
+              <%= link_to 'Delete', product_path(@product), class: "btn btn-danger btn-sm" %>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="content">
+          <ul class="nav nav-tabs">
+            <li class="<%= 'active' if current_page?(product_path(@product)) %>">
+             <%= link_to 'Info', product_path(@product) %>
+
+            </li>
+            <li class="<%= 'active' if current_page?(product_orders_path(@product)) %>">
+             <%= link_to 'Sales', product_orders_path(@product) %>
+            </li>
+            <li class="<%= 'active' if current_page?(product_stocks_path(@product))%>">
+              <%= link_to 'Stocks', product_stocks_path(@product) %>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane" id="tab_default_1">
+
+            </div>
+              <% if current_page? product_path(@product) %>
+               <%=render 'products/partials/info' %>
+               <% end %>
+              <% if current_page? product_orders_path(@product) %>
+               <%=render 'products/partials/sales' %>
+               <% end %>
+               <% if current_page? product_stocks_path(@product) %>
+                 <%=render 'products/partials/stocks' %>
+               <% end %>

@@ -1,4 +1,4 @@
-<div class="tab-pane" id="product-stocks">
+<div class="tab-pane <%= 'active' if current_page?(product_stocks_path(@product)) %>" id="product-stocks">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
@@ -28,7 +28,7 @@
                              <div class="content table-responsive table-full-width">
                                 <table class="table table-striped">
                                     <thead>
-                                      
+
                                       <th>Product</th>
                                       <th>Date </th>
                                       <th>Quantity</th>
@@ -57,14 +57,13 @@
                                       <%= link_to 'Edit', edit_stock_path(stock), class: "btn btn-warning btn-sm" %>
                                           <%= link_to 'Delete', stock_path(stock), method: :delete, class: "btn btn-danger btn-xs", data: { confirm: "Are you sure you want to destroy this stock?"} %>
                                         <% end %>
-                                        
+
                                       </td>
-                                      
+
                                       </tr>
                                       <% end %>
                                     </tbody>
                                   </table>
                                   <center> <%=will_paginate @stocks %></center>
 
-
-</div> 
+</div>

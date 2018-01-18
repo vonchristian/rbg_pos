@@ -1,0 +1,6 @@
+<%= simple_form_for @merge_account, url: :suppliers_merge_accounts do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :old_supplier_id, collection: Supplier.all.map{|a| [a.business_name, a.id] } %>
+  <%= f.input :new_supplier_id, collection: Supplier.all.map{|a| [a.business_name, a.id] } %>
+  <%= f.submit "Merge Account" %>
+<% end %>

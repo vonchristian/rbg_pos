@@ -23,12 +23,12 @@
                                 </div>
                                 <div class="col-md-2">
                                   <%= link_to 'New Stock', new_stock_path, class: "btn btn-primary" %>
-                                
+
                               </div>
                             <div class="content table-responsive table-full-width">
                                 <table class="table table-striped">
                                     <thead>
-                                      
+
                                       <th>Product</th>
                                       <th>Date </th>
                                       <th> Date Sold </th>
@@ -47,7 +47,9 @@
                                       <td><%=link_to stock.name, stock %><br>
                                       <small><%= stock.barcode %></small>
                                       <% if stock.sold? %>
-                                        <span class="label label-danger"> Sold </span>
+                                        <span class="label label-danger"> Sold </span><br>
+                                        Customer:
+                                        <%= stock.customer_name %>
                                       <% else %>
                                         <span class="label label-success"> <%= stock.in_stock.to_i %> left </span>
 
@@ -55,12 +57,12 @@
 
                                       </td>
                                       <td><%= stock.date.strftime("%B %e, %Y") %></td>
-                                     
+
                                         <td>
                                            <% if stock.sold? %>
                                           <%= stock.line_items.last.created_at.strftime("%B %e, %Y") %>
                                            <% end %>
- 
+
                                           </td>
                                                                             <td><%= stock.quantity %></td>
                                       <% if current_user.proprietor? %>
@@ -73,9 +75,9 @@
                                       <%= link_to 'Edit', edit_stock_path(stock), class: "btn btn-warning btn-sm" %>
                                           <%= link_to 'Delete', stock_path(stock), method: :delete, class: "btn btn-danger btn-xs", data: { confirm: "Are you sure you want to destroy this stock?"} %>
                                         <% end %>
-                                        
+
                                       </td>
-                                      
+
                                       </tr>
                                       <% end %>
                                     </tbody>

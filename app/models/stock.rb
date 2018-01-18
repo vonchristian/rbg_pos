@@ -41,6 +41,10 @@ class Stock < ApplicationRecord
   def sold?
     in_stock.zero?
   end
+  def customer_name
+    line_items.map{|a| a.order.customer_full_name }.join(", ")
+  end
+
   def in_stock
     quantity - line_items.sum(&:quantity)  + sales_returns.sum(&:quantity)
   end

@@ -19,7 +19,8 @@ Rails.application.routes.draw do
     match "/out_of_stock" => "products#out_of_stock",  via: [:get], on: :collection
     match "/low_on_stock" => "products#low_on_stock",  via: [:get], on: :collection
 
-  	resources :stocks, only: [:new, :create], module: :products
+  	resources :stocks, only: [:index, :new, :create], module: :products
+    resources :orders, only: [:index], module: :products
   end
   resources :line_items, only: [:new, :create, :edit, :update]
   resources :orders, only: [:index, :show, :new, :create, :destroy]
@@ -58,6 +59,9 @@ Rails.application.routes.draw do
     resources :releases, only: [:create], module: :warranties
   end
   resources :supplier_registrations, only: [:new, :create]
+  namespace :suppliers do
+    resources :merge_accounts, only: [:new, :create]
+  end
   resources :suppliers, only: [:index, :show] do
     resources :payments, only: [:new, :create], module: :suppliers
   end
