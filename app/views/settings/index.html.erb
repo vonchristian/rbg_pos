@@ -55,4 +55,7 @@
             <%= f.input :spreadsheet, as: :file %>
               <%= f.submit 'Import Products', class: 'btn btn-danger' %>
         <% end %>
-<%= link_to 'New Supplier Merging', new_suppliers_merge_account_path %>
+        <hr>
+        <h4 class="title"> Merge Supplier Accounts </h4>
+        <p class="category"> Merge supplier accounts that are duplicated. </p>
+<%= link_to 'New Supplier Merging', new_suppliers_merge_account_path, class: "btn btn-danger" %>

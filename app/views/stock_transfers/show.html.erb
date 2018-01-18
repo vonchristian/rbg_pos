@@ -5,8 +5,11 @@
       <div class="card">
             <div class="content">
               <div class="header">
-                <%= link_to 'Excel', stock_transfer_path(@stock_transfer, format: 'xls') %>
-              <span class="pull-right"><%= link_to 'Print(PDF)', stock_transfer_path(@stock_transfer, format: 'pdf'), class: "btn btn-default btn-sm" %></span>
+              <span class="pull-right"><%= link_to 'Print(PDF)', stock_transfer_path(@stock_transfer, format: 'pdf'), class: "btn btn-default btn-sm" %>
+                 <%= link_to 'Excel', stock_transfer_path(@stock_transfer, format: 'xls'), class: "btn btn-default" %>
+
+              </span>
+
                      <h4 class="title"><%= @stock_transfer.destination_branch.try(:name).try(:upcase) %></h4>
                                 <i class="icon-calendar"></i> <%= @stock_transfer.date.strftime("%B %e, %Y") %><br>
 
