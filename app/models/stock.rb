@@ -42,7 +42,9 @@ class Stock < ApplicationRecord
     in_stock.zero?
   end
   def customer_name
-    line_items.map{|a| a.order.customer_full_name }.join(", ")
+    if sold? && line_items.present?
+      line_items.map{|a| a.order.customer_full_name }.join(", ")
+    end
   end
 
   def in_stock

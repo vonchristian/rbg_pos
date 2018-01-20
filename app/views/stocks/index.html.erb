@@ -48,8 +48,6 @@
                                       <small><%= stock.barcode %></small>
                                       <% if stock.sold? %>
                                         <span class="label label-danger"> Sold </span><br>
-                                        Customer:
-                                        <%= stock.customer_name %>
                                       <% else %>
                                         <span class="label label-success"> <%= stock.in_stock.to_i %> left </span>
 
