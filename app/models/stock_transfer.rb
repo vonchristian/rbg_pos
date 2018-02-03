@@ -6,26 +6,28 @@ class StockTransfer < ApplicationRecord
   has_many :line_items, foreign_key: 'stock_transfer_id', dependent: :destroy
   validates :date, presence: true
   before_validation :set_default_date
-  
+
+  delegate :name, to: :destination_branch, prefix: true, allow_nil: true
+
   def add_line_items_from_cart(cart)
     cart.line_items.each do |line_item|
-      line_item.cart_id = nil 
+      line_item.cart_id = nil
       self.line_items << line_item
-    end 
-  end 
-  def total_cost 
+    end
+  end
+  def total_cost
     line_items.total_cost
   end
   def create_entry
     cost_of_goods_sold = AccountingModule::Account.find_by(name: "Cost of Goods Sold")
     merchandise_inventory = AccountingModule::Account.find_by(name: "Merchandise Inventory")
-      AccountingModule::Entry.stock_transfer.create!(recorder_id: self.employee_id, commercial_document: self, entry_date: self.date, description: "Stock transfer", 
-        debit_amounts_attributes: [amount: self.total_cost, account: cost_of_goods_sold], 
+      AccountingModule::Entry.stock_transfer.create!(recorder_id: self.employee_id, commercial_document: self, entry_date: self.date, description: "Stock transfer",
+        debit_amounts_attributes: [amount: self.total_cost, account: cost_of_goods_sold],
         credit_amounts_attributes:[amount: self.total_cost, account: merchandise_inventory])
   end
 
-  private 
-  def set_default_date 
-  	self.date ||= Time.zone.now 
+  private
+  def set_default_date
+  	self.date ||= Time.zone.now
   end
 end

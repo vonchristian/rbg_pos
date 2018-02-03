@@ -10,6 +10,7 @@ class Stock < ApplicationRecord
   belongs_to :product
   belongs_to :branch, optional: true
   has_many :line_items, dependent: :destroy
+  has_many :orders, through: :line_items, source: :order
   has_many :work_orders, through: :line_items, source: :work_order
   has_many :sales_returns, through: :line_items
   has_many :stock_transfers, through: :line_items, source: :stock_transfer
@@ -39,10 +40,19 @@ class Stock < ApplicationRecord
   end
 
   def sold?
-    in_stock.zero?
+    orders.present?
   end
+  def transferred?
+    quantity==1 && stock_transfers.present?
+  end
+  def branch_destination
+    if transferred?
+      stock_transfers.last.destination_branch_name
+    end
+  end
+
   def customer_name
-    if sold? && line_items.present?
+    if sold?
       line_items.map{|a| a.order.customer_full_name }.join(", ")
     end
   end
