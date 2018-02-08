@@ -1,5 +1,6 @@
 class Product < ApplicationRecord
 	include PgSearch
+  multisearchable against: [:name]
 	pg_search_scope :text_search, against: [:name]
   belongs_to :category, optional: true
 	has_many :stocks, dependent: :destroy

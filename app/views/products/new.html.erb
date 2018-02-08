@@ -3,12 +3,12 @@
 <div class="content">
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
-      <div class="card">
-        <div class="header">
-          <h4 class="title">New Product</h4>
-          <p class="category">Details for this new product</p>
-        </div> 
-      <div class="content">
+      <div class="box box-solid">
+        <div class="box-header">
+          <h4 class="box-title">New Product</h4>
+          <p class="help-block">Details for this new product</p>
+        </div>
+      <div class="box-body">
 <%= simple_form_for @product do |f| %>
   <%if @product.avatar.blank? %>
             <center><%=image_tag("default_product_logo.jpg", height: 80, width: 80, :class=>"img-square") %></center>

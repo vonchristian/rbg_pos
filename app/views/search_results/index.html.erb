@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-default">
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-12">
+            <%=form_tag search_results_path, method: :get, class: "search-form" do %>
+              <div class="input-group">
+                <%= text_field_tag :search, params[:search], class: "form-control input-lg", placeholder: "Search Taxpayer, Business...", id: 'client-search-form' %>
+                <span class="input-group-btn">
+                  <%= button_tag(type: 'submit', id: "client-search-btn", class: "btn btn-flat btn-lg") do %>
+                    <i class="fa fa-search"></i>
+                  <% end %>
+                </span>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <table class="table">
+          <% if @pg_search_documents.empty? %>
+            <tr>
+              <td>No results found!</td>
+            </tr>
+          <% else %>
+          <div class="box-header with-border">
+          <h5> (<%=@pg_search_documents.count%>) Search Results: </h5>
+          </div>
+              <% @pg_search_documents.each do |pg_search_document| %>
+              <tr>
+                    <td>
+
+                        <b><%= link_to pg_search_document.searchable.name, "../#{(pg_search_document.searchable.class).to_s.titleize.downcase.parameterize.gsub("-", "_").gsub("certifications_", "").pluralize}/#{pg_search_document.searchable.id}" %></b>
+                        <span class="help-block"><%=pg_search_document.searchable.class.to_s.titleize %></span>
+
+                    </td>
+              </tr>
+              <% end %>
+          <% end %>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
