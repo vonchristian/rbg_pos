@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :product_unit do
     description "MyString"
     model_number "MyString"

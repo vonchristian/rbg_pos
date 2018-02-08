@@ -53,7 +53,7 @@ class Stock < ApplicationRecord
 
   def customer_name
     if sold?
-      line_items.map{|a| a.order.customer_full_name }.join(", ")
+      line_items.map{|a| a.order.try(:customer_full_name) }.join(", ")
     end
   end
 

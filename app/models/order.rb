@@ -118,8 +118,8 @@ class Order < ApplicationRecord
           credit_amounts_attributes:[{amount: self.total_cost_less_discount, account: sales}, {amount: self.stock_cost, account: merchandise_inventory}])
       elsif credit? || stock_transfer?
         AccountingModule::Entry.create!(recorder_id: self.employee_id, entry_type: 'credit_order', commercial_document: self, entry_date: self.date, description: "Credit order",
-          debit_amounts_attributes: [{amount: self.total_cost_less_discount, account: accounts_receivable}, {amount: self.stock_cost, account: cost_of_goods_sold}],
-          credit_amounts_attributes:[{amount: self.total_cost_less_discount, account: sales}, {amount: self.stock_cost, account: merchandise_inventory}])
+          debit_amounts_attributes: [{amount: self.total_cost_less_discount, account: accounts_receivable}, {amount: self.stock_cost, account: cost_of_goods_sold, commercial_document: self}],
+          credit_amounts_attributes:[{amount: self.total_cost_less_discount, account: sales}, {amount: self.stock_cost, account: merchandise_inventory, commercial_document: self}])
       end
     end
   end

@@ -1,9 +1,12 @@
-<div class="content">
+<div class="row">
   <div class="col-md-12">
-    <div class="card">
-      <div class="content">
-        <h4 class="title">Branches </h4>
-        <p class="category">List of branches</p>
+    <div class="box box-danger">
+      <div class="box-header">
+        <h3 class="box-title"> Settings Section </h3>
+      </div>
+      <div class="box-body">
+        <h4>Branches </h3>
+        <p class="help-block">List of branches</p>
           <% Branch.all.each do |branch| %>
           	<p><%= branch.name %></p>
           	<br>

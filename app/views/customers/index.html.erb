@@ -1,10 +1,8 @@
 
-<div class="content">
-            <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="card">
-                            <div class="header">
+                        <div class="box box-solid">
+                            <div class="box-header">
                               <div class="row">
                                 <div class="col-md-3">
                                   <h4 class="title">Customers</h4>
@@ -17,7 +15,7 @@
                                       <span class="input-group-addon">
                                        <button type="submit">
                             <span class="glyphicon glyphicon-search"></span>
-                        </button> 
+                        </button>
                                       </span>
                                     </div>
                                   <% end %>
@@ -26,10 +24,10 @@
                                   <%=link_to 'New Customer', new_customer_path, class: "btn btn-primary pull-right" %>
                                 </div>
                               </div>
-                            <div class="content table-responsive table-full-width">
+                            <div class="box-body table-responsive table-full-width">
                                 <table class="table table-striped">
                                     <thead>
-                                      
+
                                       <th>Name</th>
                                     	<th>Address</th>
                                     	<th>Contact</th>
@@ -54,4 +52,4 @@
                         </div>
                       </div>
                     </div>
-                  
+

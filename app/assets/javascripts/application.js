@@ -12,13 +12,10 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery-ui
 //= require bootstrap-sprockets
+//= require bootstrap-datepicker
 //= require moment
 //= require bootstrap-datetimepicker
-//= require pickers
 //= require select2
 //= require_tree .
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
+

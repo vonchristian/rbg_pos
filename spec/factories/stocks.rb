@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :stock do
     unit_cost "9.99"
     supplier nil

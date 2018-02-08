@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
   belongs_to :branch, optional: true
   belongs_to :section, optional: true
+  belongs_to :cash_on_hand_account, optional: true
   has_many :orders, foreign_key: 'employee_id'
   has_many :technician_work_orders, foreign_key: 'technician_id'
   has_many :work_orders, through: :technician_work_orders
@@ -21,6 +22,7 @@ class User < ApplicationRecord
   :path => ":rails_root/public/system/:attachment/:id/:style/:filename",
   :url => "/system/:attachment/:id/:style/:filename"
   do_not_validate_attachment_file_type :avatar
+  delegate :balance, to: :default_cash_on_hand_account, prefix: true
   def full_name
   	"#{first_name} #{last_name}"
   end
@@ -29,13 +31,18 @@ class User < ApplicationRecord
     cash_on_hand_account.balance(recorder_id: self.id)
   end
 
-   def fund_transfer_total
-    fund_transfers.fund_transfer.map{ |a| a.debit_amounts.distinct.sum(:amount) }.sum
+  def default_cash_on_hand_account
+    if cash_on_hand_account.present?
+      cash_on_hand_account
+    else
+      default_cash_on_hand_account_for(self)
+    end
   end
-  def cash_on_hand_account
-    if proprietor?
+  private
+  def default_cash_on_hand_account_for(employee)
+    if employee.proprietor?
       AccountingModule::Asset.find_by(name: "Cash on Hand")
-    elsif sales_clerk?
+    elsif employee.sales_clerk?
       AccountingModule::Asset.find_by(name: "Cash on Hand (Cashier)")
     end
   end

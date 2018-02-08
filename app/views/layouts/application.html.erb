@@ -6,10 +6,11 @@
 
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
-  </head>
   <title><%= full_title(yield(:title)) %></title>
-  <body>
+</head>
+ <body class="hold-transition skin-blue-light sidebar-mini">
   <div class="wrapper">
+    <%= render 'layouts/header' %>
     <% if current_user.proprietor? %>
       <%=render 'layouts/sidebar' %>
     <% elsif current_user.stock_custodian? %>
@@ -18,14 +19,14 @@
       <%=render 'layouts/sales_clerk_sidebar' %>
      <% elsif current_user.technician? %>
       <%=render 'layouts/technician_sidebar' %>
-
     <% end %>
-     <div class="main-panel">
-    <%= render 'layouts/header' %>
-    <%=render "layouts/flash" %>
-
-    <%= yield %>
-    <%#=render 'layouts/footer' %>
+    <div class="content-wrapper">
+      <section class="content">
+        <%=render "layouts/flash" %>
+        <%= yield %>
+      </section>
+    </div>
+        <%=render 'layouts/footer' %>
 
   </body>
 

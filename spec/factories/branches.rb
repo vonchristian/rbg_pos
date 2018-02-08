@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :branch do
     business nil
     name "MyString"

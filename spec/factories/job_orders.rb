@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :job_order do
     unit nil
     date "2017-08-03 20:50:06"

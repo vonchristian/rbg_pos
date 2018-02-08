@@ -1,11 +1,11 @@
-<div class="content">
+
   <div class="row">
     <div class="col-md-6">
-      <div class="card">
-        <div class="header">
-          <h4 class="title"> Employees </h4>
+      <div class="box box-solid">
+        <div class="box-header">
+          <h3 class="box-title"> Employees </h3>
         </div>
-        <div class="content">
+        <div class="box-body">
           <% @employees.each do |employee| %>
             <%= link_to employee_path(employee) do %>
               <div class="row">
@@ -30,12 +30,12 @@
           <% end %>
         </div>
       </div>
-      <div class="card">
-        <div class="header">
-          <h4 class="title">Top Sellers </h4>
-          <p class="category"> List of products most bought </p>
+      <div class="box box-solid">
+        <div class="box-header">
+          <h4 class="box-title">Top Sellers </h4>
+          <p class="help-block"> List of products most bought </p>
         </div>
-        <div class="content">
+        <div class="box-body">
           <% @products.each do |product| %>
             <div class="row">
               <div class="col-md-2">
@@ -56,12 +56,12 @@
       </div>
     </div>
     <div class="col-md-6">
-      <div class="card">
-        <div class="header">
-          <h4 class="title"> SALES </h4>
-          <p class="category"> Sales processed this <%= Time.zone.now.strftime("%b %e") %></p>
+      <div class="box box-solid">
+        <div class="box-header">
+          <h4 class="box-title"> SALES </h4>
+          <p class="help-block"> Sales processed this <%= Time.zone.now.strftime("%b %e") %></p>
         </div>
-        <div class="content">
+        <div class="box-body">
           <h4 class="title"><center><%=number_to_currency Order.created_between(from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day).count, unit: '' %></center></h4>
           <center>SALES COUNT</center>
           <hr>
@@ -72,12 +72,12 @@
           <center>TOTAL DISCOUNT GIVEN</center>
       </div>
     </div>
-    <div class="card">
-      <div class="header">
-        <h4 class="title"> New Customers </h4>
-        <p class="category"> List of new customers </p>
+    <div class="box box-solid">
+      <div class="box-header">
+        <h4 class="box-title"> New Customers </h4>
+        <p class="help-block"> List of new customers </p>
       </div>
-      <div class="content">
+      <div class="box-body">
         <% @customers.each do |customer| %>
           <%= link_to customer_path(customer) do %>
             <div class="row">

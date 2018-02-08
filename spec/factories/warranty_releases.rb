@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :warranty_release do
     release_date ""
     user nil

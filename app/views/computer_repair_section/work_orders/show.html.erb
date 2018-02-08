@@ -1,8 +1,8 @@
-<div class="content">
+
   <div class="row">
     <div class="col-md-8">
-      <div class="card">
-        <div class="header">
+      <div class="box box-solid">
+        <div class="box-header">
           <div class="row">
             <div class="col-md-7">
               <h4 class="title condensed-text">#<%= @work_order.service_number.gsub("0", "") %> - <%= @work_order.description.try(:upcase) %> </h4>
@@ -26,10 +26,10 @@
               <% if current_user.technician? || current_user.proprietor? %>
                 <%= simple_form_for @work_order, url: :computer_repair_section_work_order do |f| %>
                   <div class="row">
-                    <div class="col-md-7">
+                    <div class="col-md-6">
                       <%= f.input :status, label: false, collection: WorkOrder.statuses.keys.to_a.map{|a| [a.titleize, a]} %>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                       <%= f.submit "Update Status", class: "btn btn-primary btn-sm" %>
                     </div>
                   </div>
@@ -39,7 +39,7 @@
           </div>
         </div>
         <hr>
-        <div class="content">
+        <div class="box-body">
           <div class="row">
             <div class="col-md-6">
               <p class="condensed-text"> DETAILS </p>
@@ -129,12 +129,18 @@
               <br />
                 <% @work_order.accessories.each do |accessory| %>
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <%=accessory.quantity.to_i %>
                 </div>
                 <div class="col-md-6">
                   <%= accessory.description %><br>
                   <small><%= accessory.serial_number.try(:upcase) %></small>
+                </div>
+                <div class="col-md-2">
+                   <%= link_to accessory_path(accessory), method: :delete do %>
+                      <span class="text-danger fa fa-trash"></span>
+                    <% end %>
+
                 </div>
               </div>
               <br>
@@ -159,8 +165,8 @@
       </div>
       <div class="row">
         <div class="col-md-6">
-          <div class="card">
-            <div class="header">
+          <div class="box box-solid">
+            <div class="box-header">
               <div class="row">
                 <div class="col-md-8">
                   <p class="condensed-text title"> SERVICE CHARGES </p>
@@ -172,7 +178,7 @@
                 </div>
               </div>
             </div>
-            <div class="content">
+            <div class="box-header">
               <% @work_order.service_charges.each do |charge| %>
                 <div class="row">
                   <div class="col-md-1 hidden-xs">
@@ -227,8 +233,8 @@
           </div>
         </div>
         <div class="col-md-6">
-          <div class="card">
-            <div class="header">
+          <div class="box box-solid">
+            <div class="box-header">
               <div class="row">
                 <div class="col-md-8">
                   <p class="condensed-text title"> PAYMENT DETAILS </p>
@@ -302,9 +308,8 @@
       </div>
     </div>
 <div class="col-md-4">
-  <div class="card">
-    <div class="content">
-      <div class="content">
+  <div class="box box-solid">
+      <div class="box-body">
         <%= simple_form_for Post.new, url: :computer_repair_section_work_order_updates do |f| %>
           <%= f.input :type, label: false, collection: Post.types.map{|a| [a.titleize, a]}, prompt: 'Select Update Type' %>
           <%= f.input :title, label: false, placeholder: 'Title', required: true %>

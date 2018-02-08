@@ -1,23 +1,22 @@
 <div id="customer-modal" class="modal fade"></div>
-<div class="content">
   <div class="row">
     <div  class="col-md-12">
-      <div class="card">
-        <div class="content">
-          <div class="header">
-            <div class="row">
-              <div class="col-md-8">
-                <h4 class="title"><span class="icon-basket-loaded"></span> Cart</h4>
-                <p class="category">Current line items in cart</p>
-              </div>
-              <div class="col-md-4">
-                <span class="pull-right">
-                  <%= link_to 'Add Items', store_index_path, class: "btn btn-primary" %>
-                </span>
-              </div>
+      <div class="box box-solid">
+        <div class="box-header">
+          <div class="row">
+            <div class="col-md-8">
+              <h4 class="title"><span class="icon-basket-loaded"></span> Cart</h4>
+              <p class="category">Current line items in cart</p>
+            </div>
+            <div class="col-md-4">
+              <span class="pull-right">
+                <%= link_to 'Add Items', store_index_path, class: "btn btn-primary" %>
+              </span>
             </div>
           </div>
-          <hr>
+        </div>
+        <hr>
+        <div class="box-body">
           <div class="row">
             <div class="col-md-6">
               <% @cart.line_items.each do |line_item| %>

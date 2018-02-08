@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171211005445) do
+ActiveRecord::Schema.define(version: 20180207224636) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,8 +48,11 @@ ActiveRecord::Schema.define(version: 20171211005445) do
     t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "commercial_document_type"
+    t.bigint "commercial_document_id"
     t.index ["account_id", "entry_id"], name: "index_amounts_on_account_id_and_entry_id"
     t.index ["account_id"], name: "index_amounts_on_account_id"
+    t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_amounts"
     t.index ["entry_id", "account_id"], name: "index_amounts_on_entry_id_and_account_id"
     t.index ["entry_id"], name: "index_amounts_on_entry_id"
     t.index ["type"], name: "index_amounts_on_type"
@@ -145,10 +148,12 @@ ActiveRecord::Schema.define(version: 20171211005445) do
     t.bigint "user_id"
     t.string "search"
     t.bigint "stock_transfer_id"
+    t.string "type"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
     t.index ["order_id"], name: "index_line_items_on_order_id"
     t.index ["stock_id"], name: "index_line_items_on_stock_id"
     t.index ["stock_transfer_id"], name: "index_line_items_on_stock_transfer_id"
+    t.index ["type"], name: "index_line_items_on_type"
     t.index ["user_id"], name: "index_line_items_on_user_id"
     t.index ["work_order_id"], name: "index_line_items_on_work_order_id"
   end
@@ -165,10 +170,12 @@ ActiveRecord::Schema.define(version: 20171211005445) do
     t.string "description"
     t.string "barcode"
     t.string "search_term"
+    t.string "type"
     t.index ["customer_id"], name: "index_orders_on_customer_id"
     t.index ["employee_id"], name: "index_orders_on_employee_id"
     t.index ["reference_number"], name: "index_orders_on_reference_number"
     t.index ["technician_id"], name: "index_orders_on_technician_id"
+    t.index ["type"], name: "index_orders_on_type"
   end
 
   create_table "payments", force: :cascade do |t|
@@ -390,7 +397,9 @@ ActiveRecord::Schema.define(version: 20171211005445) do
     t.datetime "avatar_updated_at"
     t.string "designation"
     t.bigint "section_id"
+    t.bigint "cash_on_hand_account_id"
     t.index ["branch_id"], name: "index_users_on_branch_id"
+    t.index ["cash_on_hand_account_id"], name: "index_users_on_cash_on_hand_account_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["section_id"], name: "index_users_on_section_id"
@@ -498,6 +507,7 @@ ActiveRecord::Schema.define(version: 20171211005445) do
   add_foreign_key "technician_work_orders", "users", column: "technician_id"
   add_foreign_key "technician_work_orders", "work_orders"
   add_foreign_key "units", "customers"
+  add_foreign_key "users", "accounts", column: "cash_on_hand_account_id"
   add_foreign_key "users", "branches"
   add_foreign_key "users", "sections"
   add_foreign_key "warranties", "customers"

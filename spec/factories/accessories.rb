@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :accessory do
     product_unit nil
     quantity "9.99"

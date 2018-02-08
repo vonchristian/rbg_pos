@@ -1,24 +1,22 @@
 <div id="customer-modal" class="modal fade"></div>
-<div class="content">
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <div class="card">
-        <div class="header">
-          <h4 class="title">Other Sales</h4>
-          <p class="category">Details for this other sales</p>
-        </div> 
-      <div class="content">
-        <%= simple_form_for @other_sale, url: :other_sales do |f| %>
-          <%= f.input :date, as: :string, input_html: {class: "datepicker"} %>
-          <span><label>Customer</label><span class="pull-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span></span>
-          <%= f.input :customer_id, collection: Customer.all.map{|a| [a.full_name, a.id] }, label: false %>
-          <%= f.input :reference_number %>
-          <%= f.input :description %>
-          <%= f.input :amount %>
-          <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
-          <%= f.submit 'Save Sale', class: "btn btn-primary" %>
-        <% end %>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title">Other Sales</h3>
+        <p class="hel-block">Details for this other sales</p>
       </div>
+    <div class="box-body">
+      <%= simple_form_for @other_sale, url: :other_sales do |f| %>
+        <%= f.input :date, as: :string, input_html: {class: "datepicker"} %>
+        <span><label>Customer</label><span class="pull-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span></span>
+        <%= f.input :customer_id, collection: Customer.all.map{|a| [a.full_name, a.id] }, label: false %>
+        <%= f.input :reference_number %>
+        <%= f.input :description %>
+        <%= f.input :amount %>
+        <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
+        <%= f.submit 'Save Sale', class: "btn btn-primary" %>
+      <% end %>
     </div>
   </div>
 </div>

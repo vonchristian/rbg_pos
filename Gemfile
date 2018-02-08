@@ -31,6 +31,7 @@ gem 'icheck-rails'
 gem 'friendly_id'
 gem 'font-awesome-rails'
 gem 'momentjs-rails', '>= 2.9.0'
+gem 'bootstrap-datepicker-rails'
 gem 'datetimepicker-rails', github: 'zpaulovics/datetimepicker-rails', branch: 'master', submodules: true
 gem 'dragonfly'
 gem 'pg_search'
@@ -53,7 +54,7 @@ gem 'will_paginate', '~> 3.1.0'
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'rspec-its'
   gem 'faker'
 end

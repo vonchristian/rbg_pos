@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :warranty do
     sales_return nil
     supplier nil

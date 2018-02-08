@@ -1,8 +1,8 @@
 <div class="content">
   <div class="row">
     <div class="col-md-12">
-      <div class="card">
-        <div class="header">
+      <div class="box box-solid">
+        <div class="box-header">
           <div class="row">
             <div class="col-md-1">
               <%=image_tag(@product.avatar.url(:medium), class: "img-square", height: 50, width: 50) %>
@@ -15,7 +15,7 @@
           </div>
         </div>
         <br>
-        <div class="content">
+        <div class="box-body">
           <ul class="nav nav-tabs">
             <li class="<%= 'active' if current_page?(product_path(@product)) %>">
              <%= link_to 'Info', product_path(@product) %>

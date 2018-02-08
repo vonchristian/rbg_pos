@@ -100,4 +100,6 @@ Rails.application.routes.draw do
   resources :other_sales, only: [:new, :create]
   resources :entries, only: [:destroy]
   resources :capital_withdrawals, only: [:new, :create]
+  resources :accessories, only: [:destroy]
+  resources :search_results, only: [:index]
 end

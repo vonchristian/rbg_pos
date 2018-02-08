@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :stock_transfer do
     stock nil
     date "2017-08-10 11:46:21"

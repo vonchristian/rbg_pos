@@ -1,32 +1,30 @@
-<div class="content">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-7">
-        <div class="card">
-          <div class="content">
-          <div class="header">
-            <div class="row">
-              <div class="col-md-6">
-                <h4 class="title"><span class="icon-basket-loaded"></span> Store</h4>
-                <p class="category">Search for products to add to cart</p>
-              </div>
-              <div class="col-md-6">
-                <%=link_to 'New Other Sales', new_other_sale_path, class: "btn btn-primary btn-sm pull-right" %>
-              </div>
-            </div>
-          </div>
-          <hr>
-          <%=form_tag store_index_path, method: :get, id: "search-form" do %>
-             <div class="input-group">
-               <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", autofocus: true, placeholder: "Search...", type: "search" %>
-               <span class="input-group-btn">
-                 <%= button_tag(type: 'submit', class: "btn") do %>
-                   <i class="icon-magnifier"></i>
-                 <% end %>
-               </span>
-             </div>
-           <% end %>
 
+<div class="row">
+  <div class="col-md-7">
+    <div class="box box-solid">
+      <div class="box-header with-border">
+        <div class="row">
+          <div class="col-md-6">
+            <h4 class="title"><span class="icon-basket-loaded"></span> Store</h4>
+            <p class="category">Search for products to add to cart</p>
+          </div>
+          <div class="col-md-6">
+            <%=link_to 'New Other Sales', new_other_sale_path, class: "btn btn-primary btn-sm pull-right" %>
+          </div>
+        </div>
+      </div>
+      <div class="box-body">
+      <%=form_tag store_index_path, method: :get, id: "search-form" do %>
+         <div class="input-group">
+           <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", autofocus: true, placeholder: "Search...", type: "search" %>
+           <span class="input-group-btn">
+             <%= button_tag(type: 'submit', class: "btn btn-dedault") do %>
+               <i class="icon-magnifier"></i> Search
+             <% end %>
+           </span>
+         </div>
+       <% end %>
+       <br>
                 <% if @stocks.any?  %>
                   <% @stocks.each do |stock| %>
                     <div class="row">
@@ -70,21 +68,21 @@
         </div>
         <% if @cart.line_items.any? %>
         <div class="col-md-5">
-          <div class="card">
-            <div class="content">
-              <div class="header">
-                <div class="row">
-                  <div class="col-md-9">
-                    <h4 class="title"><span class="icon-basket-loaded"></span> Cart</h4>
-                    <p class="category"><span class="badge"><%= @cart.line_items.count %> </span> line items in cart</p>
-                  </div>
-                  <div class="col-md-3">
-                    <span class="pull-right"><%= link_to 'Empty Cart', cart_path(@cart), method: :delete, class: "btn btn-danger btn-sm" %>
-                    </span>
-                  </div>
+          <div class="box box-solid">
+            <div class="box-header">
+              <div class="row">
+                <div class="col-md-9">
+                  <h4 class="title"><span class="icon-basket-loaded"></span> Cart</h4>
+                  <p class="category"><span class="badge"><%= @cart.line_items.count %> </span> line items in cart</p>
+                </div>
+                <div class="col-md-3">
+                  <span class="pull-right"><%= link_to 'Empty Cart', cart_path(@cart), method: :delete, class: "btn btn-danger btn-sm" %>
+                  </span>
                 </div>
               </div>
-              <hr>
+            </div>
+            <hr>
+            <div class="box-body">
               <% @cart.line_items.each do |line_item| %>
                 <div class="row">
                   <div class="col-md-2">

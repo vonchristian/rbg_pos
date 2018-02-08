@@ -7,7 +7,7 @@
             <h3 class="title"> Remittance Details </h3>
           </div>
         <div class="content">
-				<%= simple_form_for @entry, url: :accounting_remittances do |f| %>
+				<%= simple_form_for @remittance, url: :accounting_remittances do |f| %>
 				  <%= f.error_notification %>
 				  <%= f.input :cashier_id, collection: User.sales_clerk.all.map {|a| [a.full_name, a.id] } %>
 				  <%= f.input :entry_date, label: 'Date', as: :string, input_html: { class: "datepicker" } %>
@@ -15,9 +15,7 @@
 				  <%= f.input :reference_number %>
 				  <%= f.input :description, input_html: { value: "Collection Remittance" } %>
 				  <%= f.input :amount %>
-				  <%= f.input :debit_account_id, input_html: { value: AccountingModule::Account.find_by(name: "Cash on Hand").id  }, as: :hidden %>
-				  <%= f.input :credit_account_id, input_html: { value: AccountingModule::Account.find_by(name: "Cash on Hand (Cashier)").id }, as: :hidden %>
-           
+
 				  <%= f.submit "Save Remittance", class: "btn btn-primary pull-right" %>
 				  <br>
 				  <br>

@@ -1,85 +1,80 @@
 
-<div class="content">
-                
-                        <div class="card">
-                          <div class="content">
-                          <div class="row">
-                    <div class="col-md-12">
- <div class="nav-tabs-navigation">
-        <ul class="nav nav-tabs">
-          <li class=<%='active' if current_page?(products_path) %>>
-            <%= link_to 'All Products', products_path %>
-            
-          </li>
-           <li class=<%='active' if current_page?(out_of_stock_products_path) %>>
-            <%= link_to 'Out of Stock', out_of_stock_products_path %>
-          </li>
-          <li class=<%='active' if current_page?(low_on_stock_products_path) %>>
-            <%= link_to 'Low on Stock', low_on_stock_products_path %>
-          </li>
-        </ul>
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-solid">
+      <div class="box-header">
+        <div class="nav nav-tabs">
+          <ul class="nav nav-tabs">
+            <li class=<%='active' if current_page?(products_path) %>>
+              <%= link_to 'All Products', products_path %>
+            </li>
+             <li class=<%='active' if current_page?(out_of_stock_products_path) %>>
+              <%= link_to 'Out of Stock', out_of_stock_products_path %>
+            </li>
+            <li class=<%='active' if current_page?(low_on_stock_products_path) %>>
+              <%= link_to 'Low on Stock', low_on_stock_products_path %>
+            </li>
+          </ul>
+        </div>
       </div>
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-2">
+            <h4 class="title">Products</h4>
+            <p class="category">List of products</p>
+          </div>
+          <div class="col-md-4">
+            <%=form_tag products_path, method: :get, id: "search-form" do %>
+              <div class="input-group">
+                <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search product...", type: "search" %>
+                <span class="input-group-btn">
+                  <%= button_tag(type: 'submit', class: "btn") do %>
+                    <i class="icon-magnifier"></i>
+                  <% end %>
+                </span>
+              </div>
+            <% end %>
+          </div>
+          <div class="col-md-2">
+            <% if policy(:product).new? %>
+              <%=link_to 'New Product', new_product_path, class: "btn btn-primary pull-right" %>
+            <% end %>
+          </div>
+          <div class="col-md-2">
+            <%= simple_form_for @registry, multipart: true, method: :create do |f| %>
+              <%= f.input :spreadsheet, as: :file, label: false %>
+                <%= f.submit 'Import Products', class: 'btn btn-danger btn-xs pull-right' %>
+            <% end %>
+          </div>
+          <div class="col-md-2">
+            <%= link_to "View (PDF)", products_path(format: 'pdf', page: params[:page]), class: "btn btn-default btn-xs pull-right" %>
+          </div>
+        </div>
+        <div class="table-responsive table-full-width">
+            <table class="table table-striped">
+                <thead>
 
-            
-                            <div class="header">
-                              <div class="row">
-                                <div class="col-md-2">
-                                  <h4 class="title">Products</h4>
-                                  <p class="category">List of products</p>
-                                </div>
-                                <div class="col-md-4">
-                                  <%=form_tag products_path, method: :get, id: "search-form" do %>
-                                    <div class="input-group">
-                                      <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search product...", type: "search" %>
-                                      <span class="input-group-btn">
-                                        <%= button_tag(type: 'submit', class: "btn") do %>
-                                          <i class="icon-magnifier"></i>
-                                        <% end %>
-                                      </span>
-                                    </div>
-                                  <% end %>
-                                </div>
-                                <div class="col-md-2">
-                                  <% if policy(:product).new? %>
-                                    <%=link_to 'New Product', new_product_path, class: "btn btn-primary pull-right" %>
-                                  <% end %>
-                                </div>
-                                <div class="col-md-2">
-                                  <%= simple_form_for @registry, multipart: true, method: :create do |f| %>
-                                    <%= f.input :spreadsheet, as: :file, label: false %>
-                                      <%= f.submit 'Import Products', class: 'btn btn-danger btn-xs pull-right' %>
-                                  <% end %>
-                                </div>
-                                <div class="col-md-2">
-                                  <%= link_to "View (PDF)", products_path(format: 'pdf', page: params[:page]), class: "btn btn-default btn-xs pull-right" %>
-                                </div>
-                              </div>
-                            <div class="content table-responsive table-full-width">
-                                <table class="table table-striped">
-                                    <thead>
-                                      
-                                      <th>Name</th>
-                                    	<th>Price</th>
-                                    	<th>In Stock</th>
-                                    </thead>
-                                    <tbody>
-                                      <% @products.each do |product| %>
-                                      <tr>
-                                      <td><%=link_to product.name, product %></td>
-                                      <td><%= number_to_currency product.retail_price %></td>
-                                      <td><%= product.in_stock %></td>
-                                      </tr>
-                                      <% end %>
-                                    </tbody>
-                                  </table>
-                                  <center>
-                                    <%= will_paginate @products, renderer: WillPaginateHelper::ProductRootedLinkRenderer, format: :html  %>                      
-                                  </center>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    
+                  <th>Name</th>
+                	<th>Price</th>
+                	<th>In Stock</th>
+                </thead>
+                <tbody>
+                  <% @products.each do |product| %>
+                  <tr>
+                  <td><%=link_to product.name, product %></td>
+                  <td><%= number_to_currency product.retail_price %></td>
+                  <td><%= product.in_stock %></td>
+                  </tr>
+                  <% end %>
+                </tbody>
+              </table>
+              <center>
+                <%= will_paginate @products, renderer: WillPaginateHelper::ProductRootedLinkRenderer, format: :html  %>
+              </center>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+

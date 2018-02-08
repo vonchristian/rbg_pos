@@ -1,22 +1,7 @@
-<footer class="footer">
-            <div class="container-fluid">
-                <nav class="pull-left">
-                    <ul>
+<footer class="main-footer">
+  <div class="pull-right hidden-xs">
 
-                        <li>
-                            <a href="#">
-                                INVENTORY MANAGEMENT PLATFORM
-                            </a>
-                        </li>
-                        <li>
-                          <a href="">
-                            <span>Enjoy the rest of your <%= Time.zone.now.strftime("%A") %>, <b><%=current_user.first_name %>. </b> </span>
-                          </a>
-                        </li>
-                    </ul>
-                </nav>
-                <div class="copyright pull-right">
-                    © <%= Time.zone.now.year %> Developed with <i class="fa fa-heart heart"></i> by <a href="#">ITWORX Technology Services</a>
-                </div>
-            </div>
+    <b><small>Developed by: Von Christian Halip </small></b>
+  </div>
+  <strong>Copyright &copy; <%=Time.zone.now.year%> <a href="http://facebook.com/itworx">RBB Computers, CellShop and Enterprises</a></strong> Enjoy the rest of your <%= Time.zone.now.strftime("%A") %>, <b><%= current_user.first_name %></b>.
 </footer>

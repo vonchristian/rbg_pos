@@ -1,9 +1,8 @@
-<div class="content">
-            <div class="container-fluid">
+
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="card">
-                            <div class="header">
+                        <div class="box box-solid">
+                            <div class="box-header">
                               <div class="row">
                                 <div class="col-md-3">
                                   <h4 class="title">Stocks</h4>
@@ -25,7 +24,8 @@
                                   <%= link_to 'New Stock', new_stock_path, class: "btn btn-primary" %>
 
                               </div>
-                            <div class="content table-responsive table-full-width">
+                            </div>
+                            <div class="box-body table-responsive table-full-width">
                                 <table class="table table-striped">
                                     <thead>
 
@@ -48,7 +48,7 @@
                                       <small><%= stock.barcode %></small>
                                       <% if stock.sold? %>
                                         <span class="label label-danger"> Sold </span><br>
-                                        Customer: <%= stock.customer_name %>
+                                      Customer: <%= stock.customer_name %>
                                       <% elsif stock.transferred? %>
                                         <span class="label label-danger"> Transferred </span><br>
                                         Branch: <%= stock.branch_destination %>
