@@ -105,5 +105,6 @@ Rails.application.routes.draw do
   resources :search_results, only: [:index]
   resources :customer_account_mergings, only: [:new, :create], module: :settings
   resources :charge_invoices, only: [:index]
+  resources :cash_on_hand_accounts, only: [:new, :create], module: :accounting
 
 end

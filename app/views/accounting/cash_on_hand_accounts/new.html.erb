@@ -1,0 +1,6 @@
+<%= simple_form_for @account, url: :cash_on_hand_accounts do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :account_code %>
+  <%= f.input :name %>
+  <%= f.submit %>
+<% end %>

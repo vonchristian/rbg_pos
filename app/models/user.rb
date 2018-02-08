@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
   belongs_to :branch, optional: true
   belongs_to :section, optional: true
-  belongs_to :cash_on_hand_account, optional: true
+  belongs_to :cash_on_hand_account, optional: true, class_name: "AccountingModule::Account"
   has_many :orders, foreign_key: 'employee_id'
   has_many :technician_work_orders, foreign_key: 'technician_id'
   has_many :work_orders, through: :technician_work_orders
