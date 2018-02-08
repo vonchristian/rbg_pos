@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180207224636) do
+ActiveRecord::Schema.define(version: 20180208123805) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -118,6 +118,18 @@ ActiveRecord::Schema.define(version: 20180207224636) do
     t.index ["entry_type"], name: "index_entries_on_entry_type"
     t.index ["recorder_id"], name: "index_entries_on_recorder_id"
     t.index ["user_id"], name: "index_entries_on_user_id"
+  end
+
+  create_table "invoices", force: :cascade do |t|
+    t.string "type"
+    t.string "number"
+    t.string "invoiceable_type"
+    t.bigint "invoiceable_id"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["invoiceable_type", "invoiceable_id"], name: "index_invoices_on_invoiceable_type_and_invoiceable_id"
+    t.index ["type"], name: "index_invoices_on_type"
   end
 
   create_table "job_orders", force: :cascade do |t|

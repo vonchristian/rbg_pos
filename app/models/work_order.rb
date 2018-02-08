@@ -1,6 +1,7 @@
 class WorkOrder < ApplicationRecord
   include PgSearch
-  pg_search_scope :text_search, against: [:service_number, :reported_problem, :physical_condition, :customer_name, :product_name]
+  pg_search_scope :text_search, against: [:service_number, :reported_problem, :physical_condition, :customer_name, :product_name],
+  :associated_against => { :charge_invoice => [:number]}
   multisearchable :against => [:description, :model_number, :serial_number,
     :updates_content, :reported_problem, :physical_condition, :service_number, :customer_name, :product_name]
   belongs_to :product_unit
@@ -8,6 +9,7 @@ class WorkOrder < ApplicationRecord
   belongs_to :section, optional: true
   has_many :accessories
   belongs_to :customer, optional: true
+  has_one :charge_invoice, as: :invoiceable, class_name: "Invoices::ChargeInvoice"
   has_many :technician_work_orders, dependent: :destroy
   has_many :technicians, through: :technician_work_orders
   has_many :work_order_updates, as: :updateable, class_name: "Post", dependent: :destroy
@@ -23,13 +25,18 @@ class WorkOrder < ApplicationRecord
   validates :description, :physical_condition, :reported_problem, presence: true
   validates :customer_id, presence: true
   after_commit :set_service_number, :set_customer_name, :set_product_name,  on: [:create, :update]
+
+  def name
+    "#{product_name}"
+  end
+
   def self.total_charges_cost(hash ={} )
     if hash[:from_date] && hash[:to_date]
        from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date])
         to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date])
         where('created_at' => (from_date.beginning_of_day)..(to_date.end_of_day)).sum(&:total_charges_cost)
     else
-      all.sum(&:total_charges_cost)        
+      all.sum(&:total_charges_cost)
     end
   end
   def self.total_spare_parts_cost(hash ={} )
@@ -38,7 +45,7 @@ class WorkOrder < ApplicationRecord
         to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date])
         where('created_at' => (from_date.beginning_of_day)..(to_date.end_of_day)).sum(&:total_spare_parts_cost)
     else
-      all.sum(&:total_spare_parts_cost)        
+      all.sum(&:total_spare_parts_cost)
     end
   end
   def self.total_service_charges_cost(hash ={} )
@@ -47,7 +54,7 @@ class WorkOrder < ApplicationRecord
         to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date])
         where('created_at' => (from_date.beginning_of_day)..(to_date.end_of_day)).sum(&:total_service_charges_cost)
     else
-      all.sum(&:total_service_charges_cost)        
+      all.sum(&:total_service_charges_cost)
     end
   end
   def self.from(hash={})
@@ -62,10 +69,10 @@ class WorkOrder < ApplicationRecord
   def self.payments
     select{ |a| a.payments }
   end
-  def self.payments_total 
+  def self.payments_total
     all.sum(&:payments_total)
   end
-  def technicians_name 
+  def technicians_name
     technicians.map{|a| a.full_name }.join(",")
   end
   def accounts_receivable
@@ -108,7 +115,7 @@ class WorkOrder < ApplicationRecord
   def elapsed_time
     (self.created_at - Time.zone.now) /86400
   end
-  
+
   def diagnoses
     work_order_updates.diagnosis
   end
@@ -118,11 +125,11 @@ class WorkOrder < ApplicationRecord
   def service_charge_entry(charge)
     service_fees = AccountingModule::Revenue.find_by(name: 'Service Fees')
     accounts_receivable = AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current")
-    
+
     entries.work_order_service_charge.create(entry_date: charge.created_at,
       description: "#{charge.description}",
       user_id: charge.user_id,
-      debit_amounts_attributes: [amount: charge.amount, account: accounts_receivable], 
+      debit_amounts_attributes: [amount: charge.amount, account: accounts_receivable],
       credit_amounts_attributes:[amount: charge.amount, account: service_fees])
   end
   def spare_part_entry(spare_part)
@@ -135,9 +142,9 @@ class WorkOrder < ApplicationRecord
 
     entries.work_order_credit.create(entry_date: spare_part.created_at,
       recorder_id: spare_part.user_id,
-      description: "Spare parts installed", 
-      user_id: spare_part.user_id, 
-      debit_amounts_attributes: [{amount: spare_part.total_cost, account: accounts_receivable}, {amount: spare_part.total_cost, account: cost_of_goods_sold}], 
+      description: "Spare parts installed",
+      user_id: spare_part.user_id,
+      debit_amounts_attributes: [{amount: spare_part.total_cost, account: accounts_receivable}, {amount: spare_part.total_cost, account: cost_of_goods_sold}],
       credit_amounts_attributes:[{amount: spare_part.total_cost, account: sales}, {amount: spare_part.total_cost, account: merchandise_inventory}])
   end
   def create_order(spare_part)
@@ -151,10 +158,10 @@ class WorkOrder < ApplicationRecord
     self.service_number = nil
     self.service_number = self.id.to_s.rjust(12, '0')
   end
-  def set_customer_name 
+  def set_customer_name
     self.customer_name = self.customer.full_name
   end
-  def set_product_name 
+  def set_product_name
     self.product_name = self.product_unit.description
-  end 
+  end
 end

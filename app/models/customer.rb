@@ -19,9 +19,9 @@ class Customer < ApplicationRecord
   validates :first_name, :last_name, :contact_number, presence: true
   scope :recent, ->(num) { order('created_at DESC').limit(num) }
   def work_order_payments
-     
+
   end
-	def self.with_credits 
+	def self.with_credits
     all.select{ |a| a.with_credits? }
   end
   def last_updated_at
@@ -31,14 +31,14 @@ class Customer < ApplicationRecord
       created_at
     end
   end
-  def full_name 
+  def full_name
 		"#{first_name} #{last_name}"
 	end
 	def purchases_count
 		orders.count
 	end
 	def accounts_receivable
-    entries.credit_order.map{|a| a.debit_amounts.distinct.pluck(:amount).sum}.sum + 
+    entries.credit_order.map{|a| a.debit_amounts.distinct.pluck(:amount).sum}.sum +
     work_orders.sum(&:accounts_receivable)
 	end
   def payments_total

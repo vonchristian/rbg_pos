@@ -82,6 +82,7 @@ Rails.application.routes.draw do
       resources :spare_parts, only: [:new, :create, :destroy]
       resources :service_claim_tags, only: [:show]
       resources :payments, module: :work_orders, only: [:new, :create]
+      resources :charge_invoices, only: [:new, :create], module: :work_orders
     end
     resources :work_order_service_charges, only: [:destroy]
     resources :work_order_updates, only: [:new, :create, :edit, :update, :destroy]
@@ -102,4 +103,7 @@ Rails.application.routes.draw do
   resources :capital_withdrawals, only: [:new, :create]
   resources :accessories, only: [:destroy]
   resources :search_results, only: [:index]
+  resources :customer_account_mergings, only: [:new, :create], module: :settings
+  resources :charge_invoices, only: [:index]
+
 end

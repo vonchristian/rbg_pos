@@ -62,3 +62,8 @@
         <h4 class="title"> Merge Supplier Accounts </h4>
         <p class="category"> Merge supplier accounts that are duplicated. </p>
 <%= link_to 'New Supplier Merging', new_suppliers_merge_account_path, class: "btn btn-danger" %>
+<hr>
+<h4>Customer Accounts</h4>
+<p class="text-danger"> Merge customer accounts that are duplicated.
+Please be careful. Once an account is merged, its records will be merged to the new account. </p>
+<%= link_to "New Customer Account Merging", new_customer_account_merging_path, class: 'btn btn-danger' %>

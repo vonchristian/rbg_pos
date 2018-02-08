@@ -28,7 +28,7 @@ class User < ApplicationRecord
   end
 
   def cash_on_hand_account_balance
-    cash_on_hand_account.balance(recorder_id: self.id)
+    default_cash_on_hand_account.balance(recorder_id: self.id)
   end
 
   def default_cash_on_hand_account

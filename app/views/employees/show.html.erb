@@ -1,13 +1,13 @@
 <div class="content">
   <div class="row">
     <div class="col-md-12">
-      <div class="card">
-        <div class="header">
+      <div class="box box-solid">
+        <div class="box-header">
           <center><%= image_tag(@employee.avatar.url(:medium), height: 60, width: 60, class: "img-circle") %> </center><br>
           <h4 class="title"><center><%= @employee.full_name.try(:upcase) %> </center></h4>
           <p class="category"><center><%= @employee.role.titleize %></center></p>
         </div>
-        <div class="content">
+        <div class="box-body">
           <div class="tabbable-line">
         <ul class="nav nav-tabs">
           <li class="active">

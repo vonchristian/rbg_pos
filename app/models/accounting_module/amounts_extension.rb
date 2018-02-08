@@ -13,6 +13,8 @@ module AccountingModule
       elsif hash[:recorder_id]
         employee = User.find(hash[:recorder_id])
         joins(:entry, :account).where('entries.recorder_id' => employee.id).sum(:amount)
+      elsif hash[:commercial_document_id]
+        where(commercial_document_id: hash[:commercial_document_id])
       else
         joins(:entry, :account).sum(:amount)
       end

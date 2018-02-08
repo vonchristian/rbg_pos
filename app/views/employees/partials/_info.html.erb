@@ -6,10 +6,10 @@
     <% end %>
     <div class="row">
       <div class="col-md-3">
-        <% if @employee.cash_on_hand_account.present?  && !@employee.proprietor? %>
-          <h3><span class="text-primary"><%= number_to_currency @employee.default_cash_on_hand_account_balance %> </span></h3>
-        <% elsif @employee.cash_on_hand_account.present? && @employee.proprietor? %>
-          <h3><span class="text-primary"><%= number_to_currency @employee.default_cash_on_hand_account_balance %> </span></h3>
+        <% if @employee.default_cash_on_hand_account.present?  && !@employee.proprietor? %>
+          <h3><span class="text-primary"><%= number_to_currency @employee.cash_on_hand_account_balance %> </span></h3>
+        <% elsif @employee.default_cash_on_hand_account.present? && @employee.proprietor? %>
+          <h3><span class="text-primary"><%= number_to_currency @employee.cash_on_hand_account_balance %> </span></h3>
          <% end %>
           <small> CASH ON HAND</small>
           <% if current_user.proprietor? %>

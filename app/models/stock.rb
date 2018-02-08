@@ -84,9 +84,9 @@ class Stock < ApplicationRecord
     merchandise_inventory = AccountingModule::Account.find_by(name: "Merchandise Inventory")
 
     if cash_purchase?
-      AccountingModule::Entry.create!(recorder_id: self.employee_id, entry_type: 'cash_stock', commercial_document: self, entry_date: self.date, description: "Cash Purchase of stocks", debit_amounts_attributes: [amount: self.total_cost, account: merchandise_inventory], credit_amounts_attributes:[amount: self.total_cost, account: cash_on_hand])
+      AccountingModule::Entry.create!(recorder_id: self.employee_id, entry_type: 'cash_stock', commercial_document: self, entry_date: self.date, description: "Cash Purchase of stocks", debit_amounts_attributes: [amount: self.total_cost, account: merchandise_inventory, commercial_document: self,], credit_amounts_attributes:[amount: self.total_cost, account: cash_on_hand, commercial_document: self])
     elsif transferred? || credit_purchase? || old_stock?
-      AccountingModule::Entry.create!(recorder_id: self.employee_id, entry_type: 'credit_stock', commercial_document: self, entry_date: self.date, description: "Credit/Transferred/Old  stocks", debit_amounts_attributes: [amount: self.total_cost, account: merchandise_inventory], credit_amounts_attributes:[amount: self.total_cost, account: accounts_payable])
+      AccountingModule::Entry.create!(recorder_id: self.employee_id, entry_type: 'credit_stock', commercial_document: self, entry_date: self.date, description: "Credit/Transferred/Old  stocks", debit_amounts_attributes: [amount: self.total_cost, account: merchandise_inventory, commercial_document: self], credit_amounts_attributes:[amount: self.total_cost, account: accounts_payable, commercial_document: self])
     end
   end
 end

@@ -1,33 +1,42 @@
-module AccountingModule 
+module AccountingModule
   class CustomerPaymentForm
-    include ActiveModel::Model 
+    include ActiveModel::Model
     attr_accessor :entry_date,
                   :reference_number,
                   :description,
                   :customer_id,
                   :user_id,
-                  :debit_account_id,
                   :credit_account_id,
                   :amount,
-                  :discount_amount
+                  :expense_amount,
+                  :expense_account_id
     validates :entry_date, :description,  presence: true
     validates :amount, presence: true, numericality: true
-    def save 
-      ActiveRecord::Base.transaction do 
-        create_entry 
-        create_order
-      end 
-    end 
-
-    private 
-    def create_entry 
-      AccountingModule::Entry.customer_credit_payment.create!(recorder_id: user_id, commercial_document_id: customer_id, commercial_document_type: "Customer", entry_date: entry_date, reference_number: reference_number, description: description,
-        credit_amounts_attributes: [amount: amount, account_id: credit_account_id],
-        debit_amounts_attributes: [amount: amount, account_id: User.find_by(id: user_id).cash_on_hand_account.id])
-    end 
-    def create_order
-      order = Order.create!(description: description, customer_id: customer_id, date: entry_date, employee_id: user_id)
-      Payment.create(mode_of_payment: 'cash', order: order, discount_amount: discount_amount, total_cost: amount)
+    validates :amount, :expense_amount, numericality: true
+    def save
+      ActiveRecord::Base.transaction do
+        create_entry
+      end
     end
-  end 
+
+    private
+    def create_entry
+      AccountingModule::Entry.customer_credit_payment.create!(recorder: find_employee, commercial_document_id: customer_id, commercial_document_type: "Customer", entry_date: entry_date, reference_number: reference_number, description: description,
+        credit_amounts_attributes: [ amount: amount, account: credit_account ],
+        debit_amounts_attributes: [ {amount: final_amount, account: debit_account },{amount: expense_amount, account_id: expense_account_id}])
+    end
+    def credit_account
+      AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current")
+    end
+    def debit_account
+      find_employee.default_cash_on_hand_account
+    end
+
+    def find_employee
+      User.find_by_id(user_id)
+    end
+    def final_amount
+      amount.to_f - expense_amount.to_s.to_f
+    end
+  end
 end

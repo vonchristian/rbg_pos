@@ -140,12 +140,18 @@
                    <%= link_to accessory_path(accessory), method: :delete do %>
                       <span class="text-danger fa fa-trash"></span>
                     <% end %>
-
                 </div>
               </div>
               <br>
               <% end %>
+              <h4>Charge Invoice</h4>
+                <% if @work_order.charge_invoice.blank? %>
+                <%= link_to 'Add Charge Invoice Number', new_computer_repair_section_work_order_charge_invoice_path(@work_order), class: "btn btn-primary" %>
+                <% else %>
+                <%= @work_order.charge_invoice.try(:number) %>
+                <% end%>
 
+                <hr>
             </div>
             <div class="col-md-5 col-md-offset-1">
               <p class="condensed-text">REPORTS </p>
