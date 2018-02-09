@@ -80,21 +80,22 @@ class WorkOrder < ApplicationRecord
     service_charges = entries.work_order_service_charge.map{|a| a.debit_amounts.distinct.pluck(:amount).sum}.sum
     spare_parts + service_charges
   end
-  def payments
-    entries.work_order_payment
+  def accounts_receivable_total
+    AccountingModule::Account.find_by_name('Accounts Receivables Trade - Current').debits_balance(commercial_document_id: self.id)
 
+  end
+  def payments
+    AccountingModule::Account.find_by_name('Accounts Receivables Trade - Current').credit_entries.where(commercial_document: self)
   end
 
   def payments_total
-    AccountingModule::Account.find_by_name('Accounts Receivables Trade - Current').credit_entries.where(commercial_document: self).distinct.pluck(:amount).sum - discounts_total
+    AccountingModule::Account.find_by_name('Accounts Receivables Trade - Current').credits_balance(commercial_document_id: self.id)
     # entries.work_order_payment.map{|a| a.debit_amounts.distinct.pluck(:amount).sum}.sum
   end
-  def discounts_total
-    AccountingModule::Account.find_by_name('Sales Discounts').debit_entries.where(commercial_document: self).distinct.pluck(:amount).sum
-  end
+
 
   def balance_total
-    accounts_receivable - discounts_total - payments_total
+    AccountingModule::Account.find_by_name('Accounts Receivables Trade - Current').balance(commercial_document_id: self.id)
   end
 
   def updates_content

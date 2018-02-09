@@ -24,7 +24,7 @@
               <td><%= work_order.status %></td>
               <td><%= number_to_currency work_order.total_charges_cost %>
                 <% if current_user.default_cash_on_hand_account.present? %>
-                <%= link_to 'New Payment', new_work_order_payment_path(work_order) %>
+                <%= link_to 'New Payment', new_computer_repair_section_work_order_payment_path(work_order) %>
                 <% end %>
               </td>
             </tr>

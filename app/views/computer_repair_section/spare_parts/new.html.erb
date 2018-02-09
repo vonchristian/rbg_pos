@@ -1,14 +1,13 @@
-<div class="content">
-  <div class="container-fluid">
+
     <div class="row">
       <div class="col-md-6">
-        <div class="card">
-          <div class="content">
-          <div class="header">
-                     <h4 class="title"><span class="icon-basket-loaded"></span> Store</h4>
+        <div class="box box-solid">
+          <div class="box-header">
+                     <h4 class="box-title"><span class="icon-basket-loaded"></span> Store</h4>
                                 <p class="category">Search for products</p>
                             </div>
-                            <hr>
+
+          <div class="box-body">
           <%=form_tag new_computer_repair_section_work_order_spare_part_path(@work_order), method: :get, id: "search-form" do %>
              <div class="input-group">
                <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", autofocus: true, placeholder: "Search...", type: "search" %>
@@ -19,8 +18,9 @@
                </span>
              </div>
            <% end %>
-              
+
                 <% if @stocks.any?  %>
+                <br>
                   <% @stocks.each do |stock| %>
                     <div class="row">
                       <div class="col-md-2">
@@ -56,15 +56,15 @@
                 <% else %>
                   <p class="text-danger"> Product not found. </p>
                 <% end %>
-               
+
             </div>
           </div>
         </div>
-     
-  
+
+
         <div class="col-md-6">
-       <div class="card">
-          <div class="header">
+       <div class="box box-solid">
+          <div class="box-header">
 <%=link_to computer_repair_section_work_order_path(@work_order) do  %>
   <span class="btn btn-default"><i class="fa fa-chevron-left"></i> Back </span>
 <% end %>
@@ -80,7 +80,7 @@
               <div class="col-md-5">
                     <%= spare_part.product_name %>
               </div>
-              
+
                 <div class="col-md-3">
                   <%= number_to_currency spare_part.total_cost %>
                 </div>

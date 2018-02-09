@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180208123805) do
+ActiveRecord::Schema.define(version: 20180209221825) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -161,8 +161,12 @@ ActiveRecord::Schema.define(version: 20180208123805) do
     t.string "search"
     t.bigint "stock_transfer_id"
     t.string "type"
+    t.bigint "referenced_line_item_id"
+    t.bigint "product_id"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
     t.index ["order_id"], name: "index_line_items_on_order_id"
+    t.index ["product_id"], name: "index_line_items_on_product_id"
+    t.index ["referenced_line_item_id"], name: "index_line_items_on_referenced_line_item_id"
     t.index ["stock_id"], name: "index_line_items_on_stock_id"
     t.index ["stock_transfer_id"], name: "index_line_items_on_stock_transfer_id"
     t.index ["type"], name: "index_line_items_on_type"
@@ -303,6 +307,17 @@ ActiveRecord::Schema.define(version: 20180208123805) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "selling_prices", force: :cascade do |t|
+    t.decimal "price"
+    t.bigint "unit_of_measurement_id"
+    t.bigint "product_id"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_selling_prices_on_product_id"
+    t.index ["unit_of_measurement_id"], name: "index_selling_prices_on_unit_of_measurement_id"
+  end
+
   create_table "service_charges", force: :cascade do |t|
     t.string "description"
     t.decimal "amount"
@@ -372,6 +387,18 @@ ActiveRecord::Schema.define(version: 20180208123805) do
     t.datetime "updated_at", null: false
     t.index ["technician_id"], name: "index_technician_work_orders_on_technician_id"
     t.index ["work_order_id"], name: "index_technician_work_orders_on_work_order_id"
+  end
+
+  create_table "unit_of_measurements", force: :cascade do |t|
+    t.bigint "product_id"
+    t.string "unit_code"
+    t.string "description"
+    t.decimal "quantity"
+    t.decimal "conversion_quantity"
+    t.boolean "base_measurement", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_unit_of_measurements_on_product_id"
   end
 
   create_table "units", force: :cascade do |t|
@@ -491,7 +518,9 @@ ActiveRecord::Schema.define(version: 20180208123805) do
   add_foreign_key "job_orders", "customers"
   add_foreign_key "job_orders", "units"
   add_foreign_key "line_items", "carts"
+  add_foreign_key "line_items", "line_items", column: "referenced_line_item_id"
   add_foreign_key "line_items", "orders"
+  add_foreign_key "line_items", "products"
   add_foreign_key "line_items", "stock_transfers"
   add_foreign_key "line_items", "stocks"
   add_foreign_key "line_items", "users"
@@ -518,6 +547,7 @@ ActiveRecord::Schema.define(version: 20180208123805) do
   add_foreign_key "stocks", "users", column: "employee_id"
   add_foreign_key "technician_work_orders", "users", column: "technician_id"
   add_foreign_key "technician_work_orders", "work_orders"
+  add_foreign_key "unit_of_measurements", "products"
   add_foreign_key "units", "customers"
   add_foreign_key "users", "accounts", column: "cash_on_hand_account_id"
   add_foreign_key "users", "branches"

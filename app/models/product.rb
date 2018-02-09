@@ -11,6 +11,8 @@ class Product < ApplicationRecord
 	has_many :items_under_warranty, through: :sales_returns, source: :warranty #forwarded items to supplier
 	has_many :released_warranties, through: :items_under_warranty, source: :warranty_release
 
+  has_many :unit_of_measurements, class_name: "StoreFrontModule::UnitOfMeasurement"
+
 
 	has_attached_file :avatar,
   styles: { large: "120x120>",
@@ -25,6 +27,10 @@ class Product < ApplicationRecord
   validates :name, presence: true
 
   delegate :name, to: :category, prefix: true, allow_nil: true
+  def base_measurement
+    unit_of_measurements.base_measurement
+  end
+
   def self.low_on_stock
     all.select{ |a| a.low_on_stock? }
   end

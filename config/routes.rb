@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     resources :payments, only: [:new, :create], module: :customers
   end
   resources :products do
+    resources :unit_of_measurements, only: [:new, :create]
     match "/out_of_stock" => "products#out_of_stock",  via: [:get], on: :collection
     match "/low_on_stock" => "products#low_on_stock",  via: [:get], on: :collection
 
@@ -71,7 +72,9 @@ Rails.application.routes.draw do
   resources :employees, only: [:index, :show, :edit, :update] do
     resources :remittances, only: [:new, :create], module: :employees
   end
-  resources :work_orders, only: [:index, :new, :create]
+  resources :work_orders, only: [:index, :new, :create] do
+    resources :payments, only: [:ew, :create], module: :work_orders
+  end
   resources :work_order_statuses, only: [:edit, :update]
   namespace :computer_repair_section do
     resources :dashboard, only: [:index]
@@ -104,7 +107,7 @@ Rails.application.routes.draw do
   resources :accessories, only: [:destroy]
   resources :search_results, only: [:index]
   resources :customer_account_mergings, only: [:new, :create], module: :settings
-  resources :charge_invoices, only: [:index]
+  resources :charge_invoices, only: [:index, :edit, :update]
   resources :cash_on_hand_accounts, only: [:new, :create], module: :accounting
 
 end

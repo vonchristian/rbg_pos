@@ -149,6 +149,7 @@
                 <%= link_to 'Add Charge Invoice Number', new_computer_repair_section_work_order_charge_invoice_path(@work_order), class: "btn btn-primary" %>
                 <% else %>
                 <%= @work_order.charge_invoice.try(:number) %>
+                <%= link_to 'Edit', edit_charge_invoice_path(@work_order.charge_invoice) %>
                 <% end%>
 
                 <hr>
@@ -157,7 +158,7 @@
               <p class="condensed-text">REPORTS </p>
               <%= link_to 'CLAIM TAG', computer_repair_section_work_order_service_claim_tag_path(@work_order, format: 'pdf'), class: "label label-default"  %><br><br>
               <small class="condensed-text">RELEASE FORM</small><br>
-              <% if @work_order.released? %>
+              <% if @work_order.released? && @work_order.charge_invoice.present? %>
                 <%= link_to 'RELEASE FORM', computer_repair_section_work_order_path(@work_order, format: 'pdf'), class: "label label-default"  %>
               <% else %>
               <small class="text-danger"> Work Order status is <span class="label label-danger"><%= @work_order.status%></span> and cannot be released yet </small>
@@ -258,7 +259,7 @@
                   <p class="condensed-text"> RECEIVABLES </p>
                 </div>
                 <div class="col-md-6">
-                  <p class="condensed-text pull-right"> <%=number_to_currency @work_order.accounts_receivable %></p>
+                  <p class="condensed-text pull-right"> <%=number_to_currency @work_order.accounts_receivable_total %></p>
                 </div>
               </div>
               <div class="row">
@@ -267,14 +268,6 @@
                 </div>
                 <div class="col-md-6">
                   <p class="condensed-text pull-right"> <%=number_to_currency @work_order.payments_total %></p>
-                </div>
-              </div>
-               <div class="row">
-                <div class="col-md-6">
-                  <p class="condensed-text text-danger"> DISCOUNTS </p>
-                </div>
-                <div class="col-md-6">
-                  <p class="condensed-text pull-right text-danger"> <%=number_to_currency @work_order.discounts_total %></p>
                 </div>
               </div>
               <br>
