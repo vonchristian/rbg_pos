@@ -13,7 +13,7 @@ class Product < ApplicationRecord
 
   has_many :unit_of_measurements, class_name: "StoreFrontModule::UnitOfMeasurement"
 
-
+  has_many :purchases, class_name: "StoreFrontModule::LineItems::PurchaseOrderLineItem"
 	has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",

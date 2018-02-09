@@ -29,13 +29,13 @@
                     <span class="pull-right"><%= number_to_currency line_item.total_cost %></span>
                   </div>
                   <div class="col-md-3">
-                    <% if !line_item.returned? %>
-                      <%= link_to new_line_item_sales_return_path(line_item) do %>
+                    <%# if !line_item.returned? %>
+                      <%#= link_to new_line_item_sales_return_path(line_item) do %>
                         <span class="btn btn-sm btn-danger" title="Return Item" data-toggle="tooltip"><i class="icon-action-redo"></i> Return</span>
                       <% end %>
-                      <% else %>
+                      <%# else %>
                         <span class="text-danger">Item returned </span>
-                    <% end %>
+                    <%# end %>
                   </div>
                 </div>
                 <hr>

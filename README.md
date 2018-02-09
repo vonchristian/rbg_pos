@@ -1,51 +1,30 @@
-reference number should appear in the PDF form done
-sales:pwede sana search sold items only reference_number
-mode of payment na credit: add a partial payment not
-mode of payment add cheque and textbox for cheque number not
-mode of payment credit add textbox for partial payment no6
-deffective unit from stock charge to warranty
-freebies sa baba ng add markup to identify if item is for freebies at kanino binigay ang freebies done
-special feature:all rbg use will be controlled by the ADMIN ONLY so suggest na sa may mode of payment ay may RBG USE at textbox sa sinong technician ang naglabas done
-in the stock view  add DATE SOLD near DATE DELIVERY done
+add unit of measurement to stocks creation
+add unit of measurement to sale line item creation
+migrate stocks to purchase_order_line_items
+migrate line_items_to sales_order_line_items
+add unit of measurement to uploading of stocks
+migrate spare_parts_to work_order_line_items
 
-Remove retail price and whole sale price in the new product since in new stock we input retail and whole sale done
+migrate stocks.last.unit_cost to product base_measurement.unit_cost
+migrate stocks.last.unit_ to product base_measurement.unit_code
 
-
-
-add warranty (number of days for service)
-add internal user of stocks done
-stocks for warranty
-
-warranty - replace
-         - repair
-
-orders search item
-cash flow report for cashier
-
-show FREE on pdf DONE
-
-show orders on payment form DONE
-work orders weekly done
-
-add under warranty on work orders
- add number of days
- add purchase date
-
- products index show transferred count done
-
- inventory report weekly
+migrate work orders to subclass Order
 
 
+do not
 
 
- Export per category, per product to excel
+create sales return order feature
+create purchase return order feature
 
- column product_name, price, serial number, status
+migration to create unit of measurement
 
- create separate account for stock transfer
-
-
-Item returned
-  deffective
-  return to supplier
-
+Product.each do |product|
+  product.unit_of_measurements.create(
+  unit_code: product.unit,
+  description: description
+  quantity: 1,
+  base_measurement: true
+  selling_prices_attributes: [price: product.stocks.last.try(:unit_cost)]
+  )
+  end

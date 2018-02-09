@@ -2,6 +2,9 @@ module StoreFrontModule
   class UnitOfMeasurement < ApplicationRecord
     belongs_to :product
     has_many :selling_prices, class_name: "StoreFrontModule::SellingPrice"
+
+    validates :unit_code, :quantity, presence: true
+    validates :quantity, numericality: true
     def current_selling_price
       selling_prices.current_price
     end

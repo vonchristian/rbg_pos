@@ -4,6 +4,9 @@ module StoreFrontModule
 
     attr_accessor :unit_code, :quantity, :description, :base_measurement, :conversion_quantity, :product_id, :selling_price
 
+    validates :unit_code, :quantity, :product_id, :selling_price, presence: true
+    validates :selling_price, :quantity, numericality: true
+
     def register!
       ActiveRecord::Base.transaction do
         create_unit_of_measurement

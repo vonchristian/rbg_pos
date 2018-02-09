@@ -85,12 +85,11 @@ class WorkOrder < ApplicationRecord
 
   end
   def payments
-    AccountingModule::Account.find_by_name('Accounts Receivables Trade - Current').credit_entries.where(commercial_document: self)
+    AccountingModule::Account.find_by_name('Accounts Receivables Trade - Current').credit_balance(commercial_document_id: self.id)
   end
 
   def payments_total
     AccountingModule::Account.find_by_name('Accounts Receivables Trade - Current').credits_balance(commercial_document_id: self.id)
-    # entries.work_order_payment.map{|a| a.debit_amounts.distinct.pluck(:amount).sum}.sum
   end
 
 
