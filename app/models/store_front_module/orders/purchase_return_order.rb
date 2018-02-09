@@ -3,3 +3,4 @@ module StoreFrontModule
     class PurchaseReturnOrder < Order
     end
   end
+end
