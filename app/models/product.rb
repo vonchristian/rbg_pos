@@ -3,7 +3,7 @@ class Product < ApplicationRecord
   multisearchable against: [:name]
 	pg_search_scope :text_search, against: [:name]
   belongs_to :category, optional: true
-	has_many :stocks, dependent: :destroy
+	has_many :stocks
 	has_many :sold_items, through: :stocks, class_name: 'LineItem', source: :line_items
 	has_many :orders, through: :sold_items
 	has_many :sales_returns, through: :sold_items
@@ -13,7 +13,13 @@ class Product < ApplicationRecord
 
   has_many :unit_of_measurements, class_name: "StoreFrontModule::UnitOfMeasurement"
 
-  has_many :purchases, class_name: "StoreFrontModule::LineItems::PurchaseOrderLineItem"
+  has_many :purchases, :class_name => 'StoreFrontModule::LineItems::PurchaseOrderLineItem'
+    has_many :sales, :class_name => 'StoreFrontModule::LineItems::SalesOrderLineItem'
+    has_many :sales_orders, :through => :sales, :source => :order, :class_name => 'StoreFrontModule::Orders::SalesOrder'
+    has_many :purchase_orders, :through => :purchases, :source => :order, :class_name => 'StoreFrontModule::Orders::PurchaseOrder'
+    has_many :sales_returns, class_name: "StoreFrontModule::LineItems::SalesReturnOrderLineItem"
+    has_many :purchase_returns, class_name: "StoreFrontModule::LineItems::PurchaseReturnOrderLineItem"
+    has_many :spoilages, class_name: "StoreFrontModule::LineItems::SpoilageOrderLineItem"
 	has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",
@@ -27,6 +33,7 @@ class Product < ApplicationRecord
   validates :name, presence: true
 
   delegate :name, to: :category, prefix: true, allow_nil: true
+  delegate :unit_code, to: :base_measurement, prefix: true, allow_nil: true
   def base_measurement
     unit_of_measurements.base_measurement
   end
@@ -76,7 +83,7 @@ class Product < ApplicationRecord
   end
 
 	def in_stock
-		((delivered_items_count + returned_items_count) - (sold_items_count)) - released_warranties_count
+		((delivered_items_count + returned_items_count) - (sold_items_count))
 	end
 	def sold_items_count
 		sold_items.sum(:quantity)
@@ -94,16 +101,31 @@ class Product < ApplicationRecord
 	def returned_items_count
 		returned_items.sum(:quantity)
 	end
-	def items_under_warranty_count
-		items_under_warranty.sum(:quantity)
-	end
-	def released_warranties_count
-		released_warranties.sum(:quantity)
-	end
+
+
   def update_stocks_name
     stocks.each do |stock|
       stock.name = self.name
       stock.save
     end
   end
+  ################################
+  def balance(options={})
+    purchases_balance(options) -
+    sales_balance(options) -
+    spoilages_balance(options)
+  end
+  def sales_balance(options={})
+    sales.balance(product_id: self.id) -
+    sales_returns.balance(product_id: self.id)
+  end
+
+  def purchases_balance(options={})
+    purchases.balance(product_id: self.id) -
+    purchase_returns.balance(product_id: self.id)
+  end
+  def spoilages_balance(options={})
+    spoilages.balance(product_id: self.id)
+  end
+
 end

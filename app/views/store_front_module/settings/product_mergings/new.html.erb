@@ -1,0 +1,6 @@
+<%= simple_form_for @product_merging, url: :store_front_module_product_mergings do |f| %>
+  <%= f.input :old_product_id, collection: Product.all.map{ |a| [a.name, a.id] } %>
+  <%= f.input :new_product_id, collection: Product.all.map{ |a| [a.name, a.id] } %>
+  <%= f.submit "Merge Product" %>
+<% end %>
+

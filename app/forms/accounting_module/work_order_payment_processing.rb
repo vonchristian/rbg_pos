@@ -19,13 +19,39 @@ module AccountingModule
 
     private
     def create_entry
-        AccountingModule::Entry.create!(recorder_id: user_id, commercial_document: find_work_order, entry_date: entry_date, reference_number: reference_number, description: description,
-        credit_amounts_attributes:  [{amount: amount, account: accounts_receivable_account, commercial_document: find_work_order}],
-        debit_amounts_attributes: [{amount: amount_less_expense, account: cash_on_hand_account }, {amount: expense_amount, account_id: expense_account_id, commercial_document: find_work_order}])
-    end
-
-    def discount_credit_account_id
-      AccountingModule::Asset.find_by(name: "Cash on Hand (Cashier)").id
+        if expense_amount.to_f > 0 && expense_account_id.present?
+          AccountingModule::Entry.create!(
+            recorder_id: user_id,
+            commercial_document: find_work_order,
+            entry_date: entry_date,
+            reference_number: reference_number,
+            description: description,
+            credit_amounts_attributes:  [{
+              amount: amount,
+              account: accounts_receivable_account,
+              commercial_document: find_work_order}],
+            debit_amounts_attributes: [
+              {amount: amount_less_expense,
+              account: cash_on_hand_account },
+              { amount: expense_amount,
+                account_id: expense_account_id,
+                commercial_document: find_work_order}])
+        else
+          AccountingModule::Entry.create!(
+            recorder_id: user_id,
+            commercial_document: find_work_order,
+            entry_date: entry_date,
+            reference_number: reference_number,
+            description: description,
+            credit_amounts_attributes:  [{
+              amount: amount,
+              account: accounts_receivable_account,
+              commercial_document: find_work_order}],
+            debit_amounts_attributes: [
+              amount: amount,
+              account: cash_on_hand_account,
+             ])
+        end
     end
     def accounts_receivable_account
      AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current")

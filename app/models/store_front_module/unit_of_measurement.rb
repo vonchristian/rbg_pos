@@ -5,7 +5,7 @@ module StoreFrontModule
 
     validates :unit_code, :quantity, presence: true
     validates :quantity, numericality: true
-    def current_selling_price
+    def price
       selling_prices.current_price
     end
     def self.base_measurement

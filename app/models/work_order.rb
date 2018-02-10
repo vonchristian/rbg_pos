@@ -17,6 +17,7 @@ class WorkOrder < ApplicationRecord
   has_many :service_charges, through: :work_order_service_charges
   has_many :spare_parts, class_name: "LineItem", foreign_key: 'work_order_id', dependent: :destroy
   has_many :accessories, dependent: :destroy
+  has_many :work_order_line_items, class_name: "StoreFrontModule::LineItems::WorkOrderLineItem"
   enum status: [:received, :work_in_progress, :done, :released]
   accepts_nested_attributes_for :product_unit
   delegate :description, :model_number, :serial_number, to: :product_unit, allow_nil: true

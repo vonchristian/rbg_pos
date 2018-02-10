@@ -39,33 +39,8 @@
           </div>
         </div>
         <br>
-        <div class="row">
-          <div class="col-md-6">
-            Returned Items
-          </div>
-          <div class="col-md-6">
-            <%= number_to_currency @product.returned_items_count, unit: "" %>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-md-6">
-            Under Warranty
-          </div>
-          <div class="col-md-6">
-            <%= number_to_currency @product.items_under_warranty_count, unit: "" %>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-md-6">
-            Released Warranty
-          </div>
-          <div class="col-md-6">
-            <%= number_to_currency @product.released_warranties_count, unit: "" %>
-          </div>
-        </div>
-        <br>
+
+
         <div class="row">
           <div class="col-md-6">
             In Stock
@@ -88,7 +63,7 @@
       <%= unit.quantity %>
       <%= unit.unit_code %>
       <%= unit.description %>
-      <%= unit.current_selling_price %>
+      <%= unit.price %>
     <% end %>
   </div>
 </div>

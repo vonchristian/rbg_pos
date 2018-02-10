@@ -1,11 +1,14 @@
 class LineItem < ApplicationRecord
+  extend StoreFrontModule::QuantityBalanceFinder
   has_one :sales_return
   belongs_to :cart, optional: true
   belongs_to :stock, optional: true
   belongs_to :order, optional: true
   belongs_to :work_order, optional: true
   belongs_to :stock_transfer, optional: true
+  belongs_to :product, optional: true
   belongs_to :referenced_line_item, optional: true, class_name: "StoreFrontModule::LineItem"
+  belongs_to :unit_of_measurement, class_name: "StoreFrontModule::UnitOfMeasurement"
   delegate :barcode, :product_name, :product_unit, :supplier_business_name, :category_name, :stock_type, :retail_price, to: :stock
   delegate :name_and_barcode, to: :stock, prefix: true
 
@@ -53,5 +56,12 @@ class LineItem < ApplicationRecord
   end
   def set_total_cost
     self.total_cost = self.quantity * self.unit_cost + markup_amount
+  end
+  ######################
+  def self.total
+    all.sum(&:converted_quantity)
+  end
+  def converted_quantity
+    quantity * conversion_multiplier
   end
 end

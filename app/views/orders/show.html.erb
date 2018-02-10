@@ -32,7 +32,7 @@
                     <%# if !line_item.returned? %>
                       <%#= link_to new_line_item_sales_return_path(line_item) do %>
                         <span class="btn btn-sm btn-danger" title="Return Item" data-toggle="tooltip"><i class="icon-action-redo"></i> Return</span>
-                      <% end %>
+                      <%# end %>
                       <%# else %>
                         <span class="text-danger">Item returned </span>
                     <%# end %>

@@ -17,10 +17,10 @@
               <p class="category"><%= @employee.role.try(:titleize) %></p>
             </div>
           </div>
-          <br> 
+          <br>
           <div class="row">
             <div class="col-md-8 col-md-offset-3">
-              <h4 class="title"> <b><%= number_to_currency @employee.cash_on_hand_account.balance(recorder_id: @employee.id) - @employee.fund_transfer_total %></b></h4>
+              <h4 class="title"> <b><%= number_to_currency @employee.default_cash_on_hand_account.balance %></b></h4>
               <small>CASH ON HAND OF EMPLOYEE </small>
             </div>
           </div>
@@ -33,10 +33,8 @@
 
           <%= f.input :reference_number %>
           <%= f.input :description, input_html: { value: "Collection Remittance" } %>
-          <%= f.input :amount, input_html: { value: @employee.cash_on_hand_account.balance(recorder_id: @employee.id) - @employee.fund_transfer_total } %>
-          <%= f.input :debit_account_id, input_html: { value: AccountingModule::Account.find_by(name: "Cash on Hand").id  }, as: :hidden %>
-          <%= f.input :credit_account_id, input_html: { value: @employee.cash_on_hand_account.id }, as: :hidden %>
-           
+          <%= f.input :amount, input_html: { value: @employee.default_cash_on_hand_account.balance } %>
+
           <%= f.submit "Save Remittance", class: "btn btn-primary pull-right" %>
           <br>
           <br>

@@ -3,6 +3,7 @@ module AccountingModule
 		include ActiveModel::Model
 		attr_accessor :entry_date,
 	                :cashier_id,
+	                :proprietor_id,
 		              :reference_number,
 		              :description,
 		              :amount,
@@ -23,6 +24,9 @@ module AccountingModule
 	  end
 	  def find_proprietor
 	  	User.find_by_id(recorder_id)
+	  end
+	  def find_cashier
+	  	User.find_by_id(cashier_id)
 	  end
 	  def credit_account
 	  	find_cashier.default_cash_on_hand_account

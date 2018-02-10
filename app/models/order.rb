@@ -3,6 +3,7 @@ class Order < ApplicationRecord
   pg_search_scope :text_search, against: [:reference_number, :search_term]
 
   belongs_to :customer, optional: true
+  belongs_to :commercial_document, polymorphic: true, optional: true
   belongs_to :branch, optional: true
   belongs_to :employee, class_name: "User", foreign_key: 'employee_id'
   belongs_to :technician, class_name: "User", foreign_key: 'technician_id', optional: true
@@ -113,7 +114,7 @@ class Order < ApplicationRecord
       sales = AccountingModule::Account.find_by(name: "Sales")
       merchandise_inventory = AccountingModule::Account.find_by(name: "Merchandise Inventory")
       if cash?
-        AccountingModule::Entry.create!(recorder_id: self.employee_id, entry_type: 'cash_order', commercial_document: self, entry_date: self.date, description: "Payment for order",
+        AccountingModule::Entry.create!(recorder_id: self.employee_id, commercial_document: self, entry_date: self.date, description: "Payment for order",
           debit_amounts_attributes: [{amount: self.total_cost_less_discount, account: cash_on_hand, commercial_document: self}, {amount: self.stock_cost, account: cost_of_goods_sold, commercial_document: self}],
           credit_amounts_attributes:[{amount: self.total_cost_less_discount, account: sales, commercial_document: self}, {amount: self.stock_cost, account: merchandise_inventory, commercial_document: self}])
       elsif credit? || stock_transfer?
