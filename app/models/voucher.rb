@@ -8,8 +8,6 @@ class Voucher < ApplicationRecord
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount"
 
   delegate :name, to: :preparer, prefix: true, allow_nil: true
-
-  delegate :name, to: :disburser, prefix: true, allow_nil: true
   delegate :name, to: :payee, prefix: true
   def self.unused
     select{ |a| a.unused? }
