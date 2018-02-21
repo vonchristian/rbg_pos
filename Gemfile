@@ -70,7 +70,7 @@ group :test do
   gem 'shoulda-matchers'
   gem 'database_cleaner'
   gem 'capybara'
-  gem 'capybara-webkit'
+  # gem 'capybara-webkit'
 end
 gem 'rack-mini-profiler'
 gem 'memory_profiler'
