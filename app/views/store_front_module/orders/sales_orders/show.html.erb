@@ -1,0 +1,39 @@
+
+<div class="row">
+  <div  class="col-md-6 col-md-offset-3">
+    <div class="box box-solid">
+      <div class="box-header">
+        <span class="pull-right"><%= link_to 'Print(PDF)', order_path(@order, format: 'pdf'), class: "btn btn-default btn-sm" %></span>
+        <h3 class="box-title"><%= @order.customer.try(:full_name).try(:upcase) %></h3>
+        <i class="icon-calendar"></i> <%= @order.date.strftime("%B %e, %Y") %><br>
+        Mode of Payment
+        <% if !@order.internal_use? %>
+          <p class="label label-<%= @order.mode_of_payment_color%>"><%= @order.mode_of_payment %></p>
+        <% else %>
+          <span class="label label-warning"> for internal use </span>
+        <% end %>
+        <p class="text-black"> Reference Number: <%= @order.reference_number %></p>
+      </div>
+      <hr>
+      <div class="box-body">
+              <% @order.line_items.each do |line_item| %>
+                <div class="row">
+                  <div class="col-md-2">
+                    <%= line_item.quantity %> <%= line_item.unit_code %>
+                  </div>
+                  <div class="col-md-4">
+                    <%=line_item.product_name %><br>
+                    <small class="text-muted"><%= line_item.bar_code %></small>
+                  </div>
+                  <div class="col-md-2">
+                    <span class="pull-right"><%= number_to_currency line_item.total_cost %></span>
+                  </div>
+                  <div class="col-md-3">
+
+                  </div>
+                </div>
+                <hr>
+                <% end %>
+               <% if current_user.proprietor? %>
+                <%= link_to 'Delete', order_path(@order), method: :delete, class: "btn btn-danger btn-xs", data: { confirm: "Are you sure you want to delete this order?"} %>
+               <% end %>

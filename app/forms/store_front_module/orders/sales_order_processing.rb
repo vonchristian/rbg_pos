@@ -2,36 +2,49 @@ module StoreFrontModule
   module Orders
     class SalesOrderProcessing
       include ActiveModel::Model
-      attr_accessor  :customer_id, :date, :cash_tendered, :order_change, :employee_id, :cart_id, :reference_number
+      include ActiveModel::Validations
+      attr_accessor  :customer_id,
+                     :date,
+                     :cash_tendered,
+                     :order_change,
+                     :employee_id,
+                     :cart_id,
+                     :reference_number
 
-      validates :employee_id, :customer_id, :cash_tendered, :order_change, presence: true
+      validates :cart_id,
+      :employee_id,
+      :customer_id,
+      :cash_tendered,
+      :order_change,
+      presence: true
       def process!
-        create_sales_order
+        ActiveRecord::Base.transaction do
+          create_sales_order
+        end
+      end
+       def find_cart
+        Cart.find_by(id: cart_id)
       end
       private
       def create_sales_order
-        ActiveRecord::Base.transaction do
-          order = find_customer.sales_orders.create!(
-          cash_tendered: cash_tendered,
-          order_change: order_change,
+          order = StoreFrontModule::Orders::SalesOrder.create(
           date: date,
-          employee: find_employee)
+          employee: find_employee,
+          commercial_document: find_customer,
+          reference_number: reference_number)
+          order.create_cash_payment(cash_tendered: cash_tendered, cash_change: order_change)
 
           find_cart.sales_order_line_items.each do |sales_order_line_item|
             sales_order_line_item.cart_id = nil
             order.sales_order_line_items << sales_order_line_item
-          end
           create_entry(order)
         end
       end
-
       def find_customer
         Customer.find_by_id(customer_id)
       end
 
-      def find_cart
-        Cart.find_by_id(cart_id)
-      end
+
 
       def find_employee
         User.find_by_id(employee_id)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180221111608) do
+ActiveRecord::Schema.define(version: 20180221122909) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,16 @@ ActiveRecord::Schema.define(version: 20180221111608) do
   create_table "carts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "cash_payments", force: :cascade do |t|
+    t.decimal "cash_tendered"
+    t.decimal "cash_change"
+    t.string "cash_paymentable_type"
+    t.bigint "cash_paymentable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cash_paymentable_type", "cash_paymentable_id"], name: "index_paymentable_on_cash_payments"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -286,6 +296,26 @@ ActiveRecord::Schema.define(version: 20180221111608) do
     t.datetime "spreadsheet_updated_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "repair_services_front_configs", force: :cascade do |t|
+    t.bigint "accounts_receivable_account_id"
+    t.bigint "repair_services_front_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["accounts_receivable_account_id"], name: "index_accounts_receivable_account_on_repair_services_config"
+    t.index ["repair_services_front_id"], name: "index_repair_services_front_configs_on_repair_services_front_id"
+  end
+
+  create_table "repair_services_fronts", force: :cascade do |t|
+    t.bigint "business_id"
+    t.string "name"
+    t.string "address"
+    t.string "contact_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["business_id"], name: "index_repair_services_fronts_on_business_id"
+    t.index ["name"], name: "index_repair_services_fronts_on_name", unique: true
   end
 
   create_table "repairs", force: :cascade do |t|
@@ -602,6 +632,9 @@ ActiveRecord::Schema.define(version: 20180221111608) do
   add_foreign_key "product_unit_service_charges", "product_units"
   add_foreign_key "product_unit_service_charges", "service_charges"
   add_foreign_key "products", "categories"
+  add_foreign_key "repair_services_front_configs", "accounts", column: "accounts_receivable_account_id"
+  add_foreign_key "repair_services_front_configs", "repair_services_fronts"
+  add_foreign_key "repair_services_fronts", "businesses"
   add_foreign_key "sales_returns", "line_items"
   add_foreign_key "sales_returns", "orders"
   add_foreign_key "stock_transfers", "branches", column: "destination_branch_id"

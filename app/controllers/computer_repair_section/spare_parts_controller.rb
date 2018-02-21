@@ -2,11 +2,10 @@ module ComputerRepairSection
   class SparePartsController < ApplicationController
     def new
       @work_order = WorkOrder.find(params[:work_order_id])
-      @spare_part = StoreFrontModule::LineItems::WorkOrderLineItemProcessing.new
-      @stocks = Stock.text_search(params[:search])
-    @line_item = LineItem.new
-    @cart = current_cart
-    @order = Order.new
+      @products = Product.text_search(params[:search])
+      @work_order_line_item = RepairServicesModule::WorkOrderLineItemProcessing.new
+      @cart = current_cart
+      @order = Order.new
     end
     def create
       @work_order = WorkOrder.find(params[:work_order_id])

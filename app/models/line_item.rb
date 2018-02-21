@@ -11,13 +11,16 @@ class LineItem < ApplicationRecord
   belongs_to :product, optional: true
   belongs_to :referenced_line_item, optional: true, class_name: "StoreFrontModule::LineItem"
   belongs_to :unit_of_measurement, class_name: "StoreFrontModule::UnitOfMeasurement"
-  delegate   :product_unit, :supplier_business_name, :category_name, :stock_type, :retail_price, to: :stock
+  # delegate   :product_unit, :supplier_business_name, :category_name, :stock_type, :retail_price, to: :stock
   delegate :name_and_barcode, to: :stock, prefix: true
   delegate :unit_code, :conversion_multiplier, to: :unit_of_measurement
   delegate :name, to: :product
   # validate :exceeds_available_stock?, on: :create
   # after_commit :set_total_cost, on: [:create, :update]
   def search
+  end
+  def product_name
+    product.name
   end
   def purchase_cost
     stock.unit_cost

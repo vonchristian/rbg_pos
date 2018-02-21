@@ -26,7 +26,7 @@
             <tbody>
               <% @vouchers.each do |voucher| %>
                 <tr>
-                  <td><%= voucher.date.strftime("%B %e, %Y") %></td>
+                  <td><%= link_to voucher.date.strftime("%B %e, %Y"), voucher_path(voucher) %></td>
                   <td><%= voucher.payee_name %></td>
                   <td><%= voucher.description %></td>
                   <td><%= number_to_currency voucher.payable_amount %></td>

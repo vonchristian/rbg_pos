@@ -29,7 +29,9 @@
           <li class="header"> STORE FRONT </li>
           <!-- <li><a href="/dashboard"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li> -->
           <li class=<%= 'active' if current_page?(store_index_path) %> ><a href="/store"><i class="fa fa-home"></i> <span>Store</span></a></li>
-          <li class=<%= 'active' if current_page?(orders_path) %> ><a href="/orders"><i class="fa fa-shopping-cart"></i> <span>Sales</span></a></li>
+          <li class=<%= 'active' if current_page?(store_front_module_sales_orders_path) %> ><a href="/store_front_module/sales_orders"><i class="fa fa-shopping-cart"></i> <span>Sales</span></a></li>
+          <li class=<%= 'active' if current_page?(repair_services_module_service_payments_path) %> ><a href="/repair_services_module/service_payments"><i class="fa fa-money"></i> <span>Service Payments</span></a></li>
+
 
           <li class=<%= 'active' if current_page?(customers_path) %> ><a href="/customers"><i class="fa fa-users"></i> <span>Customers</span></a></li>
           <li class=<%= 'active' if current_page?(products_path) %> ><a href="/products"><i class="fa fa-cubes"></i> <span>Products</span></a></li>

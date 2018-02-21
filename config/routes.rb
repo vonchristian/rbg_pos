@@ -113,9 +113,11 @@ Rails.application.routes.draw do
   resources :customer_account_mergings, only: [:new, :create], module: :settings
   resources :charge_invoices, only: [:index, :edit, :update]
   resources :cash_on_hand_accounts, only: [:new, :create], module: :accounting
+
   namespace :store_front_module do
     resources :product_mergings, only: [:new, :create], module: :settings
     resources :purchase_orders, only: [:new, :index, :show], module: :orders
+    resources :sales_orders, only: [:index, :show], module: :orders
     resources :purchase_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items
     resources :sales_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items
     resources :purchase_order_processings, only: [:create], module: :orders
@@ -124,5 +126,8 @@ Rails.application.routes.draw do
   resources :voucher_amounts, only: [:destroy]
   resources :vouchers, only: [:index, :show] do
     resources :disbursements, only: [:new, :create], module: :vouchers
+  end
+  namespace :repair_services_module do
+    resources :service_payments, only: [:index, :show]
   end
 end

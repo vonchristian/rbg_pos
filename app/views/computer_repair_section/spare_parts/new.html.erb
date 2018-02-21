@@ -1,9 +1,9 @@
 
     <div class="row">
-      <div class="col-md-6">
-        <div class="box box-solid">
+      <div class="col-md-8">
+        <div class="box box-warning">
           <div class="box-header">
-                     <h4 class="box-title"><span class="icon-basket-loaded"></span> Store</h4>
+                     <h4 class="box-title"><span class="icon-basket-loaded"></span> Spare Parts</h4>
                                 <p class="category">Search for products</p>
                             </div>
 
@@ -13,47 +13,16 @@
                <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", autofocus: true, placeholder: "Search...", type: "search" %>
                <span class="input-group-btn">
                  <%= button_tag(type: 'submit', class: "btn") do %>
-                   <i class="icon-magnifier"></i>
+                   <i class="icon-magnifier"></i> Search
                  <% end %>
                </span>
              </div>
            <% end %>
 
-                <% if @stocks.any?  %>
-                <br>
-                  <% @stocks.each do |stock| %>
-                    <div class="row">
-                      <div class="col-md-2">
-                        <%= image_tag(stock.avatar.url(:medium), height: 50, width: 50, class: "img-square") %>
-                      </div>
-                      <div class="col-md-3">
-                        <%= stock.product_name %><br>
-                        <small><b><%= stock.barcode.try(:upcase) %></b></small><br>
-                        <span class="text-danger"><%= number_to_currency stock.retail_price %></span>
-                      </div>
-                      <div class="col-md-2">
-                        <%= stock.in_stock %><br>
-                        <small class="text-success">IN STOCK</small>
-                      </div>
-                      <div class="col-md-2">
-                      <%= simple_form_for [@work_order, @line_item], url: :computer_repair_section_work_order_spare_parts do |f| %>
-                        <%= f.input :quantity, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1 }, label: false, as: :string %>
-                        <%= f.input :unit_cost, input_html: { value: stock.retail_price, id: 'line_item_unit_cost' }, as: :hidden %>
-                        <%= f.input :stock_id, input_html: { value: stock.id }, as: :hidden %>
-                        <%= f.input :user_id, input_html: { value: current_user.id}, as: :hidden %>
-                      </div>
-                      <div class="col-md-2">
-                        <% if stock.in_stock > 0 %>
-                          <%= f.submit 'Add Item', class: "btn btn-primary btn-sm" %>
-                        <% elsif stock.in_stock <= 0 %>
-                          <span class="btn btn-xs btn-danger disabled"> Out of Stock </span>
-                        <% end %>
-                      <% end %>
-                      </div>
-                    </div>
-                  <br>
-                  <% end %>
-                <% else %>
+                 <br>
+       <% if params[:search].present? && @products.exists? %>
+       <%= render 'repair_services_module/work_order_line_items/searched_product_results' %>
+       <% else %>
                   <p class="text-danger"> Product not found. </p>
                 <% end %>
 
@@ -62,8 +31,8 @@
         </div>
 
 
-        <div class="col-md-6">
-       <div class="box box-solid">
+        <div class="col-md-4">
+       <div class="box box-warning">
           <div class="box-header">
 <%=link_to computer_repair_section_work_order_path(@work_order) do  %>
   <span class="btn btn-default"><i class="fa fa-chevron-left"></i> Back </span>

@@ -89,13 +89,15 @@
                 </div>
               </div>
               <hr>
-                  <%= f.input :customer_id, collection: Customer.all.map{ |a| [ a.full_name, a.id] } %>
+
+                  <%= f.input :customer_id, collection: Customer.all.map{ |a| [a.full_name, a.id] } %>
                   <%= f.input :cash_tendered, input_html: { id: 'cash_tendered', oninput: 'calculateOrderTotalCost()',  class: "input-lg" } %>
                   <%= f.input :discount, input_html: { id: 'discount_amount', oninput: 'calculateOrderTotalCost()', value: 0} %>
                   <%= f.input :order_change, readonly: true, input_html: { id: 'change', class: "input-lg"} %>
                   <%= f.input :reference_number %>
                   <%= f.input :total_cost, input_html: { id: 'total_cost', value: @cart.total_cost }, as: :hidden %>
                   <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+                  <%= f.input :cart_id, input_html: { value: @cart.id } %>
                   <%= f.submit "Save Order", class: "btn btn-lg btn-success btn-block" %>
                 </div>
               </div>
