@@ -13,7 +13,7 @@ module Suppliers
 
     private
     def create_voucher
-      voucher = find_supplier.vouchers.create(
+      voucher = find_supplier.vouchers.create!(
         date: date,
         description: description,
         reference_number: reference_number,

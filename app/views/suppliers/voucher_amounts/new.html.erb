@@ -1,27 +1,78 @@
-<%= simple_form_for @voucher_amount, url: :supplier_voucher_amounts do |f| %>
-  <%= f.input :account_id, collection: AccountingModule::Account.all.map{ |a| [ a.name, a.id] } %>
-  <%= f.input :amount %>
-  <%= f.input :amount_type, collection: Vouchers::VoucherAmount.amount_types.keys.to_a.map{ |a| [ a.titleize, a] } %>
-  <%= f.input :supplier_id, input_html: { value: @supplier.id } %>
-  <%= f.submit "Add", class: "btn btn-primary" %>
-<% end %>
-
-<% @supplier.temporary_voucher_amounts.each do |amount| %>
-  <%= amount.amount %>
-  <%= amount.account_name %>
-  <%= amount.amount_type %>
-  <%= link_to voucher_amount_path(amount), method: :delete do %>
-    <i class="fa fa-trash text-danger"></i>
-  <% end %>
-<% end %>
-
-<% if @supplier.temporary_voucher_amounts.any? %>
-  <%= simple_form_for @voucher, url: :supplier_vouchers do |f| %>
-    <%= f.input :reference_number %>
-    <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-    <%= f.input :description %>
-    <%= f.input :supplier_id, input_html: { value: @supplier.id } %>
-    <%= f.input :preparer_id, input_html: { value: current_user.id } %>
-    <%= f.submit "Create Voucher" %>
-  <% end %>
-<% end %>
+<div class="row">
+  <div class="col-md-8">
+    <div class="box box-default">
+      <div class="box-header">
+        <h3 class="box-title"> Voucher Details </h3>
+      </div>
+      <div class="box-body">
+        <%= simple_form_for @voucher_amount, url: :supplier_voucher_amounts do |f| %>
+          <div class="row">
+            <div class="col-md-4">
+              <%= f.input :account_id, label: false, placeholder: "Select Account", collection: AccountingModule::Account.all.map{ |a| [ a.name, a.id] } %>
+            </div>
+            <div class="col-md-3">
+              <%= f.input :amount, label: false, placeholder: "Amount" %>
+            </div>
+            <div class="col-md-3">
+              <%= f.input :amount_type, label: false, placeholder: "Type", collection: Vouchers::VoucherAmount.amount_types.keys.to_a.map{ |a| [ a.titleize, a] } %>
+            </div>
+            <div class="col-md-2">
+              <%= f.input :supplier_id, input_html: { value: @supplier.id }, as: :hidden %>
+              <%= f.submit "Add", class: "btn btn-primary pull-right" %>
+            </div>
+          </div>
+        <% end %>
+        <hr>
+        <div class="table table-responsive">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>Account</th>
+                <th>Amount</th>
+                <th>Type</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @supplier.temporary_voucher_amounts.each do |amount| %>
+                <tr>
+                  <td><%= amount.account_name %></td>
+                  <td><%= number_to_currency amount.amount %></td>
+                  <td><%= amount.amount_type %></td>
+                  <td>
+                    <%= link_to voucher_amount_path(amount), method: :delete do %>
+                      <i class="fa fa-trash text-danger"></i>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="box box-default">
+      <div class="box-header">
+        <h4 class="box-title"> Payee Details </h4>
+      </div>
+      <div class="box-body">
+        <h4><center><%= @supplier.business_name.try(:upcase) %></center></h4>
+        <hr>
+        <% if @supplier.temporary_voucher_amounts.any? %>
+          <%= simple_form_for @voucher, url: :supplier_vouchers do |f| %>
+            <%= f.input :reference_number %>
+            <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+            <%= f.input :description, as: :text %>
+            <%= f.input :supplier_id, input_html: { value: @supplier.id }, as: :hidden %>
+            <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
+            <div class="box-footer">
+              <%= f.submit "Create Voucher", class: "btn btn-primary pull-right" %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

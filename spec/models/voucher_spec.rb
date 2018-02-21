@@ -6,6 +6,7 @@ describe Voucher, type: :model do
     it { is_expected.to belong_to :preparer }
     it { is_expected.to belong_to :disburser }
     it { is_expected.to have_one :entry }
+    it { is_expected.to belong_to :commercial_document }
     it { is_expected.to have_many :voucher_amounts }
   end
   describe 'delegations' do

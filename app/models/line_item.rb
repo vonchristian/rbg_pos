@@ -1,5 +1,7 @@
 class LineItem < ApplicationRecord
   extend StoreFrontModule::QuantityBalanceFinder
+  include PgSearch
+  pg_search_scope :text_search, against: [:bar_code]
   has_one :sales_return
   belongs_to :cart, optional: true
   belongs_to :stock, optional: true
@@ -9,11 +11,12 @@ class LineItem < ApplicationRecord
   belongs_to :product, optional: true
   belongs_to :referenced_line_item, optional: true, class_name: "StoreFrontModule::LineItem"
   belongs_to :unit_of_measurement, class_name: "StoreFrontModule::UnitOfMeasurement"
-  delegate :barcode, :product_name, :product_unit, :supplier_business_name, :category_name, :stock_type, :retail_price, to: :stock
+  delegate   :product_unit, :supplier_business_name, :category_name, :stock_type, :retail_price, to: :stock
   delegate :name_and_barcode, to: :stock, prefix: true
-
-  validate :exceeds_available_stock?, on: :create
-  after_commit :set_total_cost, on: [:create, :update]
+  delegate :unit_code, :conversion_multiplier, to: :unit_of_measurement
+  delegate :name, to: :product
+  # validate :exceeds_available_stock?, on: :create
+  # after_commit :set_total_cost, on: [:create, :update]
   def search
   end
   def purchase_cost
@@ -50,6 +53,12 @@ class LineItem < ApplicationRecord
       order.destroy
     end
   end
+  def self.total
+    all.sum(&:converted_quantity)
+  end
+  def converted_quantity
+    quantity * conversion_multiplier
+  end
   private
   def exceeds_available_stock?
     errors[:base] << "Exceeded available stock" if quantity > stock.in_stock
@@ -58,10 +67,5 @@ class LineItem < ApplicationRecord
     self.total_cost = self.quantity * self.unit_cost + markup_amount
   end
   ######################
-  def self.total
-    all.sum(&:converted_quantity)
-  end
-  def converted_quantity
-    quantity * conversion_multiplier
-  end
+
 end

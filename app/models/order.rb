@@ -21,8 +21,6 @@ class Order < ApplicationRecord
 
   accepts_nested_attributes_for :payment
 
-  validates :customer_id, presence: true
-
   def self.cash
     all.select{|a| a.cash? }
   end

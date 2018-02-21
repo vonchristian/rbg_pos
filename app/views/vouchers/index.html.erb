@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-default">
+      <div class="box-header with-border">
+        <div class="row">
+          <div class="col-md-3">
+            <h3 class="box-title"> Vouchers Section </h3>
+          </div>
+          <div class="col-md-5">
+          </div>
+
+        </div>
+      </div>
+      <div class="box-body">
+        <div class="table table-responsive">
+          <table class="table table-responsive">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Payee</th>
+                <th>Description</th>
+                <th>Total </th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @vouchers.each do |voucher| %>
+                <tr>
+                  <td><%= voucher.date.strftime("%B %e, %Y") %></td>
+                  <td><%= voucher.payee_name %></td>
+                  <td><%= voucher.description %></td>
+                  <td><%= number_to_currency voucher.payable_amount %></td>
+                  <td><%= voucher.disbursement_status %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

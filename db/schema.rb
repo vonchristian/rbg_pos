@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180221014214) do
+ActiveRecord::Schema.define(version: 20180221041118) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -502,6 +502,9 @@ ActiveRecord::Schema.define(version: 20180221014214) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "reference_number"
+    t.string "commercial_document_type"
+    t.bigint "commercial_document_id"
+    t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_vouchers"
     t.index ["disburser_id"], name: "index_vouchers_on_disburser_id"
     t.index ["payee_type", "payee_id"], name: "index_vouchers_on_payee_type_and_payee_id"
     t.index ["preparer_id"], name: "index_vouchers_on_preparer_id"

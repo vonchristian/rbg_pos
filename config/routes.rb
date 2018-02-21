@@ -115,8 +115,11 @@ Rails.application.routes.draw do
   resources :cash_on_hand_accounts, only: [:new, :create], module: :accounting
   namespace :store_front_module do
     resources :product_mergings, only: [:new, :create], module: :settings
-    resources :purchase_orders, only: [:new, :index], module: :orders
-    resources :purchase_order_line_item_processings, only: [:create], module: :line_items
+    resources :purchase_orders, only: [:new, :index, :show], module: :orders
+    resources :purchase_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items
+    resources :sales_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items
+    resources :purchase_order_processings, only: [:create], module: :orders
+    resources :sales_order_processings, only: [:create], module: :orders
   end
   resources :voucher_amounts, only: [:destroy]
   resources :vouchers, only: [:index, :show] do

@@ -1,1 +1,56 @@
-<%= link_to 'New Purchase', new_store_front_module_purchase_order_path %>
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-default">
+      <div class="box-header with-border">
+        <div class="row">
+          <div class="col-md-3">
+            <h3 class="box-title"> Purchase Orders </h3>
+          </div>
+          <div class="col-md-5">
+          </div>
+          <div class="col-md-4">
+            <%= link_to 'New Purchase', new_store_front_module_purchase_order_line_item_processing_path, class: "btn btn-primary pull-right" %>
+          </div>
+        </div>
+      </div>
+      <div class="box-body">
+        <div class="table table-responsive">
+          <table class="table table-responsive">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Supplier</th>
+                <th>Items</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @purchase_orders.each do |purchase_order| %>
+                <tr>
+                  <td><%= purchase_order.date.strftime("%B %e, %Y") %></td>
+                  <td><%= purchase_order.supplier_name %></td>
+                  <td>
+                    <% purchase_order.purchase_order_line_items.each do |line_item| %>
+                      <div class="row">
+                        <div class="col-md-2">
+                          <%= line_item.quantity %> <%= line_item.unit_code %>
+                        </div>
+                        <div class="col-md-6">
+                          <%= line_item.name %><br>
+                          <small class="text-muted"><%= number_to_currency line_item.unit_cost %></small>
+                        </div>
+                        <div class="col-md-4">
+                          <%= number_to_currency line_item.total_cost %>
+                        </div>
+                      </div>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

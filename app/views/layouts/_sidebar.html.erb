@@ -22,6 +22,7 @@
         </span>
       </div>
     <% end %>
+
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
@@ -34,6 +35,10 @@
           <li class=<%= 'active' if current_page?(products_path) %> ><a href="/products"><i class="fa fa-cubes"></i> <span>Products</span></a></li>
           <li class=<%= 'active' if current_page?(stocks_path) %> ><a href="/stocks"><i class="fa fa-server"></i> <span> Stocks</span></a></li>
           <li class=<%= 'active' if current_page?(suppliers_path) %> ><a href="/suppliers"><i class="icon-people"></i> <span> &nbsp; Suppliers</span></a></li>
+          <li class=<%= 'active' if current_page?(store_front_module_purchase_orders_path) %> ><a href="/store_front_module/purchase_orders"><i class="icon-people"></i> <span> &nbsp; Purchases</span></a></li>
+          <li class=<%= 'active' if current_page?(vouchers_path) %> ><a href="/vouchers"><i class="fa fa-folder"></i> <span> Vouchers</span></a></li>
+
+
           <li class=<%= 'active' if current_page?(computer_repair_section_dashboard_index_path) %> ><a href="/computer_repair_section/dashboard"><i class="icon-grid"></i> <span> &nbsp; Repairs</span></a></li>
           <li class=<%= 'active' if current_page?(charge_invoices_path) %> ><a href="/charge_invoices"><i class="fa fa-book"></i> <span> &nbsp; Charge Invoices</span></a></li>
 

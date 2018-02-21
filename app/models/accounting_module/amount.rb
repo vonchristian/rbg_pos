@@ -6,5 +6,7 @@ module AccountingModule
     validates :type, :amount, :entry, :account, presence: true
     validates :amount, numericality: true
 
+    delegate :name, to: :account, prefix: true
+
   end
 end

@@ -26,6 +26,9 @@ class User < ApplicationRecord
   def full_name
   	"#{first_name} #{last_name}"
   end
+  def name
+    full_name
+  end
 
   def cash_on_hand_account_balance
     default_cash_on_hand_account.balance(recorder_id: self.id)

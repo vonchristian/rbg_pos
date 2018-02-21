@@ -1,12 +1,11 @@
 class StoreController < ApplicationController
 	def index
-    if params[:line_item_search].present?
-		  @stocks = Stock.text_search(params[:line_item_search]).all
-    else
-      @stocks = Stock.text_search(params[:search]).all
+    if params[:search].present?
+		  @products = Product.text_search(params[:search]).all
+      @purchase_order_line_items = StoreFrontModule::LineItems::PurchaseOrderLineItem.text_search(params[:search]).all
     end
-		@line_item = LineItem.new
+		@sales_order_line_item = StoreFrontModule::LineItems::SalesOrderLineItemProcessing.new
 		@cart = current_cart
-		@order = Order.new
+		@sales_order = StoreFrontModule::Orders::SalesOrderProcessing.new
 	end
 end

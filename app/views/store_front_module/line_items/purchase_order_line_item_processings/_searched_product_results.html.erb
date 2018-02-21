@@ -17,11 +17,11 @@
                 </tr>
                     <%= simple_form_for @purchase_order_line_item, url: :store_front_module_purchase_order_line_item_processings do |f| %>
                       <div class="row">
-                        <div class="col-md-1">
+                        <div class="col-md-2">
                         <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, autofocus: true %>
                       </div>
                       <div class="col-md-2">
-                        <%= f.input :unit_of_measurement_id, label: 'Unit', input_html: { value: product.base_measurement }, collection: product.unit_of_measurements.all.map{|a| [a.unit_code, a.id] } %>
+                        <%= f.input :unit_of_measurement_id, label: 'Unit', collection: product.unit_of_measurements.all.map{|a| [a.unit_code, a.id] }, selected: product.base_measurement %>
                       </div>
                       <div class="col-md-2">
                         <%= f.input :unit_cost %>
@@ -29,8 +29,8 @@
                       <div class="col-md-2">
                         <%= f.input :total_cost %>
                       </div>
-                      <div class="col-md-3">
-                        <%= f.input :barcode %>
+                      <div class="col-md-2">
+                        <%= f.input :bar_code %>
                       </div>
                       <div class="col-md-2">
                         <br>

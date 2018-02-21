@@ -9,16 +9,18 @@
           <th>Reference Number</th>
           <th>Description</th>
           <th>Prepared By</th>
-          <th>Disbursed By</th>
+          <th>Payable Amount</th>
+          <th>Disbursement</th>
         </tr>
       </thead>
       <tbody>
         <% @vouchers.each do |voucher| %>
           <tr>
-            <td><%= voucher.date %></td>
+            <td><%= voucher.date.strftime("%B %e, %Y") %></td>
             <td><%= voucher.reference_number %></td>
             <td><%= voucher.description %></td>
             <td><%= voucher.preparer_name %></td>
+            <td><%= number_to_currency voucher.payable_amount %></td>
             <td>
               <% if !voucher.disbursed? %>
                 <%= link_to 'Disburse', new_voucher_disbursement_path(voucher), class: "btn btn-primary btm-sm" %>

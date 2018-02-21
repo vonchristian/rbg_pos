@@ -110,6 +110,9 @@ class Product < ApplicationRecord
     end
   end
   ################################
+  def available_quantity
+    balance
+  end
   def balance(options={})
     purchases_balance(options) -
     sales_balance(options) -

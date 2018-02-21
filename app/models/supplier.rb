@@ -9,6 +9,9 @@ class Supplier < ApplicationRecord
   has_many :purchase_orders, class_name: "StoreFrontModule::Orders::PurchaseOrder", as: :commercial_document
   has_many :vouchers, as: :payee
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", as: :commercial_document
+  def name
+    business_name
+  end
   def accounts_payable
 		entries.credit_stock.all.map{|a| a.debit_amounts.pluck(:amount).sum }.sum
 	end

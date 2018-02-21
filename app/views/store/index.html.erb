@@ -1,7 +1,7 @@
 
 <div class="row">
   <div class="col-md-7">
-    <div class="box box-solid">
+    <div class="box box-primary">
       <div class="box-header with-border">
         <div class="row">
           <div class="col-md-6">
@@ -25,55 +25,47 @@
          </div>
        <% end %>
        <br>
-                <% if @stocks.any?  %>
-                  <% @stocks.each do |stock| %>
-                    <div class="row">
-                      <div class="col-md-2">
-                        <%= image_tag(stock.avatar.url(:medium), height: 50, width: 50, class: "img-square") %>
-                      </div>
-                      <div class="col-md-3">
-                        <%= stock.product_name %><br>
-                        <small><b><%= stock.barcode.try(:upcase) %></b></small><br>
-                        <span class="text-danger"><%= number_to_currency stock.retail_price %></span>
-                      </div>
-                      <div class="col-md-2">
-                        <%= stock.in_stock %><br>
-                        <small class="text-success">IN STOCK</small>
-                      </div>
-                      <div class="col-md-2">
-                      <%= simple_form_for @line_item do |f| %>
-                        <%= f.input :quantity, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1 }, label: false, as: :string %>
-                        <%= f.input :unit_cost, input_html: { value: stock.retail_price, id: 'line_item_unit_cost' }, as: :hidden %>
-  	                    <%= f.input :stock_id, input_html: { value: stock.id }, as: :hidden %>
-                        <%= f.input :search, input_html: { value: params[:search] }, as: :hidden %>
-  	                  </div>
-  	                  <div class="col-md-2">
-                        <% if stock.in_stock > 0  %>
-                          <%= f.submit 'Add Item', class: "btn btn-primary btn-sm" %>
-                        <% elsif stock.in_stock <= 0 %>
-                          <span class="btn btn-xs btn-danger disabled"> Out of Stock </span>
-                        <% end %>
-                      <% end %>
-                      </div>
-                    </div>
-                  <br>
-                  <% end %>
-
-                <% else %>
-                  <p class="text-danger"> Product not found. </p>
-                <% end %>
-
-            </div>
-          </div>
+       <% if params[:search].present? && @products.exists? %>
+       <%= render 'store/searched_products' %>
+       <% end %>
+       <div class="table table-responsive">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>Quantity</th>
+              <th>Item</th>
+              <th>Unit Cost</th>
+              <th>Total Cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @cart.line_items.each do |line_item| %>
+              <tr>
+                <td><%= line_item.quantity %></td>
+                <td><%=line_item.name %></td>
+                <td><%= number_to_currency line_item.unit_cost %></td>
+                <td><%= number_to_currency line_item.total_cost %></td>
+              </tr>
+            <% end %>
+            <tr>
+              <td><b>TOTAL</b></td>
+              <td></td>
+              <td></td>
+              <td><%= number_to_currency @cart.total_cost %></td>
+            </tr>
+           </tbody>
+          </table>
         </div>
+      </div>
+    </div>
+  </div>
         <% if @cart.line_items.any? %>
         <div class="col-md-5">
-          <div class="box box-solid">
+          <div class="box box-primary">
             <div class="box-header">
               <div class="row">
                 <div class="col-md-9">
                   <h4 class="title"><span class="icon-basket-loaded"></span> Cart</h4>
-                  <p class="category"><span class="badge"><%= @cart.line_items.count %> </span> line items in cart</p>
                 </div>
                 <div class="col-md-3">
                   <span class="pull-right"><%= link_to 'Empty Cart', cart_path(@cart), method: :delete, class: "btn btn-danger btn-sm" %>
@@ -81,36 +73,33 @@
                 </div>
               </div>
             </div>
-            <hr>
             <div class="box-body">
-              <% @cart.line_items.each do |line_item| %>
-                <div class="row">
-                  <div class="col-md-2">
-                    <%= line_item.quantity %>
-                  </div>
-                  <div class="col-md-5">
-                    <%=line_item.product_name %><br>
-                    <span class="text-danger"><%= number_to_currency line_item.unit_cost %></span><br>
 
-                  </div>
-                  <div class="col-md-3">
-                    <span class="pull-right"><%= number_to_currency line_item.total_cost %></span>
-                  </div>
-                </div>
-                <hr>
-              <% end %>
+              <%= simple_form_for @sales_order, url: :store_front_module_sales_order_processings do |f| %>
               <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-10 col-md-offset-1">
+                  <div class="row">
+                <div class="col-md-6">
                   <h4 class="title"> Total </h4>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-6">
                   <h4 class="title pull-right">
                     <%= number_to_currency @cart.total_cost %>
                   </h4>
                 </div>
               </div>
-              <br>
-              <%= link_to 'Checkout', new_order_path, class: "btn-lg btn btn-success btn-block active" %>
+              <hr>
+                  <%= f.input :customer_id, collection: Customer.all.map{ |a| [ a.full_name, a.id] } %>
+                  <%= f.input :cash_tendered, input_html: { id: 'cash_tendered', oninput: 'calculateOrderTotalCost()',  class: "input-lg" } %>
+                  <%= f.input :discount, input_html: { id: 'discount_amount', oninput: 'calculateOrderTotalCost()', value: 0} %>
+                  <%= f.input :order_change, readonly: true, input_html: { id: 'change', class: "input-lg"} %>
+                  <%= f.input :reference_number %>
+                  <%= f.input :total_cost, input_html: { id: 'total_cost', value: @cart.total_cost }, as: :hidden %>
+                  <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+                  <%= f.submit "Save Order", class: "btn btn-lg btn-success btn-block" %>
+                </div>
+              </div>
+              <% end %>
               <br>
             </div>
         <% end %>
@@ -118,3 +107,10 @@
     </div>
 </div>
 
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#store_front_module_orders_sales_order_processing_customer_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>
