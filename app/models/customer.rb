@@ -38,9 +38,15 @@ class Customer < ApplicationRecord
 		orders.count
 	end
 	def accounts_receivable
-    entries.credit_order.map{|a| a.debit_amounts.distinct.pluck(:amount).sum}.sum +
-    work_orders.sum(&:accounts_receivable)
+    credit_orders_receivables +
+    work_orders_accounts_receivables
 	end
+  def credit_orders_receivables
+    StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account.balance(commercial_document_id: self.id)
+  end
+  def work_orders_accounts_receivables
+    work_orders.sum(&:accounts_receivable)
+  end
   def payments_total
     payments.customer_credit_payment.map{|a| a.debit_amounts.distinct.pluck(:amount).sum}.sum +
     work_orders.payments_total

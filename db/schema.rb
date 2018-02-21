@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180210033103) do
+ActiveRecord::Schema.define(version: 20180221014214) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -164,10 +164,15 @@ ActiveRecord::Schema.define(version: 20180210033103) do
     t.bigint "referenced_line_item_id"
     t.bigint "product_id"
     t.bigint "unit_of_measurement_id"
+    t.bigint "sales_order_line_item_id"
+    t.bigint "purchase_order_line_item_id"
+    t.string "bar_code"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
     t.index ["order_id"], name: "index_line_items_on_order_id"
     t.index ["product_id"], name: "index_line_items_on_product_id"
+    t.index ["purchase_order_line_item_id"], name: "index_line_items_on_purchase_order_line_item_id"
     t.index ["referenced_line_item_id"], name: "index_line_items_on_referenced_line_item_id"
+    t.index ["sales_order_line_item_id"], name: "index_line_items_on_sales_order_line_item_id"
     t.index ["stock_id"], name: "index_line_items_on_stock_id"
     t.index ["stock_transfer_id"], name: "index_line_items_on_stock_transfer_id"
     t.index ["type"], name: "index_line_items_on_type"
@@ -375,6 +380,15 @@ ActiveRecord::Schema.define(version: 20180210033103) do
     t.index ["supplier_id"], name: "index_stocks_on_supplier_id"
   end
 
+  create_table "store_front_configs", force: :cascade do |t|
+    t.bigint "accounts_receivable_account_id"
+    t.bigint "store_front_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["accounts_receivable_account_id"], name: "index_store_front_configs_on_accounts_receivable_account_id"
+    t.index ["store_front_id"], name: "index_store_front_configs_on_store_front_id"
+  end
+
   create_table "store_fronts", force: :cascade do |t|
     t.bigint "business_id"
     t.bigint "merchandise_inventory_account_id"
@@ -460,6 +474,41 @@ ActiveRecord::Schema.define(version: 20180210033103) do
     t.index ["section_id"], name: "index_users_on_section_id"
   end
 
+  create_table "voucher_amounts", force: :cascade do |t|
+    t.decimal "amount"
+    t.bigint "account_id"
+    t.bigint "voucher_id"
+    t.string "commercial_document_type"
+    t.bigint "commercial_document_id"
+    t.string "description"
+    t.integer "amount_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_voucher_amounts_on_account_id"
+    t.index ["amount_type"], name: "index_voucher_amounts_on_amount_type"
+    t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_voucher_amounts"
+    t.index ["voucher_id"], name: "index_voucher_amounts_on_voucher_id"
+  end
+
+  create_table "vouchers", force: :cascade do |t|
+    t.datetime "date"
+    t.string "payee_type"
+    t.bigint "payee_id"
+    t.string "description"
+    t.decimal "payable_amount"
+    t.string "type"
+    t.bigint "preparer_id"
+    t.bigint "disburser_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "reference_number"
+    t.index ["disburser_id"], name: "index_vouchers_on_disburser_id"
+    t.index ["payee_type", "payee_id"], name: "index_vouchers_on_payee_type_and_payee_id"
+    t.index ["preparer_id"], name: "index_vouchers_on_preparer_id"
+    t.index ["reference_number"], name: "index_vouchers_on_reference_number", unique: true
+    t.index ["type"], name: "index_vouchers_on_type"
+  end
+
   create_table "warranties", force: :cascade do |t|
     t.string "barcode"
     t.string "name"
@@ -534,7 +583,9 @@ ActiveRecord::Schema.define(version: 20180210033103) do
   add_foreign_key "job_orders", "customers"
   add_foreign_key "job_orders", "units"
   add_foreign_key "line_items", "carts"
+  add_foreign_key "line_items", "line_items", column: "purchase_order_line_item_id"
   add_foreign_key "line_items", "line_items", column: "referenced_line_item_id"
+  add_foreign_key "line_items", "line_items", column: "sales_order_line_item_id"
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
   add_foreign_key "line_items", "stock_transfers"
@@ -562,6 +613,8 @@ ActiveRecord::Schema.define(version: 20180210033103) do
   add_foreign_key "stocks", "registries"
   add_foreign_key "stocks", "suppliers"
   add_foreign_key "stocks", "users", column: "employee_id"
+  add_foreign_key "store_front_configs", "accounts", column: "accounts_receivable_account_id"
+  add_foreign_key "store_front_configs", "store_fronts"
   add_foreign_key "store_fronts", "accounts", column: "merchandise_inventory_account_id"
   add_foreign_key "store_fronts", "businesses"
   add_foreign_key "technician_work_orders", "users", column: "technician_id"
@@ -571,6 +624,10 @@ ActiveRecord::Schema.define(version: 20180210033103) do
   add_foreign_key "users", "accounts", column: "cash_on_hand_account_id"
   add_foreign_key "users", "branches"
   add_foreign_key "users", "sections"
+  add_foreign_key "voucher_amounts", "accounts"
+  add_foreign_key "voucher_amounts", "vouchers"
+  add_foreign_key "vouchers", "users", column: "disburser_id"
+  add_foreign_key "vouchers", "users", column: "preparer_id"
   add_foreign_key "warranties", "customers"
   add_foreign_key "warranties", "sales_returns"
   add_foreign_key "warranties", "suppliers"

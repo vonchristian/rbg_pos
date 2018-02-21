@@ -60,7 +60,7 @@ group :development, :test do
 end
 
 group :development do
-
+  gem 'pry-rails'
   gem 'spring'
   gem 'spring-watcher-listen'
   gem 'bullet'

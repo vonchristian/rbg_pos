@@ -64,6 +64,10 @@ Rails.application.routes.draw do
     resources :merge_accounts, only: [:new, :create]
   end
   resources :suppliers, only: [:index, :show] do
+    resources :purchase_orders, only: [:index], module: :suppliers
+    resources :account, only: [:index], module: :suppliers
+    resources :voucher_amounts, only: [:new, :create], module: :suppliers
+    resources :vouchers, only: [:index, :create], module: :suppliers
     resources :payments, only: [:new, :create], module: :suppliers
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
@@ -114,5 +118,8 @@ Rails.application.routes.draw do
     resources :purchase_orders, only: [:new, :index], module: :orders
     resources :purchase_order_line_item_processings, only: [:create], module: :line_items
   end
-
+  resources :voucher_amounts, only: [:destroy]
+  resources :vouchers, only: [:index, :show] do
+    resources :disbursements, only: [:new, :create], module: :vouchers
+  end
 end

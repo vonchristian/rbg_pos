@@ -2,7 +2,7 @@ module ComputerRepairSection
   class SparePartsController < ApplicationController
     def new
       @work_order = WorkOrder.find(params[:work_order_id])
-      @spare_part = @work_order.spare_parts.build
+      @spare_part = StoreFrontModule::LineItems::WorkOrderLineItemProcessing.new
       @stocks = Stock.text_search(params[:search])
     @line_item = LineItem.new
     @cart = current_cart
@@ -10,7 +10,7 @@ module ComputerRepairSection
     end
     def create
       @work_order = WorkOrder.find(params[:work_order_id])
-      @spare_part = @work_order.spare_parts.create(spare_part_params)
+      @spare_part = StoreFrontModule::LineItems::WorkOrderLineItemProcessing.new(line_item_params)
       if @spare_part.save
         @work_order.create_order(@spare_part)
         @work_order.spare_part_entry(@spare_part)
@@ -27,7 +27,7 @@ module ComputerRepairSection
   end
 
     private
-    def spare_part_params
+    def line_item_params
       params.require(:line_item).permit(:stock_id, :unit_cost, :total_cost, :quantity, :markup_amount, :user_id)
     end
   end
