@@ -1,5 +1,5 @@
 module RepairServicesModule
-    class WorkOrderLineItemProcessing
+    class RepairServiceOrderLineItemProcessing
      include ActiveModel::Model
       attr_accessor :unit_of_measurement_id,
                     :quantity,
@@ -9,13 +9,16 @@ module RepairServicesModule
                     :unit_cost,
                     :total_cost,
                     :bar_code,
-                    :adjustment
+                    :work_order_id
       validates :quantity, numericality: { greater_than: 0.1 }
       validate :quantity_is_less_than_or_equal_to_available_quantity?
       def process!
         ActiveRecord::Base.transaction do
           process_sales_order_line_item
         end
+      end
+      def find_work_order
+        WorkOrder.find_by_id(work_order_id)
       end
 
       private
@@ -33,7 +36,8 @@ module RepairServicesModule
             unit_cost:                selling_cost,
             total_cost:               set_total_cost,
             unit_of_measurement:      find_unit_of_measurement,
-            product_id:               product_id)
+            product_id:               product_id,
+            commercial_document:      find_work_order)
 
         requested_quantity = converted_quantity
 
@@ -102,11 +106,13 @@ module RepairServicesModule
       def find_product
         Product.find_by_id(product_id)
       end
+      def find_work_order
+        WorkOrder.find_by_id(work_order_id)
+      end
 
       def find_purchase_order_line_item
         StoreFrontModule::LineItems::PurchaseOrderLineItem.find_by_id(purchase_order_line_item_id)
       end
-
       def available_quantity
         if product_id.present? && barcode.blank?
           find_product.available_quantity

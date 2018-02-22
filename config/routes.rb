@@ -128,6 +128,12 @@ Rails.application.routes.draw do
     resources :disbursements, only: [:new, :create], module: :vouchers
   end
   namespace :repair_services_module do
+    resources :work_orders, only: [:show] do
+      resources :service_charge_processings, only: [:new, :create]
+      resources :payment_processings, only: [:new, :create]
+      resources :repair_service_order_line_item_processings, only: [:new, :create]
+      resources :repair_service_order_processings, only: [:new, :create]
+    end
     resources :service_payments, only: [:index, :show]
   end
 end

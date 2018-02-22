@@ -3,6 +3,7 @@ class LineItem < ApplicationRecord
   include PgSearch
   pg_search_scope :text_search, against: [:bar_code]
   has_one :sales_return
+  belongs_to :commercial_document, polymorphic: true, optional: true
   belongs_to :cart, optional: true
   belongs_to :stock, optional: true
   belongs_to :order, optional: true
@@ -17,6 +18,10 @@ class LineItem < ApplicationRecord
   delegate :name, to: :product
   # validate :exceeds_available_stock?, on: :create
   # after_commit :set_total_cost, on: [:create, :update]
+
+  def date
+    order.date
+  end
   def search
   end
   def product_name

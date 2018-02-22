@@ -2,6 +2,7 @@ class Customer < ApplicationRecord
 	include PgSearch
 	pg_search_scope :text_search, against: [:first_name, :last_name, :contact_number, :address]
 	has_many :orders
+  has_many :repair_service_orders, class_name: "RepairServicesModule::RepairServiceOrder", as: :commercial_document
 	has_many :entries, through: :orders
   has_many :payments, as: :commercial_document, class_name: "AccountingModule::Entry"
 	has_many :line_items, through: :orders

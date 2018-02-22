@@ -5,16 +5,15 @@
       <div class="box-header with-border">
         <div class="row">
           <div class="col-md-6">
-            <h4 class="title"><span class="icon-basket-loaded"></span> Store</h4>
-            <p class="category">Search for products to add to cart</p>
+            <h4 class="title"><span class="icon-basket-loaded"></span> Repair Services Section (Spare Parts)</h4>
+            <p class="category">Search for products to add to repair service</p>
           </div>
           <div class="col-md-6">
-            <%=link_to 'New Other Sales', new_other_sale_path, class: "btn btn-primary btn-sm pull-right" %>
           </div>
         </div>
       </div>
       <div class="box-body">
-      <%=form_tag store_index_path, method: :get, id: "search-form" do %>
+      <%=form_tag new_repair_services_module_work_order_repair_service_order_line_item_processing_path(@work_order), method: :get, id: "search-form" do %>
          <div class="input-group">
            <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", autofocus: true, placeholder: "Search...", type: "search" %>
            <span class="input-group-btn">
@@ -26,7 +25,7 @@
        <% end %>
        <br>
        <% if params[:search].present? && @products.exists? %>
-       <%= render 'repair_services_module/work_order_line_items/searched_product_results' %>
+       <%= render 'repair_services_module/repair_service_order_line_item_processings/searched_product_results' %>
        <% end %>
        <div class="table table-responsive">
         <table class="table table-hover table-striped">
@@ -65,7 +64,7 @@
             <div class="box-header">
               <div class="row">
                 <div class="col-md-9">
-                  <h4 class="title"><span class="icon-basket-loaded"></span> Cart</h4>
+                  <h4 class="title"><span class="icon-basket-loaded"></span> Orders</h4>
                 </div>
                 <div class="col-md-3">
                   <span class="pull-right"><%= link_to 'Empty Cart', cart_path(@cart), method: :delete, class: "btn btn-danger btn-sm" %>
@@ -75,7 +74,10 @@
             </div>
             <div class="box-body">
 
-              <%= simple_form_for @sales_order, url: :store_front_module_sales_order_processings do |f| %>
+              <%= simple_form_for [@work_order, @repair_service_order], url: :repair_services_module_work_order_repair_service_order_processings do |f| %>
+              <p class="text-muted"> Customer </p>
+                <h4><%= @work_order.customer_name %></h4>
+                <hr>
               <div class="row">
                 <div class="col-md-10 col-md-offset-1">
                   <div class="row">
@@ -90,14 +92,10 @@
               </div>
               <hr>
 
-                  <%= f.input :customer_id, collection: Customer.all.map{ |a| [a.full_name, a.id] } %>
-                  <%= f.input :cash_tendered, input_html: { id: 'cash_tendered', oninput: 'calculateOrderTotalCost()',  class: "input-lg" } %>
-                  <%= f.input :discount, input_html: { id: 'discount_amount', oninput: 'calculateOrderTotalCost()', value: 0} %>
-                  <%= f.input :order_change, readonly: true, input_html: { id: 'change', class: "input-lg"} %>
-                  <%= f.input :reference_number %>
-                  <%= f.input :total_cost, input_html: { id: 'total_cost', value: @cart.total_cost }, as: :hidden %>
+                  <%= f.input :customer_id, input_html: { value: @work_order.customer_id }, as: :hidden %>
+                  <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
                   <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-                  <%= f.input :cart_id, input_html: { value: @cart.id } %>
+                  <%= f.input :work_order_id, input_html: { value: @work_order.id }, as: :hidden %>''
                   <%= f.submit "Save Order", class: "btn btn-lg btn-success btn-block" %>
                 </div>
               </div>

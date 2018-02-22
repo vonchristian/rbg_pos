@@ -11,5 +11,7 @@ module StoreFrontModule
     def self.default_merchandise_inventory_account
       AccountingModule::Asset.find_by(name: "Merchandise Inventory")
     end
+    def self.default_accounts_receivable_account
+    end
   end
 end

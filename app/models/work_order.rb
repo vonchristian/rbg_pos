@@ -15,7 +15,7 @@ class WorkOrder < ApplicationRecord
   has_many :work_order_updates, as: :updateable, class_name: "Post", dependent: :destroy
   has_many :work_order_service_charges, dependent: :destroy
   has_many :service_charges, through: :work_order_service_charges
-  has_many :spare_parts, class_name: "LineItem", foreign_key: 'work_order_id', dependent: :destroy
+  has_many :spare_parts, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem", as: :commercial_document
   has_many :accessories, dependent: :destroy
   has_many :work_order_line_items, class_name: "StoreFrontModule::LineItems::WorkOrderLineItem"
   enum status: [:received, :work_in_progress, :done, :released]
@@ -82,20 +82,19 @@ class WorkOrder < ApplicationRecord
     spare_parts + service_charges
   end
   def accounts_receivable_total
-    AccountingModule::Account.find_by_name('Accounts Receivables Trade - Current').debits_balance(commercial_document_id: self.id)
-
+    RepairServicesModule::RepairServicesFrontConfig.default_accounts_receivable_account.debits_balance(commercial_document_id: self.id)
   end
   def payments
-    AccountingModule::Account.find_by_name('Accounts Receivables Trade - Current').credit_balance(commercial_document_id: self.id)
+    RepairServicesModule::RepairServicesFrontConfig.default_accounts_receivable_account.credits_balance(commercial_document_id: self.id)
   end
 
   def payments_total
-    AccountingModule::Account.find_by_name('Accounts Receivables Trade - Current').credits_balance(commercial_document_id: self.id)
+    RepairServicesModule::RepairServicesFrontConfig.default_accounts_receivable_account.credits_balance(commercial_document_id: self.id)
   end
 
 
   def balance_total
-    AccountingModule::Account.find_by_name('Accounts Receivables Trade - Current').balance(commercial_document_id: self.id)
+    RepairServicesModule::RepairServicesFrontConfig.default_accounts_receivable_account.balance(commercial_document_id: self.id)
   end
 
   def updates_content

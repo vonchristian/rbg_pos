@@ -6,5 +6,9 @@ module RepairServicesModule
     def self.default_accounts_receivable_account
       AccountingModule::Asset.find_by(name: "Accounts Receivables Trade - Current (Repair Services)")
     end
+
+    def self.default_services_revenue_account
+      AccountingModule::Revenue.find_by(name: 'Service Fees')
+    end
   end
 end

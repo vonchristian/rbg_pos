@@ -180,7 +180,7 @@
                 </div>
                 <div class="col-md-4">
                   <% if !@work_order.released? %>
-                    <%= link_to 'Add Charges', new_computer_repair_section_work_order_service_charge_path(@work_order) %>
+                    <%= link_to 'Add Charges', new_repair_services_module_work_order_service_charge_processing_path(@work_order) %>
                   <% end %>
                 </div>
               </div>
@@ -205,7 +205,7 @@
                 </div>
                 <div class="col-md-4">
                   <% if !@work_order.released? %>
-                    <%=link_to 'Add Parts', new_computer_repair_section_work_order_spare_part_path(@work_order) %>
+                    <%=link_to 'Add Parts', new_repair_services_module_work_order_repair_service_order_line_item_processing_path(@work_order) %>
                   <% end %>
                 </div>
               </div>
@@ -218,7 +218,8 @@
                     <%= spare_part.quantity.to_i %>
                   </div>
                   <div class="col-md-7 col-xs-6">
-                    <%= spare_part.product_name %>
+                    <%= spare_part.product_name %><br>
+                    <small class="text-muted"><%= spare_part.date.strftime("%B %e, %Y") %></small>
                   </div>
                   <div class="col-md-3 col-xs-5">
                     <span class="pull-right"><%= number_to_currency spare_part.total_cost %></span>
@@ -248,7 +249,7 @@
                 </div>
                 <div class="col-md-4">
                   <% if current_user.proprietor? || current_user.sales_clerk? %>
-                    <%=link_to 'New Payment / Advance Payment', new_computer_repair_section_work_order_payment_path(@work_order) %>
+                    <%=link_to 'New Payment / Advance Payment', new_repair_services_module_work_order_payment_processing_path(@work_order) %>
                   <% end %>
                 </div>
               </div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180221122909) do
+ActiveRecord::Schema.define(version: 20180222005854) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -177,7 +177,10 @@ ActiveRecord::Schema.define(version: 20180221122909) do
     t.bigint "sales_order_line_item_id"
     t.bigint "purchase_order_line_item_id"
     t.string "bar_code"
+    t.string "commercial_document_type"
+    t.bigint "commercial_document_id"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
+    t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_line_items"
     t.index ["order_id"], name: "index_line_items_on_order_id"
     t.index ["product_id"], name: "index_line_items_on_product_id"
     t.index ["purchase_order_line_item_id"], name: "index_line_items_on_purchase_order_line_item_id"
