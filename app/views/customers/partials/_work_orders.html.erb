@@ -12,6 +12,8 @@
             <th>Reported Problem</th>
             <th>Status</th>
             <th>Total Cost</th>
+            <th>Balance</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -22,8 +24,10 @@
               <td><%= link_to work_order.product_unit.try(:description), computer_repair_section_work_order_path(work_order) %></td>
               <td><%= work_order.reported_problem %></td>
               <td><%= work_order.status %></td>
-              <td><%= number_to_currency work_order.total_charges_cost %>
-                <% if current_user.default_cash_on_hand_account.present? %>
+              <td><%= number_to_currency work_order.accounts_receivable_total %></td>
+              <td><%= number_to_currency work_order.balance_total %></td>
+              <td>
+                <% if current_user.default_cash_on_hand_account.present? && work_order.balance_total > 0 %>
                 <%= link_to 'New Payment', new_computer_repair_section_work_order_payment_path(work_order) %>
                 <% end %>
               </td>

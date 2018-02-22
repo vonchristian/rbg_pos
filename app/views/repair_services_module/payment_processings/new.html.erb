@@ -1,11 +1,25 @@
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <div class="box box-default">
+      <div class="box-header">
+        <h4 class="box-title"> Payment Details </h4>
+      </div>
+      <div class="box-body">
 <%= simple_form_for @payment, url: :repair_services_module_work_order_payment_processings do |f| %>
-  <%= f.error_notification %>
-  <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-  <%= f.input :description %>
-  <%= f.input :amount, as: :string %>
-  <%= f.input :customer_id, input_html: { value: @work_order.customer_id } %>
-  <%= f.input :employee_id, input_html: { value: current_user.id } %>
-  <%= f.input :work_order_id, input_html: { value: @work_order.id } %>
-
-  <%= f.submit "Save Payment" %>
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <%= f.error_notification %>
+      <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+      <%= f.input :description %>
+      <%= f.input :amount, as: :string %>
+      <%= f.input :expense_amount, as: :string, label: "Discount/Tax" %>
+      <%= f.input :expense_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }  %>
+      <%= f.input :customer_id, input_html: { value: @work_order.customer_id }, as: :hidden %>
+      <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+      <%= f.input :work_order_id, input_html: { value: @work_order.id }, as: :hidden %>
+      <div class="box-footer">
+        <%= f.submit "Save Payment", class: "btn btn-primary pull-right" %>
+      </div>
+    </div>
+  </div>
 <% end %>

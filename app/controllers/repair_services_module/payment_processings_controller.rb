@@ -16,7 +16,7 @@ module RepairServicesModule
     end
     private
     def payment_params
-      params.require(:repair_services_module_payment_processing).permit(:description, :amount, :date, :employee_id, :customer_id, :work_order_id)
+      params.require(:repair_services_module_payment_processing).permit(:description, :amount, :date, :employee_id, :customer_id, :work_order_id, :expense_amount, :expense_account_id)
     end
   end
 end

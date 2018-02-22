@@ -10,5 +10,8 @@ module RepairServicesModule
     def self.default_services_revenue_account
       AccountingModule::Revenue.find_by(name: 'Service Fees')
     end
+    def self.default_discount_account
+      AccountingModule::Revenue.find_by(name: "Sales Discounts")
+    end
   end
 end

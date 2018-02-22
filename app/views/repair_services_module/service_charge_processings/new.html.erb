@@ -5,17 +5,34 @@
         <h4 class="box-title"> Service Charge Details </h4>
       </div>
       <div class="box-body">
+        <% @work_order.service_charges.each do |charge| %>
+          <div class="row">
+            <div class="col-md-6 col-md-offset-1">
+              <%= charge.description %>
+            </div>
+            <div class="col-md-4">
+              <%= number_to_currency charge.amount %>
+            </div>
+          </div>
+          <br>
+        <% end %>
+        <hr>
         <%=simple_form_for [@work_order, @service_charge], url: :repair_services_module_work_order_service_charge_processings do |f| %>
-          <%= f.error_notification %>
-          <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-          <%= f.input :description %>
-          <%= f.input :amount %>
-          <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-          <%= f.input :work_order_id, input_html: { value: @work_order.id }, as: :hidden %>
-          <%= f.input :customer_id, input_html: { value: @work_order.customer_id }, as: :hidden %>
+          <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+              <%= f.error_notification %>
+              <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+              <%= f.input :description %>
+              <%= f.input :amount %>
+              <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+              <%= f.input :work_order_id, input_html: { value: @work_order.id }, as: :hidden %>
+              <%= f.input :customer_id, input_html: { value: @work_order.customer_id }, as: :hidden %>
 
-          <div class="box-footer">
-            <%= f.submit "Create Charge", class: "btn btn-primary pull-right" %>
+              <div class="box-footer">
+                <%= f.submit "Create Charge", class: "btn btn-primary pull-right" %>
+                <%= link_to "Back to Work Order", computer_repair_section_work_order_path(@work_order), class: "btn btn-default pull-left `" %>
+              </div>
+            </div>
           </div>
         <% end %>
       </div>

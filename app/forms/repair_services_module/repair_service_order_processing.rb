@@ -22,7 +22,7 @@ module RepairServicesModule
       create_entry(order)
     end
     def create_entry(order)
-        accounts_receivable = RepairServicesModule::RepairServicesFrontConfig.default_accounts_receivable_account
+        accounts_receivable = StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account
         cost_of_goods_sold = StoreFrontModule::StoreFrontConfig.default_cost_of_goods_sold_account
         sales = StoreFrontModule::StoreFrontConfig.default_sales_account
         merchandise_inventory = StoreFrontModule::StoreFrontConfig.default_merchandise_inventory_account

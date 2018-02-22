@@ -45,7 +45,7 @@
             </tr>
           <% end %>
           <% @customer.work_orders.each do |work_order| %>
-          <% work_order.payments.each do |payment| %>
+          <% work_order.payment_entries.each do |payment| %>
             <tr>
               <td><%= payment.entry_date.strftime("%B %e, %Y") %></td>
               <td><%= payment.description %></td>

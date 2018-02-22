@@ -1,7 +1,7 @@
 require 'barby'
 require 'barby/barcode/code_39'
 require 'barby/outputter/prawn_outputter'
-class ServiceFormPdf < Prawn::Document 
+class ServiceFormPdf < Prawn::Document
   def initialize(work_order, view_context)
     super(margin: 40, page_size: 'A4')
     @work_order = work_order
@@ -22,10 +22,9 @@ class ServiceFormPdf < Prawn::Document
       charges_details
       spare_parts_details
       summary_details
-      payment_details
     end
-  end 
-  
+  end
+
   private
   def price(number)
     @view_context.number_to_currency(number, :unit => "P ")
@@ -42,12 +41,12 @@ class ServiceFormPdf < Prawn::Document
 
       end
     end
-  def heading 
+  def heading
     bounding_box [0, 780], width: 300 do
       image "#{Rails.root}/app/assets/images/letterhead.jpg", width: 320, height: 80
     end
   end
-  def customer_details 
+  def customer_details
     move_down 20
     text "CUSTOMER DETAILS", style: :bold
     move_down 2
@@ -63,7 +62,7 @@ class ServiceFormPdf < Prawn::Document
                                 [["", "Address", "#{@work_order.customer_address}"]] +
                                 [["", "Contact NUmber",  "#{@work_order.customer_contact_number}"]]
   end
-  def product_details 
+  def product_details
     move_down 5
     text "PRODUCT DETAILS", style: :bold
     table(product_details_data, cell_style: { size: 11, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [10, 150, 150]) do
@@ -75,15 +74,15 @@ class ServiceFormPdf < Prawn::Document
     move_down 5
   end
   def product_details_data
-    @product_details_data ||=  [["", "Date Released",  "#{@work_order.updated_at.strftime("%B %e, %Y")}"]] + 
+    @product_details_data ||=  [["", "Date Released",  "#{@work_order.updated_at.strftime("%B %e, %Y")}"]] +
                                 [["", "Description",  "#{@work_order.description}"]] +
                                 [["", "Model Number", "#{@work_order.model_number.try(:upcase)}"]] +
-                                [["", "Serial Number", "#{@work_order.serial_number.try(:upcase)}"]] + 
+                                [["", "Serial Number", "#{@work_order.serial_number.try(:upcase)}"]] +
                                 [["", "Physical Condition", "#{@work_order.physical_condition}"]] +
                                 [["", "<b>ACCESSORIES</b>"]] +
                                 @work_order.accessories.map{|a| ["","", "#{a.quantity.to_i} - #{a.description} <i>(#{a.serial_number})</i>"] }
   end
-  def reported_problem 
+  def reported_problem
     text "REPORTED PROBLEM", style: :bold
     table(reported_problem_data, cell_style: { size: 11, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [10, 150, 150]) do
         cells.borders = []
@@ -94,7 +93,7 @@ class ServiceFormPdf < Prawn::Document
     move_down 5
   end
 
-  def reported_problem_data 
+  def reported_problem_data
     @reported_problem_data ||= [["", "", "#{@work_order.reported_problem}"]] +
     [["",  "<b>TECHNICIANS</b>" ]] +
     @work_order.technicians.map{ |a| ["", "", a.full_name] }
@@ -143,58 +142,46 @@ class ServiceFormPdf < Prawn::Document
     if @work_order.service_charges.present?
       table(charge_details_data, cell_style: { size: 10, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [10, 120, 50]) do
           cells.borders = []
+          column(2).align = :right
+
           # column(0).background_color = "CCCCCC"
       end
     end
     move_down 10
   end
   def charge_details_data
-    @charge_details_data ||= @work_order.service_charges.map{|a| ["", a.description, price(a.amount)] }
+    @charge_details_data ||= @work_order.service_charges.map{|a| ["", a.description, price(a.amount)] } +
+    [["", "SUBTOTAL", "<b>#{price(@work_order.service_charges.sum(:amount))}</b>"]]
   end
   def spare_parts_details
     text "SPARE PARTS", style: :bold, size: 10
     if @work_order.spare_parts.present?
       table(spare_part_details_data, cell_style: { size: 10, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [10, 120, 50]) do
           cells.borders = []
+          column(2).align = :right
           # column(0).background_color = "CCCCCC"
       end
     end
     move_down 10
 end
   def spare_part_details_data
-    @spare_part_details_data ||= @work_order.spare_parts.map{|a| ["", a.product_name, price(a.total_cost)] }
+    @spare_part_details_data ||= @work_order.spare_parts.map{|a| ["", a.product_name, price(a.total_cost)] } +
+    [["", "SUBTOTAL", "<b>#{price(@work_order.spare_parts.sum(:total_cost))}</b>"]]
   end
+
   def summary_details
     move_down 10
-    text "SUMMARY", style: :bold
-     move_down 5
-      table(summary_data, cell_style: { size: 10, font: "Helvetica", inline_format: true, :padding => [5,0,0,0]}, column_widths: [10, 120, 70]) do
-          cells.borders = []
-          row(-1).background_color = "FEC708"
-          row(-1).size = 12
-          row(-2).background_color = "FEC708"
-      end
-  end
-  def summary_data
-    @summary_data ||=  [["", "SERVICE CHARGES", "#{price(@work_order.total_service_charges_cost)}"]] +
-                       [["", "SPARE PARTS", "#{price(@work_order.total_spare_parts_cost)}"]] +
-                       [["", "<b>TOTAL</b>", "<b>#{price(@work_order.total_charges_cost)}</b>"]] +
-                       [["", "", ""]]
-
-
-  end
-  def payment_details 
-    move_down 10
-    text "PAYMENT DETAILS", style: :bold, size: 10
+    text "SUMMARY", style: :bold, size: 10
     move_down 5
-      table(payment_data, cell_style: { size: 10, font: "Helvetica", inline_format: true, :padding => [5,0,0,0]}, column_widths: [10, 120, 70]) do
+      table(payment_data, cell_style: { size: 10, font: "Helvetica", inline_format: true, :padding => [5,0,0,0]}, column_widths: [10, 120, 50]) do
           cells.borders = []
+          column(2).align = :right
+
     end
   end
   def payment_data
-    @payment_date ||= [["", "RECEIVABLES", "#{price(@work_order.accounts_receivable)}"]] +
-                      [["", "CASH PAYMENTS", "#{price(@work_order.payments_total)}"]] +
-                      [["", "DISCOUNTS", "#{price(@work_order.discounts_total)}"]] +
+    @payment_date ||= [["", "RECEIVABLES", "#{price(@work_order.accounts_receivable_total)}"]] +
+                      [["", "PAYMENTS", "#{price(@work_order.payments_total)}"]] +
                       [["", "BALANCE", "#{price(@work_order.balance_total)}"]]
   end
-end 
+end

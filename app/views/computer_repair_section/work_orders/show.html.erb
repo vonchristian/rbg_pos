@@ -158,7 +158,7 @@
               <p class="condensed-text">REPORTS </p>
               <%= link_to 'CLAIM TAG', computer_repair_section_work_order_service_claim_tag_path(@work_order, format: 'pdf'), class: "label label-default"  %><br><br>
               <small class="condensed-text">RELEASE FORM</small><br>
-              <% if @work_order.released? && @work_order.charge_invoice.present? %>
+              <% if @work_order.released?%>
                 <%= link_to 'RELEASE FORM', computer_repair_section_work_order_path(@work_order, format: 'pdf'), class: "label label-default"  %>
               <% else %>
               <small class="text-danger"> Work Order status is <span class="label label-danger"><%= @work_order.status%></span> and cannot be released yet </small>
@@ -283,7 +283,7 @@
               <hr>
 
               <p class="condensed-text"> PAYMENT HISTORY </p>
-              <% @work_order.entries.work_order_payment.each do |payment| %>
+              <% @work_order.payment_entries.each do |payment| %>
                 <div class="row">
                   <div class="col-md-3">
                     <% if payment.recorder.present? %>

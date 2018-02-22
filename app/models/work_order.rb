@@ -82,19 +82,22 @@ class WorkOrder < ApplicationRecord
     spare_parts + service_charges
   end
   def accounts_receivable_total
-    RepairServicesModule::RepairServicesFrontConfig.default_accounts_receivable_account.debits_balance(commercial_document_id: self.id)
+    StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account.debits_balance(commercial_document_id: self.id)
   end
-  def payments
-    RepairServicesModule::RepairServicesFrontConfig.default_accounts_receivable_account.credits_balance(commercial_document_id: self.id)
+  def payment_entries
+    StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account.credit_entries.where(commercial_document_id: self.id)
   end
 
   def payments_total
-    RepairServicesModule::RepairServicesFrontConfig.default_accounts_receivable_account.credits_balance(commercial_document_id: self.id)
+   StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account.credits_balance(commercial_document_id: self.id)
   end
 
 
   def balance_total
-    RepairServicesModule::RepairServicesFrontConfig.default_accounts_receivable_account.balance(commercial_document_id: self.id)
+    StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account.balance(commercial_document_id: self.id)
+  end
+  def discounts_total
+    StoreFrontModule::StoreFrontConfig.default_discount_account.debits_balance(commercial_document_id: self.id)
   end
 
   def updates_content

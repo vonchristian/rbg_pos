@@ -12,6 +12,11 @@ module StoreFrontModule
       AccountingModule::Asset.find_by(name: "Merchandise Inventory")
     end
     def self.default_accounts_receivable_account
+      return self.last.accounts_receivable_account if self.last.present? && self.last.accounts_receivable_account.present?
+      AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current")
+    end
+    def self.default_discount_account
+      AccountingModule::Revenue.find_by(name: "Sales Discounts")
     end
   end
 end
