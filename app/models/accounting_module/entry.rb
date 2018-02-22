@@ -21,7 +21,8 @@ module AccountingModule
     # Support the deprecated .build method
     before_save :set_default_date
 
-    delegate :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
+    delegate :first_and_last_name, :name, to: :recorder, prefix: true, allow_nil: true
+    delegate :name, to: :commercial_document, prefix: true, allow_nil: true
 
     def self.total(hash={})
       if hash[:from_date] && hash[:to_date]

@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-default">
+      <div class="box-header">
+        <h3 class="box-title"> Service Payments </h3>
+      </div>
+      <div class="box-body">
+        <div class="table table-responsive">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Customer</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Employee</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @service_payments.each do |payment| %>
+                <tr>
+                  <td><%=link_to payment.entry_date.strftime("%B %e, %Y"), repair_services_module_service_payment_path(payment) %></td>
+                  <td><%= payment.commercial_document_name %></td>
+                  <td><%= payment.description %></td>
+                  <td><%= number_to_currency payment.total %></td>
+                  <td><%= payment.recorder_name %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <center><%= will_paginate @service_payments %></center>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
