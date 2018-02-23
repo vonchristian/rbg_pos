@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180222005854) do
+ActiveRecord::Schema.define(version: 20180223004150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -428,6 +428,7 @@ ActiveRecord::Schema.define(version: 20180222005854) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "address"
     t.index ["business_id"], name: "index_store_fronts_on_business_id"
     t.index ["merchandise_inventory_account_id"], name: "index_store_fronts_on_merchandise_inventory_account_id"
     t.index ["name"], name: "index_store_fronts_on_name", unique: true
@@ -500,11 +501,15 @@ ActiveRecord::Schema.define(version: 20180222005854) do
     t.string "designation"
     t.bigint "section_id"
     t.bigint "cash_on_hand_account_id"
+    t.bigint "store_front_id"
+    t.bigint "business_id"
     t.index ["branch_id"], name: "index_users_on_branch_id"
+    t.index ["business_id"], name: "index_users_on_business_id"
     t.index ["cash_on_hand_account_id"], name: "index_users_on_cash_on_hand_account_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["section_id"], name: "index_users_on_section_id"
+    t.index ["store_front_id"], name: "index_users_on_store_front_id"
   end
 
   create_table "voucher_amounts", force: :cascade do |t|
@@ -660,7 +665,9 @@ ActiveRecord::Schema.define(version: 20180222005854) do
   add_foreign_key "units", "customers"
   add_foreign_key "users", "accounts", column: "cash_on_hand_account_id"
   add_foreign_key "users", "branches"
+  add_foreign_key "users", "businesses"
   add_foreign_key "users", "sections"
+  add_foreign_key "users", "store_fronts"
   add_foreign_key "voucher_amounts", "accounts"
   add_foreign_key "voucher_amounts", "vouchers"
   add_foreign_key "vouchers", "users", column: "preparer_id"

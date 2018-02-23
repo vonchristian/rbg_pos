@@ -14,6 +14,16 @@
         <br>
           <%=link_to 'New Branch', new_branch_path, class: "btn btn-danger btn-sm" %>
           <hr>
+         <h4>Store Fronts </h3>
+        <p class="help-block">List of store fronts</p>
+          <% StoreFront.all.each do |store_front| %>
+            <p><%= store_front.name %></p>
+            <p><%= store_front.address %></p>
+            <br>
+          <% end %>
+        <br>
+          <%=link_to 'New Store Front', new_settings_store_front_path, class: "btn btn-danger btn-sm" %>
+          <hr>
           <% Section.all.each do |section| %>
             <p><%= section.name %></p>
             <br>

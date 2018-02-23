@@ -4,8 +4,11 @@ module StoreFrontModule
     belongs_to :unit_of_measurement, class_name: "StoreFrontModule::UnitOfMeasurement"
 
     validates :price, numericality: true, presence: true
+    def self.current
+      order(date: :desc).first
+    end
     def self.current_price
-      order(date: :desc).first.try(:price)
+      current.try(:price)
     end
   end
 end

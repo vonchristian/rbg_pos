@@ -20,6 +20,7 @@ class Product < ApplicationRecord
     has_many :sales_returns, class_name: "StoreFrontModule::LineItems::SalesReturnOrderLineItem"
     has_many :purchase_returns, class_name: "StoreFrontModule::LineItems::PurchaseReturnOrderLineItem"
     has_many :spoilages, class_name: "StoreFrontModule::LineItems::SpoilageOrderLineItem"
+    has_many :stock_transfers, class_name: "StoreFrontModule::LineItems::StockTransferOrderLineItem"
 	has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",
@@ -116,6 +117,7 @@ class Product < ApplicationRecord
   def balance(options={})
     purchases_balance(options) -
     sales_balance(options) -
+    stock_transfers_balance(options) -
     spoilages_balance(options)
   end
   def sales_balance(options={})
@@ -129,6 +131,9 @@ class Product < ApplicationRecord
   end
   def spoilages_balance(options={})
     spoilages.balance(product_id: self.id)
+  end
+  def stock_transfers_balance(options={})
+    stock_transfers.balance(product_id: self.id)
   end
 
 end

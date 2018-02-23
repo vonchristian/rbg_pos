@@ -1,0 +1,41 @@
+
+<% @products.each do |product| %>
+
+                    <%= simple_form_for @stock_transfer_order_line_item, url: :store_front_module_stock_transfer_order_line_item_processings do |f| %>
+
+                      <div class="row">
+                        <div class="col-md-2">
+                          <p><b><%= product.name.try(:upcase) %></b></p>
+                          <% product.unit_of_measurements.each do |unit_of_measurement| %>
+                            <%= number_to_currency unit_of_measurement.price %>/<%= unit_of_measurement.unit_code %><br>
+                          <% end %>
+                        </div>
+                        <div class="col-md-2">
+                          <%=product.available_quantity %> <%= product.base_measurement_unit_code %><br>
+                          <small class="text-success">AVAILABLE</small>
+                        </div>
+                        <div class="col-md-3">
+                        <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, autofocus: true %>
+                      </div>
+                      <div class="col-md-3">
+                        <%= f.input :unit_of_measurement_id, label: 'Unit', collection: product.unit_of_measurements.all.map{|a| [a.unit_code, a.id] }, selected: product.base_measurement %>
+                        <%= f.input :product_id, input_html: { value: product.id }, as: :hidden %>
+                        <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
+                      </div>
+
+                      <div class="col-md-2">
+                        <br>
+                        <%= f.submit "Add", class: "btn btn-success" %>
+                      </div>
+                    </div>
+
+                      <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
+                      <%= f.input :product_id, input_html: { value: product.id }, as: :hidden %>
+
+
+
+
+
+              <% end %>
+<% end %>
+<hr>

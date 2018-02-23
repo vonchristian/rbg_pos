@@ -1,13 +1,13 @@
-class OrderPdf < Prawn::Document 
+class OrderPdf < Prawn::Document
 	def initialize(order, view_context)
       super(margin: 30, page_size: 'A4')
-		@order = order 
+		@order = order
 		@view_context = view_context
 		heading
 		customer
 		line_items
-	end 
-	
+	end
+
 	private
 	def price(number)
     @view_context.number_to_currency(number, :unit => "P ")
@@ -19,14 +19,14 @@ class OrderPdf < Prawn::Document
       "FREE"
     end
   end
-	def heading 
+	def heading
 		text "Order Details", align: :center
 		move_down 5
 		stroke_horizontal_rule
 		move_down 10
 	end
-	def customer 
-		text "Customer:                  #{@order.customer.full_name}"
+	def customer
+		text "Customer:                  #{@order.commercial_document.try(:name)}"
 		text "Date:                          #{@order.date.strftime("%B %e, %Y")}"
 		if @order.stock_transfer?
 		  text "Order Type:                #{@order.mode_of_payment.try(:titleize)}"
@@ -46,8 +46,8 @@ class OrderPdf < Prawn::Document
 		# text "Total Cost Less Discount                   #{price(@order.total_cost_less_discount)}"
 	end
 	def line_items
-      move_down 10 
-        table line_items_data,  
+      move_down 10
+        table line_items_data,
       cell_style: { size: 11,  inline_format: true  }, column_widths: [170, 80, 80, 100, 100] do
         row(0).font_style = :bold
         column(3).align = :right
@@ -55,10 +55,10 @@ class OrderPdf < Prawn::Document
       end
     end
 
-    def line_items_data 
+    def line_items_data
       [["PRODUCT", "BARCODE", "QUANTITY", "UNIT COST", "TOTAL COST"]] +
       @line_items_data ||= @order.line_items.map{|e| [e.stock.try(:name), e.stock.try(:barcode), e.quantity,unit_cost_detail(e.unit_cost), price(e.total_cost)] } +
       [["TOTAL", "", "", "", "#{price(@order.total_cost)}"]]
     end
 
-end 
+end

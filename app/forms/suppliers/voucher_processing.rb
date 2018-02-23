@@ -22,6 +22,7 @@ module Suppliers
         voucher.voucher_amounts << amount
       end
     end
+
     def find_supplier
       Supplier.find_by_id(supplier_id)
     end

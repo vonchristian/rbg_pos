@@ -1,0 +1,8 @@
+<%= simple_form_for [@product, @selling_price], url: :store_front_module_selling_prices do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.input :selling_price %>
+  <%= f.input :product_id, input_html: { value: @product.id } %>
+  <%= f.input :unit_of_measurement_id, input_html: { value: @unit_of_measurement.id } %>
+  <%= f.submit "Update Price" %>
+<% end %>

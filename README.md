@@ -1,3 +1,6 @@
+Namespace to order_processings
+Namespace to line_item_processings
+
 add unit of measurement to stocks creation
 add unit of measurement to sale line item creation
 migrate stocks to purchase_order_line_items

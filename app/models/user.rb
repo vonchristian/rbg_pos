@@ -4,6 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   belongs_to :branch, optional: true
+  belongs_to :store_front, optional: true
+  belongs_to :business, optional: true
   belongs_to :section, optional: true
   belongs_to :cash_on_hand_account, optional: true, class_name: "AccountingModule::Account"
   has_many :orders, foreign_key: 'employee_id'

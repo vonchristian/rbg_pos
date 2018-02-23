@@ -62,8 +62,10 @@
     <% @product.unit_of_measurements.each do |unit| %>
       <%= unit.quantity %>
       <%= unit.unit_code %>
-      <%= unit.description %>
-      <%= unit.price %>
+      <%= number_to_currency unit.price %>
+      <%= link_to "Update Info", edit_store_front_module_unit_of_measurement_path(unit), class: "btn btn-warning btn-xs" %>
+      <%= link_to "Update Price", new_store_front_module_selling_price_path(product_id: @product.id, unit_of_measurement_id: unit.id), class: "btn btn-warning btn-xs" %>
+
     <% end %>
   </div>
 </div>
