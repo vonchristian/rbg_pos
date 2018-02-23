@@ -9,6 +9,7 @@ class WorkOrder < ApplicationRecord
   belongs_to :section, optional: true
   has_many :accessories
   belongs_to :customer, optional: true
+  belongs_to :store_front
   has_one :charge_invoice, as: :invoiceable, class_name: "Invoices::ChargeInvoice"
   has_many :technician_work_orders, dependent: :destroy
   has_many :technicians, through: :technician_work_orders
@@ -85,7 +86,7 @@ class WorkOrder < ApplicationRecord
     StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account.debits_balance(commercial_document_id: self.id)
   end
   def payment_entries
-    StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account.credit_entries.where(commercial_document_id: self.id)
+    store_front.default_accounts_receivable_account.credit_amounts.where(commercial_document_id: self.id)
   end
 
   def payments_total

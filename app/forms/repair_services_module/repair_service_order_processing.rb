@@ -2,6 +2,7 @@ module RepairServicesModule
   class RepairServiceOrderProcessing
     include ActiveModel::Model
     attr_accessor :customer_id, :employee_id, :cart_id, :date, :work_order_id
+    validates :customer_id, :date, presence: true
     def process!
       ActiveRecord::Base.transaction do
         create_repair_service_order
@@ -11,7 +12,7 @@ module RepairServicesModule
     private
 
     def create_repair_service_order
-      order  = find_customer.sales_orders.create(
+      order  = find_customer.repair_service_orders.create(
         date: date,
         employee: find_employee)
 
@@ -22,10 +23,10 @@ module RepairServicesModule
       create_entry(order)
     end
     def create_entry(order)
-        accounts_receivable = StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account
-        cost_of_goods_sold = StoreFrontModule::StoreFrontConfig.default_cost_of_goods_sold_account
-        sales = StoreFrontModule::StoreFrontConfig.default_sales_account
-        merchandise_inventory = StoreFrontModule::StoreFrontConfig.default_merchandise_inventory_account
+        accounts_receivable = find_work_order.store_front.default_accounts_receivable_account
+        cost_of_goods_sold = find_employee.store_front.cost_of_goods_sold_account
+        sales = find_employee.store_front.sales_account
+        merchandise_inventory = find_employee.store_front.merchandise_inventory_account
         find_employee.entries.create!(
           recorder: find_employee,
           commercial_document: find_customer,

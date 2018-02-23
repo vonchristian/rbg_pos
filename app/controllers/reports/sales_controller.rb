@@ -7,7 +7,7 @@ module Reports
       if @user.present?
         @orders = @user.orders.ordered_on(from_date: @from_date, to_date: @to_date)
       else
-			  @orders = Order.ordered_on(from_date: @from_date, to_date: @to_date)
+			  @orders = StoreFrontModule::Orders::SalesOrder.ordered_on(from_date: @from_date, to_date: @to_date)
       end
 			respond_to do |format|
 				format.pdf do

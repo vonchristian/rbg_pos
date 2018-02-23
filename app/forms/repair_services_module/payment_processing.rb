@@ -15,6 +15,22 @@ module RepairServicesModule
     def create_payment
       accounts_receivable = StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account
       cash_on_hand_account = find_employee.cash_on_hand_account
+      if expense_account_id.blank? && expense_amount.to_i.zero?
+        find_employee.entries.create!(
+          recorder: find_employee,
+          commercial_document: find_customer,
+          entry_date: date,
+          description: description,
+          debit_amounts_attributes: [amount: amount,
+                                        account: cash_on_hand_account,
+                                        commercial_document: find_work_order
+
+                                     ],
+            credit_amounts_attributes:[ amount: amount,
+                                        account: accounts_receivable,
+                                        commercial_document: find_work_order
+                                      ])
+      else
       find_employee.entries.create!(
           recorder: find_employee,
           commercial_document: find_customer,
@@ -31,6 +47,7 @@ module RepairServicesModule
                                         account: accounts_receivable,
                                         commercial_document: find_work_order
                                       ])
+    end
     end
     def amount_less_expense
       amount.to_f - expense_amount.to_f

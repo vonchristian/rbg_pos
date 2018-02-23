@@ -14,6 +14,8 @@ class Product < ApplicationRecord
   has_many :unit_of_measurements, class_name: "StoreFrontModule::UnitOfMeasurement"
 
   has_many :purchases, :class_name => 'StoreFrontModule::LineItems::PurchaseOrderLineItem'
+  has_many :internal_uses, :class_name => 'StoreFrontModule::LineItems::InternalUseOrderLineItem'
+
     has_many :sales, :class_name => 'StoreFrontModule::LineItems::SalesOrderLineItem'
     has_many :sales_orders, :through => :sales, :source => :order, :class_name => 'StoreFrontModule::Orders::SalesOrder'
     has_many :purchase_orders, :through => :purchases, :source => :order, :class_name => 'StoreFrontModule::Orders::PurchaseOrder'
@@ -121,7 +123,8 @@ class Product < ApplicationRecord
     purchases_balance(options) -
     sales_balance(options) -
     stock_transfers_balance(options) -
-    spoilages_balance(options)
+    spoilages_balance(options) -
+    internal_use_orders_balance(options)
   end
   def sales_balance(options={})
     sales.balance(product_id: self.id) -
@@ -137,6 +140,9 @@ class Product < ApplicationRecord
   end
   def stock_transfers_balance(options={})
     stock_transfers.balance(product_id: self.id)
+  end
+  def internal_use_orders_balance(options={})
+    internal_uses.balance(product_id: self.id)
   end
 
 end

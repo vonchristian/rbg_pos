@@ -23,9 +23,6 @@
                 <th>Items</th>
                 <th>Total Cost</th>
                 <th>Reference</th>
-                <% if current_user.proprietor? %>
-                  <th>Income</th>
-                <% end %>
                 <th></th>
               </tr>
             </thead>
@@ -52,7 +49,6 @@
                   </td>
                   <td><%= number_to_currency sales_order.total_cost %></td>
                   <td><%= sales_order.reference_number %></td>
-                  <td><%= number_to_currency sales_order.income %></td>
                 </tr>
               <% end %>
             </tbody>

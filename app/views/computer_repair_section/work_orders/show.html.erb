@@ -219,7 +219,7 @@
                   </div>
                   <div class="col-md-7 col-xs-6">
                     <%= spare_part.product_name %><br>
-                    <small class="text-muted"><%= spare_part.date.strftime("%B %e, %Y") %></small>
+                    <small class="text-muted"><%= spare_part.try(:date).try(:strftime, ("%B %e, %Y")) %></small>
                   </div>
                   <div class="col-md-3 col-xs-5">
                     <span class="pull-right"><%= number_to_currency spare_part.total_cost %></span>
@@ -297,7 +297,7 @@
                     <%= payment.entry_date.strftime("%b %e, %l:%M %p") %>
                   </div>
                   <div class="col-md-4">
-                    <span class="pull-right"><%= number_to_currency payment.debit_amounts.distinct.pluck(:amount).sum %></span>
+                    <span class="pull-right"><%= number_to_currency payment.amount %></span>
                   </div>
                 </div>
                 <br>

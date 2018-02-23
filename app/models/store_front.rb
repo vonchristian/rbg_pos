@@ -10,4 +10,11 @@ class StoreFront < ApplicationRecord
   def default_sales_return_account
     AccountingModule::Revenue.find_by(name: "Sales Returns")
   end
+  def default_accounts_receivable_account
+    AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current")
+  end
+
+  def default_internal_use_expenses_account
+    AccountingModule::Expense.find_by(name: "Internal Use Expenses")
+  end
 end

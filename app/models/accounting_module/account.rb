@@ -1,12 +1,13 @@
 module AccountingModule
   class Account < ApplicationRecord
-    include PgSearch 
+    include PgSearch
     pg_search_scope :text_search, :against => [:name, :account_code]
 
-    
+
 
     class_attribute :normal_credit_balance
-    has_one :main_account
+    has_many :sub_accounts, class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
+    has_one :main_account, class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
     has_many :amounts, class_name: "AccountingModule::Amount"
     has_many :credit_amounts, :extend => AmountsExtension, :class_name => 'AccountingModule::CreditAmount'
     has_many :debit_amounts, :extend => AmountsExtension, :class_name => 'AccountingModule::DebitAmount'
@@ -18,6 +19,7 @@ module AccountingModule
     validates :name, :account_code, presence: true, uniqueness: true
 
     def self.active
+      where(active: true)
     end
     def self.types
       ["AccountingModule::Asset",
@@ -66,6 +68,10 @@ module AccountingModule
     end
     def debits_balance(options={})
       debit_amounts.balance(options)
+    end
+    def deactivate!
+      self.active = false
+      self.save
     end
   end
 end

@@ -1,7 +1,8 @@
 module StoreFrontModule
   module LineItems
     class ReferencedPurchaseOrderLineItem < LineItem
-      belongs_to :sales_order_line_item
+      belongs_to :sales_order_line_item, optional: true
+      belongs_to :referencer, polymorphic: true
       belongs_to :purchase_order_line_item
       delegate :purchase_cost, to: :purchase_order_line_item
 

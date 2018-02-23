@@ -7,7 +7,7 @@ module RepairServicesModule
         @repair_service_order.process!
         redirect_to computer_repair_section_work_order_url(@work_order), notice: "Order processed successfully"
       else
-        redirect_to new_repair_services_module_work_order_work_order_line_item_processing_url(@work_order), alert: "Error"
+        redirect_to new_repair_services_module_work_order_repair_service_order_line_item_processing_url(@work_order), alert: "Error"
       end
     end
 

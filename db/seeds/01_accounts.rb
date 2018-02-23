@@ -259,6 +259,7 @@ AccountingModule::Expense.create(account_code: 71300, name: "Other Financing Cha
 
 # #Selling/Marketing Cost Costs
 AccountingModule::Expense.create(account_code: 72000, name: "Selling/Marketing Cost Cost")
+AccountingModule::Expense.create(account_code: 720001, name: "Internal Use Expenses")
 
 AccountingModule::Expense.create(account_code: 72180, name: "Product/Service Marketing and Promotional Expenses", main_account_id: AccountingModule::Account.find_by_name('Selling/Marketing Cost Cost').id)
 AccountingModule::Expense.create(account_code: 72180, name: "Product/Service Marketing and Promotional Expenses", main_account_id: AccountingModule::Account.find_by_name('Selling/Marketing Cost Cost').id)
