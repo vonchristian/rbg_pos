@@ -123,10 +123,13 @@ Rails.application.routes.draw do
     resources :sales_return_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items
     resources :product_mergings, only: [:new, :create], module: :settings
     resources :purchase_orders, only: [:new, :index, :show], module: :orders
+    resources :purchase_returns, only: [:index, :show], module: :orders
     resources :sales_orders, only: [:index, :show], module: :orders
     resources :purchase_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items
+    resources :purchase_return_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items
     resources :sales_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items
     resources :purchase_order_processings, only: [:create], module: :orders
+    resources :purchase_return_order_processings, only: [:create], module: :orders
     resources :sales_order_processings, only: [:create], module: :orders
     resources :stock_transfer_order_processings, only: [:create], module: :orders
     resources :sales_return_order_processings, only: [:create], module: :orders

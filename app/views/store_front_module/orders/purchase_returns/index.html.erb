@@ -1,15 +1,15 @@
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-default">
+    <div class="box box-danger">
       <div class="box-header with-border">
         <div class="row">
           <div class="col-md-3">
-            <h3 class="box-title"> Purchase Orders </h3>
+            <h3 class="box-title"> Purchase Returns </h3>
           </div>
           <div class="col-md-5">
           </div>
           <div class="col-md-4">
-            <%= link_to 'New Purchase', new_store_front_module_purchase_order_line_item_processing_path, class: "btn btn-primary pull-right" %>
+            <%= link_to 'New Purchase Return', new_store_front_module_purchase_return_order_line_item_processing_path, class: "btn btn-danger pull-right" %>
           </div>
         </div>
       </div>
@@ -25,12 +25,12 @@
               </tr>
             </thead>
             <tbody>
-              <% @purchase_orders.each do |purchase_order| %>
+              <% @purchase_returns.each do |order| %>
                 <tr>
-                  <td><%= purchase_order.date.strftime("%B %e, %Y") %></td>
-                  <td><%= purchase_order.supplier_name %></td>
+                  <td><%= order.date.strftime("%B %e, %Y") %></td>
+                  <td><%= order.supplier_name %></td>
                   <td>
-                    <% purchase_order.purchase_order_line_items.each do |line_item| %>
+                    <% order.purchase_return_order_line_items.each do |line_item| %>
                       <div class="row">
                         <div class="col-md-3">
                           <%= line_item.quantity %> <%= line_item.unit_code %>
@@ -38,7 +38,7 @@
                         <div class="col-md-6">
                           <%= line_item.name %><br>
                           <small><%= line_item.bar_code %></small><br>
-                          <small class="label bg-gray"><%= number_to_currency line_item.unit_cost %></small>
+                          <small class="text-muted"><%= number_to_currency line_item.unit_cost %></small>
                         </div>
                         <div class="col-md-3">
                           <span class="pull-right"><%= number_to_currency line_item.total_cost %></span>

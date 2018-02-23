@@ -6,8 +6,8 @@ module StoreFrontModule
                     :quantity,
                     :cart_id,
                     :product_id,
-                    :barcode,
-                    :adjustment
+                    :bar_code,
+                    :purchase_order_line_item_id
       validates :quantity, numericality: { greater_than: 0.1 }
       validate :quantity_is_less_than_or_equal_to_available_quantity?
       def process!
@@ -18,11 +18,11 @@ module StoreFrontModule
 
       private
       def process_sales_order_line_item
-        if product_id.present? && barcode.blank?
-          decrease_product_available_quantity
-        elsif purchase_order_line_item_id.present? && barcode.present?
+        # if product_id.present? && bar_code.blank?
+        #   decrease_product_available_quantity
+        # elsif purchase_order_line_item_id.present? && bar_code.present?
             decrease_purchase_line_item_quantity
-        end
+        # end
       end
 
        def decrease_product_available_quantity
@@ -106,9 +106,9 @@ module StoreFrontModule
       end
 
       def available_quantity
-        if product_id.present? && barcode.blank?
+        if product_id.present? && bar_code.blank?
           find_product.available_quantity
-        elsif purchase_order_line_item_id.present? && barcode.present?
+        elsif purchase_order_line_item_id.present? && bar_code.present?
           find_purchase_order_line_item.available_quantity
         end
       end

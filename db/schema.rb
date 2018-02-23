@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180223031818) do
+ActiveRecord::Schema.define(version: 20180223045546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -449,6 +449,8 @@ ActiveRecord::Schema.define(version: 20180223031818) do
     t.string "contact_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "accounts_payable_account_id"
+    t.index ["accounts_payable_account_id"], name: "index_suppliers_on_accounts_payable_account_id"
     t.index ["business_name"], name: "index_suppliers_on_business_name", unique: true
   end
 
@@ -671,6 +673,7 @@ ActiveRecord::Schema.define(version: 20180223031818) do
   add_foreign_key "store_fronts", "accounts", column: "sales_discount_account_id"
   add_foreign_key "store_fronts", "accounts", column: "sales_return_account_id"
   add_foreign_key "store_fronts", "businesses"
+  add_foreign_key "suppliers", "accounts", column: "accounts_payable_account_id"
   add_foreign_key "technician_work_orders", "users", column: "technician_id"
   add_foreign_key "technician_work_orders", "work_orders"
   add_foreign_key "unit_of_measurements", "products"

@@ -111,6 +111,9 @@ class Product < ApplicationRecord
     end
   end
   ################################
+  def last_purchase_cost
+    purchases.order(created_at: :desc).last.try(:unit_cost)
+  end
   def available_quantity
     balance
   end
