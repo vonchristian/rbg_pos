@@ -17,4 +17,7 @@ class StoreFront < ApplicationRecord
   def default_internal_use_expenses_account
     AccountingModule::Expense.find_by(name: "Internal Use Expenses")
   end
+  def default_spoilages_account
+    AccountingModule::Expense.find_by(name: "Spoilage, Breakage and Losses (Selling/Marketing Cost)")
+  end
 end

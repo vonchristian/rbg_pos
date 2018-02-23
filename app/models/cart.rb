@@ -6,6 +6,7 @@ class Cart < ApplicationRecord
   has_many :sales_return_order_line_items, class_name: "StoreFrontModule::LineItems::SalesReturnOrderLineItem", dependent: :destroy
   has_many :purchase_return_order_line_items, class_name: "StoreFrontModule::LineItems::PurchaseReturnOrderLineItem", dependent: :destroy
   has_many :internal_use_order_line_items, class_name: "StoreFrontModule::LineItems::InternalUseOrderLineItem", dependent: :destroy
+  has_many :spoilage_order_line_items, class_name: "StoreFrontModule::LineItems::SpoilageOrderLineItem", dependent: :destroy
 
 	def total_cost
 		line_items.sum(:total_cost)

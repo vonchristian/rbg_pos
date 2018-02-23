@@ -18,5 +18,6 @@ module StoreFrontModule
     def self.default_discount_account
       AccountingModule::Revenue.find_by(name: "Sales Discounts")
     end
+;
   end
 end
