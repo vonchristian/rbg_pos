@@ -1,21 +1,20 @@
 module StoreFrontModule
   module Orders
-    class SalesOrderProcessing
+    class SalesReturnOrderProcessing
       include ActiveModel::Model
       include ActiveModel::Validations
       attr_accessor  :customer_id,
                      :date,
-                     :cash_tendered,
-                     :order_change,
                      :employee_id,
                      :cart_id,
+                     :description,
                      :reference_number
 
       validates :cart_id,
       :employee_id,
       :customer_id,
-      :cash_tendered,
-      :order_change,
+      :description,
+      :date,
       presence: true
       def process!
         ActiveRecord::Base.transaction do
@@ -27,24 +26,20 @@ module StoreFrontModule
       end
       private
       def create_sales_order
-          order = StoreFrontModule::Orders::SalesOrder.create(
+          order = StoreFrontModule::Orders::SalesReturnOrder.create(
           date: date,
           employee: find_employee,
           commercial_document: find_customer,
           reference_number: reference_number)
-          order.create_cash_payment(cash_tendered: cash_tendered, cash_change: order_change)
-
-          find_cart.sales_order_line_items.each do |sales_order_line_item|
-            sales_order_line_item.cart_id = nil
-            order.sales_order_line_items << sales_order_line_item
+          find_cart.sales_return_order_line_items.each do |line_item|
+            line_item.cart_id = nil
+            order.sales_return_order_line_items << line_item
           create_entry(order)
         end
       end
       def find_customer
         Customer.find_by_id(customer_id)
       end
-
-
 
       def find_employee
         User.find_by_id(employee_id)
@@ -53,25 +48,25 @@ module StoreFrontModule
       def create_entry(order)
         store_front = find_employee.store_front
         cash_on_hand = find_employee.cash_on_hand_account
+        sales_returns = store_front.sales_return_account
         cost_of_goods_sold = store_front.cost_of_goods_sold_account
-        sales = store_front.sales_account
         merchandise_inventory = store_front.merchandise_inventory_account
         find_employee.entries.create!(
           recorder: find_employee,
           commercial_document: find_customer,
           entry_date: order.date,
-          description: "Payment for sales",
-          debit_amounts_attributes: [{ amount: order.total_cost,
+          description: description,
+          credit_amounts_attributes: [{ amount: order.total_cost,
                                         account: cash_on_hand,
                                         commercial_document: order},
-                                      { amount: order.cost_of_goods_sold,
+                                      { amount: order.total_cost,
                                         account: cost_of_goods_sold,
                                         commercial_document: order } ],
-            credit_amounts_attributes:[{amount: order.total_cost,
-                                        account: sales,
-                                        commercial_document: order},
-                                       {amount: order.cost_of_goods_sold,
+            debit_amounts_attributes:[{amount: order.total_cost,
                                         account: merchandise_inventory,
+                                        commercial_document: order},
+                                       {amount: order.total_cost,
+                                        account: sales_returns,
                                         commercial_document: order}])
       end
     end

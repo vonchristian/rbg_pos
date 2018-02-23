@@ -17,8 +17,9 @@
          <h4>Store Fronts </h3>
         <p class="help-block">List of store fronts</p>
           <% StoreFront.all.each do |store_front| %>
-            <p><%= store_front.name %></p>
+            <h4><b><%= store_front.name %></b></h4>
             <p><%= store_front.address %></p>
+            <%= link_to 'Edit', edit_settings_store_front_path(store_front) %>
             <br>
           <% end %>
         <br>

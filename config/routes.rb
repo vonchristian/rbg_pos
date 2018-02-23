@@ -118,7 +118,9 @@ Rails.application.routes.draw do
     resources :unit_of_measurements, only: [:edit, :update], module: :settings
     resources :selling_prices, only: [:new, :create], module: :settings
     resources :stock_transfers, only: [:index, :show], module: :orders
+    resources :sales_returns, only: [:index, :show], module: :orders
     resources :stock_transfer_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items
+    resources :sales_return_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items
     resources :product_mergings, only: [:new, :create], module: :settings
     resources :purchase_orders, only: [:new, :index, :show], module: :orders
     resources :sales_orders, only: [:index, :show], module: :orders
@@ -127,6 +129,8 @@ Rails.application.routes.draw do
     resources :purchase_order_processings, only: [:create], module: :orders
     resources :sales_order_processings, only: [:create], module: :orders
     resources :stock_transfer_order_processings, only: [:create], module: :orders
+    resources :sales_return_order_processings, only: [:create], module: :orders
+
   end
   resources :voucher_amounts, only: [:destroy]
   resources :vouchers, only: [:index, :show] do
@@ -142,6 +146,6 @@ Rails.application.routes.draw do
     resources :service_payments, only: [:index, :show]
   end
   namespace :settings do
-    resources :store_fronts, only: [:new, :create]
+    resources :store_fronts, only: [:new, :create, :edit, :update]
   end
 end
