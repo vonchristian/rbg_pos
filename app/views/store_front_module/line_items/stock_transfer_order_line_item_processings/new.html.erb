@@ -34,6 +34,8 @@
           <tbody>
             <% if @products.present? %>
               <%= render 'store_front_module/line_items/stock_transfer_order_line_item_processings/searched_product_results' %>
+            <% elsif @line_items.present? %>
+              <%= render 'store_front_module/line_items/stock_transfer_order_line_item_processings/searched_line_item_results' %>
             <% end %>
           </tbody>
         </table>
@@ -84,7 +86,7 @@
         <div class="box-body">
         <% if @cart.stock_transfer_order_line_items.present? %>
           <%= simple_form_for @stock_transfer_order, url: :store_front_module_stock_transfer_order_processings do |f| %>
-            <%= f.input :store_front_id, collection: StoreFront.all.map{|a| [ a.name, a.id] } %>
+            <%= f.input :store_front_id, label: "Destination:", collection: StoreFront.all.map{|a| [ a.name, a.id] } %>
             <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
             <%= f.input :description %>
             <%= f.input :reference_number %>

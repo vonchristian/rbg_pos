@@ -63,6 +63,7 @@ module StoreFrontModule
         Product.find_by_id(product_id)
       end
 
+
       def find_purchase_order_line_item
         StoreFrontModule::LineItems::PurchaseOrderLineItem.find_by_id(referenced_line_item_id)
       end

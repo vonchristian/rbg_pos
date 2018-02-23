@@ -57,7 +57,7 @@ class OrderPdf < Prawn::Document
 
     def line_items_data
       [["PRODUCT", "BARCODE", "QUANTITY", "UNIT COST", "TOTAL COST"]] +
-      @line_items_data ||= @order.line_items.map{|e| [e.stock.try(:name), e.stock.try(:barcode), e.quantity,unit_cost_detail(e.unit_cost), price(e.total_cost)] } +
+      @line_items_data ||= @order.line_items.map{|e| [e.try(:name), e.try(:bar_code), e.quantity,unit_cost_detail(e.unit_cost), price(e.total_cost)] } +
       [["TOTAL", "", "", "", "#{price(@order.total_cost)}"]]
     end
 

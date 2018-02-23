@@ -2,9 +2,15 @@
 <div class="row">
   <div  class="col-md-6 col-md-offset-3">
     <div class="box box-solid">
-      <div class="box-header">
-        <span class="pull-right"><%= link_to 'Print(PDF)', order_path(@order, format: 'pdf'), class: "btn btn-default btn-sm" %></span>
-        <h3 class="box-title"><%= @order.employee_name.try(:upcase) %></h3>
+      <div class="box-header bg-gray">
+        <center>
+          <%= image_tag(@order.commercial_document.avatar.url(:medium), class: "img-circle", height: 60, width: 60) %><br><br>
+        <h3 class="box-title"><%= @order.commercial_document.try(:name).try(:upcase) %></h3>
+        </center>
+      </div>
+      <hr>
+      <div class="box-body">
+         <span class="pull-right"><%= link_to 'Print(PDF)', order_path(@order, format: 'pdf'), class: "btn btn-default btn-sm" %></span>
         <i class="icon-calendar"></i> <%= @order.date.strftime("%B %e, %Y") %><br>
         Mode of Payment
         <% if !@order.internal_use? %>
@@ -13,9 +19,7 @@
           <span class="label label-warning"> for internal use </span>
         <% end %>
         <p class="text-black"> Reference Number: <%= @order.reference_number %></p>
-      </div>
-      <hr>
-      <div class="box-body">
+        <hr>
               <% @order.line_items.each do |line_item| %>
                 <div class="row">
                   <div class="col-md-2">
@@ -34,5 +38,3 @@
                 </div>
                 <hr>
                 <% end %>
-              </div>
-            </div>

@@ -4,7 +4,7 @@ module RepairServicesModule
       @work_order = WorkOrder.find(params[:work_order_id])
       if params[:search].present?
         @products = Product.text_search(params[:search]).all
-        @purchase_order_line_items = StoreFrontModule::LineItems::PurchaseOrderLineItem.text_search(params[:search]).all
+        @line_items = StoreFrontModule::LineItems::PurchaseOrderLineItem.text_search(params[:search]).all
       end
       @repair_service_order_line_item = RepairServicesModule::RepairServiceOrderLineItemProcessing.new
       @cart = current_cart

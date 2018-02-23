@@ -1,8 +1,8 @@
 
 <% @line_items.each do |line_item| %>
 
-                    <%= simple_form_for @sales_order_line_item, url: :store_front_module_sales_order_line_item_processings do |f| %>
-                      <div class="row">
+                    <%= simple_form_for [@work_order, @repair_service_order_line_item], url: :repair_services_module_work_order_repair_service_order_line_item_processings do |f| %>
+    <div class="row">
                         <div class="col-md-3">
                           <b><%= line_item.name.try(:upcase) %></b><br>
 

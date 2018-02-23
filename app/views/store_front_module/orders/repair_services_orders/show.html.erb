@@ -4,10 +4,8 @@
     <div class="box box-solid">
       <div class="box-header bg-gray">
         <center>
-          <% if @order.commercial_document.respond_to?(:avatar) %>
           <%= image_tag(@order.commercial_document.avatar.url(:medium), class: "img-circle", height: 60, width: 60) %><br><br>
-          <% end %>
-        <h3 class="box-title"><%= @order.store_front_name.try(:upcase) %></h3>
+        <h3 class="box-title"><%= @order.customer.try(:full_name).try(:upcase) %></h3>
         </center>
       </div>
       <hr>

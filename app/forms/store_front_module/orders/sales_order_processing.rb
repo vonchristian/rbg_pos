@@ -37,8 +37,9 @@ module StoreFrontModule
           find_cart.sales_order_line_items.each do |sales_order_line_item|
             sales_order_line_item.cart_id = nil
             order.sales_order_line_items << sales_order_line_item
-          create_entry(order)
+
         end
+        create_entry(order)
       end
       def find_customer
         Customer.find_by_id(customer_id)

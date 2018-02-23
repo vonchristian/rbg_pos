@@ -2,6 +2,10 @@ class Product < ApplicationRecord
 	include PgSearch
   multisearchable against: [:name]
 	pg_search_scope :text_search, against: [:name]
+  pg_search_scope :text_search_with_barcode, against: [:name],
+  :associated_against => {
+    :purchases => [:bar_code]}
+
   belongs_to :category, optional: true
 	has_many :stocks
 	has_many :sold_items, through: :stocks, class_name: 'LineItem', source: :line_items

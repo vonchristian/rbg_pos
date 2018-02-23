@@ -9,7 +9,7 @@
           <div class="col-md-5">
           </div>
           <div class="col-md-4">
-            <%= link_to 'New Purchase', new_store_front_module_purchase_order_line_item_processing_path, class: "btn btn-primary pull-right" %>
+            <%= link_to 'New Purchase', new_store_front_module_order_line_item_processing_path, class: "btn btn-primary pull-right" %>
           </div>
         </div>
       </div>
@@ -25,12 +25,12 @@
               </tr>
             </thead>
             <tbody>
-              <% @purchase_orders.each do |purchase_order| %>
+              <% @orders.each do |order| %>
                 <tr>
-                  <td><%= purchase_order.date.strftime("%B %e, %Y") %></td>
-                  <td><%= purchase_order.supplier_name %></td>
+                  <td><%= order.date.strftime("%B %e, %Y") %></td>
+                  <td><%=link_to order.supplier_name, store_front_module_order_path(order) %></td>
                   <td>
-                    <% purchase_order.purchase_order_line_items.each do |line_item| %>
+                    <% order.order_line_items.each do |line_item| %>
                       <div class="row">
                         <div class="col-md-3">
                           <%= line_item.quantity %> <%= line_item.unit_code %>

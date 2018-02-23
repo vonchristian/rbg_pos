@@ -28,7 +28,7 @@
               <% @purchase_returns.each do |order| %>
                 <tr>
                   <td><%= order.date.strftime("%B %e, %Y") %></td>
-                  <td><%= order.supplier_name %></td>
+                  <td><%= link_to order.supplier_name, store_front_module_purchase_return_path(order) %></td>
                   <td>
                     <% order.purchase_return_order_line_items.each do |line_item| %>
                       <div class="row">

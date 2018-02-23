@@ -33,7 +33,23 @@
 
            <li><a href="/products"><i class="fa fa-cubes"></i> <span> Products</span></a></li>
            <li><a href="/stocks"><i class="fa fa-server"></i> <span> Stocks</span></a></li>
-           <li><a href="/orders"><i class="fa fa-circle-o"></i> <span> Sales</span></a></li>
+           <li class="treeview">
+            <a href="#">
+              <i class="fa fa-server"></i> <span>Orders</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="/store_front_module/sales_orders"><i class="fa fa-circle-o"></i> Sales</a></li>
+              <li><a href="/store_front_module/repair_services_orders"><i class="fa fa-circle-o"></i>Service Repair Orders</a></li>
+              <li><a href="/store_front_module/purchase_orders"><i class="fa fa-circle-o"></i> Purchases</a></li>
+              <li><a href="/store_front_module/stock_transfers"><i class="fa fa-circle-o"></i> Stock Transfers</a></li>
+              <li><a href="/store_front_module/sales_returns"><i class="fa fa-circle-o"></i> Sales Returns</a></li>
+              <li><a href="/store_front_module/purchase_returns"><i class="fa fa-circle-o"></i> Purchase Returns</a></li>
+              <li><a href="/store_front_module/internal_use_orders"><i class="fa fa-circle-o"></i> Internal Use</a></li>
+            </ul>
+          </li>
            <li><a href="/sales_returns"><i class="fa fa-circle-o"></i> <span> Sales Returns</span></a></li>
            <li><a href="/warranties"><i class="fa fa-circle-o"></i> <span> Warranties</span></a></li>
            <li><a href="/branches"><i class="fa fa-circle-o"></i> <span> Branches</span></a></li>

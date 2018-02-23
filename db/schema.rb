@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180223092524) do
+ActiveRecord::Schema.define(version: 20180223102836) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -303,6 +303,8 @@ ActiveRecord::Schema.define(version: 20180223092524) do
     t.datetime "spreadsheet_updated_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "type"
+    t.index ["type"], name: "index_registries_on_type"
   end
 
   create_table "repair_services_front_configs", force: :cascade do |t|

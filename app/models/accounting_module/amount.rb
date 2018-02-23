@@ -7,6 +7,6 @@ module AccountingModule
     validates :amount, numericality: true
 
     delegate :name, to: :account, prefix: true
-    delegate :recorder, :entry_date, to: :entry
+    delegate :recorder, :entry_date, :description, to: :entry
   end
 end

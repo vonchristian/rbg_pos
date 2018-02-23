@@ -115,6 +115,7 @@ Rails.application.routes.draw do
   resources :cash_on_hand_accounts, only: [:new, :create], module: :accounting
 
   namespace :store_front_module do
+    resources :purchase_order_line_item_registries, only: [:create]
     resources :unit_of_measurements, only: [:edit, :update], module: :settings
     resources :selling_prices, only: [:new, :create], module: :settings
     resources :stock_transfers, only: [:index, :show], module: :orders

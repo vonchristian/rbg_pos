@@ -3,6 +3,10 @@
     <div class="box box-success">
       <div class="box-header">
         <h3 class="box-title"> Purchases Section </h3>
+            <%= simple_form_for @registry, multipart: true, method: :create, url: :store_front_module_purchase_order_line_item_registries do |f| %>
+              <%= f.input :spreadsheet, as: :file, label: false %>
+                <%= f.submit 'Import (EXCEL)', class: 'btn btn-danger btn-xs pull-right' %>
+            <% end %>
       </div>
       <div class="box-body">
        <% if params[:search].present? %>
@@ -36,7 +40,6 @@
             <% end %>
           </tbody>
         </table>
-        <hr>
         <% if @purchase_order_line_items.present? %>
           <p class="text-muted"> ORDER DETAILS </p>
           <div class="table table-responsive">

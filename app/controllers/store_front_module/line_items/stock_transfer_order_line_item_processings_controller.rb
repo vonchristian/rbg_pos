@@ -4,12 +4,14 @@ module StoreFrontModule
       def new
         if params[:search].present?
           @products = Product.text_search(params[:search]).all
+          @line_items = StoreFrontModule::LineItems::PurchaseOrderLineItem.text_search(params[:search])
         end
         @cart = current_cart
         @stock_transfer_order_line_item = StoreFrontModule::LineItems::StockTransferOrderLineItemProcessing.new
         @stock_transfer_order = StoreFrontModule::Orders::StockTransferOrderProcessing.new
         @stock_transfer_order_line_items = @cart.stock_transfer_order_line_items.order(created_at: :desc)
       end
+
       def create
         @line_item = StoreFrontModule::LineItems::StockTransferOrderLineItemProcessing.new(line_item_params)
         if @line_item.valid?
@@ -28,7 +30,7 @@ module StoreFrontModule
       private
       def line_item_params
         params.require(:store_front_module_line_items_stock_transfer_order_line_item_processing).
-        permit(:quantity, :unit_of_measurement_id, :product_id, :unit_cost, :total_cost, :bar_code, :cart_id)
+        permit(:quantity, :unit_of_measurement_id, :product_id, :unit_cost, :total_cost, :bar_code, :cart_id, :purchase_order_line_item_id)
       end
     end
   end

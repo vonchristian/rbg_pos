@@ -39,9 +39,11 @@ module StoreFrontModule
         internal_uses_quantity -
         stock_transfers_quantity
       end
+
       def internal_uses_quantity
         internal_use_order_line_items.total
       end
+
       def stock_transfers_quantity
         stock_transfer_line_items.total
       end

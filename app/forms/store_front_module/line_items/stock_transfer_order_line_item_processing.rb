@@ -6,30 +6,63 @@ module StoreFrontModule
                     :quantity,
                     :cart_id,
                     :product_id,
-                    :barcode,
-                    :adjustment
+                    :bar_code,
+                    :purchase_order_line_item_id
       validates :quantity, numericality: { greater_than: 0.1 }
       validate :quantity_is_less_than_or_equal_to_available_quantity?
       def process!
         ActiveRecord::Base.transaction do
-          process_stock_transfer_order_line_item
+          process_line_item
         end
       end
 
       private
-      def process_stock_transfer_order_line_item
+      def process_line_item
+        if product_id.present? && bar_code.blank?
+          decrease_product_available_quantity
+        elsif purchase_order_line_item_id.present? && bar_code.present?
+            decrease_purchase_line_item_quantity
+        end
+      end
+
+      def decrease_product_available_quantity
+        tranfer = find_cart.stock_transfer_order_line_items.create!(
+            quantity:                 quantity,
+            unit_cost:                purchase_cost,
+            total_cost:               set_total_cost,
+            unit_of_measurement:      find_unit_of_measurement,
+            product_id:               product_id)
         requested_quantity = converted_quantity
         find_product.purchases.order(created_at: :asc).available.each do |purchase|
-          stock_transfer = find_cart.stock_transfer_order_line_items.create!(
+          temp_transfer = transfer.referenced_purchase_order_line_items.create!(
             quantity:                 quantity_for(purchase, requested_quantity),
             unit_cost:                purchase.purchase_cost,
             total_cost:               total_cost_for(purchase, quantity),
             unit_of_measurement:      find_product.base_measurement,
-            product_id:               product_id
-            )
-          requested_quantity -= stock_transfer.quantity
+            product_id:               product_id,
+            purchase_order_line_item: purchase)
+          requested_quantity -= temp_transfer.quantity
           break if requested_quantity.zero?
         end
+      end
+
+      def decrease_purchase_line_item_quantity
+        transfer = find_cart.stock_transfer_order_line_items.create!(
+          quantity: quantity,
+          unit_cost: purchase_cost,
+          total_cost: set_total_cost,
+          product_id: product_id,
+          unit_of_measurement: find_unit_of_measurement,
+          bar_code: bar_code
+          )
+        purchase = find_purchase_order_line_item
+        transfer.referenced_purchase_order_line_items.create!(
+            quantity:                 converted_quantity,
+            unit_cost:                purchase.purchase_cost,
+            total_cost:               total_cost_for(purchase, quantity),
+            unit_of_measurement:      find_product.base_measurement,
+            product_id:               product_id,
+            purchase_order_line_item: purchase)
       end
 
       def quantity_for(purchase, requested_quantity)
@@ -53,15 +86,25 @@ module StoreFrontModule
       def find_product
         Product.find_by_id(product_id)
       end
+      def purchase_cost
+        find_product.last_purchase_cost
+      end
+       def set_total_cost
+        find_product.last_purchase_cost * converted_quantity.to_f
+      end
+
       def available_quantity
-        if product_id.present? && barcode.blank?
+        if product_id.present? && bar_code.blank?
           find_product.available_quantity
-        elsif purchase_order_line_item_id.present? && barcode.present?
+        elsif purchase_order_line_item_id.present? && bar_code.present?
           find_purchase_order_line_item.available_quantity
         end
       end
       def find_cart
         Cart.find_by_id(cart_id)
+      end
+      def find_purchase_order_line_item
+        StoreFrontModule::LineItems::PurchaseOrderLineItem.find_by_id(purchase_order_line_item_id)
       end
 
       def quantity_is_less_than_or_equal_to_available_quantity?

@@ -26,12 +26,12 @@
             </tr>
           </thead>
           <tbody>
-            <% @orders.order(date: :desc).each do |stock_transfer| %>
+            <% @orders.order(date: :desc).each do |order| %>
               <tr>
-                <td><%= link_to stock_transfer.date.strftime("%B %e, %Y"), store_front_module_stock_transfer_path(stock_transfer) %></td>
-                <td><%= link_to stock_transfer.customer_name, store_front_module_stock_transfer_path(stock_transfer) %></td>
+                <td><%= link_to order.date.strftime("%B %e, %Y"), store_front_module_repair_services_order_path(order) %></td>
+                <td><%= link_to order.customer_name, store_front_module_repair_services_order_path(order) %></td>
                 <td>
-                  <% stock_transfer.line_items.each do |line_item|  %>
+                  <% order.line_items.each do |line_item|  %>
                     <div class="row">
                       <div class="col-md-9">
                         <%= line_item.product_name %><br>
@@ -44,8 +44,8 @@
                     <br>
                   <% end %>
                 </td>
-                <td><%= number_to_currency stock_transfer.line_items.total_cost %></td>
-                <td><%= stock_transfer.employee.try(:full_name) %></td>
+                <td><%= number_to_currency order.line_items.total_cost %></td>
+                <td><%= order.employee.try(:full_name) %></td>
               </tr>
             <% end %>
           </tbody>

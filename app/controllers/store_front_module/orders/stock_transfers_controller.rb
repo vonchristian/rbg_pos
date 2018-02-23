@@ -6,6 +6,10 @@ module StoreFrontModule
       end
       def show
         @order = StoreFrontModule::Orders::StockTransferOrder.find(params[:id])
+        respond_to do |format|
+          format.html
+          format.xlsx
+        end
       end
     end
   end

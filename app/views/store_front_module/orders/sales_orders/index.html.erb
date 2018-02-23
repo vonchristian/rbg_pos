@@ -4,7 +4,7 @@
       <div class="box-header with-border">
         <div class="row">
           <div class="col-md-3">
-            <h3 class="box-title"> sales Orders </h3>
+            <h3 class="box-title"> Sales Orders </h3>
           </div>
           <div class="col-md-5">
           </div>
@@ -49,6 +49,7 @@
                   </td>
                   <td><%= number_to_currency sales_order.total_cost %></td>
                   <td><%= sales_order.reference_number %></td>
+                  <td><%= sales_order.employee.try(:name) %></td>
                 </tr>
               <% end %>
             </tbody>

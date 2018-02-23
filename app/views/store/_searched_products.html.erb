@@ -11,21 +11,25 @@
                           <% end %>
                         </div>
                         <div class="col-md-2">
-                          <%=product.available_quantity %> <%= product.base_measurement_unit_code %><br>
-                          <small class="text-success">AVAILABLE</small>
+                          <b><%=product.available_quantity %> <%= product.base_measurement_unit_code %></b><br>
+                          <small class="text-success">IN STOCK</small>
                         </div>
                         <div class="col-md-3">
                         <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, autofocus: true %>
                       </div>
                       <div class="col-md-3">
                         <%= f.input :unit_of_measurement_id, label: 'Unit', collection: product.unit_of_measurements.all.map{|a| [a.unit_code, a.id] }, selected: product.base_measurement %>
-                        <%= f.input :product_id, input_html: { value: product.id }%>
+                        <%= f.input :product_id, input_html: { value: product.id }, as: :hidden %>
                         <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
                       </div>
 
                       <div class="col-md-2">
                         <br>
-                        <%= f.submit "Add", class: "btn btn-success" %>
+                        <% if product.available_quantity > 0 %>
+                          <%= f.submit "Add", class: "btn btn-success" %>
+                        <% else %>
+                          <span class="label bg-red"> OUT OF STOCK </span>
+                        <% end %>
                       </div>
                     </div>
 
