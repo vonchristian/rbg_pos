@@ -1,0 +1,15 @@
+<%= simple_form_for @account, url: :accounting_account do |f| %>
+  <%= f.input :name %>
+  <%= f.input :account_code %>
+  <%= f.input :contra %>
+  <%= f.input :main_account_id, collection: AccountingModule::Account.all.map{ |a| [a.name, a.id] } %>
+  <%= f.submit "Update" %>
+<% end %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#accounting_module_asset_main_account_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

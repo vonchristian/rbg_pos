@@ -10,11 +10,23 @@
             <div class="col-md-9">
               <h4 class="title"><%= @product.name.try(:upcase) %></h4>
               <p class="category"> <%= @product.description %> </p>
-
+              <div class="row">
+                <div class="col-md-3">
+                  <h4><%= @product.purchases_balance %></h4>
+                  <small>PURCHASES</small>
+                </div>
+                <div class="col-md-3">
+                  <h4><%= @product.sales_balance %></h4>
+                  <small>SALES</small>
+                </div>
+                <div class="col-md-3">
+                  <h4><%= @product.available_quantity %></h4>
+                  <small>IN STOCK</small>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <br>
         <div class="box-body">
           <ul class="nav nav-tabs">
             <li class="<%= 'active' if current_page?(product_path(@product)) %>">

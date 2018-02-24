@@ -53,9 +53,10 @@
     </div>
     <% if current_user.proprietor? %>
       <%= link_to 'Edit', edit_product_path(@product), class: "btn btn-warning btn-sm" %>
-      <%= link_to 'Add Unit Of Measurement', new_product_unit_of_measurement_path(@product) %>
     <% end %>
     <h4>Unit of Measurements</h4>
+      <%= link_to 'Add Unit Of Measurement', new_product_unit_of_measurement_path(@product) %>
+p
       <p>Base Measurement </p>
       Base Price <%=number_to_currency @product.base_measurement.try(:current_selling_price) %> <%= @product.base_measurement.try(:quantity) %>/ <%= @product.base_measurement.try(:unit_code) %>
       <hr>

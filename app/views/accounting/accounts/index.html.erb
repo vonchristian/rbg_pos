@@ -44,9 +44,9 @@
                 <% cache account do %>
                   <% if account.sub_accounts.present? %>
                      <tr data-link="<%=accounting_account_path(account)%>" class="myClass">
-                      <td> <%= account.code %><br>
+                      <td> <%= account.account_code %><br>
                         <% account.sub_accounts.each do |sub_account| %>
-                        &nbsp; &nbsp;  <%= sub_account.code %><br>
+                        &nbsp; &nbsp;  <%= sub_account.account_code %><br>
                         <% end %>
                       </td>
                       <td> <%= account.name %><br>
@@ -77,7 +77,10 @@
                   <% elsif account.main_account.blank? %>
                      <tr data-link="<%=accounting_account_path(account)%>" class="myClass">
                       <td> <%= account.account_code %></td>
-                      <td> <%= account.name %><td>
+                      <td> <%= account.name %><br>
+                        <%= link_to "Edit", edit_accounting_account_path(account) %>
+
+                        <td>
                       <td> <%= account.type.gsub("AccountingModule::", "")%></td>
                       <td> <%= number_to_currency account.debits_balance %></td>
                       <td> <%= number_to_currency account.credits_balance %></td>

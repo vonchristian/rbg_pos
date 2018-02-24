@@ -15,7 +15,7 @@
                                       <tr>
                                       <td><%=link_to stock.name, store_front_module_purchase_order_path(stock) %><br>
                                       <small><%= stock.bar_code %></small></td>
-                                      <td><%= stock.date.strftime("%B %e, %Y") %></td>
+                                      <td><%= stock.try(:date).try(:strftime, ("%B %e, %Y")) %></td>
                                       <td><%= stock.quantity %></td>
 
                                         <td><%= number_to_currency stock.unit_cost %></td>

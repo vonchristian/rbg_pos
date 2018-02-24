@@ -29,8 +29,8 @@
             <tbody>
               <% @sales_orders.each do |sales_order| %>
                 <tr>
-                  <td><%= sales_order.date.strftime("%B %e, %Y") %></td>
-                  <td><%= link_to sales_order.customer_name, store_front_module_sales_order_path(sales_order) %></td>
+                  <td><%=link_to sales_order.date.strftime("%B %e, %Y"), store_front_module_sales_order_path(sales_order) %></td>
+                  <td><%= link_to sales_order.try(:customer_name), store_front_module_sales_order_path(sales_order) %></td>
                   <td>
                     <% sales_order.sales_order_line_items.each do |line_item| %>
                       <div class="row">

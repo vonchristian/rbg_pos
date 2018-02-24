@@ -62,7 +62,10 @@
                   <% @products.each do |product| %>
                   <tr>
                   <td><%=link_to product.name, product %></td>
-                  <td><%= number_to_currency product.retail_price %></td>
+                  <td><% product.unit_of_measurements.each do |unit_of_measurement| %>
+                      <%= number_to_currency unit_of_measurement.price %> / <%= unit_of_measurement.unit_code %>
+                    <% end %>
+                   </td>
                   <td><%= product.balance %></td>
                   </tr>
                   <% end %>

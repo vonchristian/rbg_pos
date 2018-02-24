@@ -165,7 +165,7 @@ Rails.application.routes.draw do
   namespace :accounting do
     resources :finances, only: [:index]
     resources :entries, only: [:index, :show]
-    resources :accounts, only: [:index, :show, :new, :create] do
+    resources :accounts, only: [:index, :show, :new, :create, :edit, :update] do
     match "/deactivate" => "accounts#deactivate",  via: [:post], on: :member
 
     end
