@@ -9,7 +9,7 @@ module StoreFrontModule
         @purchase_order_line_item = StoreFrontModule::LineItems::PurchaseOrderLineItemProcessing.new
         @purchase_order = StoreFrontModule::Orders::PurchaseOrderProcessing.new
         @purchase_order_line_items = @cart.purchase_order_line_items.order(created_at: :desc)
-        @registry = Registries::PurchaseOrderLineItemRegistry.new
+        @registry = Uploads::PurchaseOrderLineItem.new
       end
       def create
         @line_item = StoreFrontModule::LineItems::PurchaseOrderLineItemProcessing.new(line_item_params)

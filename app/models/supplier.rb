@@ -12,21 +12,32 @@ class Supplier < ApplicationRecord
 
   has_many :vouchers, as: :payee
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", as: :commercial_document
+  has_attached_file :avatar,
+  styles: { large: "120x120>",
+           medium: "70x70>",
+           thumb: "40x40>",
+           small: "30x30>",
+           x_small: "20x20>"},
+  default_url: ":style/profile_default.jpg",
+  :path => ":rails_root/public/system/:attachment/:id/:style/:filename",
+  :url => "/system/:attachment/:id/:style/:filename"
   def name
     business_name
   end
+
   def accounts_payable
-		entries.credit_stock.all.map{|a| a.debit_amounts.pluck(:amount).sum }.sum
+    default_accounts_payable_account.debits_balance(commercial_document_id: self.id)
 	end
+
   def temporary_voucher_amounts
     voucher_amounts.where(voucher_id: nil)
   end
-
   def payments_total
-    payments.supplier_credit_payment.map{|a| a.debit_amounts.distinct.pluck(:amount).sum}.sum
+    default_accounts_payable_account.credits_balance(commercial_document_id: self.id)
   end
   def balance_total
-    accounts_payable - payments_total
+    default_accounts_payable_account.balance(commercial_document_id: self.id)
+
   end
   def default_accounts_payable_account
     return accounts_payable_account if accounts_payable_account.present?

@@ -1,43 +1,37 @@
 <% @line_items.each do |line_item| %>
-
-                    <%= simple_form_for @sales_order_line_item, url: :store_front_module_sales_order_line_item_processings do |f| %>
-                      <div class="row">
-                        <div class="col-md-3">
-                          <b><%= line_item.name.try(:upcase) %></b><br>
-
-                            <%= number_to_currency line_item.unit_of_measurement.price %>/<%= line_item.unit_code %>
-
-                        </div>
-                        <div class="col-md-2">
-                          <b><%=line_item.available_quantity %> <%= line_item.unit_code %></b><br>
-                          <small class="text-success">IN STOCK</small>
-                          </div>
-
-                        <div class="col-md-3">
-                        <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, autofocus: true, label: false %>
-                      </div>
-                      <div class="col-md-3">
-                        <%= f.input :unit_of_measurement_id, input_html: { value: line_item.unit_of_measurement_id}, as: :hidden %>
-                        <%= f.input :product_id, input_html: { value: line_item.product_id }, as: :hidden %>
-                        <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
-                        <%= f.input :bar_code, input_html: { value: params[:search] }, as: :hidden %>
-                        <%= f.input :purchase_order_line_item_id, input_html: { value: line_item.id }, as: :hidden %>
-                      </div>
-
-                      <div class="col-md-2">
-                        <% if line_item.available_quantity <= 0 %>
-                          <small class="label bg-red"> OUT OF STOCK </small>
-                        <% else %>
-                          <%= f.submit "Add to Cart", class: "btn btn-primary" %>
-                        <% end %>
-                      </div>
-                    </div>
-
-                      <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
-
-
-
-
-              <% end %>
+  <div class="row">
+    <div class="col-md-5">
+      <b><%= line_item.name.try(:upcase) %></b>
+      <% if line_item.available_quantity > 0 %>
+        &nbsp; <span class="badge bg-gray"><%= line_item.available_quantity %> left</span>
+      <% else %>
+        <span class="label bg-red"> Out Of Stock </span>
+      <% end %><br>
+      <span class="text-muted">
+        <i class="fa fa-tags"></i>
+          <%= number_to_currency line_item.unit_of_measurement.price %>
+        <i class="fa fa-barcode"></i> <%= line_item.bar_code %>
+      </span>
+    </div>
+  </div>
+  <br>
+    <%= simple_form_for @sales_order_line_item, url: :store_front_module_sales_order_line_item_processings do |f| %>
+      <div class="row">
+      <div class="col-md-3">
+        <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, autofocus: true, label: false %>
+        <%= f.input :unit_of_measurement_id, input_html: { value: line_item.unit_of_measurement_id}, as: :hidden %>
+        <%= f.input :product_id, input_html: { value: line_item.product_id }, as: :hidden %>
+        <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
+        <%= f.input :bar_code, input_html: { value: params[:search] }, as: :hidden %>
+        <%= f.input :purchase_order_line_item_id, input_html: { value: line_item.id }, as: :hidden %>
+      </div>
+      <div class="col-md-2">
+        <%= button_tag type: 'submit', class: "btn btn-success btn-sm" do %>
+          <i class="fa fa-shopping-basket" aria-hidden="true"></i> Add to Cart
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  <hr>
 <% end %>
-<hr>
+

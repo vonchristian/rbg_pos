@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180224001853) do
+ActiveRecord::Schema.define(version: 20180224080034) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -457,6 +457,10 @@ ActiveRecord::Schema.define(version: 20180224001853) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "accounts_payable_account_id"
+    t.string "avatar_file_name"
+    t.string "avatar_content_type"
+    t.integer "avatar_file_size"
+    t.datetime "avatar_updated_at"
     t.index ["accounts_payable_account_id"], name: "index_suppliers_on_accounts_payable_account_id"
     t.index ["business_name"], name: "index_suppliers_on_business_name", unique: true
   end

@@ -1,62 +1,110 @@
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="info-box">
+      <span class="info-box-icon bg-green"><i class="icon-basket-loaded"></i></span>
+
+      <div class="info-box-content">
+        <span class="info-box-text">ORDER</span>
+        <span class="info-box-number"><%= @sales_for_today.count %></span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="info-box">
+      <span class="info-box-icon bg-yellow"><i class="icon-basket-loaded"></i></span>
+
+      <div class="info-box-content">
+        <span class="info-box-text">LINE ITEMS</span>
+        <span class="info-box-number"><%= @sales_for_today.map{|a| a.line_items.count}.sum%></span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="info-box">
+      <span class="info-box-icon bg-blue"><i class="fa fa-line-chart"></i></span>
+
+      <div class="info-box-content">
+        <span class="info-box-text">INCOME</span>
+        <span class="info-box-number"><%= @sales_for_today.count %></span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+  </div>
+</div>
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-default">
-      <div class="box-header with-border">
-        <div class="row">
-          <div class="col-md-3">
-            <h3 class="box-title"> Sales Orders </h3>
-          </div>
-          <div class="col-md-5">
-          </div>
-          <div class="col-md-4">
-            <%= link_to 'New Sales', store_index_path, class: "btn btn-primary pull-right" %>
-          </div>
-        </div>
-      </div>
+    <div class="box box-solid">
+      <div class="box-footer">
+              <div class="row">
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block border-right">
+                    <span class="description-percentage text-<%= @sales_for_today.percentage_text_color %>"><i class="fa fa-caret-<%= @sales_for_today.caret_status %>"></i> 17%</span>
+                    <h5 class="description-header"><%= number_to_currency @sales_for_today.sum(&:total_cost) %></h5>
+                    <span class="description-text">TOTAL SALES</span>
+                  </div>
+                  <!-- /.description-block -->
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block border-right">
+                    <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>
+                    <h5 class="description-header"><%= number_to_currency @sales_for_today.sum(&:cost_of_goods_sold) %></h5>
+                    <span class="description-text">TOTAL COGS</span>
+                  </div>
+                  <!-- /.description-block -->
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block border-right">
+                    <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>
+                    <h5 class="description-header"><%= number_to_currency @sales_for_today.sum(&:income) %></h5>
+                    <span class="description-text">TOTAL PROFIT</span>
+                  </div>
+                  <!-- /.description-block -->
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-3 col-xs-6">
+                  <div class="description-block">
+                    <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>
+                    <h5 class="description-header">1200</h5>
+                    <span class="description-text">GOAL COMPLETIONS</span>
+                  </div>
+                  <!-- /.description-block -->
+                </div>
+              </div>
+              <!-- /.row -->
+            </div>
+            <!-- /.box-footer -->
+
       <div class="box-body">
-        <div class="table table-responsive">
-          <table class="table table-striped table-hover">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Customer</th>
-                <th>Items</th>
-                <th>Total Cost</th>
-                <th>Reference</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @sales_orders.each do |sales_order| %>
-                <tr>
-                  <td><%=link_to sales_order.date.strftime("%B %e, %Y"), store_front_module_sales_order_path(sales_order) %></td>
-                  <td><%= link_to sales_order.try(:customer_name), store_front_module_sales_order_path(sales_order) %></td>
-                  <td>
-                    <% sales_order.sales_order_line_items.each do |line_item| %>
-                      <div class="row">
-                        <div class="col-md-3">
-                          <%= line_item.quantity %>
-                        </div>
-                        <div class="col-md-6">
-                          <%= line_item.name %><br>
-                          <small class="text-muted"><%= number_to_currency line_item.unit_cost %></small>
-                        </div>
-                        <div class="col-md-3">
-                          <span class="pull-right"><%= number_to_currency line_item.total_cost %></span>
-                        </div>
-                      </div>
-                    <% end %>
-                  </td>
-                  <td><%= number_to_currency sales_order.total_cost %></td>
-                  <td><%= sales_order.reference_number %></td>
-                  <td><%= sales_order.employee.try(:name) %></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-          <center> <%= will_paginate @sales_orders %></center>
-        </div>
+        <hr>
+        <% @orders.each do |order| %>
+          <%= link_to store_front_module_sales_order_path(order) do %>
+            <div class="row text-muted">
+              <div class="col-md-1">
+                <%= image_tag(order.customer.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %>
+              </div>
+              <div class="col-md-4">
+                <b class="text-primary"><%= order.customer_name %></b><br>
+                <small class="text-muted"><i class="fa fa-clock-o"></i> <%= order.date.strftime("%b %e, %Y %I:%M %p") %></small>
+              </div>
+              <div class="col-md-2">
+                <span class="badge bg-gray"><%= order.line_items.count %> ITEMS </span>
+              </div>
+              <div class="col-md-3">
+                <h4><%= number_to_currency order.total_cost %></h4>
+              </div>
+
+            </div>
+            <hr>
+          <% end %>
+        <% end %>
+        <center><%= will_paginate @orders %></center>
       </div>
     </div>
   </div>
 </div>
+

@@ -30,10 +30,10 @@
              <% if current_page? supplier_purchase_orders_path(@supplier) %>
              <%=render 'suppliers/partials/purchase_orders' %>
              <% end %>
-             <% if current_page? supplier_account_index_path(@supplier) %>
-             <%=render 'suppliers/partials/account' %>
-             <% end %>
              <% if current_page? supplier_vouchers_path(@supplier) %>
              <%= render 'suppliers/partials/vouchers' %>
+             <% end %>
+             <% if current_page? supplier_account_index_path(@supplier) %>
+             <%= render 'suppliers/partials/account' %>
              <% end %>
 

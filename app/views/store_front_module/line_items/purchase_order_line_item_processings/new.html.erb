@@ -1,12 +1,10 @@
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-4">
     <div class="box box-success">
       <div class="box-header">
         <h3 class="box-title"> Purchases Section </h3>
-            <%= simple_form_for @registry, multipart: true, method: :create, url: :store_front_module_purchase_order_line_item_registries do |f| %>
-              <%= f.input :spreadsheet, as: :file, label: false %>
-                <%= f.submit 'Import (EXCEL)', class: 'btn btn-danger btn-xs pull-right' %>
-            <% end %>
+        <span class="help-block"> Generate purchases on this section </span>
+
       </div>
       <div class="box-body">
        <% if params[:search].present? %>
@@ -14,8 +12,8 @@
           <div class="input-group">
             <%= text_field_tag :search, params[:search], class: "form-control input-lg", placeholder: "Search Products..." %>
             <span class="input-group-btn">
-              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-success btn-lg") do %>
-                <i class="fa fa-search"></i> Search
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-default btn-lg") do %>
+                <i class="fa fa-search"></i>
               <% end %>
             </span>
           </div>
@@ -26,7 +24,7 @@
             <%= text_field_tag :search, params[:search], autofocus: true,  class: "form-control input-lg", placeholder: "Search Products..."  %>
             <span class="input-group-btn">
               <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-success btn-lg") do %>
-                <i class="fa fa-search"></i> Search
+                <i class="fa fa-search"></i>
               <% end %>
             </span>
           </div>
@@ -40,50 +38,51 @@
             <% end %>
           </tbody>
         </table>
-        <% if @purchase_order_line_items.present? %>
-          <p class="text-muted"> ORDER DETAILS </p>
-          <div class="table table-responsive">
-            <table class="table table-hover table-striped">
-              <thead>
-                <tr>
-                  <th><b>QTY</b></th>
-                  <th><b>DESCRIPTION</b></th>
-                  <th><span class="pull-right"><b>UNIT COST</b></span></th>
-                  <th><span class="pull-right"><b>TOTAL COST</b></span></th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @cart.purchase_order_line_items.each do |line_item| %>
-                  <tr>
-                    <td><%= line_item.quantity %> <%= line_item.unit_code %></td>
-                    <td width="300px"><b><%= line_item.name.try(:titleize) %></b><br> <span class="text-muted"><%= line_item.bar_code %></span>
-                    </td>
-                    <td>
-                      <span class="pull-right">
-                        <%= number_to_currency line_item.unit_cost %>
-                      </span>
-                    </td>
-                    <td>
-                      <span class="pull-right"><%=number_to_currency line_item.total_cost %></span>
-                    </td>
-                    <td>
-                    <%= link_to store_front_module_purchase_order_line_item_processing_path(line_item), method: :delete do %>
-                      <span class="fa fa-trash"></span>
-                    <% end %>
-                    </td>
-                  </tr>
-                <% end %>
-                <hr>
-              </tbody>
-            </table>
-          </div>
-        <% end %>
       </div>
     </div>
   </div>
-    <div class="col-md-4">
+    <div class="col-md-8">
       <div class="box box-success">
         <div class="box-body">
+          <% if @cart.purchase_order_line_items.present? %>
+        <% @cart.purchase_order_line_items.each do |line_item| %>
+          <div class="row">
+            <div class="col-md-2">
+              <center><%= line_item.quantity %></center>
+            </div>
+            <div class="col-md-5">
+              <b><%= line_item.name.try(:upcase) %></b><br>
+              <span class="text-muted">
+                <% if line_item.bar_code.present? %>
+                  <i class="fa fa-barcode"></i> <%= line_item.bar_code %> &nbsp;
+                <% end %>
+                <i class="fa fa-tags"></i> <%= number_to_currency line_item.unit_cost %>
+              </span>
+            </div>
+            <div class="col-md-4">
+              <span class="pull-right">
+                <%= number_to_currency line_item.total_cost %> &nbsp;
+                <%= link_to store_front_module_purchase_order_line_item_processing_path(line_item), method: :delete do %>
+                      <span class="fa fa-times text-danger"></span>
+                    <% end %>
+              </span>
+            </div>
+          </div>
+          <hr />
+        <% end %>
+        <div class="row">
+          <div class="col-md-2">
+          </div>
+          <div class="col-md-6">
+            <h4>TOTAL </h4>
+          </div>
+          <div class="col-md-3">
+            <span class="pull-right">
+              <h4><%= number_to_currency @cart.purchase_order_line_items.sum(&:total_cost) %></h4>
+            </span>
+          </div>
+        </div>
+      <% end %>
         <% if @cart.purchase_order_line_items.present? %>
           <%= simple_form_for @purchase_order, url: :store_front_module_purchase_order_processings do |f| %>
             <%= f.input :supplier_id, collection: Supplier.all.map{|a| [ a.name, a.id] } %>
@@ -98,4 +97,10 @@
 
     </div>
   </div>
-
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(".store_front_module_orders_purchase_order_line_item_processing_unit_of_measurement_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

@@ -18,7 +18,7 @@ module Registries
       end
     end
 
-    def create_or_find_transfer_order_line_item(row)
+    def create_or_line_item(row)
       transfer = StoreFrontModule::LineItems::PurchaseOrderLineItem.find_or_create_by(
         quantity: quantity(row),
         unit_cost: unit_cost(row),

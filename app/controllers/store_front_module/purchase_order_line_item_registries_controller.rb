@@ -1,10 +1,10 @@
 module StoreFrontModule
   class PurchaseOrderLineItemRegistriesController < ApplicationController
     def create
-      @registry = Registries::PurchaseOrderLineItemRegistry.create(registry_params)
+      @registry = Uploads::PurchaseOrderLineItem.new(registry_params)
       if @registry.valid?
-        @registry.save
-        redirect_to @registry, notice: 'imported successfully.'
+        @registry.process!
+        redirect_to new_store_front_module_purchase_order_line_item_processing_url
       else
         redirect_to new_store_front_module_purchase_order_line_item_processing_url, alert: 'Invalid file.'
       end
@@ -21,7 +21,7 @@ module StoreFrontModule
 
     private
     def registry_params
-      params.require(:registries_purchase_order_line_item_registry).permit(:spreadsheet)
+      params.require(:uploads_purchase_order_line_item).permit(:spreadsheet, :cart_id)
     end
   end
 end

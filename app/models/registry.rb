@@ -3,7 +3,7 @@ class Registry < ApplicationRecord
 	has_attached_file :spreadsheet, :path => ":rails_root/public/system/:attachment/:id/:filename"
   do_not_validate_attachment_file_type :spreadsheet
 
-  after_create_commit :parse_for_records
+  # after_create_commit :parse_for_records
 
   private
   def parse_for_records

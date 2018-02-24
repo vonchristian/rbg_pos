@@ -18,6 +18,12 @@ module StoreFrontModule
       def income
         total_cost - cost_of_goods_sold
       end
+      def self.caret_status
+        "up"
+      end
+      def self.percentage_text_color
+        "green"
+      end
     end
   end
 end

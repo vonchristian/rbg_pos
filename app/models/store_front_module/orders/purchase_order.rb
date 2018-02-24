@@ -8,6 +8,9 @@ module StoreFrontModule
       def supplier
         commercial_document
       end
+      def total_cost
+        purchase_order_line_items.sum(&:total_cost)
+      end
     end
   end
 end

@@ -7,7 +7,6 @@
         <div class="row">
           <div class="col-md-6">
             <h4 class="title"><span class="icon-basket-loaded"></span> Store</h4>
-            <p class="category">Search for products to add to cart</p>
           </div>
           <div class="col-md-6">
             <%=link_to 'New Other Sales', new_other_sale_path, class: "btn btn-primary btn-sm pull-right" %>
@@ -15,74 +14,90 @@
         </div>
       </div>
       <div class="box-body">
+      <% if params[:search].present? %>
+        <%=form_tag store_index_path, method: :get, id: "search-form" do %>
+           <div class="input-group">
+             <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search for items", type: "search" %>
+             <span class="input-group-btn">
+               <%= button_tag(type: 'submit', class: "btn btn-dedault") do %>
+                 <i class="icon-magnifier"></i>
+               <% end %>
+             </span>
+           </div>
+         <% end %>
+      <% else %>
       <%=form_tag store_index_path, method: :get, id: "search-form" do %>
          <div class="input-group">
-           <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", autofocus: true, placeholder: "Search...", type: "search" %>
+           <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", autofocus: true, placeholder: "Search for items", type: "search" %>
            <span class="input-group-btn">
              <%= button_tag(type: 'submit', class: "btn btn-dedault") do %>
-               <i class="icon-magnifier"></i> Search
+               <i class="icon-magnifier"></i>
              <% end %>
            </span>
          </div>
        <% end %>
+    <% end %>
+
        <br>
-       <% if@products.present? %>
+       <% if @products.present? %>
          <%= render 'store/searched_products' %>
        <% elsif @line_items.present? %>
          <%= render 'store/searched_line_item_results' %>
        <% end %>
-        <% if @cart.sales_order_line_items.present? %>
-       <div class="table table-responsive">
-        <table class="table table-hover table-striped">
-          <thead>
-            <tr>
-              <th>Quantity</th>
-              <th>Item</th>
-              <th>Unit Cost</th>
-              <th>Total Cost</th>
-            </tr>
-          </thead>
-          <tbody>
-
-            <% @cart.line_items.each do |line_item| %>
-              <tr>
-                <td><%= line_item.quantity %></td>
-                <td><%=line_item.name %><br>
-                  <small class="text-muted"><%=line_item.bar_code %></small>
-                </td>
-                <td><%= number_to_currency line_item.unit_cost %></td>
-                <td><%= number_to_currency line_item.total_cost %></td>
-                 <td>
-                    <%= link_to store_front_module_sales_order_line_item_processing_path(line_item), method: :delete do %>
-                      <span class="fa fa-trash"></span>
+      <% if @cart.sales_order_line_items.present? %>
+        <% @cart.line_items.each do |line_item| %>
+          <div class="row">
+            <div class="col-md-2">
+              <center><%= line_item.quantity %></center>
+            </div>
+            <div class="col-md-5">
+              <b><%= line_item.name.try(:upcase) %></b><br>
+              <span class="text-muted">
+                <% if line_item.bar_code.present? %>
+                  <i class="fa fa-barcode"></i> <%= line_item.bar_code %> &nbsp;
+                <% end %>
+                <i class="fa fa-tags"></i> <%= number_to_currency line_item.unit_cost %>
+              </span>
+            </div>
+            <div class="col-md-4">
+              <span class="pull-right">
+                <%= number_to_currency line_item.total_cost %> &nbsp;
+                <%= link_to store_front_module_sales_order_line_item_processing_path(line_item), method: :delete do %>
+                      <span class="fa fa-times text-danger"></span>
                     <% end %>
-                    </td>
-              </tr>
-            <% end %>
-            <tr>
-              <td><b>TOTAL</b></td>
-              <td></td>
-              <td></td>
-              <td><%= number_to_currency @cart.total_cost %></td>
-            </tr>
-           </tbody>
-          </table>
-        </div>
+              </span>
+            </div>
+          </div>
+          <hr />
         <% end %>
-      </div>
+        <div class="row">
+          <div class="col-md-2">
+          </div>
+          <div class="col-md-6">
+            <h4>TOTAL </h4>
+          </div>
+          <div class="col-md-3">
+            <span class="pull-right">
+              <h4><%= number_to_currency @cart.sales_order_line_items.sum(&:total_cost) %></h4>
+            </span>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
-        <% if @cart.line_items.any? %>
+</div>
+      <% if @cart.sales_order_line_items.present? %>
         <div class="col-md-5">
-          <div class="box box-primary">
+          <div class="box box-default">
             <div class="box-header">
               <div class="row">
                 <div class="col-md-9">
                   <h4 class="title"><span class="icon-basket-loaded"></span> Cart</h4>
                 </div>
                 <div class="col-md-3">
-                  <span class="pull-right"><%= link_to 'Empty Cart', cart_path(@cart), method: :delete, class: "btn btn-danger btn-sm" %>
-                  </span>
+                  <%=link_to cart_path(@cart), method: :delete do %>
+                    <i class="fa fa-trash text-danger"></i>
+                  <% end %>
                 </div>
               </div>
             </div>
@@ -93,16 +108,15 @@
                 <div class="col-md-10 col-md-offset-1">
                   <div class="row">
                 <div class="col-md-6">
-                  <h4 class="title"> Total </h4>
+                  <h4> TOTAL </h4>
                 </div>
                 <div class="col-md-6">
-                  <h4 class="title pull-right">
+                  <h4>
                     <%= number_to_currency @cart.total_cost %>
                   </h4>
                 </div>
               </div>
               <hr>
-
                   <%= f.input :customer_id, collection: Customer.all.map{ |a| [a.full_name, a.id] } %>
                   <%= f.input :cash_tendered, input_html: { id: 'cash_tendered', oninput: 'calculateOrderTotalCost()',  class: "input-lg" } %>
                   <%= f.input :discount_amount, label: "Discount", input_html: { id: 'discount_amount', oninput: 'calculateOrderTotalCost()', value: 0} %>
