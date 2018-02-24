@@ -15,12 +15,13 @@ class LineItem < ApplicationRecord
   belongs_to :unit_of_measurement, class_name: "StoreFrontModule::UnitOfMeasurement"
   # delegate   :product_unit, :supplier_business_name, :category_name, :stock_type, :retail_price, to: :stock
   delegate :name_and_barcode, to: :stock, prefix: true
-  delegate :unit_code, :conversion_multiplier, to: :unit_of_measurement
+  delegate :unit_code, :conversion_multiplier, to: :unit_of_measurement, allow_nil: true
   delegate :name, to: :product
 
   def date
-    order.date
+    order.date || self.created_at
   end
+
   def search
   end
   def product_name
@@ -64,7 +65,11 @@ class LineItem < ApplicationRecord
     all.sum(&:converted_quantity)
   end
   def converted_quantity
-    quantity * conversion_multiplier
+    if conversion_multiplier.present?
+      quantity * conversion_multiplier
+    else
+      quantity
+    end
   end
 
   private

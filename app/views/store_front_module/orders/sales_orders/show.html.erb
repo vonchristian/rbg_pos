@@ -25,7 +25,7 @@
               <% @order.line_items.each do |line_item| %>
                 <div class="row">
                   <div class="col-md-2">
-                    <%= line_item.quantity %> <%= line_item.unit_code %>
+                    <%= line_item.quantity %> <%= line_item.try(:unit_code) %>
                   </div>
                   <div class="col-md-4">
                     <%=line_item.product_name %><br>
