@@ -12,10 +12,10 @@
           <th>Employee </th>
         </thead>
 	      <tbody>
-	        <% @customer.orders.order(date: :desc).each do |order| %>
+	        <% @customer.sales_orders.order(date: :desc).each do |order| %>
 	          <tr>
 	            <% if order.line_items.count > 0  || order.description %>
-	            <td><%=link_to order.date.strftime("%B %e, %Y"), order %></td>
+	            <td><%=link_to order.date.strftime("%B %e, %Y"), order_path(order) %></td>
 	            <td><%= order.customer_full_name.try(:titleize) %></td>
 
 	            <td>

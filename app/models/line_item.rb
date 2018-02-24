@@ -2,6 +2,7 @@ class LineItem < ApplicationRecord
   extend StoreFrontModule::QuantityBalanceFinder
   include PgSearch
   pg_search_scope :text_search, against: [:bar_code]
+  multisearchable against: [:bar_code]
   has_one :sales_return
   belongs_to :commercial_document, polymorphic: true, optional: true
   belongs_to :cart, optional: true
@@ -65,6 +66,7 @@ class LineItem < ApplicationRecord
   def converted_quantity
     quantity * conversion_multiplier
   end
+
   private
   def exceeds_available_stock?
     errors[:base] << "Exceeded available stock" if quantity > stock.in_stock

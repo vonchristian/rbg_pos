@@ -34,6 +34,8 @@
           <tbody>
             <% if @products.present? %>
               <%= render 'store_front_module/line_items/sales_return_order_line_item_processings/searched_product_results' %>
+            <% elsif @line_items.present? %>
+              <%= render 'store_front_module/line_items/sales_return_order_line_item_processings/searched_line_item_results' %>
             <% end %>
           </tbody>
         </table>
@@ -65,7 +67,7 @@
                       <span class="pull-right"><%=number_to_currency line_item.total_cost %></span>
                     </td>
                     <td>
-                    <%= link_to store_front_module_stock_transfer_order_line_item_processing_path(line_item), method: :delete do %>
+                    <%= link_to store_front_module_sales_return_order_line_item_processing_path(line_item), method: :delete do %>
                       <span class="fa fa-trash"></span>
                     <% end %>
                     </td>

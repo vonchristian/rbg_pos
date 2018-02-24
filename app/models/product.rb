@@ -21,7 +21,7 @@ class Product < ApplicationRecord
   has_many :internal_uses, :class_name => 'StoreFrontModule::LineItems::InternalUseOrderLineItem'
 
     has_many :sales, :class_name => 'StoreFrontModule::LineItems::SalesOrderLineItem'
-    has_many :sales_orders, :through => :sales, :source => :order, :class_name => 'StoreFrontModule::Orders::SalesOrder'
+    has_many :sales_orders, :through => :sales, :source => :sales_order, :class_name => 'StoreFrontModule::Orders::SalesOrder'
     has_many :purchase_orders, :through => :purchases, :source => :order, :class_name => 'StoreFrontModule::Orders::PurchaseOrder'
     has_many :sales_returns, class_name: "StoreFrontModule::LineItems::SalesReturnOrderLineItem"
     has_many :purchase_returns, class_name: "StoreFrontModule::LineItems::PurchaseReturnOrderLineItem"

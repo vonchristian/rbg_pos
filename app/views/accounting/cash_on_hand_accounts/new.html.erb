@@ -2,5 +2,6 @@
   <%= f.error_notification %>
   <%= f.input :account_code %>
   <%= f.input :name %>
+  <%= f.input :main_account_id, input_html: { value: AccountingModule::Asset.find_by(name: "Cash and Cash Equivalents").id }, as: :hidden %>
   <%= f.submit %>
 <% end %>

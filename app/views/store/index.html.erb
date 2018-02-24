@@ -1,3 +1,4 @@
+<%= params[:search] %>
 
 <div class="row">
   <div class="col-md-7">
@@ -25,11 +26,12 @@
          </div>
        <% end %>
        <br>
-       <% if params[:search].present? && @products.exists? %>
+       <% if@products.present? %>
          <%= render 'store/searched_products' %>
        <% elsif @line_items.present? %>
          <%= render 'store/searched_line_item_results' %>
        <% end %>
+        <% if @cart.sales_order_line_items.present? %>
        <div class="table table-responsive">
         <table class="table table-hover table-striped">
           <thead>
@@ -41,10 +43,13 @@
             </tr>
           </thead>
           <tbody>
+
             <% @cart.line_items.each do |line_item| %>
               <tr>
                 <td><%= line_item.quantity %></td>
-                <td><%=line_item.name %></td>
+                <td><%=line_item.name %><br>
+                  <small class="text-muted"><%=line_item.bar_code %></small>
+                </td>
                 <td><%= number_to_currency line_item.unit_cost %></td>
                 <td><%= number_to_currency line_item.total_cost %></td>
                  <td>
@@ -63,6 +68,7 @@
            </tbody>
           </table>
         </div>
+        <% end %>
       </div>
     </div>
   </div>
@@ -99,7 +105,7 @@
 
                   <%= f.input :customer_id, collection: Customer.all.map{ |a| [a.full_name, a.id] } %>
                   <%= f.input :cash_tendered, input_html: { id: 'cash_tendered', oninput: 'calculateOrderTotalCost()',  class: "input-lg" } %>
-                  <%= f.input :discount, input_html: { id: 'discount_amount', oninput: 'calculateOrderTotalCost()', value: 0} %>
+                  <%= f.input :discount_amount, label: "Discount", input_html: { id: 'discount_amount', oninput: 'calculateOrderTotalCost()', value: 0} %>
                   <%= f.input :order_change, readonly: true, input_html: { id: 'change', class: "input-lg"} %>
                   <%= f.input :reference_number %>
                   <%= f.input :total_cost, input_html: { id: 'total_cost', value: @cart.total_cost }, as: :hidden %>

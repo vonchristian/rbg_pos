@@ -41,7 +41,7 @@ class ProductsController < ApplicationController
 	def show
 		@product = Product.find(params[:id])
 		@stocks = @product.stocks.all.paginate(page: params[:page], per_page: 30)
-		@orders = @product.orders.all.paginate(page: params[:page], per_page: 30)
+		@orders = @product.sales_orders.all.paginate(page: params[:page], per_page: 30)
 
 	end
 	def edit

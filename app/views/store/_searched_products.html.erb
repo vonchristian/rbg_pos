@@ -7,11 +7,13 @@
                         <div class="col-md-2">
                           <p><b><%= product.name.try(:upcase) %></b></p>
                           <% product.unit_of_measurements.each do |unit_of_measurement| %>
-                            <%= number_to_currency unit_of_measurement.price %>/<%= unit_of_measurement.unit_code %><br>
+                            <span class="label bg-gray">
+                              <%= number_to_currency unit_of_measurement.price %>/<%= unit_of_measurement.unit_code %>
+                            </span><br>
                           <% end %>
                         </div>
                         <div class="col-md-2">
-                          <b><%=product.available_quantity %> <%= product.base_measurement_unit_code %></b><br>
+                          <b><%=product.available_quantity %> <small><%= product.base_measurement_unit_code %></small></b><br>
                           <small class="text-success">IN STOCK</small>
                         </div>
                         <div class="col-md-3">

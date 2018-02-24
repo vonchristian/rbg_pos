@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180223102836) do
+ActiveRecord::Schema.define(version: 20180224001853) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(version: 20180223102836) do
     t.bigint "cash_paymentable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "discount_amount"
     t.index ["cash_paymentable_type", "cash_paymentable_id"], name: "index_paymentable_on_cash_payments"
   end
 

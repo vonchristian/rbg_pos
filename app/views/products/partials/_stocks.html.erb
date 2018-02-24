@@ -1,30 +1,4 @@
 <div class="tab-pane <%= 'active' if current_page?(product_stocks_path(@product)) %>" id="product-stocks">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="header">
-                              <div class="row">
-                                <div class="col-md-3">
-                                  <h4 class="title">Stocks</h4>
-                                  <p class="category">List of stocks</p>
-                                </div>
-                                <div class="col-md-6">
-                                  <%=form_tag stocks_path, method: :get, id: "search-form" do %>
-                                    <div class="input-group">
-                                      <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search stock...", type: "search" %>
-                                      <span class="input-group-btn">
-                                        <%= button_tag(type: 'submit', class: "btn") do %>
-                                          <i class="icon-magnifier"></i>
-                                        <% end %>
-                                      </span>
-                                    </div>
-                                  <% end %>
-                                </div>
-                                <div class="col-md-3">
-                                  <%= link_to 'New Stock', new_product_stock_path(@product), class: "btn btn-round btn-primary pull-right" %>
-                                </div>
-                              </div>
                              <div class="content table-responsive table-full-width">
                                 <table class="table table-striped">
                                     <thead>
@@ -32,33 +6,24 @@
                                       <th>Product</th>
                                       <th>Date </th>
                                       <th>Quantity</th>
-                                      <% if current_user.proprietor? %>
-                                        <th>Unit Cost</th>
-                                        <th>Total Cost</th>
-                                      <% end %>
-                                      <th> Price </th>
+                                      <th>Unit Cost</th>
+                                      <th>Total Cost</th>
                                       <th>Supplier</th>
-                                      <th></th>
                                     </thead>
                                     <tbody>
                                       <% @stocks.each do |stock| %>
                                       <tr>
-                                      <td><%=link_to stock.name, stock %><br>
-                                      <small><%= stock.barcode %></small></td>
+                                      <td><%=link_to stock.name, store_front_module_purchase_order_path(stock) %><br>
+                                      <small><%= stock.bar_code %></small></td>
                                       <td><%= stock.date.strftime("%B %e, %Y") %></td>
                                       <td><%= stock.quantity %></td>
-                                      <% if current_user.proprietor? %>
+
                                         <td><%= number_to_currency stock.unit_cost %></td>
                                         <td><%= number_to_currency stock.total_cost %></td>
-                                      <% end %>
-                                      <td><%= number_to_currency stock.retail_price %></td>
-                                      <td><%= stock.supplier_business_name %></td>
-                                      <td><% if current_user.proprietor? %>
-                                      <%= link_to 'Edit', edit_stock_path(stock), class: "btn btn-warning btn-sm" %>
-                                          <%= link_to 'Delete', stock_path(stock), method: :delete, class: "btn btn-danger btn-xs", data: { confirm: "Are you sure you want to destroy this stock?"} %>
-                                        <% end %>
 
-                                      </td>
+
+                                      <td><%= stock.supplier_business_name %></td>
+
 
                                       </tr>
                                       <% end %>

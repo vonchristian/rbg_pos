@@ -5,6 +5,7 @@ module StoreFrontModule
       has_many :sales_order_line_items, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem", foreign_key: 'order_id'
 
       delegate :name, to: :customer, prefix: true
+      delegate :discount_amount, to: :cash_payment
       def customer
         commercial_document
       end

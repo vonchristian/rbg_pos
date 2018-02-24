@@ -3,6 +3,10 @@ module Accounting
     def index
       @accounts = AccountingModule::Account.active.all.order(:account_code).all.paginate(page: params[:page], per_page: 35)
     end
+    def show
+      @account = AccountingModule::Account.find(params[:id])
+      @entries = @account.entries.order(entry_date: :desc).all.paginate(page: params[:page], per_page: 50)
+    end
     def deactivate
       @account = AccountingModule::Account.find(params[:id])
       @account.deactivate!

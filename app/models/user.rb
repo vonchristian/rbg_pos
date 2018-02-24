@@ -25,6 +25,10 @@ class User < ApplicationRecord
   :url => "/system/:attachment/:id/:style/:filename"
   do_not_validate_attachment_file_type :avatar
   delegate :balance, to: :default_cash_on_hand_account, prefix: true
+  def self.employee_for(cash_on_hand_account)
+    where(cash_on_hand_account: cash_on_hand_account).first
+  end
+
   def full_name
   	"#{first_name} #{last_name}"
   end

@@ -15,7 +15,7 @@ module Accounting
 
     private
     def account_params
-      params.require(:accounting_module_asset).permit(:account_code, :name)
+      params.require(:accounting_module_asset).permit(:account_code, :name, :main_account)
     end
   end
 end

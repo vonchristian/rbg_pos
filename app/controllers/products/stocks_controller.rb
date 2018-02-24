@@ -2,7 +2,7 @@ module Products
   class StocksController < ApplicationController
     def index
       @product = Product.find(params[:product_id])
-      @stocks = @product.stocks.all.paginate(page: params[:page], per_page: 50)
+      @stocks = @product.purchases.all.paginate(page: params[:page], per_page: 50)
     end
     def new
       @product = Product.find(params[:product_id])

@@ -17,7 +17,9 @@ module AccountingModule
 
     validates :type, presence: true
     validates :name, :account_code, presence: true, uniqueness: true
-
+    def self.cash_on_hand_accounts
+     AccountingModule::Account.find_by(name: 'Cash and Cash Equivalents').sub_accounts
+    end
     def self.active
       where(active: true)
     end
@@ -28,6 +30,7 @@ module AccountingModule
        "AccountingModule::Expense",
        "AccountingModule::Revenue"]
      end
+
     def self.balance(options={})
       if self.new.class == AccountingModule::Account
         raise(NoMethodError, "undefined method 'balance'")

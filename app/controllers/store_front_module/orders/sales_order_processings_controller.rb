@@ -20,6 +20,7 @@ module StoreFrontModule
                :order_change,
                :employee_id,
                :cart_id,
+               :discount_amount,
                :reference_number)
       end
     end

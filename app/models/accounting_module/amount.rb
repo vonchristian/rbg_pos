@@ -8,5 +8,8 @@ module AccountingModule
 
     delegate :name, to: :account, prefix: true
     delegate :recorder, :entry_date, :description, to: :entry
+    def self.total
+      sum(&:amount)
+    end
   end
 end

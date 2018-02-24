@@ -7,7 +7,9 @@ module StoreFrontModule
       has_many :purchase_return_order_line_items, class_name: "StoreFrontModule::LineItems::PurchaseReturnOrderLineItem", foreign_key: 'purchase_order_line_item_id'
       has_many :internal_use_order_line_items, class_name: "StoreFrontModule::LineItems::InternalUseOrderLineItem", foreign_key: 'purchase_order_line_item_id'
       has_many :stock_transfer_line_items, class_name: "StoreFrontModule::LineItems::StockTransferOrderLineItem", foreign_key: 'purchase_order_line_item_id'
-
+      has_many :returned_sales_line_items, class_name: "StoreFrontModule::LineItems::ReferencedSalesOrderLineItem", foreign_key: 'purchase_order_line_item_id'
+      delegate :supplier, to: :purchase_order
+      delegate :business_name, to: :supplier, prefix: true
       def self.processed
         select{|a| a.processed? }
       end
@@ -33,6 +35,7 @@ module StoreFrontModule
       end
 
       def available_quantity
+        returned_sales_line_items_quantity +
         converted_quantity -
         sold_quantity -
         purchase_returns_quantity -
@@ -46,6 +49,10 @@ module StoreFrontModule
 
       def stock_transfers_quantity
         stock_transfer_line_items.total
+      end
+
+      def returned_sales_line_items_quantity
+        returned_sales_line_items.total
       end
 
       def purchase_cost

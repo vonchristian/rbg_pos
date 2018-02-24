@@ -4,6 +4,7 @@ module StoreFrontModule
       def new
         if params[:search].present?
           @products = Product.text_search(params[:search]).all
+          @line_items = StoreFrontModule::LineItems::SalesOrderLineItem.text_search(params[:search])
         end
         @cart = current_cart
         @sales_return_order_line_item = StoreFrontModule::LineItems::SalesReturnOrderLineItemProcessing.new
@@ -20,11 +21,16 @@ module StoreFrontModule
           render :new
         end
       end
+      def destroy
+        @line_item = StoreFrontModule::LineItems::SalesReturnOrderLineItem.find(params[:id])
+        @line_item.destroy
+        redirect_to new_store_front_module_sales_return_order_line_item_processing_url, notice: "Removed successfully"
+      end
 
       private
       def line_item_params
         params.require(:store_front_module_line_items_sales_return_order_line_item_processing).permit(:quantity,
-          :unit_of_measurement_id, :product_id, :cart_id, :adjustment)
+          :unit_of_measurement_id, :product_id, :cart_id, :bar_code, :sales_order_line_item_id)
       end
     end
   end
