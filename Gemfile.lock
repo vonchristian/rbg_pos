@@ -363,6 +363,7 @@ DEPENDENCIES
   jquery-rails
   jquery-turbolinks
   jquery-ui-rails
+  listen
   memory_profiler
   mina-puma
   momentjs-rails (>= 2.9.0)

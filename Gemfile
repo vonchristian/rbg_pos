@@ -64,6 +64,7 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen'
   gem 'bullet'
+  gem 'listen'
 end
 
 group :test do

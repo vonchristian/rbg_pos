@@ -22,7 +22,7 @@
                                         <td><%= number_to_currency stock.total_cost %></td>
 
 
-                                      <td><%= stock.supplier_business_name %></td>
+                                      <td><%= stock.try(:supplier_business_name) %></td>
 
 
                                       </tr>
