@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180224080034) do
+ActiveRecord::Schema.define(version: 20180225010509) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -160,15 +160,12 @@ ActiveRecord::Schema.define(version: 20180224080034) do
 
   create_table "line_items", force: :cascade do |t|
     t.bigint "cart_id"
-    t.bigint "stock_id"
     t.decimal "unit_cost"
     t.decimal "total_cost"
     t.decimal "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "order_id"
-    t.decimal "markup_amount", default: "0.0"
-    t.bigint "work_order_id"
     t.bigint "user_id"
     t.string "search"
     t.bigint "stock_transfer_id"
@@ -191,34 +188,26 @@ ActiveRecord::Schema.define(version: 20180224080034) do
     t.index ["referenced_line_item_id"], name: "index_line_items_on_referenced_line_item_id"
     t.index ["referencer_type", "referencer_id"], name: "index_line_items_on_referencer_type_and_referencer_id"
     t.index ["sales_order_line_item_id"], name: "index_line_items_on_sales_order_line_item_id"
-    t.index ["stock_id"], name: "index_line_items_on_stock_id"
     t.index ["stock_transfer_id"], name: "index_line_items_on_stock_transfer_id"
     t.index ["type"], name: "index_line_items_on_type"
     t.index ["unit_of_measurement_id"], name: "index_line_items_on_unit_of_measurement_id"
     t.index ["user_id"], name: "index_line_items_on_user_id"
-    t.index ["work_order_id"], name: "index_line_items_on_work_order_id"
   end
 
   create_table "orders", force: :cascade do |t|
-    t.bigint "customer_id"
     t.datetime "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "employee_id"
     t.string "reference_number"
-    t.boolean "internal_use", default: false
-    t.bigint "technician_id"
     t.string "description"
-    t.string "barcode"
     t.string "search_term"
     t.string "type"
     t.string "commercial_document_type"
     t.bigint "commercial_document_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_orders"
-    t.index ["customer_id"], name: "index_orders_on_customer_id"
     t.index ["employee_id"], name: "index_orders_on_employee_id"
     t.index ["reference_number"], name: "index_orders_on_reference_number"
-    t.index ["technician_id"], name: "index_orders_on_technician_id"
     t.index ["type"], name: "index_orders_on_type"
   end
 
@@ -651,13 +640,9 @@ ActiveRecord::Schema.define(version: 20180224080034) do
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
   add_foreign_key "line_items", "stock_transfers"
-  add_foreign_key "line_items", "stocks"
   add_foreign_key "line_items", "unit_of_measurements"
   add_foreign_key "line_items", "users"
-  add_foreign_key "line_items", "work_orders"
-  add_foreign_key "orders", "customers"
   add_foreign_key "orders", "users", column: "employee_id"
-  add_foreign_key "orders", "users", column: "technician_id"
   add_foreign_key "payments", "orders"
   add_foreign_key "posts", "users"
   add_foreign_key "product_unit_service_charges", "product_units"
