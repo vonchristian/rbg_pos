@@ -57,9 +57,12 @@
         </div>
         <div class="box-body">
           <% @sales_for_today.limit(10).each do |order| %>
+            <%= link_to store_front_module_sales_order_path(order) do  %>
             <div class="row">
               <div class="col-md-2">
-                <%= image_tag(order.customer.avatar.url(:medium), class: "img-circle", height: 40, width: 40) %>
+                <% if order.commercial_document.present? && order.commercial_document.avatar.present? %>
+                  <%= image_tag(order.commercial_document.avatar.url(:medium), class: "img-circle", height: 40, width: 40) %>
+                <% end %>
               </div>
               <div class="col-md-6">
                 <b><%= order.commercial_document.try(:name) %></b><br>
@@ -71,6 +74,7 @@
               </div>
             </div>
             <br>
+            <% end %>
           <% end %>
           <center><%= link_to 'View All', store_front_module_sales_orders_path %></center>
       </div>

@@ -4,7 +4,6 @@ class Order < ApplicationRecord
 
   belongs_to :commercial_document, polymorphic: true, optional: true
   belongs_to :employee, class_name: "User", foreign_key: 'employee_id'
-
   has_one :cash_payment, as: :cash_paymentable, class_name: "StoreFrontModule::CashPayment"
   has_one :entry, as: :commercial_document, class_name: "AccountingModule::Entry", dependent: :destroy
   has_many :line_items, dependent: :destroy
@@ -14,6 +13,7 @@ class Order < ApplicationRecord
   delegate :total_cost, to: :payment, prefix: true, allow_nil: true
   delegate :full_name, to: :employee, prefix: true, allow_nil: true
   delegate :discount_amount, to: :cash_payment, allow_nil: true
+
   before_validation :set_date
 
   def self.credit

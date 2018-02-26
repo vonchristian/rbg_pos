@@ -42,7 +42,9 @@
           <%= link_to store_front_module_sales_order_path(order) do %>
             <div class="row text-muted">
               <div class="col-md-1">
-                <%= image_tag(order.customer.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %>
+                <% if order.commercial_document.present? && order.commercial_document.avatar.present? %>
+                  <%= image_tag(order.customer.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %>
+                <% end %>
               </div>
               <div class="col-md-4">
                 <b class="text-primary"><%= order.customer_name %></b><br>

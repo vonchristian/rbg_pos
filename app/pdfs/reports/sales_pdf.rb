@@ -45,8 +45,8 @@ module Reports
         [["DATE", "CUSTOMER", "ITEMS", "DISCOUNT", "TOTAL COST"]] +
         @orders_data ||= @employee.orders.ordered_on(from_date: (@from_date.beginning_of_day), to_date: @to_date.end_of_day).map{|o| [o.date.strftime("%B %e, %Y"), o.commercial_document.try(:name).try(:upcase), order_description(o), price(o.discount_amount), price(o.total_cost)] }
             else
-         [["DATE", "commercial_document", "ITEMS", "MODE OF PAYMENT", "DISCOUNT", "TOTAL COST", "TOTAL COST LESS DISCOUNT", "INCOME"]] +
-        @orders_data ||= @orders.ordered_on(from_date: (@from_date.beginning_of_day), to_date: @to_date.end_of_day).map{|o| [o.date.strftime("%B %e, %Y"), o.commercial_document.try(:name).try(:upcase), order_description(o), o.mode_of_payment, price(o.discount_amount), price(o.total_cost), price(o.total_cost_less_discount), price(o.income)] }
+         [["DATE", "CUSTOMER", "ITEMS", "DISCOUNT", "TOTAL COST"]] +
+        @orders_data ||= @orders.ordered_on(from_date: (@from_date.beginning_of_day), to_date: @to_date.end_of_day).map{|o| [o.date.strftime("%B %e, %Y"), o.commercial_document.try(:name).try(:upcase), order_description(o),  price(o.discount_amount), price(o.total_cost)] }
           end
     end
 
