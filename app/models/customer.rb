@@ -45,6 +45,7 @@ class Customer < ApplicationRecord
 	end
 
 	def accounts_receivable
+    other_credits_total +
     credit_sales_order_accounts_receivable_total +
     credit_repair_services_accounts_receivable_total
 	end
@@ -56,6 +57,13 @@ class Customer < ApplicationRecord
     end
     total.sum
   end
+  def other_credits_total
+    StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.debits_balance(commercial_document_id: self.id)
+  end
+  def other_credits
+    StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.debit_entries.where(commercial_document_id: self.id)
+  end
+
 
   def credit_repair_services_accounts_receivable_total
     total = []
@@ -95,7 +103,7 @@ class Customer < ApplicationRecord
   end
 
   def payment_entries
-    StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.entries.where(commercial_document: self)
+    StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.credit_entries.where(commercial_document: self)
   end
 
 

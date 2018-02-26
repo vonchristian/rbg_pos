@@ -20,4 +20,7 @@ class StoreFront < ApplicationRecord
   def default_spoilages_account
     AccountingModule::Expense.find_by(name: "Spoilage, Breakage and Losses (Selling/Marketing Cost)")
   end
+  def default_other_income_account
+    AccountingModule::Revenue.find_by(name: 'Other Income')
+  end
 end

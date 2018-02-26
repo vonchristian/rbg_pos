@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     resources :orders, only: [:index], module: :customers
     resources :repair_services, only: [:index], module: :customers
     resources :account, only: [:index], module: :customers
+    resources :other_credits, only: [:index, :show, :new, :create], module: :customers
 
   end
   resources :products do
