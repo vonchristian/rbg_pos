@@ -1,0 +1,40 @@
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="box box-solid">
+        <div class="box-header bg-gray">
+          <center><%= image_tag(@employee.avatar.url(:medium), height: 60, width: 60, class: "img-circle") %> </center>
+          <h4 class="title"><center><%= @employee.full_name.try(:upcase) %> </center></h4>
+        </div>
+        <div class="box-body">
+        <ul class="nav nav-tabs">
+          <li class= <%= 'active' if current_page?(employee_path(@employee)) %>>
+            <%= link_to "Info", employee_path(@employee) %>
+          </li>
+          <li class= <%= 'active' if current_page?(employee_sales_path(@employee)) %>>
+            <%= link_to "Sales", employee_sales_path(@employee) %>
+          </li>
+           <li class= <%= 'active' if current_page?(employee_reports_path(@employee)) %>>
+            <%= link_to "Reports", employee_reports_path(@employee) %>
+          </li>
+          <li class= <%= 'active' if current_page?(employee_entries_path(@employee)) %>>
+            <%= link_to "Journal Entries", employee_entries_path(@employee) %>
+          </li>
+        </ul>
+        <div class="tab-content">
+            <% if current_page? employee_path(@employee) %>
+              <%= render 'employees/partials/info' %>
+            <% end %>
+            <% if current_page? employee_sales_path(@employee) %>
+              <%= render 'employees/partials/orders' %>
+            <% end %>
+             <% if current_page? employee_entries_path(@employee) %>
+               <%=render 'employees/partials/account' %>
+            <% end %>
+            <% if current_page? employee_reports_path(@employee) %>
+              <%= render 'employees/partials/reports' %>
+            <% end %>
+
+
+
+

@@ -1,4 +1,4 @@
-<div class="tab-pane active" id="employee-info">
+<div class="tab-pane <%= 'active' if current_page? employee_path(@employee) %>" id="employee-info">
   <div class="content">
     <% if current_user.proprietor? %>
       <%= link_to 'Update Info', edit_user_path(@employee), class: "btn btn-warning btn-sm" %>
