@@ -56,14 +56,23 @@
           <h3 class="box-title"> Latest Sales </h3>
         </div>
         <div class="box-body">
-          <% @sales_for_today.each do |order| %>
+          <% @sales_for_today.limit(10).each do |order| %>
             <div class="row">
               <div class="col-md-2">
                 <%= image_tag(order.customer.avatar.url(:medium), class: "img-circle", height: 40, width: 40) %>
               </div>
+              <div class="col-md-6">
+                <b><%= order.commercial_document.try(:name) %></b><br>
+                <i class="fa fa-clock-o"></i> <%= order.date.strftime("%b %e, %I:%M %p") %>
+              </div>
+              <div class="col-md-3">
+                <%= number_to_currency order.total_cost %><br>
+                <span class="badge bg-green"><%= order.line_items.count %> Items</span>
+              </div>
             </div>
             <br>
           <% end %>
+          <center><%= link_to 'View All', store_front_module_sales_orders_path %></center>
       </div>
     </div>
   </div>
