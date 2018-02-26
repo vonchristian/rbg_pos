@@ -1,0 +1,79 @@
+<div class="row">
+  <div class="col-md-12">
+      <div class="col-md-7">
+        <div class="box box-solid">
+          <div class="box box-solid">
+      <div class="box-header bg-gray">
+        <center>
+          <%= image_tag(@order.commercial_document.avatar.url(:medium), class: "img-circle", height: 60, width: 60) %><br><br>
+        <h3 class="box-title"><%= @order.commercial_document.try(:name).try(:upcase) %></h3>
+        </center>
+      </div>
+      <hr>
+      <div class="box-body">
+         <span class="pull-right"><%= link_to 'Print(PDF)', order_path(@order, format: 'pdf'), class: "btn btn-default btn-sm" %></span>
+        <i class="icon-calendar"></i> <%= @order.date.strftime("%B %e, %Y") %><br>
+              <% @order.line_items.each do |line_item| %>
+                <div class="row">
+                  <div class="col-md-2">
+                    <%= line_item.quantity %> <%= line_item.unit_code %>
+                  </div>
+                  <div class="col-md-4">
+                    <%=line_item.product_name %><br>
+                    <small class="text-muted"><%= line_item.bar_code %></small>
+                  </div>
+                  <div class="col-md-2">
+                    <span class="pull-right"><%= number_to_currency line_item.total_cost %></span>
+                  </div>
+                  <div class="col-md-3">
+
+                  </div>
+                </div>
+                <hr>
+                <% end %>
+
+          </div>
+</div>
+</div>
+</div>
+  <div class="col-md-5">
+    <div class="box box-default">
+      <div class="box-header with-border">
+        <div class="row">
+          <div class="col-md-6">
+            <h4>TOTAL</h4>
+          </div>
+          <div class="col-md-6">
+            <h4>
+              <span class="pull-right">
+                <%= number_to_currency @order.total_cost %>
+              </span>
+            </h4>
+          </div>
+        </div>
+      </div>
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1">
+            <%= simple_form_for [@order, @payment], url: :store_front_module_credit_sales_order_payments do |f| %>
+              <%= f.error_notification %>
+              <%= f.input :date , as: :string, input_html: { class: "datepicker" } %>
+              <%= f.input :amount, as: :string %>
+              <span class="help-block"> Input total amount of payment. </span>
+              <%= f.input :expense_amount, label: "Discount/Tax", as: :string, input_html: { value: 0 } %>
+              <%= f.input :expense_account_id, collection: AccountingModule::Expense.all.map{ |a| [a.name, a.id] } %>
+              <%= f.input :order_id, input_html: { value: @order.id }, as: :hidden %>
+              <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+              <%= f.input :description %>
+              <%= f.input :reference_number %>
+              <div class="box-footer">
+                <%= f.submit "Save Payment", class: "btn btn-primary btn-block" %>
+              </div>
+              <br>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

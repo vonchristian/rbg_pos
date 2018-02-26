@@ -1,6 +1,7 @@
 class Supplier < ApplicationRecord
 	include PgSearch
 	pg_search_scope :text_search, against: [:business_name, :owner_name, :contact_number]
+  multisearchable against: [:business_name]
 	validates :business_name, presence: true
   belongs_to :accounts_payable_account, class_name: "AccountingModule::Account", optional: true
 	has_many :delivered_stocks, class_name: "Stock"
@@ -28,6 +29,13 @@ class Supplier < ApplicationRecord
   def accounts_payable
     default_accounts_payable_account.debits_balance(commercial_document_id: self.id)
 	end
+  def accounts_payable_vouchers_total
+    total = []
+    vouchers.each do |voucher|
+      total << default_accounts_payable_account.credits_balance(commercial_document_id: voucher.id)
+    end
+    total
+  end
 
   def temporary_voucher_amounts
     voucher_amounts.where(voucher_id: nil)

@@ -1,7 +1,7 @@
 class Customer < ApplicationRecord
 	include PgSearch
 	pg_search_scope :text_search, against: [:first_name, :last_name, :contact_number, :address]
-	has_many :orders
+	has_many :orders, as: :commercial_document
   has_many :repair_service_orders, class_name: "RepairServicesModule::RepairServiceOrder", as: :commercial_document
 	has_many :entries, through: :orders
   has_many :payments, as: :commercial_document, class_name: "AccountingModule::Entry"
@@ -43,12 +43,47 @@ class Customer < ApplicationRecord
 	def purchases_count
 		orders.count
 	end
+
 	def accounts_receivable
-    StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account.debits_balance(commercial_document_id: self.id)
+    credit_sales_order_accounts_receivable_total +
+    credit_repair_services_accounts_receivable_total
 	end
 
+  def credit_sales_order_accounts_receivable_total
+    total = []
+    sales_orders.each do |order|
+      total << StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.debits_balance(commercial_document_id: order.id)
+    end
+    total.sum
+  end
+
+  def credit_repair_services_accounts_receivable_total
+    total = []
+    work_orders.each do |order|
+      total << StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.debits_balance(commercial_document_id: order.id)
+    end
+    total.sum
+  end
+
   def payments_total
-    StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account.debits_balance(commercial_document_id: self.id)
+    credit_sales_order_payments_total +
+    credit_repair_services_payments_total
+  end
+
+  def credit_sales_order_payments_total
+    total = []
+    sales_orders.each do |order|
+      total << StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.credits_balance(commercial_document_id: order.id)
+    end
+    total.sum
+  end
+
+  def credit_repair_services_payments_total
+    total = []
+    work_orders.each do |order|
+      total << StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.credits_balance(commercial_document_id: order.id)
+    end
+    total.sum
   end
 
   def balance_total
@@ -58,5 +93,10 @@ class Customer < ApplicationRecord
   def with_credits?
     balance_total > 0
   end
+
+  def payment_entries
+    StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.entries.where(commercial_document: self)
+  end
+
 
 end

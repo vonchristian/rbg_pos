@@ -5,19 +5,17 @@ class Order < ApplicationRecord
   belongs_to :commercial_document, polymorphic: true, optional: true
   belongs_to :employee, class_name: "User", foreign_key: 'employee_id'
 
-  has_one :payment, dependent: :destroy
+  has_one :cash_payment, as: :cash_paymentable, class_name: "StoreFrontModule::CashPayment"
   has_one :entry, as: :commercial_document, class_name: "AccountingModule::Entry", dependent: :destroy
   has_many :line_items, dependent: :destroy
 
   delegate :full_name, to: :customer, prefix: true, allow_nil: true
   delegate :full_name, to: :technician, prefix: true, allow_nil: true
   delegate :total_cost, to: :payment, prefix: true, allow_nil: true
-  delegate :mode_of_payment, :discount_amount, :stock_transfer?, :credit?, :cash?, :total_cost, :total_cost_less_discount, to: :payment,  allow_nil: true
   delegate :full_name, to: :employee, prefix: true, allow_nil: true
-
+  delegate :discount_amount, to: :cash_payment, allow_nil: true
   before_validation :set_date
 
-  accepts_nested_attributes_for :payment
   def self.credit
     all.select{|a| a.credit? }
   end
@@ -57,15 +55,6 @@ class Order < ApplicationRecord
 
   def line_items_name_and_barcode
     line_items.map{|a| a.stock_name_and_barcode }.to_s.gsub("[", "").gsub("]", "").gsub('"', "")
-  end
-
-
-  def mode_of_payment_color
-    if cash?
-      'success'
-    else
-      'danger'
-    end
   end
 
   def cost_of_goods_sold

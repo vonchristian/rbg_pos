@@ -25,7 +25,11 @@
 
                       <div class="col-md-2">
                         <br>
-                        <%= f.submit "Add", class: "btn btn-success" %>
+                        <% if product.available_quantity > 0 %>
+                          <%= f.submit "Add", class: "btn btn-success" %>
+                        <% else %>
+                          <label class="label bg-red"> OUT OF STOCK </label>
+                        <% end %>
                       </div>
                     </div>
 

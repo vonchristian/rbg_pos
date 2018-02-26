@@ -14,6 +14,10 @@ Rails.application.routes.draw do
   resources :store, only: [:index]
 	resources :customers do
     resources :payments, only: [:new, :create], module: :customers
+    resources :orders, only: [:index], module: :customers
+    resources :repair_services, only: [:index], module: :customers
+    resources :account, only: [:index], module: :customers
+
   end
   resources :products do
     resources :unit_of_measurements, only: [:new, :create]
@@ -43,22 +47,11 @@ Rails.application.routes.draw do
     resources :remittances, only: [:new, :create]
     resources :expenses, only: [:new, :create]
   end
-  resources :line_items, only: [:destroy] do
-    resources :sales_returns, only: [:new, :create], module: :line_items
-    resources :stock_transfer_sales_returns, only: [:new, :create], module: :line_items
-  end
 
-  resources :job_orders, only: [:index, :new, :create]
-  resources :stocks, only: [:new, :create, :index, :show, :edit, :update, :destroy] do
-    resources :transfers, only: [:new, :create], module: :stocks
-  end
-  resources :sales_returns, only: [:index]
   resources :settings, only: [:index]
   resources :branches, only: [:new, :create]
   resources :businesses, only: [:edit, :update]
-  resources :warranties, only: [:index] do
-    resources :releases, only: [:create], module: :warranties
-  end
+
   resources :supplier_registrations, only: [:new, :create]
   namespace :suppliers do
     resources :merge_accounts, only: [:new, :create]
@@ -70,7 +63,6 @@ Rails.application.routes.draw do
     resources :vouchers, only: [:index, :create], module: :suppliers
     resources :payments, only: [:new, :create], module: :suppliers
   end
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   resources :users, only: [:edit, :update]
   resources :registries, only: [:create, :show, :destroy]
   resources :employees, only: [:index, :show, :edit, :update] do
@@ -82,7 +74,6 @@ Rails.application.routes.draw do
   resources :work_order_statuses, only: [:edit, :update]
   namespace :computer_repair_section do
     resources :dashboard, only: [:index]
-
     resources :work_orders do
       resources :service_charges, only: [:new, :create], module: :work_orders
       resources :additional_charges, only: [:new, :create], module: :work_orders
@@ -98,12 +89,7 @@ Rails.application.routes.draw do
   resources :product_units, shallow: true do
     resources :accessories, only: [:new, :create]
   end
-  resources :warranties, only: [:edit, :update]
-  resources :branches, only: [:index, :show] do
-    resources :stock_transfers, only: [:new, :create], module: :branches
-    resources :line_items, only: [:create], module: :branches
-  end
-  resources :stock_transfers, only: [:index, :show, :destroy]
+
   resources :sections, only: [:new, :create]
   resources :other_sales, only: [:new, :create]
   resources :entries, only: [:destroy]
@@ -115,10 +101,17 @@ Rails.application.routes.draw do
   resources :cash_on_hand_accounts, only: [:new, :create], module: :accounting
 
   namespace :store_front_module do
+    resources :customers, only: [:show] do
+      resources :credit_sales_order_line_item_processings, only: [:new, :create, :destroy]
+      resources :credit_sales_order_processings, only: [:create], module: :order_processings
+    end
+    resources :credit_sales_orders, only: [:show] do
+      resources :payments, only: [:new, :create], module: :credit_sales_orders
+    end
+    resources :line_items, only: [:show]
     resources :spoilages, only: [:index, :show], module: :orders
     resources :spoilage_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items
     resources :spoilage_order_processings, only: [:create], module: :orders
-
     resources :purchase_order_line_item_registries, only: [:create]
     resources :unit_of_measurements, only: [:edit, :update], module: :settings
     resources :selling_prices, only: [:new, :create], module: :settings
@@ -142,8 +135,8 @@ Rails.application.routes.draw do
     resources :stock_transfer_order_processings, only: [:create], module: :orders
     resources :sales_return_order_processings, only: [:create], module: :orders
     resources :internal_use_order_processings, only: [:create], module: :orders
-
   end
+
   resources :voucher_amounts, only: [:destroy]
   resources :vouchers, only: [:index, :show] do
     resources :disbursements, only: [:new, :create], module: :vouchers
@@ -170,5 +163,7 @@ Rails.application.routes.draw do
 
     end
   end
+  resources :inventories, only: [:index, :show]
+  resources :dashboard, only: [:index]
 
 end

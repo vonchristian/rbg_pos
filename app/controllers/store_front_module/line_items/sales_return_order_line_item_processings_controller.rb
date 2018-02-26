@@ -18,7 +18,7 @@ module StoreFrontModule
           @sales_return_order_line_item.process!
           redirect_to new_store_front_module_sales_return_order_line_item_processing_path, notice: "added to cart"
         else
-          render :new
+          render :new, notice: "DASDAS"
         end
       end
       def destroy

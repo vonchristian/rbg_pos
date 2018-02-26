@@ -1,0 +1,53 @@
+<div class="content">
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-solid">
+      <div class="box-header">
+        <div class="row">
+          <div class="col-md-1">
+            <%=image_tag(@customer.avatar.url(:medium), class: "img-circle", height: 50, width: 50) %>
+          </div>
+          <div class="col-md-9">
+            <h4 class="title"><%= @customer.full_name.try(:upcase) %></h4>
+            <p class="category"> Address </p>
+          </div>
+        </div>
+      </div>
+      <br>
+<div class="box-body">
+        <ul class="nav nav-tabs">
+          <li class= <%= 'active' if current_page?(customer_path(@customer)) %>>
+            <%= link_to "Info", customer_path(@customer) %>
+          </li>
+          <li class= <%= 'active' if current_page?(customer_orders_path(@customer)) %>>
+            <%= link_to "Sales", customer_orders_path(@customer) %>
+          </li>
+          <li class= <%= 'active' if current_page?(customer_repair_services_path(@customer)) %>>
+            <%= link_to "Services", customer_repair_services_path(@customer) %>
+          </li>
+          <li class= <%= 'active' if current_page?(customer_account_index_path(@customer)) %>>
+            <%= link_to "Account", customer_account_index_path(@customer) %>
+          </li>
+        </ul>
+        <div class="tab-content">
+            <% if current_page? customer_path(@customer) %>
+              <%= render 'customers/partials/info' %>
+            <% end %>
+            <% if current_page? customer_orders_path(@customer) %>
+              <%=render 'customers/partials/orders' %>
+            <% end %>
+            <% if current_page? customer_repair_services_path(@customer) %>
+              <%=render 'customers/partials/repair_services' %>
+            <% end %>
+            <% if current_page? customer_account_index_path(@customer) %>
+              <%=render 'customers/partials/account' %>
+            <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+

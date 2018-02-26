@@ -8,7 +8,7 @@ class Product < ApplicationRecord
 
   belongs_to :category, optional: true
 	has_many :stocks
-	has_many :sold_items, through: :stocks, class_name: 'LineItem', source: :line_items
+	has_many :line_items
 	has_many :orders, through: :sold_items
 	has_many :sales_returns, through: :sold_items
 	has_many :returned_items, through: :sold_items,  source: :sales_return #Sales Return
@@ -20,13 +20,14 @@ class Product < ApplicationRecord
   has_many :purchases, :class_name => 'StoreFrontModule::LineItems::PurchaseOrderLineItem'
   has_many :internal_uses, :class_name => 'StoreFrontModule::LineItems::InternalUseOrderLineItem'
 
-    has_many :sales, :class_name => 'StoreFrontModule::LineItems::SalesOrderLineItem'
-    has_many :sales_orders, :through => :sales, :source => :sales_order, :class_name => 'StoreFrontModule::Orders::SalesOrder'
-    has_many :purchase_orders, :through => :purchases, :source => :order, :class_name => 'StoreFrontModule::Orders::PurchaseOrder'
-    has_many :sales_returns, class_name: "StoreFrontModule::LineItems::SalesReturnOrderLineItem"
-    has_many :purchase_returns, class_name: "StoreFrontModule::LineItems::PurchaseReturnOrderLineItem"
-    has_many :spoilages, class_name: "StoreFrontModule::LineItems::SpoilageOrderLineItem"
-    has_many :stock_transfers, class_name: "StoreFrontModule::LineItems::StockTransferOrderLineItem"
+  has_many :sales, :class_name => 'StoreFrontModule::LineItems::SalesOrderLineItem'
+  has_many :sales_orders, :through => :sales, :source => :sales_order, :class_name => 'StoreFrontModule::Orders::SalesOrder'
+  has_many :purchase_orders, :through => :purchases, :source => :order, :class_name => 'StoreFrontModule::Orders::PurchaseOrder'
+  has_many :sales_returns, class_name: "StoreFrontModule::LineItems::SalesReturnOrderLineItem"
+  has_many :purchase_returns, class_name: "StoreFrontModule::LineItems::PurchaseReturnOrderLineItem"
+  has_many :spoilages, class_name: "StoreFrontModule::LineItems::SpoilageOrderLineItem"
+  has_many :stock_transfers, class_name: "StoreFrontModule::LineItems::StockTransferOrderLineItem"
+  has_many :selling_prices, class_name: "StoreFrontModule::SellingPrice"
 	has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",
@@ -52,11 +53,12 @@ class Product < ApplicationRecord
     all.select{ |a| a.out_of_stock? }
   end
   def self.most_bought
-    all.to_a.sort_by(&:number_of_sold_items).reverse
+    all.to_a.sort_by(&:line_items_count).reverse
   end
-  def number_of_sold_items
-    sold_items.count
+  def line_items_count
+    line_items.total
   end
+
   def low_on_stock?
     !out_of_stock? && low_stock_count > in_stock
   end

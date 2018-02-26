@@ -1,4 +1,4 @@
-<div class="tab-pane" id="customer-account">
+<div class="tab-pane <%= 'active' if current_page? customer_account_index_path(@customer) %>">
   <div class="content">
     <div class="row">
       <div class="col-md-3">
@@ -32,23 +32,14 @@
           </tr>
         </thead>
         <tbody>
-          <% @customer.payments.customer_credit_payment.each do |payment| %>
+          <% @payments.each do |payment| %>
             <tr>
-              <td><%= payment.entry_date.strftime("%B %e, %Y") %></td>
+              <td><%= link_to  payment.entry_date.strftime("%B %e, %Y"), accounting_entry_path(payment) %></td>
               <td><%= payment.description %></td>
               <td><%= number_to_currency payment.debit_amounts.sum(:amount) %></td>
               <td><%= payment.user.try(:full_name) %></td>
+              <td><%= payment.recorder_name %></td>
             </tr>
-          <% end %>
-          <% @customer.work_orders.each do |work_order| %>
-          <% work_order.payment_entries.each do |payment| %>
-            <tr>
-              <td><%= payment.entry_date.strftime("%B %e, %Y") %></td>
-              <td><%= payment.description %></td>
-              <td><%= number_to_currency payment.amount %></td>
-              <td><%= payment.recorder.try(:full_name) %></td>
-            </tr>
-          <% end %>
           <% end %>
         </tbody>
       </table>

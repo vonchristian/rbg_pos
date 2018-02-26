@@ -18,7 +18,7 @@ module StoreFrontModule
           @line_item.process!
           redirect_to new_store_front_module_stock_transfer_order_line_item_processing_url, notice: "added successfully"
         else
-          render :new
+          render :new, alert: "Error"
         end
       end
       def destroy
@@ -30,7 +30,7 @@ module StoreFrontModule
       private
       def line_item_params
         params.require(:store_front_module_line_items_stock_transfer_order_line_item_processing).
-        permit(:quantity, :unit_of_measurement_id, :product_id, :unit_cost, :total_cost, :bar_code, :cart_id, :purchase_order_line_item_id)
+        permit(:quantity, :unit_of_measurement_id, :product_id, :bar_code, :cart_id, :purchase_order_line_item_id)
       end
     end
   end

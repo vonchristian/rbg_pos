@@ -1,4 +1,4 @@
-
+<p>Sales for Today (<%= Time.zone.now.strftime("%b %e, %Y") %>)</p>
 <div class="row">
   <div class="col-md-4">
     <div class="info-box">
@@ -24,60 +24,17 @@
   </div>
   <div class="col-md-4">
     <div class="info-box">
-      <span class="info-box-icon bg-blue"><i class="fa fa-line-chart"></i></span>
+      <span class="info-box-icon bg-blue"><i class="icon-people"></i></span>
 
       <div class="info-box-content">
-        <span class="info-box-text">INCOME</span>
+        <span class="info-box-text">CUSTOMERS</span>
         <span class="info-box-number"><%= @sales_for_today.count %></span>
       </div>
       <!-- /.info-box-content -->
     </div>
   </div>
 </div>
-<div class="row">
-  <div class="col-md-12">
-    <div class="box box-solid">
-      <div class="box-footer">
-              <div class="row">
-                <div class="col-sm-3 col-xs-6">
-                  <div class="description-block border-right">
-                    <span class="description-percentage text-<%= @sales_for_today.percentage_text_color %>"><i class="fa fa-caret-<%= @sales_for_today.caret_status %>"></i> 17%</span>
-                    <h5 class="description-header"><%= number_to_currency @sales_for_today.sum(&:total_cost) %></h5>
-                    <span class="description-text">TOTAL SALES</span>
-                  </div>
-                  <!-- /.description-block -->
-                </div>
-                <!-- /.col -->
-                <div class="col-sm-3 col-xs-6">
-                  <div class="description-block border-right">
-                    <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>
-                    <h5 class="description-header"><%= number_to_currency @sales_for_today.sum(&:cost_of_goods_sold) %></h5>
-                    <span class="description-text">TOTAL COGS</span>
-                  </div>
-                  <!-- /.description-block -->
-                </div>
-                <!-- /.col -->
-                <div class="col-sm-3 col-xs-6">
-                  <div class="description-block border-right">
-                    <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>
-                    <h5 class="description-header"><%= number_to_currency @sales_for_today.sum(&:income) %></h5>
-                    <span class="description-text">TOTAL PROFIT</span>
-                  </div>
-                  <!-- /.description-block -->
-                </div>
-                <!-- /.col -->
-                <div class="col-sm-3 col-xs-6">
-                  <div class="description-block">
-                    <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>
-                    <h5 class="description-header">1200</h5>
-                    <span class="description-text">GOAL COMPLETIONS</span>
-                  </div>
-                  <!-- /.description-block -->
-                </div>
-              </div>
-              <!-- /.row -->
-            </div>
-            <!-- /.box-footer -->
+  <div class="box box-solid">
 
       <div class="box-body">
         <hr>

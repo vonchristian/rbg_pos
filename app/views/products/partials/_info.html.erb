@@ -12,61 +12,44 @@
           </div>
         </div>
         <br>
-        <div class="row">
-          <div class="col-md-6">
-            Delivered Items
-          </div>
-          <div class="col-md-6">
-            <%= number_to_currency @product.delivered_items_count, unit: "" %>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-md-6">
-            Sold Items
-          </div>
-          <div class="col-md-6">
-            <%= number_to_currency @product.sold_items_count, unit: "" %>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-md-6">
-            Transferred Stocks
-          </div>
-          <div class="col-md-6">
-            <%= number_to_currency @product.transferred_stocks_count, unit: "" %>
-          </div>
-        </div>
-        <br>
-
-
-        <div class="row">
-          <div class="col-md-6">
-            In Stock
-          </div>
-          <div class="col-md-6">
-            <%= number_to_currency @product.in_stock, unit: "" %>
-          </div>
-        </div>
       </div>
     </div>
     <% if current_user.proprietor? %>
       <%= link_to 'Edit', edit_product_path(@product), class: "btn btn-warning btn-sm" %>
     <% end %>
+    <hr>
     <h4>Unit of Measurements</h4>
       <%= link_to 'Add Unit Of Measurement', new_product_unit_of_measurement_path(@product) %>
-p
-      <p>Base Measurement </p>
-      Base Price <%=number_to_currency @product.base_measurement.try(:current_selling_price) %> <%= @product.base_measurement.try(:quantity) %>/ <%= @product.base_measurement.try(:unit_code) %>
-      <hr>
     <% @product.unit_of_measurements.each do |unit| %>
-      <%= unit.quantity %>
-      <%= unit.unit_code %>
-      <%= number_to_currency unit.price %>
-      <%= link_to "Update Info", edit_store_front_module_unit_of_measurement_path(unit), class: "btn btn-warning btn-xs" %>
-      <%= link_to "Update Price", new_store_front_module_selling_price_path(product_id: @product.id, unit_of_measurement_id: unit.id), class: "btn btn-warning btn-xs" %>
-
+      <div class="row">
+        <div class="col-md-2">
+          <%= unit.quantity %> /
+          <%= unit.unit_code %>
+        </div>
+        <div class="col-md-2">
+          <%= number_to_currency unit.price %>
+        </div>
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-4">
+          <%= link_to "Update Info", edit_store_front_module_unit_of_measurement_path(unit), class: "btn btn-warning btn-xs" %>
+          <%= link_to "Update Price", new_store_front_module_selling_price_path(product_id: @product.id, unit_of_measurement_id: unit.id), class: "btn btn-warning btn-xs" %>
+        </div>
+      </div>
+      <br>
     <% end %>
+    <hr>
+    <h4>Price History</h4>
+      <% @product.selling_prices.each do |price| %>
+        <div class="row">
+          <div class="col-md-3">
+            <%= price.date.strftime("%B %e, %Y") %>
+          </div>
+          <div class="col-md-3">
+            <%= number_to_currency price.price %>
+          </div>
+        </div>
+        <br>
+      <% end %>
   </div>
 </div>

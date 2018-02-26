@@ -1,0 +1,133 @@
+
+<div class="row">
+  <div class="col-md-7">
+    <div class="box box-danger">
+      <div class="box-header with-border">
+        <div class="row">
+          <div class="col-md-6">
+            <h4 class="title"><span class="icon-basket-loaded"></span> Credit Sales</h4>
+          </div>
+
+        </div>
+      </div>
+      <div class="box-body">
+      <% if params[:search].present? %>
+        <%=form_tag new_store_front_module_customer_credit_sales_order_line_item_processing_path(@customer), method: :get, id: "search-form" do %>
+           <div class="input-group">
+             <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search for items", type: "search" %>
+             <span class="input-group-btn">
+               <%= button_tag(type: 'submit', class: "btn btn-dedault") do %>
+                 <i class="icon-magnifier"></i>
+               <% end %>
+             </span>
+           </div>
+         <% end %>
+      <% else %>
+      <%=form_tag new_store_front_module_customer_credit_sales_order_line_item_processing_path(@customer), method: :get, id: "search-form" do %>
+         <div class="input-group">
+           <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", autofocus: true, placeholder: "Search for items", type: "search" %>
+           <span class="input-group-btn">
+             <%= button_tag(type: 'submit', class: "btn btn-dedault") do %>
+               <i class="icon-magnifier"></i>
+             <% end %>
+           </span>
+         </div>
+       <% end %>
+    <% end %>
+
+       <br>
+       <% if @products.present? %>
+         <%= render 'store_front_module/credit_sales_order_line_item_processings/searched_product_results' %>
+       <% elsif @line_items.present? %>
+         <%= render 'store_front_module/credit_sales_order_line_item_processings/searched_line_item_results' %>
+       <% end %>
+      <% if @cart.sales_order_line_items.present? %>
+        <% @cart.line_items.each do |line_item| %>
+          <div class="row">
+            <div class="col-md-2">
+              <center><%= line_item.quantity %></center>
+            </div>
+            <div class="col-md-5">
+              <b><%= line_item.name.try(:upcase) %></b><br>
+              <span class="text-muted">
+                <% if line_item.bar_code.present? %>
+                  <i class="fa fa-barcode"></i> <%= line_item.bar_code %> &nbsp;
+                <% end %>
+                <i class="fa fa-tags"></i> <%= number_to_currency line_item.unit_cost %>
+              </span>
+            </div>
+            <div class="col-md-4">
+              <span class="pull-right">
+                <%= number_to_currency line_item.total_cost %> &nbsp;
+                <%= link_to store_front_module_customer_credit_sales_order_line_item_processing_path(id: line_item.id), method: :delete do %>
+                      <span class="fa fa-times text-danger"></span>
+                    <% end %>
+              </span>
+            </div>
+          </div>
+          <hr />
+        <% end %>
+        <div class="row">
+          <div class="col-md-2">
+          </div>
+          <div class="col-md-6">
+            <h4>TOTAL </h4>
+          </div>
+          <div class="col-md-3">
+            <span class="pull-right">
+              <h4><%= number_to_currency @cart.sales_order_line_items.sum(&:total_cost) %></h4>
+            </span>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+        <div class="col-md-5">
+          <div class="box box-danger">
+            <div class="box-header with-border">
+              <center>
+                <%= image_tag(@customer.avatar.url(:medium), class: "img-circle", height: 60, width: 60) %>
+                <h4><%= @customer.name %></h4>
+              </center>
+            </div>
+            <div class="box-body">
+
+              <%= simple_form_for [@customer, @credit_sales_order], url: :store_front_module_customer_credit_sales_order_processings do |f| %>
+              <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                  <div class="row">
+                <div class="col-md-6">
+                  <h4> TOTAL </h4>
+                </div>
+                <div class="col-md-6">
+                  <h4>
+                    <span class="pull-right"><%= number_to_currency @cart.total_cost %></span>
+                  </h4>
+                </div>
+              </div>
+              <hr>
+                  <%= f.input :customer_id, input_html: { value: @customer.id }, as: :hidden %>
+                  <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+                  <%= f.input :description %>
+                  <%= f.input :reference_number %>
+                  <%= f.input :total_cost, input_html: { id: 'total_cost', value: @cart.total_cost }, as: :hidden %>
+                  <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+                  <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
+                  <%= f.submit "Save Credit Order", class: "btn btn-lg btn-danger btn-block" %>
+                </div>
+              </div>
+              <% end %>
+              <br>
+            </div>
+      </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#store_front_module_orders_sales_order_processing_customer_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

@@ -28,18 +28,8 @@ class OrderPdf < Prawn::Document
 	def customer
 		text "Customer:                  #{@order.commercial_document.try(:name)}"
 		text "Date:                          #{@order.date.strftime("%B %e, %Y")}"
-		if @order.stock_transfer?
-		  text "Order Type:                #{@order.mode_of_payment.try(:titleize)}"
-		elsif @order.internal_use?
-      text "Order Type:               For Internal Use"
-    else
-		  text "Mode of Payment:     #{@order.mode_of_payment.try(:titleize)}"
-		end
 		text "Number of Items:      #{@order.line_items.count}"
     text "Reference Number:     #{@order.reference_number}"
-    if @order.internal_use?
-      text "Technician:                #{@order.technician.try(:full_name)}"
-    end
 		move_down 5
 		# text "Total Cost:                  #{price(@order.total_cost)}"
 		# text "Discount:                    #{price(@order.discount_amount)}"

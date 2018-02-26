@@ -7,7 +7,7 @@
           <div class="col-md-12">
             <%=form_tag search_results_path, method: :get, class: "search-form" do %>
               <div class="input-group">
-                <%= text_field_tag :search, params[:search], class: "form-control input-lg", placeholder: "Search Taxpayer, Business...", id: 'client-search-form' %>
+                <%= text_field_tag :multisearch, params[:multisearch], class: "form-control input-lg", placeholder: "Search Taxpayer, Business...", id: 'client-search-form' %>
                 <span class="input-group-btn">
                   <%= button_tag(type: 'submit', id: "client-search-btn", class: "btn btn-flat btn-lg") do %>
                     <i class="fa fa-search"></i>
@@ -29,10 +29,14 @@
               <% @pg_search_documents.each do |pg_search_document| %>
               <tr>
                     <td>
+                      <% if  pg_search_document.searchable.kind_of?(LineItem) %>
+                        <b><%= link_to pg_search_document.searchable.name, store_front_module_line_item_path(pg_search_document.searchable) %></b>
+                        <span class="help-block">Line Item</span>
 
+                      <% else %>
                         <b><%= link_to pg_search_document.searchable.name, "../#{(pg_search_document.searchable.class).to_s.titleize.downcase.parameterize.gsub("-", "_").gsub("certifications_", "").pluralize}/#{pg_search_document.searchable.id}" %></b>
                         <span class="help-block"><%=pg_search_document.searchable.class.to_s.titleize %></span>
-
+                      <% end %>
                     </td>
               </tr>
               <% end %>

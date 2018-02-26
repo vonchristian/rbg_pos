@@ -1,20 +1,28 @@
 
 <% @products.each do |product| %>
+ <div class="row">
+    <div class="col-md-12">
+      <b><%= product.name.try(:upcase) %></b>
+      <% if product.available_quantity > 0 %>
+        &nbsp; <span class="badge bg-gray"><%= product.available_quantity %> left</span>
+      <% else %>
+        <span class="label bg-red"> Out Of Stock </span>
+      <% end %><br>
+      <span class="text-muted">
+        <i class="fa fa-tags"></i>
+        <% product.unit_of_measurements.each do |unit_of_measurement| %>
+          <%= number_to_currency unit_of_measurement.price %>/<%= number_to_currency unit_of_measurement.unit_code,  unit: "", precision: 0 %>
+        <% end %>
+      </span>
+    </div>
+  </div>
+  <br>
+  <% if product.available_quantity > 0 %>
 
                     <%= simple_form_for [@work_order, @repair_service_order_line_item], url: :repair_services_module_work_order_repair_service_order_line_item_processings do |f| %>
 
-                      <div class="row">
-                        <div class="col-md-2">
-                          <p><b><%= product.name.try(:upcase) %></b></p>
-                          <% product.unit_of_measurements.each do |unit_of_measurement| %>
-                            <%= number_to_currency unit_of_measurement.price %>/<%= unit_of_measurement.unit_code %><br>
-                          <% end %>
-                        </div>
-                        <div class="col-md-2">
-                          <%=product.available_quantity %> <%= product.base_measurement_unit_code %><br>
-                          <small class="text-success">AVAILABLE</small>
-                        </div>
-                        <div class="col-md-3">
+<div class="row">
+        <div class="col-md-3">
                         <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, autofocus: true %>
                       </div>
                       <div class="col-md-3">
@@ -26,7 +34,10 @@
 
                       <div class="col-md-2">
                         <br>
-                        <%= f.submit "Add", class: "btn btn-success" %>
+          <%= button_tag type: 'submit', class: "btn btn-success btn-sm" do %>
+            <i class="fa fa-shopping-basket" aria-hidden="true"></i> Add to Cart
+          <% end %>
+        </div>
                       </div>
                     </div>
 
@@ -38,5 +49,6 @@
 
 
               <% end %>
+<% end %>
 <% end %>
 <hr>

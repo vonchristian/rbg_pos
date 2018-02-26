@@ -84,17 +84,7 @@
     <div class="col-md-4">
       <div class="box box-success">
         <div class="box-body">
-        <% if @cart.stock_transfer_order_line_items.present? %>
-          <%= simple_form_for @stock_transfer_order, url: :store_front_module_stock_transfer_order_processings do |f| %>
-            <%= f.input :store_front_id, label: "Destination:", collection: StoreFront.all.map{|a| [ a.name, a.id] } %>
-            <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-            <%= f.input :description %>
-            <%= f.input :reference_number %>
-            <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
-            <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-        <%=f.submit "Save Stock Transfer", class: "btn btn-success btn-block btn-lg", :accesskey => "C" %>
-        <% end %>
-      <% end %>
+
       </div>
 
     </div>

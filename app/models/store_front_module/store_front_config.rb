@@ -18,6 +18,15 @@ module StoreFrontModule
     def self.default_discount_account
       AccountingModule::Revenue.find_by(name: "Sales Discounts")
     end
-;
+    def income
+      total_sales -
+      total_cogs -
+      total_discounts -
+      tota_sales_returns
+    end
+    def default_accounts_receivable_account
+      return accounts_receivable_account if accounts_receivable_account.present?
+      AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current")
+    end
   end
 end

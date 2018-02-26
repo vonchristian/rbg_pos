@@ -1,0 +1,48 @@
+
+<% @products.each do |product| %>
+  <div class="row">
+    <div class="col-md-12">
+      <b><%= product.name.try(:upcase) %></b>
+      <% if product.available_quantity > 0 %>
+        &nbsp; <span class="badge bg-gray"><%= product.available_quantity %> left</span>
+      <% else %>
+        <span class="label bg-red"> Out Of Stock </span>
+      <% end %><br>
+      <span class="text-muted">
+        <i class="fa fa-tags"></i>
+        <% product.unit_of_measurements.each do |unit_of_measurement| %>
+          <%= number_to_currency unit_of_measurement.price %>/<%= number_to_currency unit_of_measurement.unit_code,  unit: "", precision: 0 %>
+        <% end %>
+      </span>
+    </div>
+  </div>
+  <br>
+  <% if product.available_quantity > 0 %>
+    <%= simple_form_for @line_item, url: :store_front_module_customer_credit_sales_order_line_item_processings do |f| %>
+      <div class="row">
+        <div class="col-md-3">
+          <%= f.input :quantity, as: :string, label: false, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, autofocus: true %>
+        </div>
+        <div class="col-md-3">
+          <%= f.input :unit_of_measurement_id, input_html: { class: "input-xs" }, label: false, collection: product.unit_of_measurements.all.map{|a| [a.unit_code, a.id] }, selected: product.base_measurement %>
+          <%= f.input :product_id, input_html: { value: product.id }, as: :hidden %>
+          <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
+        </div>
+        <div class="col-md-2">
+          <%= button_tag type: 'submit', class: "btn btn-success btn-sm" do %>
+            <i class="fa fa-shopping-basket" aria-hidden="true"></i> Add to Cart
+          <% end %>
+        </div>
+      </div>
+      <hr>
+    <% end %>
+  <% end %>
+<% end %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#store_front_module_line_items_sales_order_line_item_processing_unit_of_measurement_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>
