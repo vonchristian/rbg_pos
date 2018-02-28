@@ -9,7 +9,7 @@
         <%= simple_form_for @registry, multipart: true, url: :store_front_module_purchase_order_registries do |f| %>
           <%= f.input :spreadsheet, label: false %>
           <div class="box-footer">
-            <%= f.submit "Upload Purchase", class: "btn btn-primary btn-lg" %>
+            <%= f.submit "Upload Purchase", class: "btn btn-primary btn-block" %>
           </div>
         <% end %>
       </div>
