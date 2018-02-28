@@ -15,8 +15,19 @@
           <%= f.input :reference_number %>
           <%= f.input :description, input_html: { value: "Payment of credit" } %>
           <%= f.input :amount %>
-          <%= f.input :credit_account_id, collection: AccountingModule::Account.all.map{ |a| [a.name, a.id] } %>
-          <%= f.submit "Save Payment", class: "btn btn-primary pull-right" %>
-          <br>
+          <hr>
+          <p><b> Cash on Hand Account </b> </p>
+          <span class="text-muted"> Select source of cash for this payment </span>
+          <%= f.input :credit_account_id, label: false, collection: AccountingModule::Account.all.map{ |a| [a.name, a.id] } %>
+          <div class="box-footer">
+            <%= f.submit "Save Payment", class: "btn btn-primary pull-right" %>
+          </div>
           <br>
         <% end %>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#accounting_module_supplier_payment_form_credit_account_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

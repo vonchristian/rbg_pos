@@ -54,22 +54,22 @@ class Customer < ApplicationRecord
   def credit_sales_order_accounts_receivable_total
     total = []
     sales_orders.each do |order|
-      total << StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.debits_balance(commercial_document_id: order.id)
+      total << StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.debits_balance(commercial_document_id: order.id, commercial_document_type: "Order")
     end
     total.sum
   end
   def other_credits_total
-    StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.debits_balance(commercial_document_id: self.id)
+    StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.debits_balance(commercial_document_id: self.id, commercial_document_type: 'Customer')
   end
   def other_credits
-    StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.debit_entries.where(commercial_document_id: self.id)
+    StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.debit_entries.where(commercial_document_id: self.id, commercial_document_type: "Customer")
   end
 
 
   def credit_repair_services_accounts_receivable_total
     total = []
     work_orders.each do |order|
-      total << StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.debits_balance(commercial_document_id: order.id)
+      total << StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.debits_balance(commercial_document_id: order.id, commercial_document_type: 'WorkOrder')
     end
     total.sum
   end
@@ -82,7 +82,7 @@ class Customer < ApplicationRecord
   def credit_sales_order_payments_total
     total = []
     sales_orders.each do |order|
-      total << StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.credits_balance(commercial_document_id: order.id)
+      total << StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.credits_balance(commercial_document_id: order.id, commercial_document_type: "Order")
     end
     total.sum
   end
@@ -90,7 +90,7 @@ class Customer < ApplicationRecord
   def credit_repair_services_payments_total
     total = []
     work_orders.each do |order|
-      total << StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.credits_balance(commercial_document_id: order.id)
+      total << StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.credits_balance(commercial_document_id: order.id, commercial_document_type: "WorkOrder")
     end
     total.sum
   end
