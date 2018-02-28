@@ -16,7 +16,7 @@ class LineItem < ApplicationRecord
   delegate :name, to: :product
 
   def date
-    order.date || self.created_at
+    order.try(:date) || self.created_at
   end
 
 

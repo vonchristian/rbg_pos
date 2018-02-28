@@ -8,8 +8,8 @@ module StoreFrontModule
       has_many :internal_use_order_line_items, class_name: "StoreFrontModule::LineItems::InternalUseOrderLineItem", foreign_key: 'purchase_order_line_item_id'
       has_many :stock_transfer_line_items, class_name: "StoreFrontModule::LineItems::StockTransferOrderLineItem", foreign_key: 'purchase_order_line_item_id'
       has_many :returned_sales_line_items, class_name: "StoreFrontModule::LineItems::ReferencedSalesOrderLineItem", foreign_key: 'purchase_order_line_item_id'
-      delegate :supplier, to: :purchase_order
-      delegate :business_name, to: :supplier, prefix: true
+      delegate :supplier, to: :purchase_order, allow_nil: true
+      delegate :business_name, to: :supplier, prefix: true, allow_nil: true
       def self.processed
         select{|a| a.processed? }
       end

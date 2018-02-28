@@ -152,7 +152,7 @@ class Product < ApplicationRecord
   def internal_use_orders_balance(options={})
     internal_uses.balance(product_id: self.id)
   end
-  def received_stock_transfers_balance(options)
+  def received_stock_transfers_balance(options={})
     received_stock_transfers.balance(product_id: self.id)
   end
 end
