@@ -19,15 +19,16 @@ class Product < ApplicationRecord
 
   has_many :purchases, :class_name => 'StoreFrontModule::LineItems::PurchaseOrderLineItem'
   has_many :internal_uses, :class_name => 'StoreFrontModule::LineItems::InternalUseOrderLineItem'
-
   has_many :sales, :class_name => 'StoreFrontModule::LineItems::SalesOrderLineItem'
   has_many :sales_orders, :through => :sales, :source => :sales_order, :class_name => 'StoreFrontModule::Orders::SalesOrder'
   has_many :purchase_orders, :through => :purchases, :source => :order, :class_name => 'StoreFrontModule::Orders::PurchaseOrder'
+  has_many :received_stock_transfer_orders, through: :received_stock_transfers, source: :order, class_name: "StoreFrontModule::Orders::ReceivedStockTransferOrder"
   has_many :sales_returns, class_name: "StoreFrontModule::LineItems::SalesReturnOrderLineItem"
   has_many :purchase_returns, class_name: "StoreFrontModule::LineItems::PurchaseReturnOrderLineItem"
   has_many :spoilages, class_name: "StoreFrontModule::LineItems::SpoilageOrderLineItem"
   has_many :stock_transfers, class_name: "StoreFrontModule::LineItems::StockTransferOrderLineItem"
   has_many :selling_prices, class_name: "StoreFrontModule::SellingPrice"
+  has_many :received_stock_transfers, class_name: "StoreFrontModule::LineItems::ReceivedStockTransferOrderLineItem"
 	has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",
@@ -126,6 +127,7 @@ class Product < ApplicationRecord
     balance
   end
   def balance(options={})
+    received_stock_transfers_balance(options) +
     purchases_balance(options) -
     sales_balance(options) -
     stock_transfers_balance(options) -
@@ -150,5 +152,7 @@ class Product < ApplicationRecord
   def internal_use_orders_balance(options={})
     internal_uses.balance(product_id: self.id)
   end
-
+  def received_stock_transfers_balance(options)
+    received_stock_transfers.balance(product_id: self.id)
+  end
 end

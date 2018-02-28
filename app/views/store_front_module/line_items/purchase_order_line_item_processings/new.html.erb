@@ -1,10 +1,10 @@
 <div class="row">
-  <div class="col-md-4">
+  <div class="col-md-5">
     <div class="box box-success">
       <div class="box-header">
         <h3 class="box-title"> Purchases Section </h3>
         <span class="help-block"> Generate purchases on this section </span>
-
+         <%= link_to 'Upload (EXCEL)', new_store_front_module_purchase_order_registry_path, class: "btn btn-primary" %>
       </div>
       <div class="box-body">
        <% if params[:search].present? %>
@@ -41,7 +41,7 @@
       </div>
     </div>
   </div>
-    <div class="col-md-8">
+    <div class="col-md-7">
       <div class="box box-success">
         <div class="box-body">
           <% if @cart.purchase_order_line_items.present? %>

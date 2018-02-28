@@ -105,6 +105,10 @@ Rails.application.routes.draw do
   resources :cash_on_hand_accounts, only: [:new, :create], module: :accounting
 
   namespace :store_front_module do
+    resources :stock_transfer_registries, only: [:new, :create, :show], module: :registries
+    resources :purchase_order_registries, only: [:new, :create, :show], module: :registries do
+      resources :purchase_order_line_items, only: [:destroy]
+    end
     resources :customers, only: [:show] do
       resources :credit_sales_order_line_item_processings, only: [:new, :create, :destroy]
       resources :credit_sales_order_processings, only: [:create], module: :order_processings
@@ -120,6 +124,8 @@ Rails.application.routes.draw do
     resources :unit_of_measurements, only: [:edit, :update], module: :settings
     resources :selling_prices, only: [:new, :create], module: :settings
     resources :stock_transfers, only: [:index, :show], module: :orders
+    resources :received_stock_transfers, only: [:index, :show], module: :orders
+    resources :received_stock_transfers, only: [:index, :show], module: :orders
     resources :repair_services_orders, only: [:index, :show], module: :orders
     resources :sales_returns, only: [:index, :show], module: :orders
     resources :stock_transfer_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items

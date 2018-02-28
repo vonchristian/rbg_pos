@@ -2,7 +2,7 @@ class Registry < ApplicationRecord
   has_many :stocks, dependent: :destroy
 	has_attached_file :spreadsheet, :path => ":rails_root/public/system/:attachment/:id/:filename"
   do_not_validate_attachment_file_type :spreadsheet
-
+  has_many :line_items
   # after_create_commit :parse_for_records
 
   private

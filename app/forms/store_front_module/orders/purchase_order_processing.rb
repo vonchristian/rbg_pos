@@ -2,7 +2,7 @@ module StoreFrontModule
   module Orders
     class PurchaseOrderProcessing
       include ActiveModel::Model
-      attr_accessor  :cart_id, :supplier_id, :voucher_id, :employee_id, :date
+      attr_accessor  :cart_id, :supplier_id, :voucher_id, :employee_id, :date, :registry_id
       validates :voucher_id, :supplier_id, presence: true
 
       def process!
@@ -18,6 +18,11 @@ module StoreFrontModule
           line_item.cart_id = nil
           order.purchase_order_line_items << line_item
         end
+
+        find_registry.purchase_order_line_items.each do |line_item|
+          line_item.cart_id = nil
+          order.purchase_order_line_items << line_item
+        end
       end
       def find_supplier
         Supplier.find_by_id(supplier_id)
@@ -30,6 +35,9 @@ module StoreFrontModule
       end
       def find_employee
         User.find_by_id(employee_id)
+      end
+      def find_registry
+        StoreFrontModule::Registries::PurchaseOrderRegistry.find_by_id(registry_id)
       end
     end
   end

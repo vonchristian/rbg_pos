@@ -7,6 +7,8 @@ module StoreFrontModule
                      :employee_id,
                      :date,
                      :description,
+                     :destination_store_front_id,
+                     :registry_id,
                      :reference_number
       validates :store_front_id, :description, :date, presence: true
 
@@ -18,15 +20,20 @@ module StoreFrontModule
 
       private
       def create_stock_transfer_order
-        order = StoreFrontModule::Orders::StockTransferOrder.create!(
+        order = StoreFrontModule::Orders::ReceivedStockTransferOrder.create!(
           date: date,
           description: description,
           employee_id: employee_id,
           commercial_document: find_store_front,
+          destination_store_front_id: destination_store_front_id,
           reference_number: reference_number)
         find_cart.stock_transfer_order_line_items.each do |line_item|
           line_item.cart_id = nil
           order.stock_transfer_order_line_items << line_item
+        end
+        find_registry.received_stock_transfer_order_line_items.each do |line_item|
+          line_item.cart_id = nil
+          order.received_stock_transfer_order_line_items << line_item
         end
         create_entry(order)
       end
@@ -35,6 +42,9 @@ module StoreFrontModule
       end
       def find_cart
         Cart.find_by_id(cart_id)
+      end
+      def find_registry
+        Registry.find_by_id(registry_id)
       end
       def find_employee
         User.find_by_id(employee_id)

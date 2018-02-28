@@ -2,8 +2,15 @@
   <div class="col-md-8">
     <div class="box box-success">
       <div class="box-header">
-        <h3 class="box-title"> Stock Transfers Section </h3><br>
-        <span class="text-muted"> Generate stock transfers on this section </span>
+        <div class="row">
+          <div class="col-md-6">
+            <h3 class="box-title"> Stock Transfers Section </h3><br>
+            <span class="text-muted"> Generate stock transfers on this section </span>
+          </div>
+          <div class="col-md-6">
+            <%= link_to 'Upload (EXCEL)', new_store_front_module_stock_transfer_registry_path, class: "btn btn-primary" %>
+          </div>
+        </div>
       </div>
       <div class="box-body">
        <% if params[:search].present? %>

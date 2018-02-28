@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180225010509) do
+ActiveRecord::Schema.define(version: 20180227123125) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -180,6 +180,7 @@ ActiveRecord::Schema.define(version: 20180225010509) do
     t.bigint "commercial_document_id"
     t.string "referencer_type"
     t.bigint "referencer_id"
+    t.bigint "registry_id"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_line_items"
     t.index ["order_id"], name: "index_line_items_on_order_id"
@@ -187,6 +188,7 @@ ActiveRecord::Schema.define(version: 20180225010509) do
     t.index ["purchase_order_line_item_id"], name: "index_line_items_on_purchase_order_line_item_id"
     t.index ["referenced_line_item_id"], name: "index_line_items_on_referenced_line_item_id"
     t.index ["referencer_type", "referencer_id"], name: "index_line_items_on_referencer_type_and_referencer_id"
+    t.index ["registry_id"], name: "index_line_items_on_registry_id"
     t.index ["sales_order_line_item_id"], name: "index_line_items_on_sales_order_line_item_id"
     t.index ["stock_transfer_id"], name: "index_line_items_on_stock_transfer_id"
     t.index ["type"], name: "index_line_items_on_type"
@@ -205,7 +207,9 @@ ActiveRecord::Schema.define(version: 20180225010509) do
     t.string "type"
     t.string "commercial_document_type"
     t.bigint "commercial_document_id"
+    t.bigint "destination_store_front_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_orders"
+    t.index ["destination_store_front_id"], name: "index_orders_on_destination_store_front_id"
     t.index ["employee_id"], name: "index_orders_on_employee_id"
     t.index ["reference_number"], name: "index_orders_on_reference_number"
     t.index ["type"], name: "index_orders_on_type"
@@ -639,9 +643,11 @@ ActiveRecord::Schema.define(version: 20180225010509) do
   add_foreign_key "line_items", "line_items", column: "sales_order_line_item_id"
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
+  add_foreign_key "line_items", "registries"
   add_foreign_key "line_items", "stock_transfers"
   add_foreign_key "line_items", "unit_of_measurements"
   add_foreign_key "line_items", "users"
+  add_foreign_key "orders", "store_fronts", column: "destination_store_front_id"
   add_foreign_key "orders", "users", column: "employee_id"
   add_foreign_key "payments", "orders"
   add_foreign_key "posts", "users"

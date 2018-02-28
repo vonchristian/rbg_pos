@@ -4,12 +4,12 @@
     <div class="box-header">
       <div class="row">
         <div class="col-md-4">
-          <h3 class="box-title"> Stock Transfers</h3>
+          <h3 class="box-title">Received Stock Transfers</h3>
         </div>
         <div class="col-md-5">
         </div>
         <div class="col-md-3">
-          <%= link_to 'New Stock Transfer', new_store_front_module_stock_transfer_order_line_item_processing_path, class: "btn btn-primary pull-right" %>
+          <%= link_to 'New Received Stock Transfer', new_store_front_module_stock_transfer_order_line_item_processing_path, class: "btn btn-primary pull-right" %>
         </div>
       </div>
     </div>
@@ -27,14 +27,13 @@
             </tr>
           </thead>
           <tbody>
-            <% @stock_transfer_orders.order(date: :desc).each do |stock_transfer| %>
+            <% @orders.each do |order| %>
               <tr>
-                <td><%= link_to stock_transfer.date.strftime("%B %e, %Y"), store_front_module_stock_transfer_path(stock_transfer) %></td>
-                <td><%= link_to stock_transfer.store_front_name, store_front_module_stock_transfer_path(stock_transfer) %></td>
-                <td><%= link_to stock_transfer.destination_store_front_name, store_front_module_stock_transfer_path(stock_transfer) %></td>
-
+                <td><%= link_to order.date.strftime("%B %e, %Y"), store_front_module_received_stock_transfer_path(order) %></td>
+                <td><%= link_to order.origin_store_front_name, store_front_module_received_stock_transfer_path(order) %></td>
+                <td><%= link_to order.destination_store_front_name, store_front_module_received_stock_transfer_path(order) %></td>
                 <td>
-                  <% stock_transfer.line_items.each do |line_item|  %>
+                  <% order.line_items.each do |line_item|  %>
                     <div class="row">
                       <div class="col-md-9">
                         <%= line_item.product_name %><br>
@@ -47,14 +46,14 @@
                     <br>
                   <% end %>
                 </td>
-                <td><%= number_to_currency stock_transfer.total_cost %></td>
-                <td><%= stock_transfer.employee.try(:full_name) %></td>
+                <td><%= number_to_currency order.total_cost %></td>
+                <td><%= order.employee.try(:full_name) %></td>
               </tr>
             <% end %>
           </tbody>
         </table>
       </div>
-      <center><%= will_paginate @stock_transfer_orders %></center>
+      <center><%= will_paginate @orders %></center>
     </div>
   </div>
 </div>

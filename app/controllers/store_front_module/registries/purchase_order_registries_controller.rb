@@ -1,0 +1,30 @@
+module StoreFrontModule
+  module Registries
+    class PurchaseOrderRegistriesController < ApplicationController
+      def new
+        @registry = StoreFrontModule::Registries::PurchaseOrderRegistry.new
+      end
+      def create
+        @registry = StoreFrontModule::Registries::PurchaseOrderRegistry.create(registry_params)
+        if @registry.valid?
+          @registry.save
+          @registry.parse_for_records
+          redirect_to store_front_module_purchase_order_registry_url(@registry), notice: "Uploaded successfully"
+        else
+          render :new
+        end
+      end
+
+      def show
+        @registry = StoreFrontModule::Registries::PurchaseOrderRegistry.find(params[:id])
+        @cart = current_cart
+        @purchase_order = StoreFrontModule::Orders::PurchaseOrderProcessing.new
+      end
+
+      private
+      def registry_params
+        params.require(:store_front_module_registries_purchase_order_registry).permit(:spreadsheet)
+      end
+    end
+  end
+end

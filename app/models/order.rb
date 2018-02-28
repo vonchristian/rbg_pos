@@ -2,6 +2,7 @@ class Order < ApplicationRecord
   include PgSearch
   pg_search_scope :text_search, against: [:reference_number, :search_term]
 
+  belongs_to :destination_store_front, class_name: "StoreFront", foreign_key: 'destination_store_front_id', optional: true
   belongs_to :commercial_document, polymorphic: true, optional: true
   belongs_to :employee, class_name: "User", foreign_key: 'employee_id'
   has_one :cash_payment, as: :cash_paymentable, class_name: "StoreFrontModule::CashPayment"
@@ -13,7 +14,7 @@ class Order < ApplicationRecord
   delegate :total_cost, to: :payment, prefix: true, allow_nil: true
   delegate :full_name, to: :employee, prefix: true, allow_nil: true
   delegate :discount_amount, to: :cash_payment, allow_nil: true
-
+  delegate :name, to: :destination_store_front, prefix: true, allow_nil: true
   before_validation :set_date
 
   def self.credit
