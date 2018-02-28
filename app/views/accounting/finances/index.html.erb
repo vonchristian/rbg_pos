@@ -3,6 +3,7 @@
     <div class="box box-solid">
       <div class="box-header">
         <h3 class="box-title">Cash On Hand Accounts</h3>
+        <%= link_to 'New Bank Account', new_accounting_bank_account_path, class: "btn btn-primary" %>
       </div>
       <div class="box-body">
         <% @accounts.each do |account| %>
@@ -21,6 +22,30 @@
           </div>
         </div>
         <hr>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title"> Bank Accounts </h3>
+      </div>
+      <div class="box-body">
+        <% BankAccount.all.each do |bank_account| %>
+          <%= link_to accounting_bank_account_path(bank_account) do %>
+            <div class="row">
+              <div class="col-md-5">
+                <b><%=bank_account.bank_name %></b>
+              </div>
+              <div class="col-md-4">
+                <span class="pull-right">
+                  <%= number_to_currency bank_account.balance %>
+                </span>
+              </div>
+            </div>
+            <br>
+          <% end %>
         <% end %>
       </div>
     </div>

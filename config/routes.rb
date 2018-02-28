@@ -166,6 +166,10 @@ Rails.application.routes.draw do
 
   resources :income_statement, only: [:index]
   namespace :accounting do
+    resources :bank_accounts, only: [:new, :create, :show] do
+      resources :deposits, only: [:new, :create], module: :bank_accounts
+      resources :withdrawals, only: [:new, :create], module: :bank_accounts
+    end
     resources :finances, only: [:index]
     resources :entries, only: [:index, :show]
     resources :accounts, only: [:index, :show, :new, :create, :edit, :update] do

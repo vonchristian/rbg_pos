@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="box box-success">
+      <div class="box-header with-border">
+        <center>
+          <h3 class="box-title"> <%= @bank_account.bank_name.try(:upcase) %></h3><br>
+          <span class="text-muted"><%= @bank_account.account_number %></span>
+        </center>
+      </div>
+      <div class="box-body">
+        <p class="text-muted"> Deposit Details </p>
+        <%= simple_form_for [@bank_account, @deposit], url: :accounting_bank_account_deposits do |f| %>
+          <%= f.error_notification %>
+          <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+          <%= f.input :amount, as: :string %>
+          <%= f.input :source_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+          <%= f.input :reference_number %>
+          <%= f.input :description %>
+          <%= f.input :bank_account_id, input_html: { value: @bank_account.id }, as: :hidden %>
+          <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+          <div class="box-footer">
+            <%= f.submit "Save Deposit", class: "btn btn-success pull-right" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#accounting_bank_accounts_deposit_source_account_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>
+

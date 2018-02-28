@@ -19,7 +19,7 @@ module StoreFrontModule
       private
       def payment_params
         params.require(:store_front_module_payments_credit_sales_order_payment_processing).
-        permit(:order_id, :employee_id, :date, :amount, :expense_amount, :expense_account_id, :reference_number, :description)
+        permit(:order_id, :employee_id, :date, :amount, :expense_amount, :expense_account_id, :reference_number, :description, :cash_on_hand_account_id)
       end
     end
   end

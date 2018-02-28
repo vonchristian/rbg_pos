@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title"><%= @bank_account.bank_name %></h3>
+        <span class="text-muted"><%= @bank_account.account_number %></span>
+      </div>
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-4">
+            <small>DEPOSITS</small>
+            <h4><%= number_to_currency @bank_account.deposits_balance %></h4>
+          </div>
+          <div class="col-md-4">
+            <small>WITHDRAWALS</small>
+            <h4><%= number_to_currency @bank_account.withdrawals_balance %></h4>
+          </div>
+          <div class="col-md-4">
+            <small>BALANCE</small>
+            <h4><%= number_to_currency @bank_account.balance %></h4>
+          </div>
+        </div>
+        <%= link_to "New Deposit", new_accounting_bank_account_deposit_path(@bank_account), class: "btn btn-success" %>
+        <%= link_to "New Withdraw", new_accounting_bank_account_withdrawal_path(@bank_account), class: "btn btn-danger" %>
+        <hr />
+        <p class="text-muted"> TRANSACTIONS HISTORY </p>
+        <% @entries.each do |entry| %>
+          <div class="row">
+            <div class="col-md-3">
+              <%= image_tag(entry.recorder.avatar.url(:small), class: "img-circle", height: 45, width: 45) %> &nbsp;
+              <%= entry.recorder_name %>
+            </div>
+            <div class="col-md-4">
+              <b><%= entry.description %></b><br>
+              <span class="text-muted">
+                <i class="fa fa-clock-o"></i> <%= entry.entry_date.strftime("%b %e, %Y %I:%M %p") %>
+              </span><br>
+              <span class="label bg-<%= @bank_account.entry_color(entry) %>"><%= @bank_account.entry_type_for(entry) %></span>
+            </div>
+            <div class="col-md-3">
+              <h4><%= number_to_currency entry.total %></h4>
+            </div>
+          </div>
+          <br>
+        <% end %>
+        <center><%= will_paginate @entries %></center>
+      </div>
+    </div>
+  </div>
+</div>

@@ -59,6 +59,7 @@
               <%= f.error_notification %>
               <%= f.input :date , as: :string, input_html: { class: "datepicker" } %>
               <%= f.input :amount, as: :string %>
+
               <span class="help-block"> Input total amount of payment. </span>
               <%= f.input :expense_amount, label: "Discount/Tax", as: :string, input_html: { value: 0 } %>
               <%= f.input :expense_account_id, collection: AccountingModule::Expense.all.map{ |a| [a.name, a.id] } %>
@@ -66,6 +67,12 @@
               <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
               <%= f.input :description %>
               <%= f.input :reference_number %>
+              <% if current_user.proprietor? %>
+                <%= f.input :cash_on_hand_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }, selected: current_user.cash_on_hand_account_id %>
+              <% else %>
+                <%= f.input :cash_on_hand_account_id, input_html: {value: current_user.cash_on_hand_account_id }, as: :hidden %>
+              <% end %>
+
               <div class="box-footer">
                 <%= f.submit "Save Payment", class: "btn btn-primary btn-block" %>
               </div>
@@ -77,3 +84,10 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#store_front_module_orders_sales_order_processing_customer_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

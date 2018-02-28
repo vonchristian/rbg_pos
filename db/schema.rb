@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180227123125) do
+ActiveRecord::Schema.define(version: 20180228022741) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,6 +57,18 @@ ActiveRecord::Schema.define(version: 20180227123125) do
     t.index ["entry_id", "account_id"], name: "index_amounts_on_entry_id_and_account_id"
     t.index ["entry_id"], name: "index_amounts_on_entry_id"
     t.index ["type"], name: "index_amounts_on_type"
+  end
+
+  create_table "bank_accounts", force: :cascade do |t|
+    t.string "account_number"
+    t.string "bank_name"
+    t.bigint "cash_in_bank_account_id"
+    t.bigint "business_id"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["business_id"], name: "index_bank_accounts_on_business_id"
+    t.index ["cash_in_bank_account_id"], name: "index_bank_accounts_on_cash_in_bank_account_id"
   end
 
   create_table "branches", force: :cascade do |t|
@@ -632,6 +644,8 @@ ActiveRecord::Schema.define(version: 20180227123125) do
   add_foreign_key "accounts", "accounts", column: "main_account_id"
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
+  add_foreign_key "bank_accounts", "accounts", column: "cash_in_bank_account_id"
+  add_foreign_key "bank_accounts", "businesses"
   add_foreign_key "branches", "businesses"
   add_foreign_key "entries", "users"
   add_foreign_key "entries", "users", column: "recorder_id"
