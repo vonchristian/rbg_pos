@@ -17,6 +17,7 @@ module StoreFrontModule
 
       def show
         @registry = StoreFrontModule::Registries::PurchaseOrderRegistry.find(params[:id])
+        @purchase_order_line_items = @registry.purchase_order_line_items.order(created_at: :asc).paginate(page: params[:page], per_page: 35)
         @cart = current_cart
         @purchase_order = StoreFrontModule::Orders::PurchaseOrderProcessing.new
       end

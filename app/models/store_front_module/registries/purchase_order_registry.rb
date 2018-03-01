@@ -10,22 +10,28 @@ module StoreFrontModule
         transaction do
           sheet.each 1 do |row|
             if !row[0].nil?
+              create_or_find_product(row)
               create_or_find_line_item(row)
               find_or_create_selling_price(row)
             end
           end
         end
       end
+      def create_or_find_product(row)
+        Product.find_or_create_by(name: row[0])
+      end
 
       def create_or_find_line_item(row)
-        StoreFrontModule::LineItems::PurchaseOrderLineItem.find_or_create_by(
-          quantity: quantity(row),
-          unit_cost: unit_cost(row),
-          total_cost: total_cost(row),
-          product: product(row),
-          unit_of_measurement: unit_of_measurement(row),
-          bar_code: bar_code(row),
-          registry_id: self.id)
+        if quantity(row).present? && quantity(row) > 0
+          StoreFrontModule::LineItems::PurchaseOrderLineItem.find_or_create_by(
+            quantity: quantity(row),
+            unit_cost: unit_cost(row),
+            total_cost: total_cost(row),
+            product: find_product(row),
+            unit_of_measurement: unit_of_measurement(row),
+            bar_code: bar_code(row),
+            registry_id: self.id)
+        end
       end
 
       def quantity(row)
@@ -38,10 +44,6 @@ module StoreFrontModule
 
       def total_cost(row)
         row[3]
-      end
-
-      def product(row)
-        Product.find_or_create_by(name: row[0])
       end
 
       def find_product(row)

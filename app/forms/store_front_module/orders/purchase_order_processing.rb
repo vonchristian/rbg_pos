@@ -18,10 +18,11 @@ module StoreFrontModule
           line_item.cart_id = nil
           order.purchase_order_line_items << line_item
         end
-
-        find_registry.purchase_order_line_items.each do |line_item|
-          line_item.cart_id = nil
-          order.purchase_order_line_items << line_item
+        if find_registry.present?
+          find_registry.purchase_order_line_items.each do |line_item|
+            line_item.cart_id = nil
+            order.purchase_order_line_items << line_item
+          end
         end
       end
       def find_supplier
