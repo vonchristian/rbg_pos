@@ -16,7 +16,7 @@
         <i class="icon-calendar"></i> <%= @order.date.strftime("%B %e, %Y") %><br>
         <p class="text-black"> Reference Number: <%= @order.reference_number %></p>
         <hr>
-              <% @order.line_items.each do |line_item| %>
+              <% @line_items.each do |line_item| %>
                 <div class="row">
                   <div class="col-md-2">
                     <%= line_item.quantity %> <%= line_item.unit_code %>
@@ -34,3 +34,4 @@
                 </div>
                 <hr>
                 <% end %>
+                <center><%= will_paginate @line_items %></center>
