@@ -82,3 +82,34 @@
   </div>
 </div>
 
+  <div class="row">
+    <div class="col-md-6">
+      <div class="box box-solid">
+        <div class="box-header">
+          <h3 class="box-title"> Employees </h3>
+        </div>
+        <div class="box-body">
+          <% @employees.each do |employee| %>
+            <%= link_to employee_path(employee) do %>
+              <div class="row">
+                <div class="col-md-2">
+                  <%= image_tag(employee.avatar.url(:medium), height: 50, width: 50, class: "img-circle") %>
+                </div>
+                <div class="col-md-5">
+                  <%= employee.full_name %><br>
+                  <small><%= employee.role.titleize %></small>
+                </div>
+                <div class="col-md-3">
+
+                    <span class="text-primary"><%= number_to_currency employee.cash_on_hand_account_balance  %> </span>
+
+
+                </div>
+              </div>
+              <br>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+

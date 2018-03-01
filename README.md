@@ -1,3 +1,13 @@
+BIR Config
+  VatRegistration VAT or NON-VAT
+
+OR:
+  Official Receipt
+  Total Sales Due
+  Less Witholding Tax
+  Total Payment
+  Senior Citizen / Person with Disabilities Discount
+
 ADD PRODUCT PRICE AND UOM TO EXCEL DOWNLOAD IN SERVER
 
 

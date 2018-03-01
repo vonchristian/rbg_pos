@@ -50,7 +50,6 @@ Rails.application.routes.draw do
   end
 
   resources :settings, only: [:index]
-  resources :branches, only: [:new, :create]
   resources :businesses, only: [:edit, :update]
 
   resources :supplier_registrations, only: [:new, :create]
@@ -66,7 +65,7 @@ Rails.application.routes.draw do
   end
   resources :users, only: [:edit, :update]
   resources :registries, only: [:create, :show, :destroy]
-  resources :employees, only: [:index, :show, :edit, :update] do
+  resources :employees, only: [:show, :edit, :update] do
     resources :remittances, only: [:new, :create], module: :employees
     resources :reports, only: [:index], module: :employees
     resources :sales, only: [:index], module: :employees

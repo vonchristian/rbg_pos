@@ -5,15 +5,6 @@
         <h3 class="box-title"> Settings Section </h3>
       </div>
       <div class="box-body">
-        <h4>Branches </h3>
-        <p class="help-block">List of branches</p>
-          <% Branch.all.each do |branch| %>
-          	<p><%= branch.name %></p>
-          	<br>
-          <% end %>
-        <br>
-          <%=link_to 'New Branch', new_branch_path, class: "btn btn-danger btn-sm" %>
-          <hr>
          <h4>Store Fronts </h3>
         <p class="help-block">List of store fronts</p>
           <% StoreFront.all.each do |store_front| %>
