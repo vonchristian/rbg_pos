@@ -1,4 +1,4 @@
-<div class="tab-pane" id="employee-orders">
+<div class="tab-pane <%= 'active' if current_page? employee_sales_path(@employee) %>" id="employee-orders">
   <div class="content">
     <p class="category">Generate report for sales</p><br>
           <%= form_tag({:action => "index", controller: "reports/sales", format: 'pdf'}, {:method => :get})  do %>
@@ -19,50 +19,46 @@
                 </div>
               </div>
             <% end %>
-    <div class="content table-responsive table-full-width">
-      <table class="table table-striped">
-        <thead>
+    <div class="content">
+      <% @orders.each do |order| %>
+          <%= link_to store_front_module_sales_order_path(order) do %>
+            <div class="row text-muted">
+              <div class="col-md-1">
+                <% if order.commercial_document.present? && order.commercial_document.try(:avatar).present? %>
+                  <%= image_tag(order.commercial_document.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %>
+                <% end %>
+              </div>
+              <div class="col-md-3">
+                <b class="text-primary"><%= order.commercial_document.try(:name) %></b><br>
+                <small class="text-muted"><i class="fa fa-clock-o"></i> <%= order.date.strftime("%b %e, %Y %I:%M %p") %></small>
+              </div>
+              <div class="col-md-6">
+                <% order.line_items.limit(35).each do |line_item| %>
+                  <div class="row">
+                    <div class="col-md-1">
+                      <%= line_item.quantity %>
+                    </div>
+                    <div class="col-md-7">
+                      <%= line_item.name.try(:upcase) %><br>
+                      <span class="text-muted">
+                        <i class="fa fa-tags"></i>
+                          <%= number_to_currency line_item.unit_of_measurement.price %>
+                        <i class="fa fa-barcode"></i> <%= line_item.bar_code %>
+                      </span>
+                    </div>
+                    <div class="col-md-3">
+                      <%= number_to_currency line_item.total_cost %>
+                    </div>
+                  </div>
+                  <br>
+                <% end %>
+              </div>
 
-          <th>Date</th>
-          <th>Customer</th>
-          <th>Items</th>
-          <th>Total Cost</th>
-        </thead>
-        <tbody>
-          <% @orders.order(date: :desc).each do |order| %>
-            <tr>
-                                      <% if order.line_items.count > 0 || order.description.present? %>
-                                        <td><%=link_to order.date.strftime("%B %e, %Y"), store_front_module_sales_order_path(order) %></td>
-                                        <td><%= order.commercial_document.try(:name).try(:titleize) %>
-                                          <% if order.reference_number.present? %>
-                                            <br>
-                                            <b>#<%=order.reference_number %></b>
-                                          <% end %>
-                                        </td>
-                                        <td>
-                                          <%= order.description %>
-                                          <% order.line_items.each do |line_item|  %>
-                                            <div class="row">
-                                              <div class="col-md-9">
-                                                <%= line_item.name %><br>
-                                                <small><i><%= line_item.bar_code %></i></small>
-                                              </div>
-                                              <div class="col-md-1">
-                                                <span><%= line_item.quantity %></span>
-                                              </div>
-                                            </div>
-                                            <br>
-                                          <% end %>
-                                        </td>
-                                        <td></td>
-                                        <td><%= number_to_currency order.discount_amount%></td>
-                                        <td></td>
-                                        <td><%= order.employee.try(:full_name) %></td>
-                                      <% end %>
-                                      </tr>
+            </div>
+            <hr>
           <% end %>
-        </tbody>
-      </table>
+        <% end %>
+
       <center><%= will_paginate @orders %></center>
     </div>
   </div>
