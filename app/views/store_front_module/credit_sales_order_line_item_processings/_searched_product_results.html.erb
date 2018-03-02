@@ -28,6 +28,9 @@
           <%= f.input :product_id, input_html: { value: product.id }, as: :hidden %>
           <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
         </div>
+        <div class="col-md-3">
+          <%= f.input :unit_cost, placeholder: "Selling Price", label: false %>
+        </div>
         <div class="col-md-2">
           <%= button_tag type: 'submit', class: "btn btn-success btn-sm" do %>
             <i class="fa fa-shopping-basket" aria-hidden="true"></i> Add to Cart
@@ -37,6 +40,7 @@
       <hr>
     <% end %>
   <% end %>
+  <hr>
 <% end %>
 
 <script type="text/javascript">

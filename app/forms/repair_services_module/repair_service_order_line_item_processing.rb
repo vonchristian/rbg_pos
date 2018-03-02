@@ -88,7 +88,11 @@ module RepairServicesModule
       end
 
       def selling_cost
-        find_unit_of_measurement.price
+        if unit_cost.present?
+          unit_cost
+        else
+          find_unit_of_measurement.price
+        end
       end
 
       def set_total_cost

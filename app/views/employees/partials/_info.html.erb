@@ -7,7 +7,7 @@
     <hr>
     <div class="row">
       <div class="col-md-3">
-          <h4><%= number_to_currency @employee.default_cash_on_hand_account.balance %></h4>
+          <h4><%= number_to_currency @employee.cash_on_hand_account_balance %></h4>
           <small> CASH ON HAND</small>
           <% if current_user.proprietor? %>
             <%=link_to "New Remittance", new_employee_remittance_path(@employee), class: "btn btn-success btn-sm" %>

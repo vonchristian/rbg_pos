@@ -29,10 +29,10 @@ module AccountingModule
 	  	User.find_by_id(cashier_id)
 	  end
 	  def credit_account
-	  	find_cashier.default_cash_on_hand_account
+	  	find_cashier.cash_on_hand_account
 	  end
 	  def debit_account
-	  	find_proprietor.default_cash_on_hand_account
+	  	find_proprietor.cash_on_hand_account
 	  end
 	end
 end

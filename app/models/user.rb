@@ -27,10 +27,9 @@ class User < ApplicationRecord
   do_not_validate_attachment_file_type :avatar
   delegate :balance, to: :default_cash_on_hand_account, prefix: true
   def self.cash_on_hand_accounts
-    ids = all.pluck(:cash_on_hand_account_id)
     accounts = []
-    ids.each do |id|
-      accounts << AccountingModule::Account.find_by_id(id)
+    self.all.each do |user|
+      accounts << user.cash_on_hand_account
     end
     accounts
   end

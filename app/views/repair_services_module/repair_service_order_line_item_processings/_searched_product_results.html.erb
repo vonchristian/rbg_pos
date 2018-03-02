@@ -18,37 +18,29 @@
   </div>
   <br>
   <% if product.available_quantity > 0 %>
-
-                    <%= simple_form_for [@work_order, @repair_service_order_line_item], url: :repair_services_module_work_order_repair_service_order_line_item_processings do |f| %>
-
-<div class="row">
+    <%= simple_form_for [@work_order, @repair_service_order_line_item], url: :repair_services_module_work_order_repair_service_order_line_item_processings do |f| %>
+      <div class="row">
         <div class="col-md-3">
-                        <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, autofocus: true %>
-                      </div>
-                      <div class="col-md-3">
-                        <%= f.input :unit_of_measurement_id, label: 'Unit', collection: product.unit_of_measurements.all.map{|a| [a.unit_code, a.id] }, selected: product.base_measurement %>
-                        <%= f.input :product_id, input_html: { value: product.id }, as: :hidden %>
-                        <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
-                        <%= f.input :work_order_id, input_html: { value: @work_order.id }, as: :hidden %>
-                      </div>
-
-                      <div class="col-md-2">
-                        <br>
+          <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, autofocus: true %>
+        </div>
+        <div class="col-md-3">
+          <%= f.input :unit_of_measurement_id, label: 'Unit', collection: product.unit_of_measurements.all.map{|a| [a.unit_code, a.id] }, selected: product.base_measurement %>
+          <%= f.input :product_id, input_html: { value: product.id }, as: :hidden %>
+          <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
+          <%= f.input :work_order_id, input_html: { value: @work_order.id }, as: :hidden %>
+        </div>
+        <div class="col-md-3">
+          <%= f.input :unit_cost, placeholder: "Selling Price", label: "Selling Price" %>
+        </div>
+        <div class="col-md-2">
+          <br>
           <%= button_tag type: 'submit', class: "btn btn-success btn-sm" do %>
             <i class="fa fa-shopping-basket" aria-hidden="true"></i> Add to Cart
           <% end %>
         </div>
-                      </div>
-                    </div>
-
-                      <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
-                      <%= f.input :product_id, input_html: { value: product.id }, as: :hidden %>
-
-
-
-
-
-              <% end %>
-<% end %>
+      </div>
+    <% end %>
+  <% end %>
+<hr>
 <% end %>
 <hr>

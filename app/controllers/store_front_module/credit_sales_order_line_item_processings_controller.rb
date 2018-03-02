@@ -29,7 +29,7 @@ module StoreFrontModule
     private
     def line_item_params
       params.require(:store_front_module_line_items_sales_order_line_item_processing).permit(:quantity,
-        :unit_of_measurement_id, :product_id, :cart_id, :bar_code, :purchase_order_line_item_id)
+        :unit_of_measurement_id, :unit_cost, :product_id, :cart_id, :bar_code, :purchase_order_line_item_id)
     end
   end
 end

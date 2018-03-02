@@ -6,6 +6,7 @@ module StoreFrontModule
                     :quantity,
                     :cart_id,
                     :product_id,
+                    :unit_cost,
                     :bar_code,
                     :purchase_order_line_item_id
       validates :quantity, numericality: { greater_than: 0.1 }
@@ -84,7 +85,11 @@ module StoreFrontModule
       end
 
       def selling_cost
-        find_unit_of_measurement.price
+        if unit_cost.present?
+          unit_cost.to_f
+        else
+          find_unit_of_measurement.price
+        end
       end
 
       def set_total_cost

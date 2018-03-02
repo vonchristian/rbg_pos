@@ -25,6 +25,9 @@
                         <%= f.input :bar_code, input_html: { value: params[:search] },as: :hidden %>
                         <%= f.input :purchase_order_line_item_id, input_html: { value: line_item.id }, as: :hidden %>
                       </div>
+                      <div class="col-md-3">
+                        <%= f.input :unit_cost, placeholder: "Selling Price", label: false %>
+                      </div>
 
                       <div class="col-md-2">
                         <% if line_item.available_quantity <= 0 %>
