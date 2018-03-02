@@ -100,8 +100,9 @@
                   <small><%= employee.role.titleize %></small>
                 </div>
                 <div class="col-md-3">
-
+                  <% if employee.cash_on_hand_account.present? %>
                     <span class="text-primary"><%= number_to_currency employee.cash_on_hand_account_balance  %> </span>
+                  <% end %>
 
 
                 </div>
