@@ -30,8 +30,9 @@ class Order < ApplicationRecord
       all
     end
   end
-
-
+  def total_cost
+    entry.try(:total)
+  end
   def total_quantity
     line_items.sum(&:quantity)
   end

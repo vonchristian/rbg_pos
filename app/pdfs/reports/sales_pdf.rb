@@ -43,10 +43,10 @@ module Reports
     def orders_data
       if @employee.present?
         [["DATE", "CUSTOMER", "ITEMS", "DISCOUNT", "TOTAL COST"]] +
-        @orders_data ||= @employee.orders.ordered_on(from_date: (@from_date.beginning_of_day), to_date: @to_date.end_of_day).map{|o| [o.date.strftime("%B %e, %Y"), o.commercial_document.try(:name).try(:upcase), order_description(o), price(o.discount_amount), price(o.total_cost)] }
+        @orders_data ||= @employee.orders.ordered_on(from_date: (@from_date.beginning_of_day), to_date: @to_date.end_of_day).map{|o| [o.date.strftime("%B %e, %Y"), o.commercial_document.try(:name).try(:upcase), order_description(o), price(o.discount_amount), price(o.try(:total_cost))] }
             else
          [["DATE", "CUSTOMER", "ITEMS", "DISCOUNT", "TOTAL COST"]] +
-        @orders_data ||= @orders.ordered_on(from_date: (@from_date.beginning_of_day), to_date: @to_date.end_of_day).map{|o| [o.date.strftime("%B %e, %Y"), o.commercial_document.try(:name).try(:upcase), order_description(o),  price(o.discount_amount), price(o.total_cost)] }
+        @orders_data ||= @orders.ordered_on(from_date: (@from_date.beginning_of_day), to_date: @to_date.end_of_day).map{|o| [o.date.strftime("%B %e, %Y"), o.commercial_document.try(:name).try(:upcase), order_description(o),  price(o.discount_amount), price(o.try(:total_cost))] }
           end
     end
 

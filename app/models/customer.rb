@@ -104,8 +104,16 @@ class Customer < ApplicationRecord
   end
 
   def payment_entries
-    StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.credit_entries.where(commercial_document: self)
+    StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.credit_entries.where(commercial_document: self) +
+    other_payments
   end
-
-
+  def other_payments
+    payments = []
+    User.cash_on_hand_accounts.each do |cash_account|
+      cash_account.debit_entries.where(commercial_document: self).each do |payment|
+        payments << payment
+      end
+    end
+    payments
+  end
 end

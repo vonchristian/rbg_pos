@@ -12,10 +12,11 @@ class OtherSalesForm
 
   private
   def save_other_sales
-    AccountingModule::Entry.create!(recorder_id: recorder_id, entry_date: date, reference_number: reference_number, description: description,
+    AccountingModule::Entry.create!(commercial_document: find_customer, recorder_id: recorder_id, entry_date: date, reference_number: reference_number, description: description,
       credit_amounts_attributes: [amount: amount, account: credit_account,commercial_document: find_customer],
       debit_amounts_attributes: [amount: amount, account: debit_account, commercial_document: find_customer])
   end
+
   def credit_account
     AccountingModule::Account.find_by(name: "Other Income")
   end

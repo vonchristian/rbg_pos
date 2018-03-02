@@ -25,6 +25,15 @@ class User < ApplicationRecord
   :url => "/system/:attachment/:id/:style/:filename"
   do_not_validate_attachment_file_type :avatar
   delegate :balance, to: :default_cash_on_hand_account, prefix: true
+  def self.cash_on_hand_accounts
+    ids = all.pluck(:cash_on_hand_account_id)
+    accounts = []
+    ids.each do |id|
+      accounts << AccountingModule::Account.find_by_id(id)
+    end
+    accounts
+  end
+
   def self.employee_for(cash_on_hand_account)
     where(cash_on_hand_account: cash_on_hand_account).first
   end
