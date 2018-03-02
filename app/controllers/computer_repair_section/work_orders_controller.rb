@@ -7,7 +7,7 @@ module ComputerRepairSection
     def create
       @work_order = WorkOrder.create(work_order_params)
       if @work_order.valid?
-        @work_order.save
+        @work_order.save!
         @work_order.technician_work_orders.create(technician: current_user)
         redirect_to computer_repair_section_work_order_url(@work_order), notice: "Received successfully."
         @work_order.received!

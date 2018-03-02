@@ -12,7 +12,7 @@ class OtherSalesForm
 
   private
   def save_other_sales
-    AccountingModule::Entry.other_sale.create!(recorder_id: recorder_id, entry_date: date, reference_number: reference_number, description: description,
+    AccountingModule::Entry.create!(recorder_id: recorder_id, entry_date: date, reference_number: reference_number, description: description,
       credit_amounts_attributes: [amount: amount, account: credit_account,commercial_document: find_customer],
       debit_amounts_attributes: [amount: amount, account: debit_account, commercial_document: find_customer])
   end
@@ -23,8 +23,8 @@ class OtherSalesForm
     User.find_by(id: recorder_id).default_cash_on_hand_account
   end
   def create_order
-    order = Order.create!(description: description, customer_id: customer_id, date: date, employee_id: recorder_id, reference_number: reference_number)
-    Payment.create(mode_of_payment: 'cash', order: order, total_cost: amount)
+    order = Order.create!(description: description, commercial_document: find_customer, date: date, employee_id: recorder_id, reference_number: reference_number)
+    order.create_cash_payment(cash_tendered: amount)
   end
   def find_customer
     Customer.find_by_id(customer_id)

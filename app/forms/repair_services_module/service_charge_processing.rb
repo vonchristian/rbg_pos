@@ -13,7 +13,7 @@ module RepairServicesModule
     private
     def create_service_charge
       charge = ServiceCharge.create(description: description, amount: amount)
-      find_work_order.work_order_service_charges.find_or_create_by(service_charge: charge, user: find_employee)
+      find_work_order.work_order_service_charges.find_or_create_by(service_charge_id: charge.id, user: find_employee)
       create_entry(charge)
     end
     def create_entry(charge)
