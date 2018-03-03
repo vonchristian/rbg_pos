@@ -31,6 +31,16 @@ class WorkOrder < ApplicationRecord
   def name
     "#{product_name}"
   end
+  def self.payment_entries
+    payments = []
+    all.each do |work_order|
+      work_order.payment_entries.each do |payment|
+        payments << payment
+      end
+    end
+    payments
+  end
+
 
   def self.total_charges_cost(hash ={} )
     if hash[:from_date] && hash[:to_date]

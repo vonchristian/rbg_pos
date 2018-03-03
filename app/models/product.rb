@@ -75,6 +75,9 @@ class Product < ApplicationRecord
       "success"
     end
   end
+  def last_purchase_cost
+    purchases.last.try(:unit_cost)
+  end
 
 
   def self.import(file)

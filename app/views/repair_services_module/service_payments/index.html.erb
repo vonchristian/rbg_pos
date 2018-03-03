@@ -11,6 +11,7 @@
               <tr>
                 <th>Date</th>
                 <th>Customer</th>
+                <th>Work Order</th>
                 <th>Description</th>
                 <th>Amount</th>
                 <th>Employee</th>
@@ -20,9 +21,10 @@
               <% @service_payments.each do |payment| %>
                 <tr>
                   <td><%=link_to payment.entry_date.strftime("%B %e, %Y"), repair_services_module_service_payment_path(payment) %></td>
+                  <td><%= payment.commercial_document.try(:customer).try(:name) %></td>
                   <td><%= payment.commercial_document_name %></td>
                   <td><%= payment.description %></td>
-                  <td><%= number_to_currency payment.total %></td>
+                  <td><%= number_to_currency payment.amount %></td>
                   <td><%= payment.recorder_name %></td>
                 </tr>
               <% end %>

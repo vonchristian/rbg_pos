@@ -44,6 +44,25 @@ class User < ApplicationRecord
   def name
     full_name
   end
+  def received_cash_transfers
+    transfers = []
+    cash_on_hand_account.debit_amounts.each do |transfer|
+      if User.cash_on_hand_accounts.include?(transfer.account) && transfer.commercial_document.is_a?(User)
+        transfers << transfer
+      end
+    end
+    transfers
+  end
+
+  def remittances
+    remittances = []
+    cash_on_hand_account.credit_amounts.each do |remittance|
+      if User.cash_on_hand_accounts.include?(remittance.account) && remittance.commercial_document.is_a?(User)
+        remittances << remittance
+      end
+    end
+    remittances
+  end
 
   def cash_on_hand_account_balance
     default_cash_on_hand_account.balance(recorder_id: self.id)

@@ -2,10 +2,11 @@ module StoreFrontModule
   module Orders
     class SalesOrder < Order
       has_one :cash_payment, as: :cash_paymentable, class_name: "StoreFrontModule::CashPayment"
-      has_many :sales_order_line_items, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem", foreign_key: 'order_id'
+      has_many :sales_order_line_items, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem", foreign_key: 'order_id', dependent: :destroy
 
       delegate :name, to: :customer, prefix: true, allow_nil: true
       delegate :discount_amount, to: :cash_payment, allow_nil: true
+      before_destroy :delete_entry
       def credit?
         balance.present?
       end
@@ -43,6 +44,11 @@ module StoreFrontModule
       end
       def self.percentage_text_color
         "green"
+      end
+      private
+      def delete_entry
+        entry_id = AccountingModule::Amount.where(commercial_document: self).pluck(:entry_id).uniq
+        AccountingModule::Entry.find_by_id(entry_id).destroy
       end
     end
   end

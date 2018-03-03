@@ -133,7 +133,7 @@ Rails.application.routes.draw do
     resources :purchase_orders, only: [:new, :index, :show], module: :orders
     resources :internal_use_orders, only: [:index, :show], module: :orders
     resources :purchase_returns, only: [:index, :show], module: :orders
-    resources :sales_orders, only: [:index, :show], module: :orders
+    resources :sales_orders, only: [:index, :show, :destroy], module: :orders
     resources :purchase_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items
     resources :purchase_return_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items
     resources :sales_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items

@@ -8,6 +8,8 @@ module AccountingModule
 
     delegate :name, to: :account, prefix: true
     delegate :recorder, :entry_date, :description, to: :entry
+    delegate :name, to: :commercial_document, prefix: true, allow_nil: true
+    delegate :name, to: :recorder, prefix: true, allow_nil: true
     def self.total
       sum(&:amount)
     end

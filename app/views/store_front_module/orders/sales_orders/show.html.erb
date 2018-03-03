@@ -12,6 +12,9 @@
       </div>
       <hr>
       <div class="box-body">
+        <%if current_user.proprietor? %>
+          <%= link_to 'Delete', store_front_module_sales_order_path(@order), method: :delete, data: { confirm_with: "Are you sure you want to delete this Sales Order?" } %>
+        <% end %>
          <span class="pull-right"><%= link_to 'Print(PDF)', order_path(@order, format: 'pdf'), class: "btn btn-default btn-sm" %></span>
         <i class="icon-calendar"></i> <%= @order.date.strftime("%B %e, %Y") %><br>
         <p class="text-black"> Reference Number: <%= @order.reference_number %></p>
