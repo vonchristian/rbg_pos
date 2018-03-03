@@ -105,7 +105,7 @@ Rails.application.routes.draw do
 
   namespace :store_front_module do
     resources :stock_transfer_registries, only: [:new, :create, :show], module: :registries
-    resources :purchase_order_registries, only: [:new, :create, :show], module: :registries do
+    resources :purchase_order_registries, only: [:new, :create, :show, :destroy], module: :registries do
       resources :purchase_order_line_items, only: [:destroy]
     end
     resources :customers, only: [:show] do
@@ -165,6 +165,9 @@ Rails.application.routes.draw do
 
   resources :income_statement, only: [:index]
   namespace :accounting do
+    resources :employees, only: [:show] do
+      resources :cash_transfers, only: [:new, :create]
+    end
     resources :bank_accounts, only: [:new, :create, :show] do
       resources :deposits, only: [:new, :create], module: :bank_accounts
       resources :withdrawals, only: [:new, :create], module: :bank_accounts

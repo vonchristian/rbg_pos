@@ -40,7 +40,7 @@ module StoreFrontModule
             unit_of_measurement:      find_product.base_measurement,
             product_id:               product_id,
             purchase_order_line_item: purchase)
-          requested_quantity -= temp_sales.quantity
+          requested_quantity -= temp_internal_use.quantity
           break if requested_quantity.zero?
         end
       end

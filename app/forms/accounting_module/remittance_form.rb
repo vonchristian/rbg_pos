@@ -7,6 +7,8 @@ module AccountingModule
 		              :reference_number,
 		              :description,
 		              :amount,
+		              :debit_account_id,
+		              :credit_account_id,
                   :recorder_id
 		validates :entry_date, :description, :cashier_id, presence: true
 		validates :amount, presence: true, numericality: true
@@ -29,10 +31,18 @@ module AccountingModule
 	  	User.find_by_id(cashier_id)
 	  end
 	  def credit_account
-	  	find_cashier.cash_on_hand_account
+	  	if credit_account_id.present?
+	  		AccountingModule::Account.find_by_id(credit_account_id)
+	  	else
+	  	  find_cashier.cash_on_hand_account
+	  	end
 	  end
 	  def debit_account
-	  	find_proprietor.cash_on_hand_account
+	  	if debit_account_id.present?
+	  		AccountingModule::Account.find_by_id(debit_account_id)
+	  	else
+	  	  find_proprietor.cash_on_hand_account
+	  	end
 	  end
 	end
 end

@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-5">
-    <div class="box box-success">
+    <div class="box box-default">
       <div class="box-header">
         <div class="row">
           <div class="col-md-8">
@@ -8,7 +8,9 @@
             <span class="help-block"> Generate purchases on this section </span>
           </div>
           <div class="col-md-4">
-            <%= link_to 'Upload', new_store_front_module_purchase_order_registry_path, class: "btn btn-primary" %>
+            <span class="pull-right">
+              <%= link_to 'Upload (Excel)', new_store_front_module_purchase_order_registry_path, class: "btn btn-primary" %>
+            </span>
           </div>
         </div>
       </div>
@@ -29,7 +31,7 @@
           <div class="input-group">
             <%= text_field_tag :search, params[:search], autofocus: true,  class: "form-control", placeholder: "Search Products..."  %>
             <span class="input-group-btn">
-              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-success") do %>
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-default") do %>
                 <i class="fa fa-search"></i>
               <% end %>
             </span>
@@ -48,7 +50,7 @@
     </div>
   </div>
     <div class="col-md-7">
-      <div class="box box-success">
+      <div class="box box-default">
         <div class="box-body">
           <% if @cart.purchase_order_line_items.present? %>
         <% @cart.purchase_order_line_items.each do |line_item| %>

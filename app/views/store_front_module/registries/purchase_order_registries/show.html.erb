@@ -50,6 +50,9 @@
     <div class="box box-primary">
       <div class="box-header">
         <h3 class="box-title"> Purchase Details </h3>
+        <%= link_to store_front_module_purchase_order_registry_path(@registry), method: :delete do %>
+          <span class="btn btn-sm btn-danger" data-toggle="tooltip" title="Cancel Purchase"> <i class="fa fa-trash"></i> Remove </span>
+        <% end %>
       </div>
       <div class="box-body">
         <center>

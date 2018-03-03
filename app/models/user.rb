@@ -31,7 +31,7 @@ class User < ApplicationRecord
     self.all.each do |user|
       accounts << user.cash_on_hand_account
     end
-    accounts
+    accounts.compact
   end
 
   def self.employee_for(cash_on_hand_account)

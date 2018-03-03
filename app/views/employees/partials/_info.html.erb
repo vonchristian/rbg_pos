@@ -6,11 +6,12 @@
     <% end %>
     <hr>
     <div class="row">
-      <div class="col-md-3">
-          <h4><%= number_to_currency @employee.cash_on_hand_account_balance %></h4>
-          <small> CASH ON HAND</small>
+      <div class="col-md-5">
+          <h4><%= number_to_currency @employee.default_cash_on_hand_account_balance %></h4>
+          <small> CASH ON HAND</small><br>
           <% if current_user.proprietor? %>
             <%=link_to "New Remittance", new_employee_remittance_path(@employee), class: "btn btn-success btn-sm" %>
+            <%= link_to 'New Cash Transfer', new_accounting_employee_cash_transfer_path(@employee), class: "btn btn-danger btn-sm" %>
           <% end %>
       </div>
     </div>

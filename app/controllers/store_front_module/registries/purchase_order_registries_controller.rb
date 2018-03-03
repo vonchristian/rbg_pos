@@ -21,6 +21,11 @@ module StoreFrontModule
         @cart = current_cart
         @purchase_order = StoreFrontModule::Orders::PurchaseOrderProcessing.new
       end
+      def destroy
+        @registry = StoreFrontModule::Registries::PurchaseOrderRegistry.find(params[:id])
+        @registry.destroy
+        redirect_to store_front_module_purchase_orders_url, notice: "Purchases cancelled successfully."
+      end
 
       private
       def registry_params

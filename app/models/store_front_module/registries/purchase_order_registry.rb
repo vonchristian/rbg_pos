@@ -1,7 +1,7 @@
 module StoreFrontModule
   module Registries
     class PurchaseOrderRegistry < Registry
-      has_many :purchase_order_line_items, class_name: "StoreFrontModule::LineItems::PurchaseOrderLineItem", foreign_key: 'registry_id'
+      has_many :purchase_order_line_items, class_name: "StoreFrontModule::LineItems::PurchaseOrderLineItem", foreign_key: 'registry_id', dependent: :destroy
 
 
       def parse_for_records
@@ -51,7 +51,7 @@ module StoreFrontModule
       end
 
       def bar_code(row)
-        row[5]
+        normalized_barcode(row)
       end
 
       def base_measurement(row)
@@ -80,6 +80,13 @@ module StoreFrontModule
       def find_unit_of_measurement(row)
         find_product(row).unit_of_measurements.find_by(unit_code: row[4], base_measurement: base_measurement(row),  conversion_quantity: conversion_quantity(row),
           quantity: unit_quantity(row))
+      end
+      def normalized_barcode(row)
+        if row[5].to_s.include?(".")
+          row[5].to_s.chop.gsub(".", "")
+        else
+          row[5].to_s
+        end
       end
     end
   end

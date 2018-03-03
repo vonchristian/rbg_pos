@@ -1,12 +1,11 @@
-<div class="content">
+
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
-      <div class="card">
-        <div class="content">
-          <div class="header">
-            <h4 class="title"> Remittance Details </h4>
+      <div class="box box-default">
+        <div class="box-header">
+            <h4 class="box-title"> Remittance Details </h4>
           </div>
-        <div class="content">
+        <div class="box-body">
           <hr>
           <div class="row">
             <div class="col-md-3">
@@ -20,7 +19,7 @@
           <br>
           <div class="row">
             <div class="col-md-8 col-md-offset-3">
-              <h4 class="title"> <b><%= number_to_currency @employee.default_cash_on_hand_account.balance %></b></h4>
+              <h4 class="title"> <b><%= number_to_currency @employee.default_cash_on_hand_account_balance %></b></h4>
               <small>CASH ON HAND OF EMPLOYEE </small>
             </div>
           </div>

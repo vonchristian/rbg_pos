@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <div class="box box-default">
+        <div class="box-header">
+            <h3 class="box-title"> Cash Transfer Details </h3>
+          </div>
+        <div class="box-body">
+          <center>
+            <%=image_tag(@employee.avatar.url(:medium), class: "img-circle", height: 60, width: 60) %>
+            <h4><%= @employee.name %></h4>
+          </center>
+        <%= simple_form_for @cash_transfer, url: :accounting_employee_cash_transfers do |f| %>
+          <%= f.error_notification %>
+          <%= f.input :cashier_id, input_html: { value: @employee.id }, as: :hidden %>
+          <%= f.input :entry_date, label: 'Date', as: :string, input_html: { class: "datepicker" } %>
+
+          <%= f.input :reference_number %>
+          <%= f.input :description, input_html: { value: "Cash Transfer" } %>
+          <%= f.input :amount %>
+          <%= f.input :debit_account_id, input_html: { value: @employee.cash_on_hand_account_id } %>
+          <%= f.input :credit_account_id, input_html: { value: current_user.cash_on_hand_account_id } %>
+
+          <%= f.submit "Save Remittance", class: "btn btn-primary pull-right" %>
+          <br>
+          <br>
+        <% end %>
