@@ -13,7 +13,7 @@ module StoreFrontModule
       private
       def order_params
         params.require(:store_front_module_orders_stock_transfer_order_processing).
-        permit(:store_front_id,
+        permit(:origin_store_front_id,
                :destination_store_front_id,
                :registry_id,
                :date,
