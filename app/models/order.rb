@@ -1,7 +1,7 @@
 class Order < ApplicationRecord
   include PgSearch
   pg_search_scope :text_search, against: [:reference_number, :search_term]
-
+  multisearchable against: [:reference_number]
   belongs_to :destination_store_front, class_name: "StoreFront", foreign_key: 'destination_store_front_id', optional: true
   belongs_to :commercial_document, polymorphic: true, optional: true
   belongs_to :employee, class_name: "User", foreign_key: 'employee_id'

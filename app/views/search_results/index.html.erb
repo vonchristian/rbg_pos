@@ -32,6 +32,10 @@
                       <% if  pg_search_document.searchable.kind_of?(LineItem) %>
                         <b><%= link_to pg_search_document.searchable.name, store_front_module_line_item_path(pg_search_document.searchable) %></b>
                         <span class="help-block">Line Item</span>
+                        <% elsif pg_search_document.searchable.kind_of?(Order) %>
+                        <b><%= link_to pg_search_document.searchable.try(:reference_number), store_front_module_sales_order_path(pg_search_document.searchable) %></b>
+                        <span class="help-block">Sales Order</span>
+
                       <% elsif pg_search_document.searchable.kind_of?(WorkOrder) %>
                         <b><%= link_to pg_search_document.searchable.name, computer_repair_section_work_order_path(pg_search_document.searchable) %></b>
                         <span class="help-block">Repair Service</span>
