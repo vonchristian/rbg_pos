@@ -40,7 +40,9 @@ class WorkOrder < ApplicationRecord
     end
     payments
   end
-
+  def formatted_service_number
+    "##{service_number.sub(/^0+/, "")}"
+  end
 
   def self.total_charges_cost(hash ={} )
     if hash[:from_date] && hash[:to_date]
