@@ -81,7 +81,7 @@
                 <span class='text-black'><small><%= work_order.created_at.strftime("%b %e, %l:%M %p") %></small></span>
               </div>
               <div class="col-md-2">
-                <small class="text-black"><b>#<%=work_order.service_number.sub(/^0+/, "") %></b></small>
+                <small class="text-black"><b><%=work_order.formatted_service_number %></b></small>
               </div>
             </div>
             <br>
@@ -112,7 +112,7 @@
                 <% end %>
               </div>
               <div class="col-md-2">
-                <small class="text-black"><b>#<%=work_order.service_number.sub(/^0+/, "") %></b></small>
+                <small class="text-black"><b><%=work_order.formatted_service_number %></b></small>
               </div>
             </div>
             <hr>
@@ -142,7 +142,7 @@
                 <% end %>
               </div>
               <div class="col-md-2">
-                <small class="text-black"><b>#<%=work_order.service_number.sub(/^0+/, "") %></b></small>
+                <small class="text-black"><b><%=work_order.formatted_service_number %></b></small>
               </div>
             </div>
             <hr>
@@ -172,7 +172,7 @@
                     <% end %>
                     </div>
                     <div class="col-md-2">
-                      <small class="text-black"><b>#<%=work_order.service_number.sub(/^0+/, "") %></b></small>
+                      <small class="text-black"><b><%=work_order.formatted_service_number %></b></small>
                     </div>
                   </div>
                   <br>
