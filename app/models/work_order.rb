@@ -16,7 +16,8 @@ class WorkOrder < ApplicationRecord
   has_many :work_order_updates, as: :updateable, class_name: "Post", dependent: :destroy
   has_many :work_order_service_charges, dependent: :destroy
   has_many :service_charges, through: :work_order_service_charges
-  has_many :spare_parts, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem", as: :commercial_document
+  has_many :spare_part_orders, class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document, dependent: :destroy
+  has_many :spare_parts, through: :spare_part_orders, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem", source: :sales_order_line_items
   has_many :accessories, dependent: :destroy
   has_many :work_order_line_items, class_name: "StoreFrontModule::LineItems::WorkOrderLineItem"
   enum status: [:received, :work_in_progress, :done, :released]
@@ -27,7 +28,7 @@ class WorkOrder < ApplicationRecord
   validates :description, :physical_condition, :reported_problem, presence: true
   validates :customer_id, presence: true
   after_commit :set_service_number, :set_customer_name, :set_product_name,  on: [:create, :update]
-
+  delegate :avatar, to: :customer
   def name
     "#{product_name}"
   end

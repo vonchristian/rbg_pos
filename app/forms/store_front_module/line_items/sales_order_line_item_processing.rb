@@ -80,6 +80,7 @@ module StoreFrontModule
       def converted_quantity
         find_unit_of_measurement.conversion_multiplier * quantity.to_f
       end
+
       def find_cart
         Cart.find_by_id(cart_id)
       end

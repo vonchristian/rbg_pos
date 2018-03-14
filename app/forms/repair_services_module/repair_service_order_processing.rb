@@ -12,7 +12,7 @@ module RepairServicesModule
     private
 
     def create_repair_service_order
-      order  = find_customer.repair_service_orders.create(
+      order  = find_work_order.spare_part_orders.create(
         date: date,
         employee: find_employee)
 
