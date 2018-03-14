@@ -26,25 +26,24 @@ module StoreFrontModule
       end
 
        def decrease_product_available_quantity
-        sales = find_cart.sales_order_line_items.create!(
-            quantity: quantity,
+        sale_return = find_cart.sales_return_order_line_items.create!(
+            quantity:                 quantity,
             unit_cost:                selling_cost,
             total_cost:               set_total_cost,
             unit_of_measurement:      find_unit_of_measurement,
             product_id:               product_id)
-
         requested_quantity = converted_quantity
 
-        find_product.purchases.order(created_at: :asc).available.each do |purchase|
-          temp_sales = sales.referenced_purchase_order_line_items.create!(
+        find_product.purchases.order(created_at: :asc).each do |purchase|
+          temp_sales_return = sale_return.referenced_purchase_order_line_items.create!(
             quantity:                 quantity_for(purchase, requested_quantity),
-            unit_cost:                purchase.purchase_cost,
+            unit_cost:                purchase.unit_cost,
             total_cost:               total_cost_for(purchase, quantity),
             unit_of_measurement:      find_product.base_measurement,
             product_id:               product_id,
             bar_code:                 bar_code,
-            sales_order_line_item: purchase)
-          requested_quantity -= temp_sales.quantity
+            purchase_order_line_item_id:   purchase.id)
+          requested_quantity -= temp_sales_return.quantity
           break if requested_quantity.zero?
         end
       end
@@ -110,7 +109,7 @@ module StoreFrontModule
 
       def available_quantity
         if product_id.present? && bar_code.blank?
-          find_product.available_quantity
+          find_product.sales_balance
         elsif sales_order_line_item_id.present? && bar_code.present?
           find_sales_order_line_item.quantity
         end

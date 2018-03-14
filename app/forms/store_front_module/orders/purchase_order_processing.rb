@@ -4,7 +4,7 @@ module StoreFrontModule
       include ActiveModel::Model
       attr_accessor  :cart_id, :supplier_id, :voucher_id, :employee_id, :date, :registry_id
       validates :voucher_id, :supplier_id, :cart_id, presence: true
-      validate :amounts_cancel?
+      # validate :amounts_cancel?
 
 
       def process!
@@ -47,10 +47,9 @@ module StoreFrontModule
       end
 
       private
-      def amounts_cancel?
-          errors[:voucher_id] << "The total amount and voucher amount is not equal" if find_voucher.total != find_cart.purchase_order_line_items.sum(&:total_cost)
-
-      end
+      # def amounts_cancel?
+      #     errors[:voucher_id] << "The total amount and voucher amount is not equal" if find_voucher.total != find_cart.purchase_order_line_items.sum(&:total_cost)
+      # end
 
     end
   end

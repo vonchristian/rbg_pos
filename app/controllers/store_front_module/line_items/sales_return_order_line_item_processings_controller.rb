@@ -16,9 +16,9 @@ module StoreFrontModule
         @sales_return_order_line_item = StoreFrontModule::LineItems::SalesReturnOrderLineItemProcessing.new(line_item_params)
         if @sales_return_order_line_item.valid?
           @sales_return_order_line_item.process!
-          redirect_to new_store_front_module_sales_return_order_line_item_processing_path, notice: "added to cart"
+          redirect_to new_store_front_module_sales_return_order_line_item_processing_url, notice: "added to cart"
         else
-          render :new, notice: "DASDAS"
+          render :new, notice: "Error"
         end
       end
       def destroy

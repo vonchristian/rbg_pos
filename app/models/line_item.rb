@@ -9,9 +9,8 @@ class LineItem < ApplicationRecord
   belongs_to :order, optional: true
   belongs_to :product, optional: true
   belongs_to :registry, optional: true
-  belongs_to :referenced_line_item, optional: true, class_name: "StoreFrontModule::LineItem"
+  belongs_to :referenced_line_item, optional: true, class_name: "StoreFrontModule::LineItem", optional: true
   belongs_to :unit_of_measurement, class_name: "StoreFrontModule::UnitOfMeasurement"
-
   delegate :unit_code, :conversion_multiplier, to: :unit_of_measurement, allow_nil: true
   delegate :name, to: :product
 

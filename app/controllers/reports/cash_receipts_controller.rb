@@ -5,7 +5,7 @@ module Reports
       @to_date = Chronic.parse(params[:to_date].to_date)
       @user = User.find_by(id: params[:user_id])
       if @user.present?
-        @cash_receipts = @user.entries.entered_on(from_date: @from_date, to_date: @to_date)
+        @cash_receipts = @user.cash_on_hand_account.debit_entries.entered_on(from_date: @from_date, to_date: @to_date)
       else
         @cash_receipts = AccountingModule::Entry.entered_on(from_date: @from_date, to_date: @to_date)
       end

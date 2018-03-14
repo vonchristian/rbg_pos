@@ -26,7 +26,7 @@
                       <div class="col-md-2">
                         <br>
                         <% if product.sales_balance <= 0 %>
-                          <span class="badge bg-red"> OUT OF STOCK </span>
+                          <span class="badge bg-green"> No Item Sold </span>
                         <% else %>
                           <%= f.submit "Add", class: "btn btn-danger btn-sm" %>
                         <% end %>

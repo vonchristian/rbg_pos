@@ -84,7 +84,7 @@
     <div class="col-md-4">
       <div class="box box-success">
         <div class="box-body">
-        <% if @cart.sales_return_order_line_items.present? %>
+        <% if @sales_return_order_line_items.present? %>
           <%= simple_form_for @sales_return_order, url: :store_front_module_sales_return_order_processings do |f| %>
             <%= f.input :customer_id, collection: Customer.all.map{|a| [ a.name, a.id] } %>
             <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
