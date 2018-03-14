@@ -27,7 +27,8 @@ module StoreFrontModule
       end
 
       def sold_quantity
-        referenced_purchase_order_line_items.total
+        referenced_purchase_order_line_items.total -
+        returned_sales_line_items_quantity
       end
 
       def purchase_returns_quantity
@@ -35,7 +36,6 @@ module StoreFrontModule
       end
 
       def available_quantity
-        returned_sales_line_items_quantity +
         converted_quantity -
         sold_quantity -
         purchase_returns_quantity -

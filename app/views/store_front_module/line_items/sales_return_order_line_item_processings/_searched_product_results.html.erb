@@ -20,7 +20,8 @@
                       <div class="col-md-3">
                         <%= f.input :unit_of_measurement_id, label: 'Unit', collection: product.unit_of_measurements.all.map{|a| [a.unit_code, a.id] }, selected: product.base_measurement %>
                         <%= f.input :product_id, input_html: { value: product.id }, as: :hidden %>
-                        <%= f.input :cart_id, input_html: { value: @cart.id } %>
+                        <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
+
                       </div>
 
                       <div class="col-md-2">

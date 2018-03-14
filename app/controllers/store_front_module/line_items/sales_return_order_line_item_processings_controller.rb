@@ -4,7 +4,7 @@ module StoreFrontModule
       def new
         if params[:search].present?
           @products = Product.text_search(params[:search]).all
-          @line_items = StoreFrontModule::LineItems::SalesOrderLineItem.text_search(params[:search])
+          @line_items = StoreFrontModule::LineItems::PurchaseOrderLineItem.text_search(params[:search])
         end
         @cart = current_cart
         @sales_return_order_line_item = StoreFrontModule::LineItems::SalesReturnOrderLineItemProcessing.new
@@ -30,7 +30,7 @@ module StoreFrontModule
       private
       def line_item_params
         params.require(:store_front_module_line_items_sales_return_order_line_item_processing).permit(:quantity,
-          :unit_of_measurement_id, :product_id, :cart_id, :bar_code, :sales_order_line_item_id)
+          :unit_of_measurement_id, :product_id, :cart_id, :bar_code, :purchase_order_line_item_id)
       end
     end
   end

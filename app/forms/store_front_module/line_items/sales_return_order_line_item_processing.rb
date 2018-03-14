@@ -7,7 +7,8 @@ module StoreFrontModule
                     :cart_id,
                     :product_id,
                     :bar_code,
-                    :sales_order_line_item_id
+                    :unit_cost,
+                    :purchase_order_line_item_id
       validates :quantity, numericality: { greater_than: 0.1 }
       validate :quantity_is_less_than_or_equal_to_available_quantity?
       def process!
@@ -20,8 +21,8 @@ module StoreFrontModule
       def process_sales_order_line_item
         if product_id.present? && bar_code.blank?
           decrease_product_available_quantity
-        elsif sales_order_line_item_id.present? && bar_code.present?
-            decrease_sales_order_line_item_quantity
+        elsif purchase_order_line_item_id.present? && bar_code.present?
+            increase_purchase_order_line_item_quantity
         end
       end
 
@@ -35,11 +36,11 @@ module StoreFrontModule
         requested_quantity = converted_quantity
 
         find_product.purchases.order(created_at: :asc).each do |purchase|
-          temp_sales_return = sale_return.referenced_purchase_order_line_items.create!(
+          temp_sales_return = sale_return.referenced_sales_order_line_items.create!(
             quantity:                 quantity_for(purchase, requested_quantity),
             unit_cost:                purchase.unit_cost,
             total_cost:               total_cost_for(purchase, quantity),
-            unit_of_measurement:      find_product.base_measurement,
+            unit_of_measurement:      find_unit_of_measurement,
             product_id:               product_id,
             bar_code:                 bar_code,
             purchase_order_line_item_id:   purchase.id)
@@ -48,7 +49,7 @@ module StoreFrontModule
         end
       end
 
-      def decrease_sales_order_line_item_quantity
+      def increase_purchase_order_line_item_quantity
         sales_return = find_cart.sales_return_order_line_items.create!(
           quantity: quantity,
           unit_cost: selling_cost,
@@ -57,15 +58,14 @@ module StoreFrontModule
           unit_of_measurement: find_unit_of_measurement,
           bar_code: bar_code
           )
-        sales = find_sales_order_line_item
+        purchase_order_line_item = find_purchase_order_line_item
         temp_sales_return = sales_return.referenced_sales_order_line_items.create!(
             quantity:                 converted_quantity,
-            unit_cost:                sales.unit_cost,
-            total_cost:               total_cost_for(sales, quantity),
+            unit_cost:                selling_cost,
+            total_cost:               total_cost_for(purchase_order_line_item, quantity),
             unit_of_measurement:      find_product.base_measurement,
             product_id:               product_id,
-            sales_order_line_item: sales,
-            purchase_order_line_item: sales.referenced_purchase_order_line_items.last.purchase_order_line_item)
+            purchase_order_line_item_id: purchase_order_line_item_id)
       end
 
       def quantity_for(sales, requested_quantity)
@@ -84,7 +84,11 @@ module StoreFrontModule
       end
 
       def selling_cost
-        find_unit_of_measurement.price
+        if unit_cost.present?
+          unit_cost.to_f
+        else
+          find_unit_of_measurement.price
+        end
       end
 
       def set_total_cost
@@ -103,15 +107,15 @@ module StoreFrontModule
         Product.find_by_id(product_id)
       end
 
-      def find_sales_order_line_item
-        StoreFrontModule::LineItems::SalesOrderLineItem.find_by_id(sales_order_line_item_id)
+      def find_purchase_order_line_item
+        StoreFrontModule::LineItems::PurchaseOrderLineItem.find_by_id(purchase_order_line_item_id)
       end
 
       def available_quantity
         if product_id.present? && bar_code.blank?
           find_product.sales_balance
-        elsif sales_order_line_item_id.present? && bar_code.present?
-          find_sales_order_line_item.quantity
+        elsif purchase_order_line_item_id.present? && bar_code.present?
+          find_purchase_order_line_item.sold_quantity
         end
       end
 
