@@ -46,7 +46,7 @@
                   <%= image_tag(order.customer.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %>
                 <% end %>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <b class="text-primary"><%= order.customer_name %></b><br>
                 <small class="text-muted"><i class="fa fa-clock-o"></i> <%= order.date.strftime("%b %e, %Y %I:%M %p") %></small>
               </div>
@@ -55,6 +55,9 @@
               </div>
               <div class="col-md-3">
                 <h4><%= number_to_currency order.total_cost %></h4>
+              </div>
+              <div class="col-md-3">
+                <%= order.employee_full_name %>
               </div>
 
             </div>

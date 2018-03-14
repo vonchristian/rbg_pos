@@ -56,7 +56,8 @@ module StoreFrontModule
       end
 
       def purchase_cost
-        if unit_of_measurement.base_measurement?
+        return unit_cost if unit_of_measurement.blank?
+        if unit_of_measurement.present? && unit_of_measurement.base_measurement?
           unit_cost
         else
           unit_cost / unit_of_measurement.conversion_multiplier

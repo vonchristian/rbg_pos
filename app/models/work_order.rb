@@ -31,15 +31,7 @@ class WorkOrder < ApplicationRecord
   def name
     "#{product_name}"
   end
-  def self.payment_entries
-    payments = []
-    all.each do |work_order|
-      work_order.payment_entries.each do |payment|
-        payments << payment
-      end
-    end
-    payments
-  end
+
   def formatted_service_number
     "##{service_number.sub(/^0+/, "")}"
   end
@@ -95,8 +87,20 @@ class WorkOrder < ApplicationRecord
     spare_parts + service_charges
   end
   def accounts_receivable_total
-    StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account.debits_balance(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
+    service_charges_receivable +
+    spare_parts_receivable
   end
+  def spare_parts_receivable
+    self.store_front.default_accounts_receivable_account.debits_balance(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
+  end
+  def service_charges_receivable
+    balance = []
+    work_order_service_charges.each do |service_charge|
+      balance << StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account.debit_amounts.where(commercial_document: service_charge).sum(&:amount)
+    end
+    balance.sum
+  end
+
   def payment_entries
     store_front.default_accounts_receivable_account.credit_amounts.where(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
   end
@@ -107,7 +111,7 @@ class WorkOrder < ApplicationRecord
 
 
   def balance_total
-    StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account.balance(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
+    accounts_receivable_total - payments_total
   end
   def discounts_total
     StoreFrontModule::StoreFrontConfig.default_discount_account.debits_balance(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
@@ -138,36 +142,7 @@ class WorkOrder < ApplicationRecord
   def actions_taken
     work_order_updates.actions_taken
   end
-  def service_charge_entry(charge)
-    service_fees = AccountingModule::Revenue.find_by(name: 'Service Fees')
-    accounts_receivable = AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current")
 
-    entries.work_order_service_charge.create(entry_date: charge.created_at,
-      description: "#{charge.description}",
-      user_id: charge.user_id,
-      debit_amounts_attributes: [amount: charge.amount, account: accounts_receivable],
-      credit_amounts_attributes:[amount: charge.amount, account: service_fees])
-  end
-  def spare_part_entry(spare_part)
-    cash_on_hand = AccountingModule::Account.find_by(name: "Cash on Hand (Cashier)")
-    accounts_receivable = AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current")
-    cost_of_goods_sold = AccountingModule::Account.find_by(name: "Cost of Goods Sold")
-    sales = AccountingModule::Account.find_by(name: "Sales")
-    merchandise_inventory = AccountingModule::Account.find_by(name: "Merchandise Inventory")
-
-
-    entries.work_order_credit.create(entry_date: spare_part.created_at,
-      recorder_id: spare_part.user_id,
-      description: "Spare parts installed",
-      user_id: spare_part.user_id,
-      debit_amounts_attributes: [{amount: spare_part.total_cost, account: accounts_receivable}, {amount: spare_part.total_cost, account: cost_of_goods_sold}],
-      credit_amounts_attributes:[{amount: spare_part.total_cost, account: sales}, {amount: spare_part.total_cost, account: merchandise_inventory}])
-  end
-  def create_order(spare_part)
-    order = Order.create(customer: self.customer, date: Time.zone.now, employee_id: spare_part.user_id )
-    order.line_items << spare_part
-    Payment.create(mode_of_payment: 'credit', order: order, total_cost: spare_part.total_cost)
-  end
 
   private
   def set_service_number

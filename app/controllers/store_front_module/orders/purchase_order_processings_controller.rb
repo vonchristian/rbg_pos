@@ -7,7 +7,7 @@ module StoreFrontModule
           @purchase_order.process!
           redirect_to store_front_module_purchase_orders_url, notice: "Purchase Order saved successfully"
         else
-          redirect_to new_store_front_module_purchase_order_line_item_processing_url, alert: "Error"
+          redirect_to new_store_front_module_purchase_order_line_item_processing_url, alert: "Error. Check amounts are equal and the voucher is issued to the supplier."
         end
       end
 

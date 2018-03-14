@@ -45,6 +45,11 @@
                 <td><%=line_item.name %></td>
                 <td><%= number_to_currency line_item.unit_cost %></td>
                 <td><%= number_to_currency line_item.total_cost %></td>
+                <td>
+                  <%= link_to repair_services_module_repair_service_order_line_item_processing_path(id: line_item.id, work_order_id: @work_order.id), method: :delete do %>
+                    <span class="fa fa-times text-danger" data-toggle="tooltip" title="Remove Item"></span>
+                  <% end %>
+                </td>
               </tr>
             <% end %>
             <tr>

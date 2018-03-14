@@ -10,6 +10,7 @@ module RepairServicesModule
                     :total_cost,
                     :bar_code,
                     :work_order_id
+      validates :work_order_id, :quantity, presence: true
       validates :quantity, numericality: { greater_than: 0.1 }
       validate :quantity_is_less_than_or_equal_to_available_quantity?
       def process!
@@ -32,7 +33,7 @@ module RepairServicesModule
 
        def decrease_product_available_quantity
         sales = find_cart.sales_order_line_items.create!(
-            quantity: quantity,
+            quantity:                 quantity,
             unit_cost:                selling_cost,
             total_cost:               set_total_cost,
             unit_of_measurement:      find_unit_of_measurement,

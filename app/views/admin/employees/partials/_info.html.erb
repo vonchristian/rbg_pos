@@ -1,0 +1,52 @@
+<div class="tab-pane <%= 'active' if current_page? admin_employee_path(@employee) %>" id="employee-info">
+  <div class="content">
+    <% if current_user.proprietor? %>
+      <%= link_to 'Update Info', edit_user_path(@employee), class: "btn btn-warning btn-sm" %>
+      <%= link_to 'Withdraw Capital', new_capital_withdrawal_path, class: "btn btn-warning btn-sm" %>
+    <% end %>
+    <hr>
+    <div class="row">
+      <div class="col-md-5">
+          <h4><%= number_to_currency @employee.default_cash_on_hand_account_balance %></h4>
+          <small> CASH ON HAND</small><br>
+          <% if current_user.proprietor? %>
+            <%=link_to "New Remittance", new_employee_remittance_path(@employee), class: "btn btn-success btn-sm" %>
+            <%= link_to 'New Cash Transfer', new_accounting_employee_cash_transfer_path(@employee), class: "btn btn-danger btn-sm" %>
+          <% end %>
+      </div>
+      <div class="col-md-7">
+        <h4>Cash Transfers</h4>
+        <% @employee.received_cash_transfers.first(10).each do |transfer| %>
+            <div class="row">
+              <div class="col-md-6">
+                <b class="text-success"><%= transfer.description %></b><br>
+                <i class="fa fa-clock-o"></i> <%=transfer.entry_date.strftime("%b %e, %Y %I:%M %p") %>
+              </div>
+              <div class="col-md-3">
+                <b><%= number_to_currency transfer.amount %></b><br>
+                <small>FROM</small>
+                  <%= transfer.recorder.try(:name) %>
+              </div>
+            </div>
+            <br>
+        <% end %>
+        <hr>
+        <h4>Remittances</h4>
+        <% @employee.remittances.first(10).each do |remittance| %>
+            <div class="row">
+              <div class="col-md-6">
+                <b><%= remittance.description %></b><br>
+                <i class="fa fa-clock-o"></i> <%=remittance.entry_date.strftime("%b %e, %Y %I:%M %p") %>
+              </div>
+              <div class="col-md-3">
+                <b><%= number_to_currency remittance.amount %></b><br>
+                <small>TO</small>
+                  <%= remittance.recorder.try(:name) %>
+              </div>
+            </div>
+            <br>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

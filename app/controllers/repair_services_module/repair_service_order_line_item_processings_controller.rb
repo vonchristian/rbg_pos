@@ -21,6 +21,12 @@ module RepairServicesModule
         render :new
       end
     end
+    def destroy
+      @work_order = WorkOrder.find(params[:work_order_id])
+      @line_item = StoreFrontModule::LineItems::SalesOrderLineItem.find(params[:id])
+      @line_item.destroy
+      redirect_to new_repair_services_module_work_order_repair_service_order_line_item_processing_url(@work_order), notice: "Removed successfully"
+    end
 
     private
     def line_item_params

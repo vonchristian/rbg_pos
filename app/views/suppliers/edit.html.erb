@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="box box-default">
+      <div class="box-header">
+        <center>
+          <%= image_tag(@supplier.avatar.url(:medium), class: "img-circle", height: 60, width: 60) %><br>
+          <h3 class="box-title"> <%= @supplier.business_name %></h3>
+        </center>
+      </div>
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1">
+            <%= simple_form_for @supplier do |f| %>
+              <%= f.error_notification %>
+              <%= f.input :business_name %>
+              <%= f.input :owner_name %>
+              <%= f.input :address %>
+              <%= f.input :contact_number %>
+              <div class="box-footer">
+                <%= f.submit "Update Supplier", class: "btn btn-primary pull-right" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

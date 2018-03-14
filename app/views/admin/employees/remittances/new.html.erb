@@ -1,0 +1,40 @@
+
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="box box-default">
+        <div class="box-header">
+            <h4 class="box-title"> Remittance Details </h4>
+          </div>
+        <div class="box-body">
+          <hr>
+          <div class="row">
+            <div class="col-md-3">
+              <%=image_tag(@employee.avatar.url(:medium), class: "img-circle", height: 50, width: 50) %>
+            </div>
+            <div class="col-md-8">
+              <h4 class="title"><%= @employee.full_name %></h4>
+              <p class="category"><%= @employee.role.try(:titleize) %></p>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-8 col-md-offset-3">
+              <h4 class="title"> <b><%= number_to_currency @employee.default_cash_on_hand_account_balance %></b></h4>
+              <small>CASH ON HAND OF EMPLOYEE </small>
+            </div>
+          </div>
+          <hr>
+        <%= simple_form_for @entry, url: :employee_remittances do |f| %>
+          <%= f.error_notification %>
+          <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
+          <%= f.input :cashier_id, input_html: { value: @employee.id }, as: :hidden %>
+          <%= f.input :entry_date, label: 'Date', as: :string, input_html: { class: "datepicker" } %>
+
+          <%= f.input :reference_number %>
+          <%= f.input :description, input_html: { value: "Collection Remittance from #{@employee.name}" } %>
+          <%= f.input :amount, input_html: { value: @employee.default_cash_on_hand_account.balance } %>
+
+          <%= f.submit "Save Remittance", class: "btn btn-primary pull-right" %>
+          <br>
+          <br>
+        <% end %>

@@ -3,7 +3,9 @@ module StoreFrontModule
     class PurchaseOrderProcessing
       include ActiveModel::Model
       attr_accessor  :cart_id, :supplier_id, :voucher_id, :employee_id, :date, :registry_id
-      validates :voucher_id, :supplier_id, presence: true
+      validates :voucher_id, :supplier_id, :cart_id, presence: true
+      validate :amounts_cancel?
+
 
       def process!
         ActiveRecord::Base.transaction do
@@ -13,7 +15,10 @@ module StoreFrontModule
 
       private
       def create_purchase_order
-        order = find_supplier.purchase_orders.create!(voucher: find_voucher, employee_id: employee_id)
+        order = find_supplier.purchase_orders.create!(
+          date: date,
+          voucher: find_voucher,
+          employee: find_employee)
         find_cart.purchase_order_line_items.each do |line_item|
           line_item.cart_id = nil
           order.purchase_order_line_items << line_item
@@ -40,6 +45,13 @@ module StoreFrontModule
       def find_registry
         StoreFrontModule::Registries::PurchaseOrderRegistry.find_by_id(registry_id)
       end
+
+      private
+      def amounts_cancel?
+          errors[:voucher_id] << "The total amount and voucher amount is not equal" if find_voucher.total != find_cart.purchase_order_line_items.sum(&:total_cost)
+
+      end
+
     end
   end
 end

@@ -26,7 +26,14 @@ module AccountingModule
 
     delegate :first_and_last_name, :name, to: :recorder, prefix: true, allow_nil: true
     delegate :name, to: :commercial_document, prefix: true, allow_nil: true
-
+    def self.entered_on(options={})
+      if options[:from_date] && options[:to_date]
+        date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
+        where('entry_date' => (date_range.start_date..date_range.end_date))
+      else
+        all
+      end
+    end
     def self.total(hash={})
       if hash[:from_date] && hash[:to_date]
         from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date])

@@ -90,7 +90,7 @@
         </div>
         <div class="box-body">
           <% @employees.each do |employee| %>
-            <%= link_to employee_path(employee) do %>
+            <%= link_to admin_employee_path(employee) do %>
               <div class="row">
                 <div class="col-md-2">
                   <%= image_tag(employee.avatar.url(:medium), height: 50, width: 50, class: "img-circle") %>

@@ -1,4 +1,4 @@
-<div class="tab-pane <%= 'active' if current_page? employee_reports_path(@employee) %>">
+<div class="tab-pane <%= 'active' if current_page? admin_employee_reports_path(@employee) %>">
   <div class="content">
     <%=link_to reports_sales_path(user_id: @employee.id, format: 'pdf', from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day) do %>
             <p class="category"> Daily Sales </p>

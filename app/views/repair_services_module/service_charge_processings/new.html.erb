@@ -5,13 +5,19 @@
         <h4 class="box-title"> Service Charge Details </h4>
       </div>
       <div class="box-body">
-        <% @work_order.service_charges.each do |charge| %>
+        <% @work_order.work_order_service_charges.each do |charge| %>
           <div class="row">
             <div class="col-md-6 col-md-offset-1">
-              <%= charge.description %>
+              <b><%= charge.description %></b><br>
+              <small class=text-muted>TECHNICIAN: <%= charge.user.try(:name) %></small>
             </div>
             <div class="col-md-4">
               <%= number_to_currency charge.amount %>
+            </div>
+            <div class="col-md-1">
+              <%= link_to work_order_service_charge_path(charge), method: :delete, data: { confirm_with: "Are you sure you want to delete this charge?" } do %>
+                <span title="Delete Charge" data-toggle="tooltip"><i class="fa fa-trash text-danger"></i></span>
+              <% end %>
             </div>
           </div>
           <br>

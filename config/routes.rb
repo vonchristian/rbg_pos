@@ -37,6 +37,7 @@ Rails.application.routes.draw do
   namespace :reports do
     resources :work_orders, only: [:index]
     resources :sales, only: [:index]
+    resources :cash_receipts, only: [:index]
     resources :products, only: [:index]
     resources :accounts_receivables, only: [:index]
 
@@ -56,7 +57,7 @@ Rails.application.routes.draw do
   namespace :suppliers do
     resources :merge_accounts, only: [:new, :create]
   end
-  resources :suppliers, only: [:index, :show] do
+  resources :suppliers, only: [:index, :show, :edit, :update] do
     resources :purchase_orders, only: [:index], module: :suppliers
     resources :account, only: [:index], module: :suppliers
     resources :voucher_amounts, only: [:new, :create], module: :suppliers
@@ -151,6 +152,7 @@ Rails.application.routes.draw do
     resources :disbursements, only: [:new, :create], module: :vouchers
   end
   namespace :repair_services_module do
+      resources :repair_service_order_line_item_processings, only: [:destroy]
     resources :work_orders, only: [:show] do
       resources :service_charge_processings, only: [:new, :create]
       resources :payment_processings, only: [:new, :create, :show]
@@ -181,5 +183,13 @@ Rails.application.routes.draw do
   end
   resources :inventories, only: [:index, :show]
   resources :dashboard, only: [:index]
+  namespace :admin do
+    resources :employees, only: [:show] do
+      resources :reports, only: [:index], module: :employees
+      resources :sales, only: [:index], module: :employees
+      resources :entries, only: [:index], module: :employees
+    end
+  end
+  resources :work_order_service_charges, only: [:destroy]
 
 end

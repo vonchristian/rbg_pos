@@ -13,10 +13,10 @@ module RepairServicesModule
     private
     def create_service_charge
       charge = ServiceCharge.create(description: description, amount: amount)
-      find_work_order.work_order_service_charges.find_or_create_by(service_charge_id: charge.id, user: find_employee)
-      create_entry(charge)
+      service_charge = find_work_order.work_order_service_charges.find_or_create_by(service_charge: charge, user: find_employee)
+      create_entry(service_charge)
     end
-    def create_entry(charge)
+    def create_entry(service_charge)
       accounts_receivable = StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account
       services_revenue = RepairServicesModule::RepairServicesFrontConfig.default_services_revenue_account
         find_employee.entries.create!(
@@ -24,13 +24,13 @@ module RepairServicesModule
           commercial_document: find_customer,
           entry_date: date,
           description: description,
-          debit_amounts_attributes: [amount: charge.amount,
+          debit_amounts_attributes: [amount: service_charge.amount,
                                         account: accounts_receivable,
-                                        commercial_document: find_work_order
+                                        commercial_document: service_charge
                                      ],
-            credit_amounts_attributes:[ amount: charge.amount,
+            credit_amounts_attributes:[ amount: service_charge.amount,
                                         account: services_revenue,
-                                        commercial_document: find_work_order
+                                        commercial_document: service_charge
                                       ])
     end
 

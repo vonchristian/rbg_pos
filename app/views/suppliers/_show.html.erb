@@ -27,6 +27,9 @@
           </li>
         </ul>
         <div class="tab-content">
+            <% if current_page? supplier_path(@supplier) %>
+              <%= render 'suppliers/partials/info' %>
+            <% end %>
              <% if current_page? supplier_purchase_orders_path(@supplier) %>
              <%=render 'suppliers/partials/purchase_orders' %>
              <% end %>

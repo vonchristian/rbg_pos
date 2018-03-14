@@ -219,7 +219,8 @@
                   </div>
                   <div class="col-md-7 col-xs-6">
                     <%= spare_part.product_name %><br>
-                    <small class="text-muted"><%= spare_part.try(:date).try(:strftime, ("%B %e, %Y")) %></small>
+                    <small class="text-muted"><%= spare_part.try(:order).try(:date).try(:strftime, ("%B %e, %Y")) %></small><br>
+                    <small class="text-muted"><%= spare_part.bar_code %></small>
                   </div>
                   <div class="col-md-3 col-xs-5">
                     <span class="pull-right"><%= number_to_currency spare_part.total_cost %></span>
@@ -234,7 +235,7 @@
                   <h4 class="condensed-text"><b> TOTAL </b> </h4>
                 </div>
                 <div class="col-md-4">
-                  <h4 class="pull-right"><%= number_to_currency @work_order.total_charges_cost %></h4>
+                  <h4 class="pull-right"><%= number_to_currency @work_order.accounts_receivable_total %></h4>
                 </div>
               </div>
             </div>
