@@ -59,6 +59,7 @@ class ServiceFormPdf < Prawn::Document
   end
   def customer_details_data
     @customer_details_data ||=  [["","Customer",  "#{@work_order.customer_full_name.try(:upcase)}"]] +
+                                [["", "Contact Person", "#{@work_order.contact_person}"]] +
                                 [["", "Address", "#{@work_order.customer_address}"]] +
                                 [["", "Contact NUmber",  "#{@work_order.customer_contact_number}"]]
   end

@@ -15,6 +15,7 @@
   <span class="pull-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span>
   <%= f.input :store_front_id, input_html: { value: current_user.store_front_id }, as: :hidden %>
   <%= f.input :customer_id, collection: Customer.all.map{|a| [a.full_name, a.id] } %>
+  <%= f.input :contact_person %>
   <%= f.simple_fields_for :product_unit do |ff| %>
   <%= ff.input :description, label: "Manufacturer/Description" %>
   <%= ff.input :model_number %>
