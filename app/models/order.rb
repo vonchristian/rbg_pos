@@ -31,7 +31,7 @@ class Order < ApplicationRecord
     end
   end
   def total_cost
-    entry.try(:total)
+    entry.try(:total) || try(:cash_payment).try(:cash_tendered)
   end
   def total_quantity
     line_items.sum(&:quantity)

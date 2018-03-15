@@ -29,6 +29,15 @@ class WorkOrder < ApplicationRecord
   validates :customer_id, presence: true
   after_commit :set_service_number, :set_customer_name, :set_product_name,  on: [:create, :update]
   delegate :avatar, to: :customer
+  def self.payment_entries
+    payments = []
+    all.each do |work_order|
+      work_order.payment_entries.each do |payment|
+        payments << payment
+      end
+     end
+    payments
+  end
   def name
     "#{product_name}"
   end

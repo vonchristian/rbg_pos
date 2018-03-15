@@ -19,7 +19,6 @@
                   <tr>
                     <td><%=link_to order.date.strftime("%B %e, %Y"), store_front_module_sales_order_path(order) %></td>
                     <td><%= order.customer_full_name.try(:titleize) %></td>
-                    <td><span class="label label-<%=order.mode_of_payment_color%>"><%= order.mode_of_payment %></span></td>
                     <td><%= number_to_currency order.discount_amount %></td>
                     <td><%= number_to_currency order.total_cost %></td>
                     <td><%= order.employee_full_name %></td>

@@ -49,15 +49,29 @@
               <div class="col-md-3">
                 <b class="text-primary"><%= order.customer_name %></b><br>
                 <small class="text-muted"><i class="fa fa-clock-o"></i> <%= order.date.strftime("%b %e, %Y %I:%M %p") %></small>
+
               </div>
-              <div class="col-md-2">
-                <span class="badge bg-gray"><%= order.line_items.count %> ITEMS </span>
+              <div class="col-md-4">
+                <% order.line_items.each do |line_item| %>
+                  <div class="row">
+                    <div class="col-md-1">
+                      <%= line_item.quantity %>
+                    </div>
+                    <div class="col-md-8">
+                      <%= line_item.name %><br>
+                      <small class="text-muted"><i><%= line_item.bar_code %></i></small>
+                    </div>
+                    <div class="col-md-3">
+                      <%= number_to_currency line_item.total_cost %>
+                    </div>
+                  </div>
+                  <br>
+                <% end %>
               </div>
+
               <div class="col-md-3">
+                <b><small><%= order.employee_full_name %></small></b><br>
                 <h4><%= number_to_currency order.total_cost %></h4>
-              </div>
-              <div class="col-md-3">
-                <%= order.employee_full_name %>
               </div>
 
             </div>

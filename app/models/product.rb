@@ -130,6 +130,7 @@ class Product < ApplicationRecord
     balance
   end
   def balance(options={})
+    sales_returns_balance +
     received_stock_transfers_balance(options) +
     purchases_balance(options) -
     sales_balance(options) -
@@ -138,7 +139,9 @@ class Product < ApplicationRecord
     internal_use_orders_balance(options)
   end
   def sales_balance(options={})
-    sales.balance(product_id: self.id) -
+    sales.balance(product_id: self.id)
+  end
+  def sales_returns_balance(options={})
     sales_returns.balance(product_id: self.id)
   end
 

@@ -19,7 +19,9 @@
                 </div>
                 <div class="col-md-3">
                   <h4><%= @product.sales_balance %></h4>
-                  <small>SALES</small>
+                  <small>SALES</small><br><br>
+                  <small class="text-danger"><%= @product.sales_returns_balance %></small><br>
+                  <small>SALES RETURNS</small>
                 </div>
                 <div class="col-md-3">
                   <h4><%= @product.available_quantity %></h4>

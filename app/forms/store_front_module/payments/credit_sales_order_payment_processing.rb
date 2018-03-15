@@ -14,6 +14,7 @@ module StoreFrontModule
       def save_payment
         store_front = find_employee.store_front
         accounts_receivable = store_front.default_accounts_receivable_account
+        cash_on_hand_account = find_employee.cash_on_hand_account
         if expense_amount.to_f > 0 && expense_account_id.present?
           AccountingModule::Entry.create(
             recorder: find_employee,
@@ -49,7 +50,7 @@ module StoreFrontModule
             debit_amounts_attributes:
             [
               amount: amount,
-              account_id: cash_on_hand_account_id,
+              account: cash_on_hand_account,
               commercial_document: find_order
             ],
             credit_amounts_attributes:
