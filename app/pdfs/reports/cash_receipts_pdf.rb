@@ -8,6 +8,7 @@ module Reports
       @employee = employee
       @view_context = view_context
       heading
+      cash_on_hand_account_details
       cash_receipts_table
     end
     private
@@ -22,12 +23,38 @@ module Reports
       else
         text "From: #{@from_date.strftime('%B %e, %Y')} To: #{@to_date.strftime('%B %e, %Y')} ", align: :center
       end
-      if @employee.present?
-        text "Employee: #{@employee.try(:full_name)}"
-      end
+
       move_down 5
       stroke_horizontal_rule
+      move_down 10
     end
+    def cash_on_hand_account_details
+      if @employee.present?
+        table([["EMPLOYEE ", "#{@employee.try(:name)}"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
+          cells.borders = []
+        end
+
+        table([["CASH ACCOUNT", "#{@employee.cash_on_hand_account.try(:name)}"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
+          cells.borders = []
+        end
+        table([["BEGINNING BALANCE", "#{price @employee.cash_on_hand_account.balance(to_date: Date.today.beginning_of_day)}"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
+          cells.borders = []
+        end
+        table([["ADD CASH TRANSFERS", "#{price @employee.cash_on_hand_account.debits_balance(from_date: Date.today.yesterday.end_of_day, to_date: Date.today.end_of_day)}"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
+          cells.borders = []
+        end
+        table([["LESS REMITTANCES", "#{price @employee.cash_on_hand_account.credits_balance(from_date: Date.today.yesterday.end_of_day, to_date: Date.today.end_of_day)}"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
+          cells.borders = []
+          row(0).text_color = "FF0000"
+        end
+        stroke_horizontal_rule
+        table([["<b>ENDING BALANCE</b>", "<b>#{price @employee.cash_on_hand_account.balance}</b>"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
+          cells.borders = []
+          row(0).text_color = "008751"
+        end
+      end
+    end
+
     def cash_receipts_table
       move_down 10
       table(orders_data, header: false,  cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do

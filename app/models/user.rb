@@ -44,9 +44,9 @@ class User < ApplicationRecord
   def name
     full_name
   end
-  def received_cash_transfers
+  def received_cash_transfers(options={})
     transfers = []
-    cash_on_hand_account.debit_amounts.each do |transfer|
+    cash_on_hand_account.debit_amounts.entered_on(options).each do |transfer|
       if User.cash_on_hand_accounts.include?(transfer.account) && transfer.commercial_document.is_a?(User)
         transfers << transfer
       end
@@ -54,9 +54,9 @@ class User < ApplicationRecord
     transfers
   end
 
-  def remittances
+  def remittances(options={})
     remittances = []
-    cash_on_hand_account.credit_amounts.each do |remittance|
+    cash_on_hand_account.credit_amounts.entered_on(options).each do |remittance|
       if User.cash_on_hand_accounts.include?(remittance.account) && remittance.commercial_document.is_a?(User)
         remittances << remittance
       end
