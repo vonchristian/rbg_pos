@@ -40,7 +40,8 @@ module Reports
           [entry.entry_date.strftime("%B %e, %Y"),
            entry.commercial_document.try(:name).try(:upcase),
            entry.description,
-           price(entry.total)] }
+           price(entry.total)] }+
+        [["", "", "TOTAL", "#{price(@cash_receipts.sum(&:total))}"]]
     end
 
   end
