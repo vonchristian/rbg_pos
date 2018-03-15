@@ -36,14 +36,14 @@ module RepairServicesModule
           commercial_document: find_customer,
           entry_date: date,
           description: description,
-          debit_amounts_attributes: [{ amount: amount_less_expense,
+          debit_amounts_attributes: [{ amount: amount,
                                         account: cash_on_hand_account,
                                         commercial_document: find_work_order},
                                       { amount: expense_amount,
                                         account_id: expense_account_id,
                                         commercial_document: find_work_order }
                                      ],
-            credit_amounts_attributes:[ amount: amount,
+            credit_amounts_attributes:[ amount: amount.to_f + expense_amount.to_f,
                                         account: accounts_receivable,
                                         commercial_document: find_work_order
                                       ])

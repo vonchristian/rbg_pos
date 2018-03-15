@@ -37,7 +37,7 @@ module Reports
         table([["CASH ACCOUNT", "#{@employee.cash_on_hand_account.try(:name)}"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
           cells.borders = []
         end
-        table([["BEGINNING BALANCE", "#{price @employee.cash_on_hand_account.balance(to_date: Date.today.beginning_of_day)}"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
+        table([["BEGINNING BALANCE", "#{price @employee.cash_on_hand_account.balance(from_date: AccountingModule::Entry.first.entry_date, to_date: Date.yesterday.end_of_day)}"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
           cells.borders = []
         end
         table([["ADD CASH TRANSFERS", "#{price @employee.cash_on_hand_account.debits_balance(from_date: Date.today.yesterday.end_of_day, to_date: Date.today.end_of_day)}"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do

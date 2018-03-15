@@ -26,16 +26,21 @@ module AccountingModule
             entry_date: entry_date,
             reference_number: reference_number,
             description: description,
-            credit_amounts_attributes:  [{
-              amount: amount,
+            credit_amounts_attributes:  [
+              {
+              amount: amount.to_f + expense_amount.to_f,
               account: accounts_receivable_account,
-              commercial_document: find_work_order}],
-            debit_amounts_attributes: [
-              {amount: amount_less_expense,
-              account: cash_on_hand_account },
+              commercial_document: find_work_order},
+
               { amount: expense_amount,
                 account_id: expense_account_id,
-                commercial_document: find_work_order}])
+                commercial_document: find_work_order}
+              ],
+            debit_amounts_attributes: [
+              {amount: amount,
+               account: cash_on_hand_account,
+               commercial_document: find_work_order }
+             ])
         else
           AccountingModule::Entry.create!(
             recorder_id: user_id,
@@ -62,9 +67,7 @@ module AccountingModule
     def find_work_order
       WorkOrder.find_by_id(work_order_id)
     end
-    def amount_less_expense
-      amount.to_f - expense_amount.to_f
-    end
+
     def find_employee
       User.find_by_id(user_id)
     end

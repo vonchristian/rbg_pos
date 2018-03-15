@@ -40,7 +40,7 @@ module StoreFrontModule
             total_cost:               total_cost_for(purchase, quantity),
             unit_of_measurement:      find_product.base_measurement,
             product_id:               product_id,
-            purchase_order_line_item: purchase)
+            purchase_order_line_item_id: purchase.id)
           requested_quantity -= temp_transfer.quantity
           break if requested_quantity.zero?
         end
@@ -62,7 +62,7 @@ module StoreFrontModule
             total_cost:               total_cost_for(purchase, quantity),
             unit_of_measurement:      find_product.base_measurement,
             product_id:               product_id,
-            purchase_order_line_item: purchase)
+            purchase_order_line_item_id: purchase.id)
       end
 
       def quantity_for(purchase, requested_quantity)
