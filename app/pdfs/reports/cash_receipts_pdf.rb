@@ -37,15 +37,14 @@ module Reports
         table([["CASH ACCOUNT", "#{@employee.cash_on_hand_account.try(:name)}"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
           cells.borders = []
         end
-        table([["BEGINNING BALANCE", "#{price @employee.cash_on_hand_account.balance(from_date: AccountingModule::Entry.first.entry_date, to_date: Date.yesterday.end_of_day)}"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
+        table([["BEGINNING BALANCE", "#{price @employee.cash_on_hand_account.balance(to_date: Date.yesterday.end_of_day) + @employee.received_cash_transfers(from_date: Date.today, to_date: Date.today).sum(&:amount)}"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
           cells.borders = []
         end
-        table([["ADD CASH TRANSFERS", "#{price @employee.cash_on_hand_account.debits_balance(from_date: Date.today.yesterday.end_of_day, to_date: Date.today.end_of_day)}"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
+        table([["ADD SALES", "#{price @employee.cash_on_hand_account.debits_balance(from_date: Date.today, to_date: Date.today) - @employee.received_cash_transfers(from_date: Date.today, to_date: Date.today).sum(&:amount) }"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
           cells.borders = []
         end
-        table([["LESS REMITTANCES", "#{price @employee.cash_on_hand_account.credits_balance(from_date: Date.today.yesterday.end_of_day, to_date: Date.today.end_of_day)}"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
+        table([["LESS REMITTANCES", "#{price @employee.cash_on_hand_account.credits_balance(from_date: Date.today, to_date: Date.today) }"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
           cells.borders = []
-          row(0).text_color = "FF0000"
         end
         stroke_horizontal_rule
         table([["<b>ENDING BALANCE</b>", "<b>#{price @employee.cash_on_hand_account.balance}</b>"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
@@ -67,8 +66,8 @@ module Reports
           [entry.entry_date.strftime("%B %e, %Y"),
            entry.commercial_document.try(:name).try(:upcase),
            entry.description,
-           price(entry.total)] }+
-        [["", "", "TOTAL", "#{price(@cash_receipts.sum(&:total))}"]]
+           price(entry.debit_amounts.where(account: @employee.cash_on_hand_account).sum(&:amount))] } +
+        [["", "", "TOTAL", "#{price(@cash_receipts.map{|entry| entry.debit_amounts.where(account: @employee.cash_on_hand_account).sum(&:amount)}.sum)}"]]
     end
 
   end
