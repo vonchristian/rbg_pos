@@ -21,7 +21,9 @@ module StoreFrontModule
       def self.available
         select { |a| !a.out_of_stock? }
       end
-
+      def sold?
+        referenced_purchase_order_line_items &&  out_of_stock?
+      end
       def out_of_stock?
         available_quantity <=0
       end

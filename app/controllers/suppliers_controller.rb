@@ -9,8 +9,8 @@ class SuppliersController < ApplicationController
 	end
 	def show
 		@supplier = Supplier.find(params[:id])
-    @stocks = @supplier.delivered_stocks.order(date: :desc).paginate(page: params[:page], per_page: 20)
 	end
+
 	def edit
 		@supplier = Supplier.find(params[:id])
 	end

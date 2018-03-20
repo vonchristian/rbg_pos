@@ -14,7 +14,12 @@
                                       <% @stocks.each do |stock| %>
                                       <tr>
                                       <td><%=link_to stock.name, store_front_module_purchase_order_path(stock) %><br>
-                                      <small><%= stock.bar_code %></small></td>
+                                      <small><%= stock.bar_code %><br>
+                                        <% if stock.sold? %>
+                                          <span class="label bg-green"> Sold </span>
+                                        <% end %>
+
+                                      </small></td>
                                       <td><%= stock.try(:date).try(:strftime, ("%B %e, %Y")) %></td>
                                       <td><%= stock.quantity %></td>
 

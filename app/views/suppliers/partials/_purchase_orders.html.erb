@@ -1,0 +1,45 @@
+<div class="tab-pane <%= 'active' if current_page?(supplier_purchase_orders_path(@supplier)) %>">
+      <div class="box-body">
+        <% @orders.each do |order| %>
+          <%= link_to store_front_module_purchase_order_path(order) do %>
+            <div class="row text-muted">
+              <div class="col-md-1">
+                <%= image_tag(order.supplier.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %>
+              </div>
+              <div class="col-md-3">
+                <b class="text-primary"><%= order.supplier_name %></b><br>
+                <small class="text-muted"><i class="fa fa-clock-o"></i> <%= order.date.strftime("%b %e, %Y %I:%M %p") %></small>
+              </div>
+              <div class="col-md-6">
+                <% order.purchase_order_line_items.limit(35).each do |line_item| %>
+                  <div class="row">
+                    <div class="col-md-1">
+                      <%= line_item.quantity %>
+                    </div>
+                    <div class="col-md-7">
+                      <%= line_item.name.try(:upcase) %><br>
+                      <span class="text-muted">
+                        <i class="fa fa-tags"></i>
+                          <%= number_to_currency line_item.unit_of_measurement.price %>
+                        <i class="fa fa-barcode"></i> <%= line_item.bar_code %>
+                      </span>
+                    </div>
+                    <div class="col-md-3">
+                      <%= number_to_currency line_item.total_cost %>
+                    </div>
+                  </div>
+                  <br>
+                <% end %>
+              </div>
+
+            </div>
+            <hr>
+          <% end %>
+        <% end %>
+      </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
