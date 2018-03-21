@@ -13,11 +13,10 @@ module StoreFrontModule
       end
       def create
         @line_item = StoreFrontModule::LineItems::PurchaseReturnOrderLineItemProcessing.new(line_item_params)
-        if @line_item.valid?
-          @line_item.process!
+        if @line_item.process!
           redirect_to new_store_front_module_purchase_return_order_line_item_processing_url, notice: "added successfully"
         else
-          render :new
+          redirect_to new_store_front_module_purchase_return_order_line_item_processing_url, alert: "error"
         end
       end
       def destroy
