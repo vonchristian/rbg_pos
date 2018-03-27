@@ -13,11 +13,12 @@ Rails.application.routes.draw do
   root :to => 'computer_repair_section/dashboard#index', :constraints => lambda { |request| request.env['warden'].user.role == 'technician' if request.env['warden'].user }, as: :technician_root
   resources :store, only: [:index]
 	resources :customers do
-    resources :payments, only: [:new, :create], module: :customers
-    resources :orders, only: [:index], module: :customers
-    resources :repair_services, only: [:index], module: :customers
-    resources :account, only: [:index], module: :customers
-    resources :other_credits, only: [:index, :show, :new, :create], module: :customers
+    resources :refunds,         only: [:new, :create],                module: :customers
+    resources :payments,        only: [:new, :create],                module: :customers
+    resources :orders,          only: [:index],                       module: :customers
+    resources :repair_services, only: [:index],                       module: :customers
+    resources :account,         only: [:index],                       module: :customers
+    resources :other_credits,   only: [:index, :show, :new, :create], module: :customers
 
   end
   resources :products do
@@ -84,6 +85,7 @@ Rails.application.routes.draw do
       resources :spare_parts, only: [:new, :create, :destroy]
       resources :service_claim_tags, only: [:show]
       resources :payments, module: :work_orders, only: [:new, :create]
+      resources :refunds, module: :work_orders, only: [:new, :create]
       resources :charge_invoices, only: [:new, :create], module: :work_orders
     end
     resources :work_order_service_charges, only: [:destroy]

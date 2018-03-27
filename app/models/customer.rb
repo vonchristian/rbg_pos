@@ -23,7 +23,14 @@ class Customer < ApplicationRecord
   scope :recent, ->(num) { order('created_at DESC').limit(num) }
 
   def work_order_payments
-
+    entries = []
+    work_orders.each do |work_order|
+    StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account.amounts.
+      where(commercial_document: work_order).each do |amount|
+        entries << amount.entry
+      end
+    end
+    entries
   end
 	def self.with_credits
     all.select{ |a| a.with_credits? }
@@ -67,11 +74,7 @@ class Customer < ApplicationRecord
 
 
   def credit_repair_services_accounts_receivable_total
-    total = []
-    work_orders.each do |order|
-      total << StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.debits_balance(commercial_document_id: order.id, commercial_document_type: 'WorkOrder')
-    end
-    total.sum
+    work_orders.sum(&:accounts_receivable_total)
   end
 
   def payments_total
@@ -105,7 +108,8 @@ class Customer < ApplicationRecord
 
   def payment_entries
     StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.credit_entries.where(commercial_document: self) +
-    other_payments
+    other_payments +
+    work_order_payments
   end
   def other_payments
     payments = []

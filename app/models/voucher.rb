@@ -27,6 +27,7 @@ class Voucher < ApplicationRecord
   def unused?
     commercial_document.blank?
   end
+
   def disbursement_status
     if !disbursed?
       "Pending"

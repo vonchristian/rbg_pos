@@ -28,7 +28,7 @@ class WorkOrder < ApplicationRecord
   validates :description, :physical_condition, :reported_problem, presence: true
   validates :customer_id, presence: true
   after_commit :set_service_number, :set_customer_name, :set_product_name,  on: [:create, :update]
-  delegate :avatar, to: :customer
+  delegate :avatar, :full_name, to: :customer
   def self.payment_entries
     payments = []
     all.each do |work_order|
@@ -100,19 +100,22 @@ class WorkOrder < ApplicationRecord
     service_charges_receivable +
     spare_parts_receivable
   end
+  def refunds_total
+  end
+
   def spare_parts_receivable
     self.store_front.default_accounts_receivable_account.debits_balance(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
   end
   def service_charges_receivable
     balance = []
     work_order_service_charges.each do |service_charge|
-      balance << StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account.debit_amounts.where(commercial_document: service_charge).sum(&:amount)
+      balance << RepairServicesModule::RepairServicesFrontConfig.default_services_revenue_account.credit_amounts.where(commercial_document: service_charge).sum(&:amount)
     end
     balance.sum
   end
 
   def payment_entries
-    store_front.default_accounts_receivable_account.credit_amounts.where(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
+    store_front.default_accounts_receivable_account.amounts.where(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
   end
 
   def payments_total

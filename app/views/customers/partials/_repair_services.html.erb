@@ -27,7 +27,9 @@
               <td><%= number_to_currency work_order.balance_total %></td>
               <td>
                 <% if work_order.balance_total > 0 %>
-                <%= link_to 'New Payment', new_computer_repair_section_work_order_payment_path(work_order) %>
+                <%= link_to 'New Payment', new_computer_repair_section_work_order_payment_path(work_order), class: "btn btn-primary" %>
+                <% elsif work_order.balance_total < 0 %>
+                  <%= link_to 'New Refund', new_computer_repair_section_work_order_refund_path(work_order), class: "btn btn-danger" %>
                 <% end %>
               </td>
             </tr>

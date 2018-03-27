@@ -288,23 +288,28 @@
                 </div>
                 <div class="col-md-6">
                   <p class="condensed-text pull-right"> <%=number_to_currency @work_order.balance_total %></p>
+                  <% if @work_order.balance_total < 0 %>
+                  <%= link_to 'New Refund', new_computer_repair_section_work_order_refund_path(@work_order), class: "btn btn-danger btn-xs pull-right" %>
+                <% end %>
                 </div>
               </div>
               <hr>
 
-              <p class="condensed-text"> PAYMENT HISTORY </p>
+              <p class="condensed-text"> TRANSACTIONS HISTORY </p>
               <% @work_order.payment_entries.each do |payment| %>
                 <div class="row">
                   <div class="col-md-3">
                     <% if payment.recorder.present? %>
                       <span data-toggle="tooltip" title="<%=payment.recorder.try(:first_name) %>" data-placement="top">
                       <%= image_tag(payment.recorder.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %><br>
-                      <small><%= payment.recorder.full_name %></small>
+                      <small><%= payment.recorder.full_name %></small><br>
                     <% end %>
                 </span>
                   </div>
                   <div class="col-md-4">
                     <%= payment.entry_date.strftime("%b %e, %l:%M %p") %>
+                      <small class="text-muted"><%= payment.description %></small>
+
                   </div>
                   <div class="col-md-4">
                     <span class="pull-right"><%= number_to_currency payment.amount %></span>

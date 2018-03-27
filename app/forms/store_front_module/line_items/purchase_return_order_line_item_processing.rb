@@ -79,8 +79,20 @@ module StoreFrontModule
         end
       end
 
+      def quantity_for(purchase, requested_quantity)
+        if purchase.available_quantity >= BigDecimal.new(requested_quantity)
+          BigDecimal.new(requested_quantity)
+        else
+          purchase.available_quantity.to_f
+        end
+      end
+
       def set_total_cost
         (purchase_cost * quantity.to_f)
+      end
+
+      def total_cost_for(purchase, requested_quantity)
+        purchase.purchase_cost * quantity_for(purchase, requested_quantity)
       end
 
       def find_cart
