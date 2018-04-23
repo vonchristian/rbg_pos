@@ -125,7 +125,7 @@ Rails.application.routes.draw do
     resources :purchase_order_line_item_registries, only: [:create]
     resources :unit_of_measurements, only: [:edit, :update], module: :settings
     resources :selling_prices, only: [:new, :create], module: :settings
-    resources :stock_transfers, only: [:index, :show], module: :orders
+    resources :stock_transfers, only: [:index, :show, :edit, :update, :destroy], module: :orders
     resources :received_stock_transfers, only: [:index, :show], module: :orders
     resources :received_stock_transfers, only: [:index, :show], module: :orders
     resources :repair_services_orders, only: [:index, :show], module: :orders

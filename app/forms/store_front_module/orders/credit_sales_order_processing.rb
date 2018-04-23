@@ -13,7 +13,7 @@ module StoreFrontModule
       :employee_id,
       :customer_id,
       :date,
-      :description,
+      :reference_number,
       presence: true
       def process!
         ActiveRecord::Base.transaction do

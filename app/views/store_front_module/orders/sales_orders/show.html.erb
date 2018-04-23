@@ -15,6 +15,8 @@
          <span class="pull-right"><%= link_to 'Print(PDF)', order_path(@order, format: 'pdf'), class: "btn btn-default btn-sm" %></span>
         <i class="icon-calendar"></i> <%= @order.date.strftime("%B %e, %Y") %><br>
         <p class="text-black"> Reference Number: <%= @order.reference_number %></p>
+        <p class="text-black"> Description: <%= @order.description %></p>
+
         <hr>
               <% @order.line_items.each do |line_item| %>
                 <div class="row">

@@ -46,7 +46,9 @@
 
                   <th>Name</th>
                 	<th>Price</th>
-                  <th>Last Purchase Cost</th>
+                  <% if current_user.proprietor? %>
+                    <th>Last Purchase Cost</th>
+                  <% end %>
                 	<th>In Stock</th>
                 </thead>
                 <tbody>
@@ -58,7 +60,9 @@
                       <%= number_to_currency unit_of_measurement.price %> / <%= unit_of_measurement.unit_code %>
                     <% end %>
                    </td>
-                   <td><%= number_to_currency product.last_purchase_cost %></td>
+                   <% if current_user.proprietor? %>
+                     <td><%= number_to_currency product.last_purchase_cost %></td>
+                    <% end %>
                   <td><%= product.available_quantity %></td>
                   </tr>
                   <% end %>

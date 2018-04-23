@@ -3,7 +3,7 @@ module StoreFrontModule
     def new
       @customer = Customer.find(params[:customer_id])
       if params[:search].present?
-        @products = Product.text_search_with_barcode(params[:search]).all
+        @products = Product.text_search(params[:search]).all
         @line_items = StoreFrontModule::LineItems::PurchaseOrderLineItem.text_search(params[:search])
       end
       @cart = current_cart

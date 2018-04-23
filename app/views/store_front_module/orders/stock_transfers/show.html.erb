@@ -15,6 +15,12 @@
          <span class="pull-right"><%= link_to 'Print(PDF)', order_path(@order, format: 'pdf'), class: "btn btn-default btn-sm" %></span>
         <i class="icon-calendar"></i> <%= @order.date.strftime("%B %e, %Y") %><br>
         <p class="text-black"> Reference Number: <%= @order.reference_number %></p>
+
+        <hr>
+        <p>Detination Store Front: <%= @order.destination_store_front.try(:name) %></p>
+        <% if current_user.proprietor? %>
+          <%= link_to "Edit", edit_store_front_module_stock_transfer_path(@order), class: "btn btn-danger" %>
+        <% end %>
         <hr>
               <% @order.line_items.each do |line_item| %>
                 <div class="row">
@@ -34,3 +40,12 @@
                 </div>
                 <hr>
                 <% end %>
+                <%if current_user.proprietor? %>
+                <span class="text-red">
+                  Deleting this stock transfer will remove it from Stock transfers. The accounting entry will be deleted from records. In short, records for this order will be deleted forever.
+                </span>
+                <br>
+
+          <%= link_to 'Delete Stock Transfer', store_front_module_stock_transfer_path(@order), method: :delete, data: { confirm: "Are you sure you want to delete this Stock Transfer?" }, class: "btn btn-danger btn-xs" %>
+        <% end %>
+

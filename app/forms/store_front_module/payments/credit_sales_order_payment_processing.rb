@@ -3,7 +3,7 @@ module StoreFrontModule
     class CreditSalesOrderPaymentProcessing
       include ActiveModel::Model
       attr_accessor :employee_id, :order_id, :amount, :expense_amount, :expense_account_id, :date, :description, :reference_number, :cash_on_hand_account_id
-      validates :date, :order_id, :amount, :description, :reference_number, presence: true
+      validates :date, :order_id, :amount, :reference_number, presence: true
       validates :amount, numericality: true
       def process!
         ActiveRecord::Base.transaction do
@@ -16,7 +16,7 @@ module StoreFrontModule
         accounts_receivable = store_front.default_accounts_receivable_account
         cash_on_hand_account = find_employee.cash_on_hand_account
         if expense_amount.to_f > 0 && expense_account_id.present?
-          AccountingModule::Entry.create(
+          AccountingModule::Entry.create!(
             recorder: find_employee,
             entry_date: date,
             commercial_document: find_order.customer,
@@ -41,12 +41,13 @@ module StoreFrontModule
             ]
           )
         else
-          AccountingModule::Entry.create(
+          AccountingModule::Entry.create!(
             recorder: find_employee,
             entry_date: date,
             commercial_document: find_order.customer,
             reference_number: reference_number,
-            description: description,
+            description: reference_number,
+
             debit_amounts_attributes:
             [
               amount: amount,

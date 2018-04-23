@@ -1,0 +1,6 @@
+<%= @stock_transfer.inspect %>
+<%= simple_form_for @stock_transfer, url: :store_front_module_stock_transfer do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :destination_store_front_id, collection: StoreFront.all.map{|a| [ a.name, a.id] } %>
+  <%= f.submit "Update Stock Transfer" %>
+<% end %>
