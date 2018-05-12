@@ -108,6 +108,7 @@ Rails.application.routes.draw do
 
   namespace :store_front_module do
     resources :stock_transfer_registries, only: [:new, :create, :show], module: :registries
+    resources :received_stock_transfer_registries, only: [:new, :create, :show], module: :registries
     resources :purchase_order_registries, only: [:new, :create, :show, :destroy], module: :registries do
       resources :purchase_order_line_items, only: [:destroy]
     end
@@ -127,10 +128,10 @@ Rails.application.routes.draw do
     resources :selling_prices, only: [:new, :create], module: :settings
     resources :stock_transfers, only: [:index, :show, :edit, :update, :destroy], module: :orders
     resources :received_stock_transfers, only: [:index, :show], module: :orders
-    resources :received_stock_transfers, only: [:index, :show], module: :orders
     resources :repair_services_orders, only: [:index, :show], module: :orders
     resources :sales_returns, only: [:index, :show], module: :orders
     resources :stock_transfer_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items
+    resources :received_stock_transfer_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items
     resources :sales_return_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items
     resources :product_mergings, only: [:new, :create], module: :settings
     resources :purchase_orders, only: [:new, :index, :show], module: :orders
@@ -145,6 +146,7 @@ Rails.application.routes.draw do
     resources :purchase_return_order_processings, only: [:create], module: :orders
     resources :sales_order_processings, only: [:create], module: :orders
     resources :stock_transfer_order_processings, only: [:create], module: :orders
+    resources :received_stock_transfer_order_processings, only: [:create], module: :orders
     resources :sales_return_order_processings, only: [:create], module: :orders
     resources :internal_use_order_processings, only: [:create], module: :orders
   end
