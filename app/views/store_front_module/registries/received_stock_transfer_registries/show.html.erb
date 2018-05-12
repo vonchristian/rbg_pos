@@ -53,12 +53,13 @@
             <%= f.input :destination_store_front_id, input_html: { value: current_user.store_front_id }, as: :hidden %>
             <p> <b>Origin Store Front </b></p>
             <%= f.input :origin_store_front_id, label: false, collection: StoreFront.all.except(current_user.store_front).map{|a| [ a.name, a.id] } %>
+            <%= f.input :destination_store_front_id, input_html: { value: current_user.store_front_id }, as: :hidden %>
             <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
             <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
             <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
             <%= f.input :description, as: :text %>
             <%= f.input :registry_id, input_html: { value: @registry.id }, as: :hidden %>
-            <%=f.submit "Save Purchase", class: "btn btn-success btn-block btn-lg", :accesskey => "C" %>
+            <%=f.submit "Save Received Stock Transfer", class: "btn btn-success btn-block btn-lg", :accesskey => "C" %>
           <% end %>
         <% end %>
       </div>
