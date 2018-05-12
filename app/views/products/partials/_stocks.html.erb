@@ -22,9 +22,10 @@
                                       </small></td>
                                       <td><%= stock.try(:date).try(:strftime, ("%B %e, %Y")) %></td>
                                       <td><%= stock.quantity %></td>
-
-                                        <td><%= number_to_currency stock.unit_cost %></td>
-                                        <td><%= number_to_currency stock.total_cost %></td>
+                                       <% if current_user.proprietor? %>
+                                          <td><%= number_to_currency stock.unit_cost %></td>
+                                          <td><%= number_to_currency stock.total_cost %></td>
+                                      <% end %>
 
 
                                       <td><%= stock.try(:supplier_business_name) %></td>
