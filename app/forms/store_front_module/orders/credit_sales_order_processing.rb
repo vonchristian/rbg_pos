@@ -29,6 +29,7 @@ module StoreFrontModule
           date: date,
           employee: find_employee,
           commercial_document: find_customer,
+          description: description,
           reference_number: reference_number)
 
           find_cart.sales_order_line_items.each do |sales_order_line_item|
@@ -57,7 +58,7 @@ module StoreFrontModule
           recorder: find_employee,
           commercial_document: find_customer,
           entry_date: order.date,
-          description: "Payment for sales",
+          description: "Credit sales",
           debit_amounts_attributes: [{ amount: order.total_cost,
                                         account: accounts_receivable,
                                         commercial_document: order},

@@ -18,7 +18,11 @@ module StoreFrontModule
         end
       end
       def create_or_find_product(row)
-        Product.find_or_create_by(name: row[0])
+        if product = Product.find_by(name: row[0]).present?
+          product
+        else
+          Product.find_or_create_by(name: row[0], category: find_category(row))
+        end
       end
 
       def create_or_find_line_item(row)
@@ -36,6 +40,9 @@ module StoreFrontModule
 
       def quantity(row)
         row[1]
+      end
+      def find_category(row)
+        Category.find_or_create_by(name: row[10])
       end
 
       def unit_cost(row)

@@ -10,7 +10,7 @@ module StoreFrontModule
                      :destination_store_front_id,
                      :registry_id,
                      :reference_number
-      validates :destination_store_front_id, :description, :date, presence: true
+      validates :destination_store_front_id, :reference_number, :date, presence: true
 
       def process!
         ActiveRecord::Base.transaction do
@@ -22,7 +22,7 @@ module StoreFrontModule
       def create_stock_transfer_order
         order = StoreFrontModule::Orders::StockTransferOrder.create!(
           date: date,
-          description: description,
+          description: reference_number,
           employee_id: employee_id,
           commercial_document: find_store_front,
           destination_store_front: find_destination_store_front,
@@ -62,7 +62,7 @@ module StoreFrontModule
           recorder: find_employee,
           commercial_document: find_store_front,
           entry_date: date,
-          description: description,
+          description: "stock transfer to #{find_destination_store_front.name}",
           debit_amounts_attributes: [amount: order.total_cost,
                                         account: destination_store_front_inventory,
                                         commercial_document: order

@@ -6,7 +6,7 @@ module Suppliers
                   :date,
                   :description,
                   :preparer_id
-    validates :date, :reference_number, :description, presence: true
+    validates :date, :reference_number, presence: true
     def process!
       create_voucher
     end

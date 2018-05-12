@@ -42,13 +42,13 @@ module Reports
     end
     def orders_data
       if @employee.present?
-        [["DATE", "CUSTOMER", "ITEMS", "DISCOUNT", "TOTAL COST"]] +
-        @orders_data ||= @employee.orders.ordered_on(from_date: (@from_date.beginning_of_day), to_date: @to_date.end_of_day).map{|o| [o.date.strftime("%B %e, %Y"), o.commercial_document.try(:name).try(:upcase), order_description(o), price(o.discount_amount), price(o.try(:total_cost))] } +
+        [["DATE", "OR", "CUSTOMER", "ITEMS", "DISCOUNT", "TOTAL COST"]] +
+        @orders_data ||= @employee.orders.ordered_on(from_date: (@from_date.beginning_of_day), to_date: @to_date.end_of_day).map{|o| [o.date.strftime("%B %e, %Y"), o.reference_number, o.commercial_document.try(:name).try(:upcase), order_description(o), price(o.discount_amount), price(o.try(:total_cost))] } +
         [["", "","", "TOTAL", "#{price(@orders.sum(&:total_cost))}"]]
             else
-         [["DATE", "CUSTOMER", "ITEMS", "DISCOUNT", "TOTAL COST"]] +
-        @orders_data ||= @orders.ordered_on(from_date: (@from_date.beginning_of_day), to_date: @to_date.end_of_day).map{|o| [o.date.strftime("%B %e, %Y"), o.commercial_document.try(:name).try(:upcase), order_description(o),  price(o.discount_amount), price(o.try(:total_cost))] } +
-        [["", "","", "TOTAL", "#{price(@orders.sum(&:total_cost))}"]]
+         [["DATE", "OR", "CUSTOMER", "ITEMS", "DISCOUNT", "TOTAL COST"]] +
+        @orders_data ||= @orders.ordered_on(from_date: (@from_date.beginning_of_day), to_date: @to_date.end_of_day).map{|o| [o.date.strftime("%B %e, %Y"), o.reference_number, o.commercial_document.try(:name).try(:upcase),  order_description(o),  price(o.discount_amount), price(o.try(:total_cost))] } +
+        [["", "","", "", "<b>TOTAL</b>", "<b>#{price(@orders.sum(&:total_cost))}</b>"]]
           end
     end
 

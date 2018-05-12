@@ -98,7 +98,7 @@
             <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
             <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
             <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-            <%= f.input :description, as: :text %>
+            <%= f.input :reference_number %>
         <%=f.submit "Save Stock Transfer", class: "btn btn-success btn-block btn-lg", :accesskey => "C" %>
         <% end %>
       <% end %>

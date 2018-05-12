@@ -8,6 +8,7 @@ module StoreFrontModule
                     :product_id,
                     :bar_code,
                     :unit_cost,
+                    :bar_code,
                     :purchase_order_line_item_id
       validates :quantity, numericality: { greater_than: 0.1 }
       validate :quantity_is_less_than_or_equal_to_available_quantity?

@@ -19,6 +19,7 @@
           <thead>
             <tr>
               <th>Date</th>
+              <th>Reference #</th>
               <th>Origin Store Front</th>
               <th>Destination</th>
               <th>Items</th>
@@ -30,6 +31,7 @@
             <% @stock_transfer_orders.order(date: :desc).each do |stock_transfer| %>
               <tr>
                 <td><%= link_to stock_transfer.date.strftime("%B %e, %Y"), store_front_module_stock_transfer_path(stock_transfer) %></td>
+                <td><%= stock_transfer.reference_number %></td>
                 <td><%= link_to stock_transfer.store_front_name, store_front_module_stock_transfer_path(stock_transfer) %></td>
                 <td><%= link_to stock_transfer.destination_store_front_name, store_front_module_stock_transfer_path(stock_transfer) %></td>
 

@@ -55,7 +55,7 @@ module StoreFrontModule
       def decrease_purchase_line_item_quantity
         sales = find_cart.purchase_return_order_line_items.create!(
           quantity: quantity,
-          unit_cost: selling_cost,
+          unit_cost: purchase_cost,
           total_cost: set_total_cost,
           product_id: product_id,
           unit_of_measurement: find_unit_of_measurement,
@@ -64,19 +64,12 @@ module StoreFrontModule
         purchase = find_purchase_order_line_item
         find_purchase_order_line_item.purchase_return_order_line_items.create!(
             quantity:                 converted_quantity,
-            unit_cost:                purchase.purchase_cost,
+            unit_cost:                purchase_cost,
             total_cost:               total_cost_for(purchase, quantity),
             unit_of_measurement:      find_product.base_measurement,
             product_id:               product_id,
           bar_code:                 bar_code,
             purchase_order_line_item_id: purchase.id)
-      end
-      def purchase_cost
-        if unit_cost.present?
-          unit_cost.to_f
-        else
-          find_product.last_purchase_cost
-        end
       end
 
       def quantity_for(purchase, requested_quantity)
@@ -92,7 +85,7 @@ module StoreFrontModule
       end
 
       def total_cost_for(purchase, requested_quantity)
-        purchase.purchase_cost * quantity_for(purchase, requested_quantity)
+        purchase_cost * quantity_for(purchase, requested_quantity)
       end
 
       def find_cart
