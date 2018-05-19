@@ -48,7 +48,9 @@ module StoreFrontModule
       private
       def delete_entry
         entry_id = AccountingModule::Amount.where(commercial_document: self).pluck(:entry_id).uniq
-        AccountingModule::Entry.find_by_id(entry_id).destroy
+        if entry_id.present?
+          AccountingModule::Entry.find_by_id(entry_id).destroy
+        end
       end
     end
   end
