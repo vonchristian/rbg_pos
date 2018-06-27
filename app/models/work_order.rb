@@ -29,6 +29,7 @@ class WorkOrder < ApplicationRecord
   validates :customer_id, presence: true
   after_commit :set_service_number, :set_customer_name, :set_product_name,  on: [:create, :update]
   delegate :avatar, :full_name, to: :customer
+  delegate :number, to: :charge_invoice, prefix: true, allow_nil: true
   def self.payment_entries
     payments = []
     all.each do |work_order|
@@ -155,7 +156,13 @@ class WorkOrder < ApplicationRecord
   def actions_taken
     work_order_updates.actions_taken
   end
-
+  def destroy_entry_for(options={})
+    order = options[:order]
+    entry = AccountingModule::Amount.where(commercial_document_id: order.id, commercial_document_type: order.class.to_s).first
+    if entry.present?
+      entry.destroy
+    end
+  end
 
   private
   def set_service_number

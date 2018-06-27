@@ -5,6 +5,8 @@ module RepairServicesModule
     def customer
       commercial_document
     end
+
+
     def total_cost
       sales_order_line_items.sum(&:total_cost)
     end

@@ -27,14 +27,14 @@ module StoreFrontModule
           commercial_document: find_store_front,
           destination_store_front: find_destination_store_front,
           reference_number: reference_number)
-        find_cart.stock_transfer_order_line_items.each do |line_item|
+        find_cart.purchase_order_line_items.each do |line_item|
           line_item.cart_id = nil
-          order.stock_transfer_order_line_items << line_item
+          order.purchase_order_line_items << line_item
         end
         if find_registry.present?
-          find_registry.received_stock_transfer_order_line_items.each do |line_item|
+          find_registry.purchase_order_line_items.each do |line_item|
             line_item.cart_id = nil
-            order.received_stock_transfer_order_line_items << line_item
+            order.purchase_order_line_items << line_item
           end
         end
         create_entry(order)

@@ -50,7 +50,8 @@ gem 'select2-rails'
 gem 'rqrcode'
 gem 'dotiw'
 gem 'will_paginate', '~> 3.1.0'
-
+gem "chartkick"
+gem "groupdate"
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails'

@@ -9,11 +9,12 @@
                                       <th>Unit Cost</th>
                                       <th>Total Cost</th>
                                       <th>Supplier</th>
+                                      <th></th>
                                     </thead>
                                     <tbody>
                                       <% @stocks.each do |stock| %>
                                       <tr>
-                                      <td><%=link_to stock.name, store_front_module_purchase_order_path(stock) %><br>
+                                      <td><%=stock.name %><br>
                                       <small><%= stock.bar_code %><br>
                                         <% if stock.sold? %>
                                           <span class="label bg-green"> Sold </span>
@@ -29,7 +30,9 @@
 
 
                                       <td><%= stock.try(:supplier_business_name) %></td>
-
+                                      <% if current_user.proprietor? %>
+                                      <td><%= link_to "Edit", edit_product_stock_path(id: stock.id, product_id: @product.id), class: "btn btn-warning btn-sm" %>
+                                      <% end %>
 
                                       </tr>
                                       <% end %>

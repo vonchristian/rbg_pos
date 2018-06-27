@@ -11,7 +11,7 @@ class Order < ApplicationRecord
 
   delegate :full_name, to: :customer, prefix: true, allow_nil: true
   delegate :full_name, to: :technician, prefix: true, allow_nil: true
-  delegate :total_cost, to: :payment, prefix: true, allow_nil: true
+  delegate :cash_tendered, to: :cash_payment, prefix: true, allow_nil: true
   delegate :full_name, to: :employee, prefix: true, allow_nil: true
   delegate :discount_amount, to: :cash_payment, allow_nil: true
   delegate :name, to: :destination_store_front, prefix: true, allow_nil: true

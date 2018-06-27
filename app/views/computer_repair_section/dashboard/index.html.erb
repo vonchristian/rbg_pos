@@ -48,7 +48,7 @@
         <br>
       </div>
     </div>
-  </div>
+
     <div class="row">
       <div class="col-md-3 border-right">
         <div class="box box-solid">
@@ -78,7 +78,8 @@
                 <span class="text-black condensed-text"><b><%= work_order.product_unit.description.try(:upcase) %></b></span><br>
                 <span class='text-danger'><%= work_order.reported_problem %></span><br>
                 <span class="text-black"> <%= work_order.customer_full_name %></span><br>
-                <span class='text-black'><small><%= work_order.created_at.strftime("%b %e, %l:%M %p") %></small></span>
+                <span class='text-black'><small><%= work_order.created_at.strftime("%b %e, %l:%M %p") %></small></span><br>
+                <small>CI #: <%= work_order.charge_invoice_number %></small>
               </div>
               <div class="col-md-2">
                 <small class="text-black"><b><%=work_order.formatted_service_number %></b></small>
@@ -104,12 +105,14 @@
               <div class="col-md-9">
                 <span class="text-black condensed-text"><b><%= work_order.product_unit.description.try(:upcase) %></b></span><br>
                 <%= work_order.customer.full_name %><br>
-                <span class="text-black"><%= distance_of_time_in_words(work_order.created_at, Time.zone.now) %></span><br><br>
+                <span class="text-black"><%= distance_of_time_in_words(work_order.created_at, Time.zone.now) %></span><br>
+                <small>CI #: <%= work_order.charge_invoice_number %></small><br><br>
                 <% work_order.technicians.each do |technician| %>
                   <span data-toggle="tooltip" title="<%=technician.first_name %>" data-placement="top">
                     <%= image_tag(technician.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %> &nbsp;
                   </span>
                 <% end %>
+
               </div>
               <div class="col-md-2">
                 <small class="text-black"><b><%=work_order.formatted_service_number %></b></small>
@@ -134,7 +137,8 @@
               <div class="col-md-9">
                 <span class="text-black condensed-text"><b><%= work_order.product_unit.description.try(:upcase) %></b></span><br>
                 <%= work_order.customer.full_name %><br>
-                <span class="text-black"><%= distance_of_time_in_words(work_order.created_at, Time.zone.now) %></span><br><br>
+                <span class="text-black"><%= distance_of_time_in_words(work_order.created_at, Time.zone.now) %></span><br>
+                <small>CI #: <%= work_order.charge_invoice_number %></small><br><br>
                 <% work_order.technicians.each do |technician| %>
                   <span data-toggle="tooltip" title="<%=technician.first_name %>" data-placement="top">
                     <%= image_tag(technician.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %> &nbsp;
@@ -165,6 +169,7 @@
                     <p class="text-black condensed-text"><%= work_order.product_unit.description %></p>
                     <%= work_order.customer.full_name %><br>
                     <span class='text-black'><small><%= work_order.updated_at.strftime("%b %e, %l:%M %p") %></small></span><br><br>
+                     <small>CI #: <%= work_order.charge_invoice_number %></small><br><br>
                     <% work_order.technicians.each do |technician| %>
                       <span data-toggle="tooltip" title="<%=technician.first_name %>" data-placement="top">
                         <%= image_tag(technician.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %> &nbsp;
@@ -185,6 +190,8 @@
       </div>
     </div>
   </div>
+</div>
+
 <script type="text/javascript">
 
 </script>

@@ -1,3 +1,4 @@
+<%= line_chart StoreFrontModule::Orders::SalesOrder.group_by_month(:created_at).count, curve: false %>
 <p>Sales for Today (<%= Time.zone.now.strftime("%b %e, %Y") %>)</p>
 <div class="row">
   <div class="col-md-4">
@@ -52,20 +53,33 @@
 
               </div>
               <div class="col-md-4">
-                <% order.line_items.each do |line_item| %>
-                  <div class="row">
-                    <div class="col-md-1">
-                      <%= line_item.quantity %>
+                <% if order.line_items.present? %>
+                  <% order.line_items.each do |line_item| %>
+                    <div class="row">
+                      <div class="col-md-1">
+                        <%= line_item.quantity %>
+                      </div>
+                      <div class="col-md-8">
+                        <%= line_item.name %><br>
+                        <small class="text-muted"><i><%= line_item.bar_code %></i></small>
+                      </div>
+                      <div class="col-md-3">
+                        <%= number_to_currency line_item.total_cost %>
+                      </div>
                     </div>
-                    <div class="col-md-8">
-                      <%= line_item.name %><br>
-                      <small class="text-muted"><i><%= line_item.bar_code %></i></small>
+                    <br>
+                  <% end %>
+                <% else %>
+                   <div class="row">
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-7">
+                      <%= order.description %>
                     </div>
                     <div class="col-md-3">
-                      <%= number_to_currency line_item.total_cost %>
+                      <%= number_to_currency order.cash_payment_cash_tendered %>
                     </div>
                   </div>
-                  <br>
                 <% end %>
               </div>
 

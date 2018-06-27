@@ -12,7 +12,9 @@
         <tbody>
           <% @entries.order(entry_date: :desc).each do |entry| %>
             <tr>
-              <td><%=entry.entry_date.strftime("%B %e, %Y")%></td>
+              <td>
+
+                <%=entry.entry_date.strftime("%B %e, %Y")%></td>
               <td><%= entry.description %></td>
               <td>
                 <p> DEBIT </p>

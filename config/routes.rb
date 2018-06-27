@@ -26,7 +26,7 @@ Rails.application.routes.draw do
     match "/out_of_stock" => "products#out_of_stock",  via: [:get], on: :collection
     match "/low_on_stock" => "products#low_on_stock",  via: [:get], on: :collection
 
-  	resources :stocks, only: [:index, :new, :create], module: :products
+  	resources :stocks, only: [:index, :new, :create, :edit, :update], module: :products
     resources :orders, only: [:index], module: :products
   end
   resources :line_items, only: [:new, :create, :edit, :update]
@@ -195,5 +195,5 @@ Rails.application.routes.draw do
     end
   end
   resources :work_order_service_charges, only: [:destroy]
-
+  resources :credit_payments, only: [:index, :show]
 end

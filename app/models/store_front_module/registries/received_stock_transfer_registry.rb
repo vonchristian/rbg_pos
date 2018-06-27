@@ -1,8 +1,7 @@
 module StoreFrontModule
   module Registries
     class ReceivedStockTransferRegistry < Registry
-      has_many :received_stock_transfer_order_line_items, class_name: "StoreFrontModule::LineItems::ReceivedStockTransferOrderLineItem", foreign_key: 'registry_id', dependent: :destroy
-
+      has_many :purchase_order_line_items, class_name: "StoreFrontModule::LineItems::PurchaseOrderLineItem", foreign_key: 'registry_id', dependent: :destroy
 
       def parse_for_records
         book = Spreadsheet.open(spreadsheet.path)
@@ -17,6 +16,7 @@ module StoreFrontModule
           end
         end
       end
+
       def create_or_find_product(row)
         if product = Product.find_by(name: row[0]).present?
           product
@@ -27,7 +27,7 @@ module StoreFrontModule
 
       def create_or_find_line_item(row)
         if quantity(row).present? && quantity(row) > 0
-          StoreFrontModule::LineItems::ReceivedStockTransferOrderLineItem.find_or_create_by(
+          StoreFrontModule::LineItems::PurchaseOrderLineItem.create!(
             quantity: quantity(row),
             unit_cost: unit_cost(row),
             total_cost: total_cost(row),
@@ -39,7 +39,7 @@ module StoreFrontModule
       end
 
       def quantity(row)
-        row[1]
+        row[1].to_i
       end
       def find_category(row)
         Category.find_or_create_by(name: row[10])

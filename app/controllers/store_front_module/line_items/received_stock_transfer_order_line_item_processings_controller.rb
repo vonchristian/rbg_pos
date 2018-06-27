@@ -12,7 +12,7 @@ module StoreFrontModule
         @received_stock_transfer_order_line_items = @cart.received_stock_transfer_order_line_items.order(created_at: :desc)
       end
       def destroy
-        @line_item = StoreFrontModule::LineItems::ReceivedStockTransferOrderLineItem.find(params[:id])
+        @line_item = StoreFrontModule::LineItems::PurchaseOrderLineItem.find(params[:id])
         @line_item.destroy
         redirect_to store_front_module_received_stock_transfer_registry_url(@line_item.registry), notice: "deleted successfully"
       end

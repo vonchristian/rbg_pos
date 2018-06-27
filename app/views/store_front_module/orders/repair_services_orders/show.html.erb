@@ -32,3 +32,10 @@
                 </div>
                 <hr>
                 <% end %>
+                <%if current_user.proprietor? %>
+                <span class="text-red">
+                  Deleting this Order will remove it from Sales orders. The accounting entry will be deleted from records. In short, records for this order will be deleted forever.
+                </span>
+                <br>
+                 <%= link_to 'Delete Order', store_front_module_repair_services_order_path(@order), method: :delete, data: { confirm: "Are you sure you want to delete this Repair Service Order?" }, class: "btn btn-danger btn-xs" %>
+                <% end %>

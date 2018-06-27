@@ -34,7 +34,7 @@ module StoreFrontModule
         if find_registry.present?
           find_registry.received_stock_transfer_order_line_items.each do |line_item|
             line_item.cart_id = nil
-            order.received_stock_transfer_order_line_items << line_item
+            order.stock_transfer_order_line_items << line_item
           end
         end
         create_entry(order)

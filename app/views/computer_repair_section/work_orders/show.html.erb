@@ -227,6 +227,7 @@
                     <%= spare_part.quantity.to_i %>
                   </div>
                   <div class="col-md-7 col-xs-6">
+
                     <%= spare_part.product_name %><br>
                     <small class="text-muted"><%= spare_part.try(:order).try(:date).try(:strftime, ("%B %e, %Y")) %></small><br>
                     <small class="text-muted"><%= spare_part.bar_code %></small>

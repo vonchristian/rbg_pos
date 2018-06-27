@@ -24,7 +24,7 @@ class OtherSalesForm
     User.find_by(id: recorder_id).default_cash_on_hand_account
   end
   def create_order
-    order = Order.create!(description: description, commercial_document: find_customer, date: date, employee_id: recorder_id, reference_number: reference_number)
+    order = StoreFrontModule::Orders::SalesOrder.create!(description: description, commercial_document: find_customer, date: date, employee_id: recorder_id, reference_number: reference_number)
     order.create_cash_payment(cash_tendered: amount)
   end
   def find_customer

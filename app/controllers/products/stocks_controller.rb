@@ -20,17 +20,22 @@ module Products
       end
     end
     def edit
-      @stock = Stock.find(params[:id])
+      @product = Product.find(params[:product_id])
+      @stock = StoreFrontModule::LineItems::PurchaseOrderLineItem.find(params[:id])
     end
     def update
-      @stock = Stock.find(params[:id])
+      @product = Product.find(params[:product_id])
+      @stock = StoreFrontModule::LineItems::PurchaseOrderLineItem.find(params[:id])
       @stock.update(stock_params)
       if @stock.valid?
-        @stock.save
-        redirect_to product_url(@stock.product), notice: 'Stock updated successfully.'
+        @stock.save!
+        redirect_to product_stocks_url(@stock.product), notice: 'Stock updated successfully.'
+      else
+        render :edit
       end
     end
     def show
+      @product = Product.find(params[:product_id])
       @stock = Stock.find(params[:id])
     end
 
@@ -43,7 +48,7 @@ module Products
 
     private
     def stock_params
-      params.require(:stock).permit(:stock_type, :supplier_id, :unit_cost, :total_cost, :quantity, :retail_price, :wholesale_price, :barcode, :name, :origin_branch_id)
+      params.require(:store_front_module_line_items_purchase_order_line_item).permit(:unit_of_measurement_id, :unit_cost, :total_cost, :quantity, :bar_code)
     end
   end
 end

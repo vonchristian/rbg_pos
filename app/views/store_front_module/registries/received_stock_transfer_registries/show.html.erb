@@ -15,7 +15,7 @@
               </tr>
             </thead>
             <tbody>
-              <% @registry.received_stock_transfer_order_line_items.each do |line_item| %>
+              <% @registry.purchase_order_line_items.each do |line_item| %>
                 <tr>
                   <td><%= line_item.quantity %> <%= line_item.unit_code %></td>
                   <td width="300px"><%= line_item.name.try(:titleize) %> <span class="text-muted"><%= line_item.bar_code %></span>
@@ -48,7 +48,7 @@
         <h3 class="box-title"> Stock Transfer Details </h3>
       </div>
       <div class="box-body">
-        <% if @registry.received_stock_transfer_order_line_items.present? %>
+        <% if @registry.purchase_order_line_items.present? %>
           <%= simple_form_for @received_stock_transfer_order, url: :store_front_module_received_stock_transfer_order_processings do |f| %>
             <%= f.input :destination_store_front_id, input_html: { value: current_user.store_front_id }, as: :hidden %>
             <p> <b>Origin Store Front </b></p>
