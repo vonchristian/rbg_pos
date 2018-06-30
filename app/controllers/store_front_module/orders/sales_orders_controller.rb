@@ -11,7 +11,9 @@ module StoreFrontModule
       end
       def destroy
         @order = StoreFrontModule::Orders::SalesOrder.find(params[:id])
-        @work_order = WorkOrder.find(params[:work_order_id])
+        if params[:work_order_id].present?
+          @work_order = WorkOrder.find(params[:work_order_id])
+        end
         @order.destroy_entry!
         if @work_order.present?
           @work_order.destroy_entry_for(order: order)

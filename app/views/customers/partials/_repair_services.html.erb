@@ -7,6 +7,7 @@
           <tr>
             <th>Date Received</th>
             <th>Service Tag</th>
+            <th>Charge Invoice </th>
             <th>Product</th>
             <th>Reported Problem</th>
             <th>Status</th>
@@ -20,6 +21,7 @@
             <tr>
               <td><%= work_order.created_at.strftime("%B %e, %Y") %></td>
               <td>#<%= work_order.service_number %> </td>
+              <td>#<%= work_order.charge_invoice_number %></td>
               <td><%= link_to work_order.product_unit.try(:description), computer_repair_section_work_order_path(work_order) %></td>
               <td><%= work_order.reported_problem %></td>
               <td><%= work_order.status %></td>

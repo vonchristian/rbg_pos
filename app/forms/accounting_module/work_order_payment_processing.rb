@@ -30,16 +30,15 @@ module AccountingModule
               {
               amount: amount.to_f + expense_amount.to_f,
               account: accounts_receivable_account,
-              commercial_document: find_work_order},
-
-              { amount: expense_amount,
-                account_id: expense_account_id,
-                commercial_document: find_work_order}
+              commercial_document: find_work_order}
               ],
             debit_amounts_attributes: [
               {amount: amount,
                account: cash_on_hand_account,
-               commercial_document: find_work_order }
+               commercial_document: find_work_order },
+              { amount: expense_amount,
+                account_id: expense_account_id,
+                commercial_document: find_work_order}
              ])
         else
           AccountingModule::Entry.create!(

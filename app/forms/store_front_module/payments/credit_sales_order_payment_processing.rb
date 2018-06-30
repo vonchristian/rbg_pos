@@ -24,17 +24,17 @@ module StoreFrontModule
             description: "Payment of credit",
             debit_amounts_attributes:
             [
-             {amount: amount.to_f - expense_amount.to_f,
+             {amount: amount,
               account: cash_on_hand_account,
               commercial_document: find_order},
-            { amount: expense_amount,
-              account_id: expense_account_id,
+              { amount: expense_amount,
+                account_id: expense_account_id,
               commercial_document: find_order
-            }
+              }
             ],
             credit_amounts_attributes:
             [
-              amount: amount,
+              amount: amount.to_f + expense_amount.to_f,
               account: accounts_receivable,
               commercial_document: find_order
 
