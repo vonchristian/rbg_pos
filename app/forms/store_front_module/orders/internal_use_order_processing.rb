@@ -6,7 +6,8 @@ module StoreFrontModule
                      :employee_id,
                      :date,
                      :description,
-                     :reference_number
+                     :reference_number,
+                     :commercial_document_id
       validates :description, :date, presence: true
 
       def process!
@@ -20,8 +21,8 @@ module StoreFrontModule
         order = StoreFrontModule::Orders::InternalUseOrder.create!(
           date: date,
           description: description,
-          employee_id: employee_id,
-          commercial_document: find_employee,
+          employee: find_employee,
+          commercial_document: find_commercial_document,
           reference_number: reference_number)
         find_cart.internal_use_order_line_items.each do |line_item|
           line_item.cart_id = nil
@@ -30,9 +31,14 @@ module StoreFrontModule
         create_entry(order)
       end
 
+      def find_commercial_document
+        User.find_by_id(commercial_document_id)
+      end
+
       def find_cart
         Cart.find_by_id(cart_id)
       end
+
       def find_employee
         User.find_by_id(employee_id)
       end

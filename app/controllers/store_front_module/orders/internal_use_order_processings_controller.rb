@@ -14,7 +14,7 @@ module StoreFrontModule
       private
       def order_params
         params.require(:store_front_module_orders_internal_use_order_processing).
-        permit(:date, :description, :cart_id, :employee_id)
+        permit(:date, :description, :cart_id, :commercial_document_id, :employee_id)
       end
     end
   end

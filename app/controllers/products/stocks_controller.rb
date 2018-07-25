@@ -1,8 +1,9 @@
+require 'will_paginate/array'
 module Products
   class StocksController < ApplicationController
     def index
       @product = Product.find(params[:product_id])
-      @stocks = @product.purchases.all.paginate(page: params[:page], per_page: 50)
+      @stocks = @product.purchases.where.not(order_id: nil).paginate(page: params[:page], per_page: 50)
     end
     def new
       @product = Product.find(params[:product_id])

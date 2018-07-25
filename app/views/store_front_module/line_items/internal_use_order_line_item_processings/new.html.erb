@@ -83,7 +83,7 @@
         <div class="box-body">
         <% if @cart.internal_use_order_line_items.present? %>
           <%= simple_form_for @internal_use_order, url: :store_front_module_internal_use_order_processings do |f| %>
-            <%= f.input :employee_id, collection: User.all.map{|a| [ a.name, a.id] } %>
+            <%= f.input :commercial_document_id, label: "Requisitioning Employee", collection: User.all.map{|a| [ a.name, a.id] } %>
             <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
             <%= f.input :description %>
             <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
