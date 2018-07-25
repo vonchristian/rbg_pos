@@ -13,7 +13,9 @@ class LineItem < ApplicationRecord
   belongs_to :unit_of_measurement, class_name: "StoreFrontModule::UnitOfMeasurement"
   delegate :unit_code, :conversion_multiplier, to: :unit_of_measurement, allow_nil: true
   delegate :name, to: :product
-
+  def self.processed
+    where.not(order_id: nil)
+  end
   def date
     order.try(:date) || self.created_at
   end
@@ -45,10 +47,12 @@ class LineItem < ApplicationRecord
     end
   end
 
+  def processed?
+    order_id.present?
+  end
+
   private
   def exceeds_available_stock?
     errors[:base] << "Exceeded available stock" if quantity > stock.in_stock
   end
-  ######################
-
 end
