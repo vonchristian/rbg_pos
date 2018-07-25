@@ -196,4 +196,5 @@ Rails.application.routes.draw do
   end
   resources :work_order_service_charges, only: [:destroy]
   resources :credit_payments, only: [:index, :show]
+  resources :employees, only: [:index, :show]
 end

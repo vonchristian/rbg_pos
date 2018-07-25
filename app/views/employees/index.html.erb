@@ -1,0 +1,33 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title">Employees </h3>
+      </div>
+      <div class="box-body">
+        <div class="table table-responsive">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Cash on Hand Account</th>
+                <th>Balance </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @employees.each do |employee| %>
+                <tr>
+                  <td><%= link_to employee.name, employee_path(employee) %></td>
+                  <td><%= employee.role.try(:titleize) %></td>
+                  <td><%= employee.cash_on_hand_account.try(:name) %></td>
+                  <td><%= number_to_currency employee.cash_on_hand_account.try(:balance) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
