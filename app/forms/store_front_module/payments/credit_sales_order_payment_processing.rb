@@ -21,7 +21,7 @@ module StoreFrontModule
             entry_date: date,
             commercial_document: find_order.customer,
             reference_number: reference_number,
-            description: "Payment of credit",
+            description: description,
             debit_amounts_attributes:
             [
              {amount: amount,

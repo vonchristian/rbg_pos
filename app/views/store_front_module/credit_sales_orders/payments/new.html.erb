@@ -66,6 +66,7 @@
               <%= f.input :order_id, input_html: { value: @order.id }, as: :hidden %>
               <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
               <%= f.input :reference_number, label: "Check No." %>
+              <%= f.input :description, label: "Invoice # / PO #" %>
               <% if current_user.proprietor? %>
                 <%= f.input :cash_on_hand_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }, selected: current_user.cash_on_hand_account_id %>
               <% else %>
