@@ -304,7 +304,9 @@
                       <span data-toggle="tooltip" title="<%=payment.recorder.try(:first_name) %>" data-placement="top">
                       <%= image_tag(payment.recorder.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %><br>
                       <small><%= payment.recorder.full_name %></small><br>
-                      <%=link_to 'Delete', entry_path(payment.entry), method: :delete, class: "btn btn-danger btn-sm" %>
+                      <% if current_user.proprietor? %>
+                        <%=link_to 'Delete', entry_path(payment.entry), method: :delete, class: "btn btn-danger btn-sm" %>
+                      <% end %>
                     <% end %>
                 </span>
                   </div>
