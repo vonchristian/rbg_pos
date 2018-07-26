@@ -30,6 +30,7 @@ module StoreFrontModule
           date: date,
           employee: find_employee,
           commercial_document: find_customer,
+          search_term: find_customer.name,
           reference_number: reference_number)
           find_cart.sales_return_order_line_items.each do |line_item|
             line_item.cart_id = nil

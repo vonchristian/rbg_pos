@@ -13,7 +13,11 @@ module StoreFrontModule
 
       private
       def create_purchase_order
-        order = find_supplier.purchase_return_orders.create!(date: date, employee_id: employee_id, description: description)
+        order = find_supplier.purchase_return_orders.create!(
+          date: date,
+          employee_id: employee_id,
+          search_term: find_supplier.business_name,
+          description: description)
         find_cart.purchase_return_order_line_items.each do |line_item|
           line_item.cart_id = nil
           order.purchase_return_order_line_items << line_item

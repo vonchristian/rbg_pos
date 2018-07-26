@@ -25,6 +25,7 @@ module StoreFrontModule
           description: reference_number,
           employee_id: employee_id,
           commercial_document: find_store_front,
+          search_term: find_destination_store_front.name,
           destination_store_front: find_destination_store_front,
           reference_number: reference_number)
         find_cart.purchase_order_line_items.each do |line_item|

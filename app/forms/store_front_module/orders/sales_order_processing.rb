@@ -33,6 +33,7 @@ module StoreFrontModule
           date: date,
           employee: find_employee,
           commercial_document: find_customer,
+          search_term: find_customer.name,
           reference_number: reference_number)
           order.create_cash_payment(cash_tendered: cash_tendered, cash_change: order_change, discount_amount: discount_amount)
 

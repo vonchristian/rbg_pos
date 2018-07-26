@@ -23,6 +23,7 @@ module StoreFrontModule
           description: description,
           employee: find_employee,
           commercial_document: find_commercial_document,
+          search_term: find_employee.name,
           reference_number: reference_number)
         find_cart.internal_use_order_line_items.each do |line_item|
           line_item.cart_id = nil

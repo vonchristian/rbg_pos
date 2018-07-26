@@ -18,6 +18,7 @@ module StoreFrontModule
         order = find_supplier.purchase_orders.create!(
           date: date,
           voucher: find_voucher,
+          search_term: find_supplier.business_name,
           employee: find_employee)
         find_cart.purchase_order_line_items.each do |line_item|
           line_item.cart_id = nil

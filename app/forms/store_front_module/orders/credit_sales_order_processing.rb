@@ -30,6 +30,7 @@ module StoreFrontModule
           employee: find_employee,
           commercial_document: find_customer,
           description: description,
+          search_term: find_customer.name,
           reference_number: reference_number)
 
           find_cart.sales_order_line_items.each do |sales_order_line_item|
