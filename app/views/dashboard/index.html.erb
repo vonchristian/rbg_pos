@@ -83,7 +83,7 @@
 </div>
 
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-8">
       <div class="box box-solid">
         <div class="box-header">
           <h3 class="box-title"> Employees </h3>
@@ -92,19 +92,23 @@
           <% @employees.each do |employee| %>
             <%= link_to admin_employee_path(employee) do %>
               <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-1">
                   <%= image_tag(employee.avatar.url(:medium), height: 50, width: 50, class: "img-circle") %>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-4">
                   <%= employee.full_name %><br>
                   <small><%= employee.role.titleize %></small>
                 </div>
                 <div class="col-md-3">
                   <% if employee.cash_on_hand_account.present? %>
-                    <span class="text-primary"><%= number_to_currency employee.default_cash_on_hand_account_balance  %> </span>
+                    <span class="text-primary"><%= number_to_currency employee.default_cash_on_hand_account_balance  %> </span><br>
+                  <small>CASH ON HAND</small>
+
                   <% end %>
-
-
+                </div>
+                <div class="col-md-3">
+                  <%= number_to_currency employee.sales_orders.ordered_on(from_date: Date.today, to_date: Date.today).map{|a| a.total_cost}.compact.sum %><br>
+                  <small>TOTAL SALES</small>
                 </div>
               </div>
               <br>

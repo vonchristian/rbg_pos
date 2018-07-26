@@ -1,3 +1,7 @@
+Add sales on employee show
+add purchases/sales/returns/on excel
+
+
 work order
 sales order
 sales order destroy
