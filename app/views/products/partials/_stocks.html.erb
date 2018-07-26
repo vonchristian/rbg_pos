@@ -18,7 +18,8 @@
                                       <small><%= stock.bar_code %><br>
                                         <% if stock.sold? %>
                                           <span class="label bg-green"> Sold </span>
-
+                                          <p>Customer</p>
+                                          <%= stock.customer %>
 
                                         <% end %>
 

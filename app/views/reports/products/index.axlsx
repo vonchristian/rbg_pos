@@ -1,14 +1,49 @@
 wb = xlsx_package.workbook
 wb.add_worksheet(name: "Products") do |sheet|
-  sheet.add_row ["Product Name", "Deliveries", "Sold", "In Stock"]
+  sheet.add_row [
+   "Product Name",
+   "Purchases",
+   "Sales",
+   "Stock Transfers",
+   "Spoilages",
+   "Internal Uses",
+   "Sales Returns",
+   "Received Stock Transfers",
+   "In Stock"]
   @categories.each do |category|
     sheet.add_row ["CATEGORY:", category.name.try(:upcase)]
     category.products.each do |product|
-      sheet.add_row [product.name,product.delivered_items_count, product.sold_items_count, product.in_stock]
+      sheet.add_row [
+      product.name,
+      product.purchases_balance,
+      product.sales_balance,
+      product.stock_transfers_balance,
+      product.spoilages_balance,
+      product.internal_use_orders_balance,
+      product.sales_returns_balance,
+      product.received_stock_transfers_balance,
+      product.balance]
     end
   end
-    sheet.add_row ["CATEGORY:", "UNCATEGORIZED PRODUCTS"]
+    sheet.add_row [
+    "Product Name",
+    "Purchases",
+    "Sales",
+    "Stock Transfers",
+    "Spoilages",
+    "Internal Uses",
+    "Sales Returns",
+    "Received Stock Transfers",
+    "In Stock"]
     @products.each do |product|
-      sheet.add_row [product.name,product.delivered_items_count, product.sold_items_count, product.in_stock]
+      sheet.add_row [product.name,
+      product.purchases_balance,
+      product.sales_balance,
+      product.stock_transfers_balance,
+      product.spoilages_balance,
+      product.internal_use_orders_balance,
+      product.sales_returns_balance,
+      product.received_stock_transfers_balance,
+      product.balance]
     end
 end

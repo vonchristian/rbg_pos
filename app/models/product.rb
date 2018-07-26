@@ -1,7 +1,7 @@
 class Product < ApplicationRecord
 	include PgSearch
   multisearchable against: [:name]
-	pg_search_scope :text_search, against: [:name]
+	pg_search_scope :text_search, against: [:name], :associated_against => {:purchases => [:bar_code] }
   pg_search_scope :text_search_with_barcode, against: [:name],
   :associated_against => {
     :purchases => [:bar_code]}

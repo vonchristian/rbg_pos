@@ -24,6 +24,7 @@
       def sold?
         referenced_purchase_order_line_items &&  out_of_stock?
       end
+
       def out_of_stock?
         available_quantity <=0
       end
@@ -31,6 +32,10 @@
       def sold_quantity
         referenced_purchase_order_line_items.total -
         returned_sales_line_items_quantity
+      end
+
+      def customer
+        StoreFrontModule::LineItems::SalesOrderLineItem.where(bar_code: self.bar_code).last.try(:order).try(:customer).try(:name)
       end
 
       def purchase_returns_quantity
