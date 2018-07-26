@@ -38,6 +38,18 @@
   <div class="box box-solid">
 
       <div class="box-body">
+        <%=form_tag store_front_module_sales_orders_path, method: :get, id: "search-form" do %>
+          <div class="input-group stylish-input-group">
+            <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search", type: "search" %>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', class: "btn") do %>
+                <i class="icon-magnifier"></i>
+              <% end %>
+            </span>
+          </div>
+        <% end %>
+
+
         <hr>
         <% @orders.each do |order| %>
           <%= link_to store_front_module_sales_order_path(order) do %>

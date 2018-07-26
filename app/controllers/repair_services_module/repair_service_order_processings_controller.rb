@@ -13,7 +13,7 @@ module RepairServicesModule
 
     private
     def order_params
-      params.require(:repair_services_module_repair_service_order_processing).permit(:cart_id, :employee_id, :date, :customer_id, :work_order_id)
+    params.require(:repair_services_module_repair_service_order_processing).permit(:cart_id, :employee_id, :date, :customer_id, :work_order_id, :reference_number)
     end
   end
 end

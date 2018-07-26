@@ -1,7 +1,7 @@
 module RepairServicesModule
   class RepairServiceOrderProcessing
     include ActiveModel::Model
-    attr_accessor :customer_id, :employee_id, :cart_id, :date, :work_order_id
+    attr_accessor :customer_id, :employee_id, :cart_id, :date, :work_order_id, :reference_number
     validates :customer_id, :date, presence: true
     def process!
       ActiveRecord::Base.transaction do
@@ -14,6 +14,8 @@ module RepairServicesModule
     def create_repair_service_order
       order  = find_work_order.spare_part_orders.create(
         date: date,
+        reference_number: reference_number,
+        search_term: find_customer.name,
         employee: find_employee)
 
       find_cart.sales_order_line_items.each do |sales_order_line_item|
