@@ -1,7 +1,7 @@
 module StoreFrontModule
   module Registries
     class StockTransferRegistry < Registry
-      has_many :received_stock_transfer_order_line_items, class_name: "StoreFrontModule::LineItems::ReceivedStockTransferOrderLineItem", foreign_key: 'registry_id'
+      has_many :stock_transfer_order_line_items, class_name: "StoreFrontModule::LineItems::StockTransferOrderLineItem", foreign_key: 'registry_id'
 
       def parse_for_records
         book = Spreadsheet.open(spreadsheet.path)
@@ -10,7 +10,7 @@ module StoreFrontModule
           sheet.each 1 do |row|
             if !row[0].nil?
               create_or_find_product(row)
-              create_or_find_received_stock_transfer_line_item(row)
+              create_or_find_line_item(row)
               find_or_create_selling_price(row)
             end
           end
@@ -18,28 +18,52 @@ module StoreFrontModule
       end
       private
       def create_or_find_product(row)
-        Product.find_or_create_by(name: row[0])
+        if product = Product.find_by(name: row[0]).present?
+          product
+        else
+          Product.find_or_create_by(name: row[0], category: find_category(row))
+        end
       end
 
-      def create_or_find_received_stock_transfer_line_item(row)
-        find_product(row).received_stock_transfers.create(
-          quantity: row[3],
-          unit_cost: row[4],
-          total_cost: row[5],
-          unit_of_measurement: find_or_create_unit_of_measurement(row),
-          bar_code: row[2],
+      def create_or_find_line_item(row)
+        StoreFrontModule::LineItems::StockTransferOrderLineItem.create!(
+          quantity: quantity(row),
+          product: find_product(row),
+          unit_cost: unit_cost(row),
+          total_cost: total_cost(row),
+          unit_of_measurement: find_unit_of_measurement(row),
+          bar_code: bar_code(row),
           registry_id: self.id
           )
       end
-
-      def find_or_create_unit_of_measurement(row)
-        find_product(row).unit_of_measurements.find_or_create_by(
-          unit_code: row[1],
-          base_measurement: row[7],
-          conversion_quantity: row[8],
-          quantity: row[9]
-          )
+      def find_category(row)
+        Category.find_or_create_by(name: row[10])
       end
+
+      def quantity(row)
+        row[1]
+      end
+
+      def unit_cost(row)
+        row[2]
+      end
+
+      def total_cost(row)
+        row[3]
+      end
+      def conversion_quantity(row)
+        row[8] || 1
+      end
+      def unit_quantity(row)
+        row[9] || 1
+      end
+      def base_measurement(row)
+        row[7] || true
+      end
+      def bar_code(row)
+        normalized_barcode(row)
+      end
+
       def find_or_create_selling_price(row)
         find_product(row).selling_prices.create(price: row[6], unit_of_measurement: find_unit_of_measurement(row))
       end
@@ -47,7 +71,18 @@ module StoreFrontModule
         Product.find_by(name: row[0])
       end
       def find_unit_of_measurement(row)
-        find_product(row).unit_of_measurements.find_by(unit_code: row[1], base_measurement: row[7], conversion_quantity: row[8], quantity: row[9])
+        find_product(row).unit_of_measurements.find_or_create_by(
+          unit_code: row[4],
+          base_measurement: base_measurement(row),
+          conversion_quantity: conversion_quantity(row),
+          quantity: unit_quantity(row))
+      end
+      def normalized_barcode(row)
+        if row[5].to_s.include?(".")
+          row[5].to_s.chop.gsub(".", "")
+        else
+          row[5].to_s
+        end
       end
     end
   end

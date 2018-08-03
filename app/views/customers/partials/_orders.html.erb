@@ -15,6 +15,7 @@
           <th>PO No.</th>
           <th>Balance</th>
           <th>Employee </th>
+          <th></th>
         </thead>
 	      <tbody>
 	        <% @customer.sales_orders.order(date: :desc).each do |order| %>
@@ -39,6 +40,9 @@
                 <% if order.has_balance? %>
                   <%= link_to 'New Payment', new_store_front_module_credit_sales_order_payment_path(order), class: "btn btn-primary btn-sm" %>
                 <% end %>
+              </td>
+              <td>
+                <%= link_to 'Edit', edit_customer_order_path(id: order.id, customer_id: @customer.id) %>
               </td>
 	           <% end %>
 	          </tr>

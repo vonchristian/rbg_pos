@@ -1,7 +1,30 @@
 wb = xlsx_package.workbook
 wb.add_worksheet(name: "Stock Transfer") do |sheet|
-  sheet.add_row ["Product Name", "Unit", "Barcode","Quantity", "Unit Cost", "Total Cost", "Selling Cost", "Base Measurement(UOM)", "Conversion(UOM)", "Quantity(UOM)"]
+  sheet.add_row [
+  "Product Name",
+  "Quantity",
+  "Unit Cost",
+  "Total Cost",
+  "UOM",
+  "Barcode",
+  "Selling Price",
+  "",
+  "",
+  "",
+  "Category"]
   @order.stock_transfer_order_line_items.each do |line_item|
-    sheet.add_row [line_item.product_name, line_item.unit_code, line_item.bar_code, line_item.quantity, line_item.unit_cost, line_item.total_cost, line_item.product.base_measurement.price, line_item.unit_of_measurement.base_measurement.to_s.downcase, line_item.unit_of_measurement.conversion_quantity, line_item.unit_of_measurement.quantity ]
+    sheet.add_row [
+    line_item.product_name,
+    line_item.quantity,
+    line_item.unit_cost,
+    line_item.total_cost,
+    line_item.unit_of_measurement.base_measurement.to_s.downcase,
+    line_item.bar_code,
+    line_item.product.base_measurement.price,
+    "",
+    "",
+    "",
+    line_item.product.category.try(:name)
+   ]
   end
 end

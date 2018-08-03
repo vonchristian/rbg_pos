@@ -15,10 +15,11 @@
               </tr>
             </thead>
             <tbody>
-              <% @registry.received_stock_transfer_order_line_items.each do |line_item| %>
+              <% @registry.stock_transfer_order_line_items.each do |line_item| %>
                 <tr>
                   <td><%= line_item.quantity %> <%= line_item.unit_code %></td>
-                  <td width="300px"><%= line_item.name.try(:titleize) %> <span class="text-muted"><%= line_item.bar_code %></span>
+                  <td width="300px"><%= line_item.name.try(:titleize) %> <span class="text-muted"><%= line_item.bar_code %></span><br>
+                    <small>Category: <%= line_item.product.try(:category).try(:name) %></small>
                   </td>
                   <td>
                     <span class="pull-right">

@@ -33,7 +33,7 @@ module StoreFrontModule
           order.stock_transfer_order_line_items << line_item
         end
         if find_registry.present?
-          find_registry.received_stock_transfer_order_line_items.each do |line_item|
+          find_registry.stock_transfer_order_line_items.each do |line_item|
             line_item.cart_id = nil
             order.stock_transfer_order_line_items << line_item
           end

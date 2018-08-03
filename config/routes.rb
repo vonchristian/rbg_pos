@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 	resources :customers do
     resources :refunds,         only: [:new, :create],                module: :customers
     resources :payments,        only: [:new, :create],                module: :customers
-    resources :orders,          only: [:index],                       module: :customers
+    resources :orders,          only: [:index, :edit, :update],                       module: :customers
     resources :repair_services, only: [:index],                       module: :customers
     resources :account,         only: [:index],                       module: :customers
     resources :other_credits,   only: [:index, :show, :new, :create], module: :customers

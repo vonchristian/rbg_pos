@@ -34,6 +34,7 @@ class OrdersController < ApplicationController
 		@order = Order.find(params[:id])
 		respond_to do |format|
 			format.html
+      format.xlsx
 			format.pdf do
 				pdf = OrderPdf.new(@order, view_context)
           send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Order.pdf"
