@@ -36,10 +36,11 @@
         <% end %>
       <% end %>
       <br>
-      <% if @products.present? %>
-        <%= render 'store/searched_products' %>
-      <% elsif @line_items.present? %>
+
+      <% if @line_items.present? %>
         <%= render 'store/searched_line_item_results' %>
+      <% elsif @products.present? %>
+        <%= render 'store/searched_products' %>
       <% end %>
       <% if @cart.sales_order_line_items.present? %>
         <% @cart.sales_order_line_items.each do |line_item| %>

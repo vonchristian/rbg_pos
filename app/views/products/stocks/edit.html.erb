@@ -11,6 +11,7 @@
 <%= simple_form_for [@product, @stock], url: :product_stock do |f| %>
   <%= f.error_notification %>
   <%= f.input :bar_code %>
+  <%= f.input :quantity %>
+
   <%= f.submit "Save Stock", class: "btn btn-primary" %>
 <% end %>
-
