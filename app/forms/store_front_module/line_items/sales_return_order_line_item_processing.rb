@@ -57,16 +57,9 @@ module StoreFrontModule
           total_cost: set_total_cost,
           product_id: product_id,
           unit_of_measurement: find_unit_of_measurement,
-          bar_code: bar_code
+          bar_code: bar_code,
+          purchase_order_line_item_id: purchase_order_line_item_id
           )
-        purchase_order_line_item = find_purchase_order_line_item
-        temp_sales_return = sales_return.referenced_sales_order_line_items.create!(
-            quantity:                 converted_quantity,
-            unit_cost:                selling_cost,
-            total_cost:               total_cost_for(purchase_order_line_item, quantity),
-            unit_of_measurement:      find_product.base_measurement,
-            product_id:               product_id,
-            purchase_order_line_item_id: purchase_order_line_item_id)
       end
 
       def quantity_for(sales, requested_quantity)

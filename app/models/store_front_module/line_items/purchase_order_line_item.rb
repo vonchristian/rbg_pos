@@ -7,7 +7,7 @@
       has_many :purchase_return_order_line_items, class_name: "StoreFrontModule::LineItems::PurchaseReturnOrderLineItem", foreign_key: 'purchase_order_line_item_id'
       has_many :internal_use_order_line_items, class_name: "StoreFrontModule::LineItems::InternalUseOrderLineItem", foreign_key: 'purchase_order_line_item_id'
       has_many :stock_transfer_line_items, class_name: "StoreFrontModule::LineItems::StockTransferOrderLineItem", foreign_key: 'purchase_order_line_item_id'
-      has_many :returned_sales_line_items, class_name: "StoreFrontModule::LineItems::ReferencedSalesOrderLineItem", foreign_key: 'purchase_order_line_item_id'
+      has_many :sales_return_order_line_items, class_name: "StoreFrontModule::LineItems::SalesReturnOrderLineItem", foreign_key: 'purchase_order_line_item_id'
       delegate :supplier, to: :purchase_order, allow_nil: true
       delegate :business_name, to: :supplier, prefix: true, allow_nil: true
       def self.processed
@@ -30,8 +30,7 @@
       end
 
       def sold_quantity
-        referenced_purchase_order_line_items.total -
-        returned_sales_line_items_quantity
+        referenced_purchase_order_line_items.total
       end
 
       def customer
@@ -43,6 +42,7 @@
       end
 
       def available_quantity
+        sales_returns_quantity +
         converted_quantity -
         sold_quantity -
         purchase_returns_quantity -
@@ -58,8 +58,8 @@
         stock_transfer_line_items.total
       end
 
-      def returned_sales_line_items_quantity
-        returned_sales_line_items.total
+      def sales_returns_quantity
+        sales_return_order_line_items.total
       end
 
       def purchase_cost

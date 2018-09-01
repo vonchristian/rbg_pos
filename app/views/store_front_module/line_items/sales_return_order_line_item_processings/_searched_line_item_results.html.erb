@@ -17,12 +17,12 @@
                         <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, autofocus: true %>
                       </div>
                       <div class="col-md-3">
-                        <%= f.input :unit_of_measurement_id, collection: line_item.product.unit_of_measurements.map{|a| [a.unit_code, a.id] }, selected: line_item.product.base_measurement %>
+                        <%= f.input :unit_of_measurement_id, collection: line_item.product.unit_of_measurements.map{|a| [a.unit_code, a.id] }, selected: line_item.product.base_measurement, label: "UOM" %>
                         <%= f.input :product_id, input_html: { value: line_item.product_id }, as: :hidden %>
                         <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
-                        <%= f.input :bar_code, input_html: { value: params[:search] }, label: "IMEI" %>
+                        <%= f.input :bar_code, input_html: { value: params[:search] }, label: "IMEI", as: :hidden %>
                         <%= f.input :purchase_order_line_item_id, input_html: { value: line_item.id }, as: :hidden %>
-                        <%= f.input :unit_cost, input_html: { value: line_item.product.try(:base_measurement).try(:price) } %>
+                        <%= f.input :unit_cost, input_html: { value: line_item.product.try(:base_measurement).try(:price) }, as: :hidden %>
                       </div>
 
                       <div class="col-md-2">
@@ -38,7 +38,7 @@
                       <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
 
 
-
+<hr>
 
               <% end %>
 <% end %>

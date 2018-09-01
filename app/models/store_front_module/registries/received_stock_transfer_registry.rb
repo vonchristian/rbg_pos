@@ -76,9 +76,9 @@ module StoreFrontModule
       def unit_of_measurement(row)
         find_product(row).unit_of_measurements.find_or_create_by(
           unit_code: row[4],
-          base_measurement: base_measurement(row),
-          conversion_quantity: conversion_quantity(row),
-          quantity: unit_quantity(row)
+          base_measurement: true,
+          conversion_quantity: 1,
+          quantity: 1
           )
       end
       def find_or_create_selling_price(row)
