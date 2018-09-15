@@ -18,7 +18,7 @@ wb.add_worksheet(name: "Stock Transfer") do |sheet|
     line_item.quantity,
     line_item.unit_cost,
     line_item.total_cost,
-    line_item.unit_of_measurement.base_measurement.to_s.downcase,
+    line_item.unit_of_measurement.try(:unit_code),
     line_item.bar_code,
     line_item.product.base_measurement.price,
     "",

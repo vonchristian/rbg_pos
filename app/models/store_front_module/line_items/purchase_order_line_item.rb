@@ -11,11 +11,10 @@
       delegate :supplier, to: :purchase_order, allow_nil: true
       delegate :business_name, to: :supplier, prefix: true, allow_nil: true
       def self.processed
-        select{|a| a.processed? }
+        where.not(order_id: nil)
       end
       def processed?
-        purchase_order
-        # && purchase_order.processed?
+        order_id.present?
       end
 
       def self.available

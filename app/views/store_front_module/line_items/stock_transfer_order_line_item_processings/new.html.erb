@@ -39,10 +39,10 @@
         <br>
         <table class="table table-responsive">
           <tbody>
-            <% if @products.present? %>
-              <%= render 'store_front_module/line_items/stock_transfer_order_line_item_processings/searched_product_results' %>
-            <% elsif @line_items.present? %>
+            <% if @line_items.present? %>
               <%= render 'store_front_module/line_items/stock_transfer_order_line_item_processings/searched_line_item_results' %>
+            <% elsif @products.present? %>
+              <%= render 'store_front_module/line_items/stock_transfer_order_line_item_processings/searched_product_results' %>
             <% end %>
           </tbody>
         </table>

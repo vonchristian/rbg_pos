@@ -31,6 +31,7 @@ module StoreFrontModule
             unit_cost:                purchase_cost,
             total_cost:               set_total_cost,
             unit_of_measurement:      find_unit_of_measurement,
+            bar_code:                 bar_code,
             product_id:               product_id)
         requested_quantity = converted_quantity
         find_product.purchases.order(created_at: :asc).available.each do |purchase|

@@ -91,28 +91,22 @@ class Product < ApplicationRecord
     end
   end
 
-  def transferred_stocks
-    orders.stock_transfers
-  end
+
 
 	def in_stock
-		((delivered_items_count + returned_items_count) - (sold_items_count))
+		balance
 	end
 	def sold_items_count
-		sold_items.sum(:quantity)
+		sales_balance
 	end
 	def delivered_items_count
-		stocks.sum(:quantity)
+		purchases_balance
 	end
 	def transferred_stocks_count
-    if transferred_stocks.any?
-		  transferred_stocks.sum(&:total_quantity)
-    else
-      0
-    end
+    stock_transfers_balance
 	end
 	def returned_items_count
-		returned_items.sum(:quantity)
+		sales_returns_balance
 	end
 
 

@@ -23,10 +23,10 @@
          </div>
        <% end %>
        <br>
-      <% if @products.present? %>
-        <%= render 'repair_services_module/repair_service_order_line_item_processings/searched_product_results' %>
-      <% elsif @line_items.present? %>
+      <% if @line_items.present? %>
         <%= render 'repair_services_module/repair_service_order_line_item_processings/searched_line_item_results' %>
+      <% elsif @products.present? %>
+        <%= render 'repair_services_module/repair_service_order_line_item_processings/searched_product_results' %>
       <% end %>
       <% if @sales_order_line_items.present? %>
        <div class="table table-responsive">
