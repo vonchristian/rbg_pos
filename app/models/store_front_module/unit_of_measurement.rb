@@ -13,7 +13,7 @@ module StoreFrontModule
     end
     def conversion_multiplier
       if base_measurement?
-        quantity
+        quantity || 1
       else
         conversion_quantity || 1
       end

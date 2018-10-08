@@ -17,7 +17,7 @@
                         <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, autofocus: true %>
                       </div>
                       <div class="col-md-3">
-                        <%= f.input :unit_of_measurement_id, input_html: { value: line_item.unit_of_measurement_id}, as: :hidden %>
+                        <%= f.input :unit_of_measurement_id, input_html: { value: line_item.unit_of_measurement_id }, as: :hidden %>
                         <%= f.input :product_id, input_html: { value: line_item.product_id }, as: :hidden %>
                         <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
                         <%= f.input :bar_code, input_html: { value: params[:search] } %>

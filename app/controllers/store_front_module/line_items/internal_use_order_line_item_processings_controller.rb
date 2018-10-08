@@ -4,7 +4,7 @@ module StoreFrontModule
       def new
         if params[:search].present?
           @products = Product.text_search(params[:search]).all
-          @line_items = StoreFrontModule::LineItems::PurchaseOrderLineItem.text_search(params[:search])
+          @line_items = StoreFrontModule::LineItems::PurchaseOrderLineItem.processed.text_search(params[:search])
         end
         @cart = current_cart
         @internal_use_order_line_item = StoreFrontModule::LineItems::InternalUseOrderLineItemProcessing.new

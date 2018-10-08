@@ -60,7 +60,7 @@ module StoreFrontModule
         transfer.referenced_purchase_order_line_items.create!(
             quantity:                 converted_quantity,
             unit_cost:                purchase.purchase_cost,
-            total_cost:               total_cost_for(purchase, quantity),
+          total_cost:               total_cost_for(purchase, quantity),
             unit_of_measurement:      find_product.base_measurement,
             product_id:               product_id,
             purchase_order_line_item_id: purchase.id)
