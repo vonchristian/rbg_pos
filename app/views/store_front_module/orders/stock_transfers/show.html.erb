@@ -12,8 +12,10 @@
       </div>
       <hr>
       <div class="box-body">
-         <span class="pull-right"><%= link_to 'Print(Excel)', store_front_module_stock_transfer_path(@order, format: 'xlsx'), class: "btn btn-default btn-sm" %></span>
-         <span class="pull-right"><%= link_to 'Print(PDF)', order_path(@order, format: 'pdf'), class: "btn btn-default btn-sm" %></span>
+         <% if current_user.proprietor? %>
+          <span class="pull-right"><%= link_to 'Print(Excel)', store_front_module_stock_transfer_path(@order, format: 'xlsx'), class: "btn btn-default btn-sm" %></span>
+          <span class="pull-right"><%= link_to 'Print(PDF)', order_path(@order, format: 'pdf'), class: "btn btn-default btn-sm" %></span>
+        <% end %>
         <i class="icon-calendar"></i> <%= @order.date.strftime("%B %e, %Y") %><br>
         <p class="text-black"> Reference Number: <%= @order.reference_number %></p>
 
@@ -49,4 +51,3 @@
 
           <%= link_to 'Delete Stock Transfer', store_front_module_stock_transfer_path(@order), method: :delete, data: { confirm: "Are you sure you want to delete this Stock Transfer?" }, class: "btn btn-danger btn-xs" %>
         <% end %>
-

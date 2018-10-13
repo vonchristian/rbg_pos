@@ -74,16 +74,19 @@ module StoreFrontModule
       end
 
       def unit_of_measurement(row)
-        find_product(row).unit_of_measurements.find_or_create_by(
+        StoreFrontModule::UnitOfMeasurement.find_or_create_by(
           unit_code: row[4],
+          product: find_product(row),
           base_measurement: base_measurement(row),
           conversion_quantity: conversion_quantity(row),
           quantity: unit_quantity(row)
           )
       end
+      
       def find_or_create_selling_price(row)
-        find_product(row).selling_prices.create(price: row[6], unit_of_measurement: find_unit_of_measurement(row))
+        StoreFrontModule::SellingPrice.create(price: row[6], product: find_product(row), unit_of_measurement: unit_of_measurement(row))
       end
+
       def find_unit_of_measurement(row)
         find_product(row).unit_of_measurements.find_by(unit_code: row[4], base_measurement: base_measurement(row),  conversion_quantity: conversion_quantity(row),
           quantity: unit_quantity(row))
