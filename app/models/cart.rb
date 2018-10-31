@@ -12,4 +12,7 @@ class Cart < ApplicationRecord
 	def total_cost
 		line_items.sum(:total_cost)
 	end
+  def cost_of_goods_sold
+    sales_order_line_items.map{|a| a.cost_of_goods_sold }.sum
+  end
 end

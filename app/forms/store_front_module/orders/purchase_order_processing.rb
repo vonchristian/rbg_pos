@@ -21,11 +21,13 @@ module StoreFrontModule
           search_term: find_supplier.business_name,
           employee: find_employee)
         find_cart.purchase_order_line_items.each do |line_item|
+          line_item.update_attributes!(date: date)
           line_item.cart_id = nil
           order.purchase_order_line_items << line_item
         end
         if find_registry.present?
           find_registry.purchase_order_line_items.each do |line_item|
+            line_item.update_attributes!(date: date)
             line_item.cart_id = nil
             order.purchase_order_line_items << line_item
           end

@@ -1,0 +1,44 @@
+<div class="box box-solid">
+  <div class="box-body">
+    <div class="row">
+      <div class="col-md-3">
+        <b><%= order.try(:customer_name) %></b><br>
+        <i class="fa fa-clock-o"></i> <%= order.date.strftime("%B %e, %Y") %>
+        <i class="fa fa-user-circle"></i> <%= order.employee_full_name %>
+      </div>
+      <div class="col-md-6 text-muted">
+        <% if order.line_items.present? %>
+          <% order.line_items.each do |line_item| %>
+            <div class="row">
+              <div class="col-md-1">
+                <%= line_item.quantity %>
+              </div>
+              <div class="col-md-8">
+                <%= line_item.name %><br>
+                <small class="text-muted"><i><%= line_item.bar_code %></i></small>
+              </div>
+              <div class="col-md-3">
+                <%= number_to_currency line_item.total_cost %>
+              </div>
+            </div>
+            <br>
+          <% end %>
+        <% else %>
+           <div class="row">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-7">
+              <%= order.description %>
+            </div>
+            <div class="col-md-3">
+              <%= number_to_currency order.cash_payment_cash_tendered %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="col-md-3 text-muted">
+        <b><%= number_to_currency order.total_cost %></b>
+      </div>
+    </div>
+  </div>
+</div>

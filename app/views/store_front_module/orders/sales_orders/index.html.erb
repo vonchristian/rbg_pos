@@ -1,3 +1,4 @@
+
 <%= line_chart StoreFrontModule::Orders::SalesOrder.group_by_month(:created_at).count, curve: false %>
 <p>Sales for Today (<%= Time.zone.now.strftime("%b %e, %Y") %>)</p>
 <div class="row">
@@ -48,65 +49,16 @@
             </span>
           </div>
         <% end %>
+      </div>
+    </div>
+    <% @orders.each do |order| %>
+    <%= link_to store_front_module_sales_order_path(order) do %>
+      <%= render 'store_front_module/orders/partials/header', order: order %>
+    <% end %>
+    <% end %>
 
-
-        <hr>
-        <% @orders.each do |order| %>
-          <%= link_to store_front_module_sales_order_path(order) do %>
-            <div class="row text-muted">
-              <div class="col-md-1">
-                <% if order.commercial_document.present? && order.commercial_document.avatar.present? %>
-                  <%= image_tag(order.customer.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %>
-                <% end %>
-              </div>
-              <div class="col-md-3">
-                <b class="text-primary"><%= order.customer_name %></b><br>
-                <small class="text-muted"><i class="fa fa-clock-o"></i> <%= order.date.strftime("%b %e, %Y %I:%M %p") %></small>
-
-              </div>
-              <div class="col-md-4">
-                <% if order.line_items.present? %>
-                  <% order.line_items.each do |line_item| %>
-                    <div class="row">
-                      <div class="col-md-1">
-                        <%= line_item.quantity %>
-                      </div>
-                      <div class="col-md-8">
-                        <%= line_item.name %><br>
-                        <small class="text-muted"><i><%= line_item.bar_code %></i></small>
-                      </div>
-                      <div class="col-md-3">
-                        <%= number_to_currency line_item.total_cost %>
-                      </div>
-                    </div>
-                    <br>
-                  <% end %>
-                <% else %>
-                   <div class="row">
-                    <div class="col-md-1">
-                    </div>
-                    <div class="col-md-7">
-                      <%= order.description %>
-                    </div>
-                    <div class="col-md-3">
-                      <%= number_to_currency order.cash_payment_cash_tendered %>
-                    </div>
-                  </div>
-                <% end %>
-              </div>
-
-              <div class="col-md-3">
-                <b><small><%= order.employee_full_name %></small></b><br>
-                <h4><%= number_to_currency order.total_cost %></h4>
-              </div>
-
-            </div>
-            <hr>
-          <% end %>
-        <% end %>
         <center><%= will_paginate @orders %></center>
       </div>
     </div>
   </div>
 </div>
-

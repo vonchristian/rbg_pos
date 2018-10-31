@@ -16,10 +16,6 @@ class LineItem < ApplicationRecord
   def self.processed
     where.not(order_id: nil)
   end
-  def date
-    order.try(:date) || self.created_at
-  end
-
 
   def product_name
     product.name

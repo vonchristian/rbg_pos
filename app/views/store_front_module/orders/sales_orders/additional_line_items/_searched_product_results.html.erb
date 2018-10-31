@@ -18,7 +18,7 @@
   </div>
   <br>
   <% if product.available_quantity > 0 %>
-    <%= simple_form_for @line_item, url: :store_front_module_customer_credit_sales_order_line_item_processings do |f| %>
+    <%= simple_form_for @sales_order_line_item, url: :store_front_module_sales_order_additional_line_items do |f| %>
       <div class="row">
         <div class="col-md-3">
           <%= f.input :quantity, as: :string, label: false, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, autofocus: true %>
@@ -33,16 +33,14 @@
         </div>
         <div class="col-md-2">
           <%= button_tag type: 'submit', class: "btn btn-success btn-sm" do %>
-            <i class="fa fa-shopping-basket" aria-hidden="true"></i> Add to Cart
+            <i class="fa fa-shopping-basket" aria-hidden="true"></i> Add
           <% end %>
         </div>
       </div>
-      <hr>
     <% end %>
   <% end %>
   <hr>
 <% end %>
-<%= will_paginate @products %>
 
 <script type="text/javascript">
   $(document).ready(function() {

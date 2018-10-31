@@ -38,6 +38,7 @@ module StoreFrontModule
           order.create_cash_payment(cash_tendered: cash_tendered, cash_change: order_change, discount_amount: discount_amount)
 
           find_cart.sales_order_line_items.each do |sales_order_line_item|
+            sales_order_line_item.update_attributes(date: date)
             sales_order_line_item.cart_id = nil
             order.sales_order_line_items << sales_order_line_item
 

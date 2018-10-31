@@ -1,4 +1,3 @@
-
 <div class="row">
   <div  class="col-md-6 col-md-offset-3">
     <div class="box box-solid">
@@ -13,11 +12,15 @@
       <hr>
       <div class="box-body">
          <span class="pull-right"><%= link_to 'Print(PDF)', order_path(@order, format: 'pdf'), class: "btn btn-default btn-sm" %></span>
+
         <i class="icon-calendar"></i> <%= @order.date.strftime("%B %e, %Y") %><br>
         <p class="text-black"> Reference Number: <%= @order.reference_number %></p>
         <p class="text-black"> Description: <%= @order.description %></p>
 
         <hr>
+        <%= link_to 'Add Additional Items', new_store_front_module_sales_order_additional_line_item_path(@order), class: "btn btn-danger" %>
+        <br>
+        <br>
               <% @order.line_items.each do |line_item| %>
                 <div class="row">
                   <div class="col-md-2">
@@ -31,6 +34,7 @@
                     <span class="pull-right"><%= number_to_currency line_item.total_cost %></span>
                   </div>
                   <div class="col-md-3">
+                    <%= line_item.date.try(:strftime, "%B %e, %Y") %>
 
                   </div>
                 </div>
@@ -64,5 +68,3 @@
 
           <%= link_to 'Delete Order', store_front_module_sales_order_path(@order), method: :delete, data: { confirm: "Are you sure you want to delete this Sales Order?" }, class: "btn btn-danger btn-xs" %>
         <% end %>
-
-

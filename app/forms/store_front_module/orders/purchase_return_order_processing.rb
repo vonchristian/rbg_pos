@@ -19,6 +19,7 @@ module StoreFrontModule
           search_term: find_supplier.business_name,
           description: description)
         find_cart.purchase_return_order_line_items.each do |line_item|
+          line_item.update_attributes!(date: date)
           line_item.cart_id = nil
           order.purchase_return_order_line_items << line_item
         end

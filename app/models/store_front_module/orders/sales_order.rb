@@ -1,6 +1,6 @@
 module StoreFrontModule
   module Orders
-    class SalesOrder < Order
+    class SalesOrder < Order 
       has_one :cash_payment, as: :cash_paymentable, class_name: "StoreFrontModule::CashPayment", dependent: :destroy
       has_many :sales_order_line_items, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem", foreign_key: 'order_id', dependent: :destroy
 

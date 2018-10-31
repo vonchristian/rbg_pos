@@ -1,0 +1,135 @@
+<div class="row">
+  <div class="col-md-7">
+    <div class="box box-default">
+      <div class="box-header with-border">
+        <div class="row">
+          <div class="col-md-6">
+            <h4 class="title"> RBG Computers, Cellshop & Enterprises </h4>
+          </div>
+        </div>
+      </div>
+      <div class="box-body">
+      <% if params[:search].present? %>
+        <%=form_tag new_store_front_module_sales_order_additional_line_item_path(@sales_order), method: :get do %>
+           <div class="input-group">
+             <%= text_field_tag :search, params[:search], id: 'store-search-form', class: "search-query form-control border-input", placeholder: "Search for items", type: "search" %>
+             <span class="input-group-btn">
+               <%= button_tag(type: 'submit', class: "btn btn-dedault", id: 'store-search-button') do %>
+                 <i class="icon-magnifier"></i>
+               <% end %>
+             </span>
+           </div>
+         <% end %>
+      <% else %>
+        <%=form_tag new_store_front_module_sales_order_additional_line_item_path(@sales_order), method: :get do %>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], id: "store-search-form", class: "search-query form-control border-input", autofocus: true, placeholder: "Search for items", type: "search" %>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', class: "btn btn-dedault", id: 'store-search-button') do %>
+                <i class="icon-magnifier"></i>
+              <% end %>
+            </span>
+          </div>
+        <% end %>
+      <% end %>
+      <br>
+
+      <% if @line_items.present? %>
+        <%= render 'store_front_module/orders/sales_orders/additional_line_items/searched_line_item_results' %>
+      <% elsif @products.present? %>
+        <%= render 'store_front_module/orders/sales_orders/additional_line_items/searched_product_results' %>
+      <% end %>
+
+    </div>
+  </div>
+</div>
+        <div class="col-md-5">
+          <div class="box box-default">
+            <div class="box-header">
+              <div class="row">
+                <div class="col-md-9">
+                  <h4 class="title"><span class="icon-basket-loaded"></span> Sales Order Details</h4>
+                </div>
+
+              </div>
+            </div>
+            <div class="box-body">
+              <% @sales_order.line_items.each do |line_item| %>
+                <div class="row">
+                  <div class="col-md-2">
+                    <%= line_item.quantity %> <%= line_item.try(:unit_code) %>
+                  </div>
+                  <div class="col-md-6">
+                    <%=line_item.product_name %><br>
+                    <small class="text-muted"><%= line_item.bar_code %></small>
+                  </div>
+                  <div class="col-md-2">
+                    <span class="pull-right"><%= number_to_currency line_item.total_cost %></span>
+                  </div>
+
+                </div>
+                <hr>
+                <% end %>
+                <p>ADDITIONAL ITEMS </p>
+                <% if @cart.sales_order_line_items.present? %>
+                  <% @cart.sales_order_line_items.each do |line_item| %>
+                    <div class="row">
+                      <div class="col-md-2">
+                        <center><%= line_item.quantity %></center>
+                      </div>
+                      <div class="col-md-5">
+                        <%= line_item.name %><br>
+                        <span class="text-muted">
+                          <% if line_item.bar_code.present? %>
+                            <i class="fa fa-barcode"></i> <%= line_item.bar_code.truncate(30) %> &nbsp;
+                          <% end %>
+                          <i class="fa fa-tags"></i> <%= number_to_currency line_item.unit_cost %>
+                        </span>
+                      </div>
+                      <div class="col-md-4">
+                        <span class="pull-right">
+                          <%= number_to_currency line_item.total_cost %> &nbsp;
+                          <% if !line_item.processed? %>
+                            <%= link_to store_front_module_sales_order_additional_line_item_path(id: line_item.id), method: :delete do %>
+                              <span class="fa fa-times text-danger" data-toggle="tooltip" title="Remove Item"></span>
+                            <% end %>
+                          <% end %>
+                        </span>
+                      </div>
+                    </div>
+                    <hr />
+                  <% end %>
+                  <div class="row">
+                    <div class="col-md-2">
+                    </div>
+                    <div class="col-md-6">
+                      <h4><b>TOTAL</b> </h4>
+                    </div>
+                    <div class="col-md-3">
+                      <span class="pull-right">
+                        <h4><b><%= number_to_currency @cart.sales_order_line_items.sum(&:total_cost) %></b></h4>
+                      </span>
+                    </div>
+                  </div>
+                <% end %>
+              <br>
+              <%= simple_form_for @additional_line_item_processing, url: :store_front_module_sales_order_additional_line_item_processings do |f| %>
+                <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+                <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
+                <%= f.input :sales_order_id, input_html: { value: @sales_order.id }, as: :hidden %>
+                <%= f.submit "Save Additional Items", class: "btn btn-primary btn-lg btn-block" %>
+              <% end %>
+
+            </div>
+
+      </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#store_front_module_orders_sales_order_processing_customer_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>
