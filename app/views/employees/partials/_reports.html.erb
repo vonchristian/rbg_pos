@@ -39,6 +39,7 @@
                 </div>
                 <div class="col-md-3">
                   <div clasps="form-group">
+                    <%= hidden_field_tag :user_id, @employee.id %>
                     <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
                   </div>
                 </div>

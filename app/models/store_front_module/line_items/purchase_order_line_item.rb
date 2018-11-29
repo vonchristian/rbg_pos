@@ -24,6 +24,11 @@
         referenced_purchase_order_line_items &&  out_of_stock?
       end
 
+      def date_sold
+        referenced_purchase_order_line_items.last.try(:sales_order_line_item).try(:order).try(:date)
+
+      end
+
       def out_of_stock?
         available_quantity <= 0
       end

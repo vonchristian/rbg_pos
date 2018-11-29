@@ -87,7 +87,7 @@ module StoreFrontModule
           product:             find_product(row),
           base_measurement:    base_measurement(row),
           conversion_quantity: conversion_quantity(row),
-          quantity:            unit_quantity(row)
+          quantity:            1
           )
       end
 
@@ -100,7 +100,7 @@ module StoreFrontModule
 
       def find_unit_of_measurement(row)
         find_product(row).unit_of_measurements.find_by(
-          unit_code:           unit_code(row), 
+          unit_code:           unit_code(row),
           base_measurement:    base_measurement(row),
           conversion_quantity: conversion_quantity(row),
           quantity:            unit_quantity(row))

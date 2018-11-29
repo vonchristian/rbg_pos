@@ -17,9 +17,21 @@ module AccountingModule
 
     validates :type, presence: true
     validates :name, :account_code, presence: true, uniqueness: true
+
     def self.cash_on_hand_accounts
-     AccountingModule::Account.find_by(name: 'Cash and Cash Equivalents').sub_accounts
+      accounts = User.pluck(:cash_on_hand_account_id)
+     where(id: accounts)
     end
+    def self.debit_entries
+      ids = AccountingModule::DebitAmount.for_account(account_id: self.pluck(:id)).pluck(:entry_id)
+      AccountingModule::Entry.where(id: ids)
+    end
+
+    def self.credit_entries
+      ids = AccountingModule::CreditAmount.for_account(account_id: self.pluck(:id)).pluck(:entry_id)
+      AccountingModule::Entry.where(id: ids)
+    end
+
     def self.active
       where(active: true)
     end

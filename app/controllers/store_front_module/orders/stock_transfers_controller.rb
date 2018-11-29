@@ -8,7 +8,9 @@ module StoreFrontModule
         @order = StoreFrontModule::Orders::StockTransferOrder.find(params[:id])
         respond_to do |format|
           format.html
-          format.xlsx
+          if current_user.proprietor?
+            format.xlsx
+          end
         end
       end
       def edit

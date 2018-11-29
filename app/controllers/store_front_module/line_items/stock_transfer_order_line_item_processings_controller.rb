@@ -10,6 +10,7 @@ module StoreFrontModule
         @stock_transfer_order_line_item = StoreFrontModule::LineItems::StockTransferOrderLineItemProcessing.new
         @stock_transfer_order = StoreFrontModule::Orders::StockTransferOrderProcessing.new
         @stock_transfer_order_line_items = @cart.stock_transfer_order_line_items.order(created_at: :desc)
+        authorize [:store_front_module, :orders, :stock_transfer]
       end
 
       def create

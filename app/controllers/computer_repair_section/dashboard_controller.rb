@@ -1,6 +1,6 @@
-module ComputerRepairSection 
+module ComputerRepairSection
   class DashboardController < ApplicationController
-    def index 
+    def index
       @from_date = params[:from_date] || DateTime.now.beginning_of_week
       @to_date = params[:to_date] || DateTime.now.end_of_week
       if params[:technician].present?
@@ -13,6 +13,6 @@ module ComputerRepairSection
       else
         @work_orders = WorkOrder.from(from_date: @from_date, to_date: @to_date).paginate(page: params[:page], per_page: 20)
       end
-    end 
-  end 
-end 
+    end
+  end
+end

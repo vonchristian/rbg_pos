@@ -52,46 +52,49 @@
     <div class="row">
       <div class="col-md-3 border-right">
         <div class="box box-solid">
-        <div class="box-header">
-          <div class="row">
-            <div class="col-md-8">
-              <h4 class="title condensed-text"><span class="label label-default"><%= WorkOrder.received.count %></span> &nbsp; RECEIVED </h4>
-            </div>
-            <div class="col-md-4">
-              <%= link_to new_computer_repair_section_work_order_path do %>
-                <span class="text-primary pull-right" data-toggle="tooltip" title="New Work Order" data-placement="top"><i class="fa fa-plus-circle fa-2x"></i></span>
-              <% end %>
+          <div class="box-header">
+            <div class="row">
+              <div class="col-md-8">
+                <h4 class="title condensed-text"><span class="label label-default"><%= WorkOrder.received.count %></span> &nbsp; RECEIVED </h4>
+              </div>
+              <div class="col-md-4">
+                <%= link_to new_computer_repair_section_work_order_path do %>
+                  <span class="text-primary pull-right" data-toggle="tooltip" title="New Work Order" data-placement="top"><i class="fa fa-plus-circle fa-2x"></i></span>
+                <% end %>
+              </div>
             </div>
           </div>
         </div>
         <hr>
-        <div class="box-body">
           <% @work_orders.received.each do |work_order| %>
-          <%=link_to computer_repair_section_work_order_path(work_order) do %>
-           <div class="row">
-              <div class="col-md-2">
-                <span data-toggle="tooltip" title="<%=work_order.technicians.first.first_name %>" data-placement="top">
-                  <%= image_tag(work_order.technicians.first.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %>
-                </span>
+            <%=link_to computer_repair_section_work_order_path(work_order) do %>
+              <div class="box box-solid">
+                <div class="box-body">
+                  <div class="row">
+                    <div class="col-md-2">
+                      <span data-toggle="tooltip" title="<%=work_order.technicians.first.first_name %>" data-placement="top">
+                        <%= image_tag(work_order.technicians.first.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %>
+                      </span>
+                    </div>
+                    <div class="col-md-7">
+                      <span class="text-black condensed-text"><b><%= work_order.product_unit.description.try(:upcase) %></b></span><br>
+                      <span class='text-danger'><%= work_order.reported_problem %></span><br>
+                      <span class="text-black"> <%= work_order.customer_full_name %></span><br>
+                      <span class='text-black'><small><%= work_order.created_at.strftime("%b %e, %l:%M %p") %></small></span><br>
+                      <small>CI #: <%= work_order.charge_invoice_number %></small>
+                    </div>
+                    <div class="col-md-2">
+                      <small class="text-black"><b><%=work_order.formatted_service_number %></b></small>
+                    </div>
+                  </div>
+                  <br>
+                </div>
               </div>
-              <div class="col-md-7">
-                <span class="text-black condensed-text"><b><%= work_order.product_unit.description.try(:upcase) %></b></span><br>
-                <span class='text-danger'><%= work_order.reported_problem %></span><br>
-                <span class="text-black"> <%= work_order.customer_full_name %></span><br>
-                <span class='text-black'><small><%= work_order.created_at.strftime("%b %e, %l:%M %p") %></small></span><br>
-                <small>CI #: <%= work_order.charge_invoice_number %></small>
-              </div>
-              <div class="col-md-2">
-                <small class="text-black"><b><%=work_order.formatted_service_number %></b></small>
-              </div>
-            </div>
-            <br>
-          <% end %>
+            <% end %>
           <% end %>
           <center><%=will_paginate @work_orders,  :params => {:controller => "computer_repair_section/dashboard", action: "index" } %></center>
         </div>
-      </div>
-    </div>
+
       <div class="col-md-3 border-left">
         <div class="box box-solid">
         <div class="box-header">
@@ -183,7 +186,7 @@
                   <br>
                 <% end %>
               <% end %>
-              <center><%=will_paginate @work_orders,  :params => {:controller => "computer_repair_section/dashboard", action: "index" } %></center>
+              <center><%=will_paginate @work_orders,  renderer: WillPaginateHelper::RepairDashboardLinkRenderer, format: :html  %></center>
             </div>
           </div>
         </div>

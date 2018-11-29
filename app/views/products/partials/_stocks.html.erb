@@ -4,7 +4,7 @@
                                     <thead>
 
                                       <th>Product</th>
-                                      <th>Date </th>
+                                      <th>Date Purchased </th>
                                       <th>Quantity</th>
                                       <th>Unit Cost</th>
                                       <th>Total Cost</th>
@@ -15,16 +15,18 @@
                                       <% @stocks.each do |stock| %>
                                       <tr>
                                       <td><%=stock.name %><br>
-                                      <small><%= stock.bar_code %><br>
+                                      <small><%= stock.bar_code %></small><br>
                                         <% if stock.sold? %>
-                                          <span class="label bg-green"> Sold </span>
-                                          <p>Customer</p>
+                                          <span class="label bg-green"> Sold </span><br>
+                                          Customer:
                                           <%= stock.customer %>
-
+                                          <br>
+                                          Date Sold:  <%= stock.try(:date_sold).try(:strftime, ("%B %e, %Y")) %>
                                         <% end %>
+                                      </td>
 
-                                      </small></td>
                                       <td><%= stock.try(:date).try(:strftime, ("%B %e, %Y")) %></td>
+
                                       <td><%= stock.quantity %></td>
                                        <% if current_user.proprietor? %>
                                           <td><%= number_to_currency stock.unit_cost %></td>

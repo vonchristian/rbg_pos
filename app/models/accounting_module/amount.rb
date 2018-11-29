@@ -10,6 +10,11 @@ module AccountingModule
     delegate :recorder, :entry_date, :description, to: :entry
     delegate :name, to: :commercial_document, prefix: true, allow_nil: true
     delegate :name, to: :recorder, prefix: true, allow_nil: true
+
+    def self.for_account(args={})
+      where(account_id: args[:account_id])
+    end
+
     def self.total
       sum(&:amount)
     end

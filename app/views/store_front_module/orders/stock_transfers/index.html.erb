@@ -9,7 +9,9 @@
         <div class="col-md-5">
         </div>
         <div class="col-md-3">
-          <%= link_to 'New Stock Transfer', new_store_front_module_stock_transfer_order_line_item_processing_path, class: "btn btn-primary pull-right" %>
+          <% if policy([:store_front_module, :orders, :stock_transfer]).new? %>
+            <%= link_to 'New Stock Transfer', new_store_front_module_stock_transfer_order_line_item_processing_path, class: "btn btn-primary pull-right" %>
+          <% end %>
         </div>
       </div>
     </div>
@@ -60,5 +62,3 @@
     </div>
   </div>
 </div>
-
-
