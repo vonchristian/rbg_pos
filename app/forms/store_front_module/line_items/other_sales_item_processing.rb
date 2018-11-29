@@ -3,6 +3,8 @@ module StoreFrontModule
     class OtherSalesItemProcessing
       include ActiveModel::Model
       attr_accessor :amount, :description, :date, :reference_number, :cart_id
+      validates :amount, :description, :date, :reference_number, presence: true
+      validates :amount, presence: true
 
       def process!
         ActiveRecord::Base.transaction do

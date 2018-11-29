@@ -51,6 +51,19 @@
             </h4>
           </div>
         </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-6">
+            <h4>Balance</h4>
+          </div>
+          <div class="col-md-6">
+            <h4>
+              <span class="pull-right">
+                <%= number_to_currency @order.balance %>
+              </span>
+            </h4>
+          </div>
+        </div>
       </div>
       <div class="box-body">
         <div class="row">
