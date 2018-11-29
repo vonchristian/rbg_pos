@@ -1,21 +1,24 @@
 module StoreFrontModule
   module Orders
-    class SalesOrder < Order 
+    class SalesOrder < Order
       has_one :cash_payment, as: :cash_paymentable, class_name: "StoreFrontModule::CashPayment", dependent: :destroy
       has_many :sales_order_line_items, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem", foreign_key: 'order_id', dependent: :destroy
-
+      has_many :other_sales_line_items, foreign_key: 'order_id'
       delegate :name, to: :customer, prefix: true, allow_nil: true
       delegate :discount_amount, to: :cash_payment, allow_nil: true
       before_destroy :delete_entry
+
       def credit?
         balance.present?
       end
+
       def has_balance?
         balance > 0
       end
       def balance
         StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.balance(commercial_document_id: self.id, commercial_document_type: "Order")
       end
+
       def accounts_receivable_total
         StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.debits_balance(commercial_document_id: self.id, commercial_document_type: "Order")
       end
@@ -23,7 +26,8 @@ module StoreFrontModule
         StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.credits_balance(commercial_document_id: self.id, commercial_document_type: "Order")
       end
       def payment_entries
-        StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.credit_amounts.where(commercial_document: self)
+        ids = StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.credit_amounts.where(commercial_document: self).pluck(:entry_id)
+        AccountingModule::Entry.where(id: ids)
       end
 
 
@@ -37,10 +41,15 @@ module StoreFrontModule
         sales_order_line_items.cost_of_goods_sold
       end
       def total_cost
+        total_line_items_cost +
+        other_sales_line_items.total_cost
+      end
+
+      def total_line_items_cost
         if line_items.present?
           sales_order_line_items.sum(&:total_cost)
         else
-          cash_payment_cash_tendered
+          0
         end
       end
       def income

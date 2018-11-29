@@ -19,6 +19,7 @@
 
         <hr>
         <%= link_to 'Add Additional Items', new_store_front_module_sales_order_additional_line_item_path(@order), class: "btn btn-danger" %>
+        <%= link_to "Add Other Sales Item", new_store_front_module_sales_order_additional_other_sales_item_path(@order), class: "btn btn-danger" %>
         <br>
         <br>
               <% @order.line_items.each do |line_item| %>
@@ -39,6 +40,25 @@
                   </div>
                 </div>
                 <hr>
+                <% end %>
+                <h4>Other Items </h4>
+                <% @order.other_sales_line_items.each do |line_item| %>
+                  <div class="row">
+                    <div class="col-md-2">
+                    </div>
+                    <div class="col-md-4">
+                      <%= line_item.description %><br>
+                      <small class="text-muted">#<%= line_item.reference_number %></small>
+                    </div>
+                    <div class="col-md-2">
+                      <%= number_to_currency line_item.amount %>
+                    </div>
+                    <div class="col-md-3">
+                      <%= line_item.date.try(:strftime, "%B %e, %Y") %>
+
+                    </div>
+                  </div>
+                  <br>
                 <% end %>
                 <% if @order.credit? %>
                   <h4>Payments History</h4><br>

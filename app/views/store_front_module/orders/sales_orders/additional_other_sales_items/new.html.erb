@@ -1,0 +1,95 @@
+<div id="customer-modal" class="modal fade"></div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="box box-solid">
+      <div class="box-header bg-gray">
+        <center>
+          <% if @sales_order.commercial_document.avatar.present? %>
+          <%= image_tag(@sales_order.commercial_document.avatar.url(:medium), class: "img-circle", height: 60, width: 60) %><br><br>
+          <% end %>
+        <h3 class="box-title"><%= @sales_order.customer.try(:full_name).try(:upcase) %></h3>
+        </center>
+      </div>
+      <div class="box-body">
+        <i class="icon-calendar"></i> <%= @sales_order.date.strftime("%B %e, %Y") %><br>
+        <p class="text-black"> Reference Number: <%= @sales_order.reference_number %></p>
+        <p class="text-black"> Description: <%= @sales_order.description %></p>
+
+        <hr>
+
+        <% @sales_order.line_items.each do |line_item| %>
+          <div class="row">
+            <div class="col-md-2">
+              <%= line_item.quantity %> <%= line_item.try(:unit_code) %>
+            </div>
+            <div class="col-md-4">
+              <%=line_item.product_name %><br>
+              <small class="text-muted"><%= line_item.bar_code %></small>
+            </div>
+            <div class="col-md-2">
+              <span class="pull-right"><%= number_to_currency line_item.total_cost %></span>
+            </div>
+            <div class="col-md-3">
+              <%= line_item.date.try(:strftime, "%B %e, %Y") %>
+
+            </div>
+          </div>
+          <hr>
+        <% end %>
+        <h4>Other Sales Items </h4>
+        <% @cart.other_sales_line_items.each do |line_item| %>
+          <div class="row">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-4">
+              <%= line_item.description %><br>
+              <small class="text-muted">#<%= line_item.reference_number %></small>
+            </div>
+            <div class="col-md-2">
+              <%= number_to_currency line_item.amount %>
+            </div>
+            <div class="col-md-3">
+              <%= line_item.date.try(:strftime, "%B %e, %Y") %>
+              
+            </div>
+          </div>
+          <br>
+        <% end %>
+        <hr />
+        <% if @cart.other_sales_line_items.present? %>
+          <%= simple_form_for @additional_other_sales_order, url: :store_front_module_sales_order_additional_other_sales_item_order_processings do |f| %>
+          <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
+          <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
+          <%= f.input :sales_order_id, input_html: { value: @sales_order.id }, as: :hidden %>
+          <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+          <%= f.submit "Save Order", class: "btn btn-primary pull-right" %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title">Other Sales</h3>
+        <p class="hel-block">Details for this other sales</p>
+      </div>
+    <div class="box-body">
+      <%= simple_form_for @other_sale, url: :store_front_module_sales_order_additional_other_sales_items do |f| %>
+        <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+        <%= f.input :amount %>
+        <%= f.input :description %>
+        <%= f.input :reference_number %>
+        <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
+        <%= f.submit 'Add Other Sales', class: "btn btn-primary pull-right" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#other_sales_form_customer_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

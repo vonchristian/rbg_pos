@@ -1,6 +1,6 @@
 class OtherSalesForm
   include ActiveModel::Model
-  attr_accessor :description, :reference_number, :recorder_id, :amount, :date, :customer_id
+  attr_accessor :description, :reference_number, :recorder_id, :amount, :date, :customer_id, :sales_order_id
   validates :amount, :description, :customer_id, :date, presence: true
 
   def save
@@ -28,7 +28,7 @@ class OtherSalesForm
     order.create_cash_payment(cash_tendered: amount)
   end
   def find_customer
-    Customer.find_by_id(customer_id)
+    Customer.find(customer_id)
   end
 
 end

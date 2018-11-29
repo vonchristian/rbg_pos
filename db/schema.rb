@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181031023204) do
+ActiveRecord::Schema.define(version: 20181129052346) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -226,6 +226,19 @@ ActiveRecord::Schema.define(version: 20181031023204) do
     t.index ["employee_id"], name: "index_orders_on_employee_id"
     t.index ["reference_number"], name: "index_orders_on_reference_number"
     t.index ["type"], name: "index_orders_on_type"
+  end
+
+  create_table "other_sales_line_items", force: :cascade do |t|
+    t.decimal "amount"
+    t.string "description"
+    t.string "reference_number"
+    t.datetime "date"
+    t.bigint "order_id"
+    t.bigint "cart_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cart_id"], name: "index_other_sales_line_items_on_cart_id"
+    t.index ["order_id"], name: "index_other_sales_line_items_on_order_id"
   end
 
   create_table "payments", force: :cascade do |t|
@@ -665,6 +678,8 @@ ActiveRecord::Schema.define(version: 20181031023204) do
   add_foreign_key "line_items", "users"
   add_foreign_key "orders", "store_fronts", column: "destination_store_front_id"
   add_foreign_key "orders", "users", column: "employee_id"
+  add_foreign_key "other_sales_line_items", "carts"
+  add_foreign_key "other_sales_line_items", "orders"
   add_foreign_key "payments", "orders"
   add_foreign_key "posts", "users"
   add_foreign_key "product_unit_service_charges", "product_units"

@@ -4,17 +4,15 @@
     <%= link_to 'New Credit(Others)', new_customer_other_credit_path(@customer), class: "btn btn-warning" %>
 
     <div class="content table-responsive table-full-width">
-      <table class="table table-striped">
+      <table class="table table-hover">
         <thead>
 
           <th>Date</th>
         	<th>Customer</th>
         	<th>Items</th>
         	<th>Total Cost</th>
-          <th>CI No. / Check No.</th>
-          <th>PO No.</th>
           <th>Balance</th>
-          <th>Employee </th>
+          <th>Payment </th>
           <th></th>
         </thead>
 	      <tbody>
@@ -22,9 +20,19 @@
 	          <tr>
 	            <% if order.line_items.count > 0  || order.description %>
 	            <td><%=link_to order.date.strftime("%B %e, %Y"), store_front_module_sales_order_path(order) %></td>
-	            <td><%= order.customer_full_name.try(:titleize) %></td>
+	            <td><%= order.customer_full_name.try(:titleize) %><br>
+              <span class="badge bg-gray">PO #
+              <%= order.reference_number %></span>
+            <br>
+            <span class="badge bg-gray">
+              CI/Check # <%= order.description %>
+            </span>
 
-	            <td>
+          </td>
+
+	            <td width="100px">
+                <small class="text-success">
+                  <%= order.employee.try(:full_name)%></small><br>
                 <% if order.line_items.present? %>
                 <%= order.line_items_name %>
                   <% elsif order.description.present? %>
@@ -32,13 +40,16 @@
                 <% end %>
                 </td>
 	            <td><%= number_to_currency order.total_cost %></td>
-              <td><%= order.reference_number %></td>
-              <td><%= order.description %></td>
-              <td><%= number_to_currency order.balance %></td>
-              <td><%= order.employee.try(:full_name)%></td>
-              <td>
+              <td><%= number_to_currency order.balance %><br>
                 <% if order.has_balance? %>
-                  <%= link_to 'New Payment', new_store_front_module_credit_sales_order_payment_path(order), class: "btn btn-primary btn-sm" %>
+                  <%= link_to 'New Payment', new_store_front_module_credit_sales_order_payment_path(order), class: "btn btn-primary" %>
+                <% end %>
+              </td>
+              <td>
+                <% order.payment_entries.each do |payment| %>
+                  Date: <%= payment.entry_date.strftime("%B %e, %Y") %>
+                  <br>Amount <%= number_to_currency payment.debit_amounts.sum(&:amount) %><br>
+                  Reference # <%= payment.reference_number %>
                 <% end %>
               </td>
               <td>
