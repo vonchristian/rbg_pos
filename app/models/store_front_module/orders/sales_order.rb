@@ -41,8 +41,12 @@ module StoreFrontModule
         sales_order_line_items.cost_of_goods_sold
       end
       def total_cost
-        total_line_items_cost +
-        other_sales_line_items.total_cost
+        if line_items.present? || other_sales_line_items.present?
+          total_line_items_cost +
+          other_sales_line_items.total_cost
+        else
+          cash_payment_cash_tendered
+        end
       end
 
       def total_line_items_cost
@@ -62,9 +66,8 @@ module StoreFrontModule
         "green"
       end
       def destroy_entry!
-        entry = AccountingModule::Amount.where(commercial_document_id: self.id, commercial_document_type: self.class.to_s).first
-        if entry.present?
-          entry.destroy
+        if payment_entries.present?
+          payment_entries.destroy_all
         end
       end
 
@@ -72,9 +75,8 @@ module StoreFrontModule
       end
       private
       def delete_entry
-        entry_id = AccountingModule::Amount.where(commercial_document: self).pluck(:entry_id).uniq
-        if entry_id.present?
-          AccountingModule::Entry.find_by_id(entry_id).destroy
+        if payment_entries.present?
+          payment_entries.destroy_all
         end
       end
     end
