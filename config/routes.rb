@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     resources :work_orders, only: [:index]
     resources :sales, only: [:index]
     resources :cash_receipts, only: [:index]
+    resources :repairs,       only: [:index]
     resources :products, only: [:index]
     resources :accounts_receivables, only: [:index]
 
@@ -107,6 +108,7 @@ Rails.application.routes.draw do
   resources :cash_on_hand_accounts, only: [:new, :create], module: :accounting
 
   namespace :store_front_module do
+    resources :stock_registry_processings, only: [:create]
     resources :stock_transfer_registries, only: [:new, :create, :show], module: :registries
     resources :received_stock_transfer_registries, only: [:new, :create, :show], module: :registries
     resources :purchase_order_registries, only: [:new, :create, :show, :destroy], module: :registries do

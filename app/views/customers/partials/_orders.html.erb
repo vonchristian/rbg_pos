@@ -20,12 +20,12 @@
 	          <tr>
 	            <% if order.line_items.count > 0  || order.description %>
 	            <td><%=link_to order.date.strftime("%B %e, %Y"), store_front_module_sales_order_path(order) %></td>
-	            <td><%= order.customer_full_name.try(:titleize) %><br>
+	            <td width="100px"><%= order.customer_full_name.try(:titleize) %><br>
               <span class="badge bg-gray">PO #
-              <%= order.reference_number %></span>
+              <%= order.reference_number.try(:truncate, 10) %></span>
             <br>
             <span class="badge bg-gray">
-              CI/Check # <%= order.description %>
+              CI/Check # <%= order.description.try(:truncate, 10) %>
             </span>
 
           </td>

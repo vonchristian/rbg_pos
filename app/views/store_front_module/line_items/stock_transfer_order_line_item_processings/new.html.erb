@@ -55,8 +55,12 @@
                 <tr>
                   <th><b>QTY</b></th>
                   <th><b>DESCRIPTION</b></th>
-                  <th><span class="pull-right"><b>UNIT COST</b></span></th>
-                  <th><span class="pull-right"><b>TOTAL COST</b></span></th>
+                  <% if current_user.proprietor? %>
+                    <th><span class="pull-right"><b>UNIT COST</b></span></th>
+                    <th><span class="pull-right"><b>TOTAL COST</b></span></th>
+                  <% else %>
+                    <th><span class="pull-right"><b>SELLING PRICE </b></span></th>
+                  <% end %>
                 </tr>
               </thead>
               <tbody>
@@ -65,14 +69,18 @@
                     <td><%= line_item.quantity %> <%= line_item.unit_code %></td>
                     <td width="300px"><%= line_item.name.try(:titleize) %> <span class="text-muted"><%= line_item.bar_code %></span>
                     </td>
-                    <td>
-                      <span class="pull-right">
-                        <%= number_to_currency line_item.unit_cost %>
-                      </span>
-                    </td>
-                    <td>
-                      <span class="pull-right"><%=number_to_currency line_item.total_cost %></span>
-                    </td>
+                    <% if current_user.proprietor? %>
+                      <td>
+                        <span class="pull-right">
+                          <%= number_to_currency line_item.unit_cost %>
+                        </span>
+                      </td>
+                      <td>
+                        <span class="pull-right"><%=number_to_currency line_item.total_cost %></span>
+                      </td>
+                    <% else %>
+                      <td><span class="pull-right"><%= number_to_currency line_item.product.try(:base_measurement).try(:price) %></span></td>
+                    <% end %>
                     <td>
                     <%= link_to store_front_module_stock_transfer_order_line_item_processing_path(line_item), method: :delete do %>
                       <span class="fa fa-trash"></span>

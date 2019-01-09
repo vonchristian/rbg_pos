@@ -1,37 +1,40 @@
-module ComputerRepairSection 
+module ComputerRepairSection
   class WorkOrderUpdatesController < ApplicationController
-    def create 
+    def create
       @work_order_update = Post.create(update_params)
       @work_order_update.user = current_user
       if @work_order_update.valid?
-        @work_order_update.save  
+        @work_order_update.save
         @work_order_update.updateable.add_technician(current_user)
         redirect_to computer_repair_section_work_order_url(@work_order_update.updateable), notice: "Update saved successfully."
-      else 
+      else
         redirect_to computer_repair_section_work_order_url(@work_order_update.updateable), alert: "Update not accepted. Please complete update details."
       end
     end
-    def edit 
+
+    def edit
       @post = Post.find(params[:id])
-    end 
-    def update 
+    end
+    def update
       @post = Post.find(params[:id])
       @post.update(update_params)
       if @post.valid?
-        @post.save 
+        @post.save
         redirect_to computer_repair_section_work_order_url(@work_order_update.updateable), notice: "Update info updated successfully."
-      else 
-        render :edit 
-      end 
+      else
+        render :edit
+      end
     end
-    def destroy 
+
+    def destroy
       @post = Post.find(params[:id])
-      @post.destroy 
+      @post.destroy
       redirect_to computer_repair_section_work_order_url(@post.updateable), notice: "Update info updated successfully."
     end
-    private 
+    
+    private
     def update_params
       params.require(:post).permit(:type, :title, :content, :date, :updateable_id, :updateable_type)
-    end 
-  end 
-end 
+    end
+  end
+end

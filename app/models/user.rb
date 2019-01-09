@@ -14,6 +14,7 @@ class User < ApplicationRecord
   has_many :work_orders, through: :technician_work_orders
   has_many :entries, class_name: "AccountingModule::Entry", foreign_key: 'recorder_id'
   has_many :fund_transfers, class_name: "AccountingModule::Entry", as: :commercial_document
+  has_many :actions_taken, class_name: "ActionsTaken"
   enum role: [:proprietor, :sales_clerk, :stock_custodian, :technician]
   has_attached_file :avatar,
   styles: { large: "120x120>",
@@ -25,7 +26,7 @@ class User < ApplicationRecord
   :path => ":rails_root/public/system/:attachment/:id/:style/:filename",
   :url => "/system/:attachment/:id/:style/:filename"
   do_not_validate_attachment_file_type :avatar
-  delegate :balance, to: :default_cash_on_hand_account, prefix: true
+  delegate :balance, to: :default_cash_on_hand_account, prefix: true, allow_nil: true
   def self.cash_on_hand_accounts
     accounts = []
     self.all.each do |user|
@@ -74,6 +75,13 @@ class User < ApplicationRecord
     else
       default_cash_on_hand_account_for(self)
     end
+  end
+
+  def relead_work_orders
+    work_orders = actions_takens.where(updateable_type: 'WorkOrder').pluck(:updateable_id)
+    WorkOrder.where(id: work_orders).released
+  end
+
   end
   private
   def default_cash_on_hand_account_for(employee)

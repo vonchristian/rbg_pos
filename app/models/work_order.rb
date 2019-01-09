@@ -30,7 +30,7 @@ class WorkOrder < ApplicationRecord
   after_commit :set_service_number, :set_customer_name, :set_product_name,  on: [:create, :update]
   delegate :avatar, :full_name, to: :customer
   delegate :number, to: :charge_invoice, prefix: true, allow_nil: true
-  def self.payment_entries
+  def self.payment_entries #refactor
     payments = []
     all.each do |work_order|
       work_order.payment_entries.each do |payment|
@@ -47,7 +47,7 @@ class WorkOrder < ApplicationRecord
     "##{service_number.sub(/^0+/, "")}"
   end
 
-  def self.total_charges_cost(hash ={} )
+  def self.total_charges_cost(hash ={} ) #refactor
     if hash[:from_date] && hash[:to_date]
        from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date])
         to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date])
@@ -56,7 +56,7 @@ class WorkOrder < ApplicationRecord
       all.sum(&:total_charges_cost)
     end
   end
-  def self.total_spare_parts_cost(hash ={} )
+  def self.total_spare_parts_cost(hash ={} ) #refactor
     if hash[:from_date] && hash[:to_date]
        from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date])
         to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date])
@@ -65,7 +65,7 @@ class WorkOrder < ApplicationRecord
       all.sum(&:total_spare_parts_cost)
     end
   end
-  def self.total_service_charges_cost(hash ={} )
+  def self.total_service_charges_cost(hash ={} ) #refactor
     if hash[:from_date] && hash[:to_date]
        from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date])
         to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date])
@@ -74,7 +74,7 @@ class WorkOrder < ApplicationRecord
       all.sum(&:total_service_charges_cost)
     end
   end
-  def self.from(hash={})
+  def self.from(hash={}) #refactor
       if hash[:from_date] && hash[:to_date]
        from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date])
         to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date])
@@ -86,12 +86,15 @@ class WorkOrder < ApplicationRecord
   def self.payments
     select{ |a| a.payments }
   end
+
   def self.payments_total
     all.sum(&:payments_total)
   end
+
   def technicians_name
     technicians.map{|a| a.full_name }.join(",")
   end
+
   def accounts_receivable
     spare_parts = entries.work_order_credit.map{|a| a.debit_amounts.distinct.pluck(:amount).sum}.sum
     service_charges = entries.work_order_service_charge.map{|a| a.debit_amounts.distinct.pluck(:amount).sum}.sum

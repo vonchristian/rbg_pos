@@ -1,0 +1,11 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Products") do |sheet|
+  sheet.add_row ["Description",
+   "Service Number"
+   ]
+   @work_orders.each do |work_order|
+     sheet.add_row [work_order.description,
+     work_order.service_number
+     ]
+    end
+ end
