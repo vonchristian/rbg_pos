@@ -77,12 +77,6 @@ class User < ApplicationRecord
     end
   end
 
-  def relead_work_orders
-    work_orders = actions_takens.where(updateable_type: 'WorkOrder').pluck(:updateable_id)
-    WorkOrder.where(id: work_orders).released
-  end
-
-  end
   private
   def default_cash_on_hand_account_for(employee)
     if employee.proprietor?

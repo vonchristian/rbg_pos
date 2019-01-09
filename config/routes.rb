@@ -37,6 +37,8 @@ Rails.application.routes.draw do
   resources :customer_registrations, only: [:new, :create]
   namespace :reports do
     resources :work_orders, only: [:index]
+    resources :released_work_orders, only: [:index]
+
     resources :sales, only: [:index]
     resources :cash_receipts, only: [:index]
     resources :repairs,       only: [:index]
@@ -80,6 +82,7 @@ Rails.application.routes.draw do
   resources :work_order_statuses, only: [:edit, :update]
   namespace :computer_repair_section do
     resources :dashboard, only: [:index]
+
     resources :work_orders do
       resources :service_charges, only: [:new, :create], module: :work_orders
       resources :additional_charges, only: [:new, :create], module: :work_orders
@@ -199,10 +202,14 @@ Rails.application.routes.draw do
     resources :employees, only: [:show] do
       resources :reports, only: [:index], module: :employees
       resources :sales, only: [:index], module: :employees
+
       resources :entries, only: [:index], module: :employees
     end
   end
   resources :work_order_service_charges, only: [:destroy]
   resources :credit_payments, only: [:index, :show]
   resources :employees, only: [:index, :show]
+  namespace :repair_services do
+    resources :per_employee_dashboards, only: [:index]
+  end
 end

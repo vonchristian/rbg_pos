@@ -107,8 +107,13 @@
                   <% end %>
                 </div>
                 <div class="col-md-3">
-                  <%= number_to_currency employee.sales_orders.ordered_on(from_date: Date.today, to_date: Date.today).map{|a| a.total_cost}.compact.sum %><br>
-                  <small>TOTAL SALES</small>
+                  <% if employee.sales_clerk? %>
+                    <%= number_to_currency employee.sales_orders.ordered_on(from_date: Date.today, to_date: Date.today).map{|a| a.total_cost}.compact.sum %><br>
+                    <small>TOTAL SALES</small>
+                  <% elsif employee.technician? %>
+                  <%= number_to_currency employee.work_orders.released_on(from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month).sum(&:incentivized_charges) %><br>
+                  <small>TOTAL SERVICE CHARGES</small>
+                  <% end %>
                 </div>
               </div>
               <br>
@@ -116,5 +121,3 @@
           <% end %>
         </div>
       </div>
-
-

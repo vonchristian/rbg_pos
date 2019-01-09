@@ -49,5 +49,30 @@
                 </div>
               </div>
             <% end %>
+            <hr>
+            <%=link_to reports_released_work_orders_path(user_id: @employee.id, format: 'xlsx', from_date: @from_date, to_date: @to_date) do %>
+                    <p class="category"> Released Work Orders</p>
+                    <small>Generate report of released work orders for this month <%=Time.zone.now.strftime("%B, %Y") %></small>
+                  <% end %>
+                  <br>
+                  <br>
+                  <%= form_tag({:action => "index", controller: "/reports/released_work_orders", format: 'xlsx', user_id: @employee.id}, {:method => :get})  do %>
+                      <div class="row">
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <%= hidden_field_tag :user_id, @employee.id %>
+                            <%= text_field_tag :from_date, @from_date.strftime("%B %e, %Y"), :class => 'datepicker form-control border-input', :placeholder => "From " %>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div clasps="form-group">
+                            <%= text_field_tag :to_date, @to_date.strftime('%B %e, %Y'), :class => 'form-control border-input datepicker', :placeholder => "To " %>
+                          </div>
+                        </div>
+                        <div class="col-md-1">
+                          <button type="submit" class="btn btn-success"> Generate</button>
+                        </div>
+                      </div>
+                    <% end %>
   </div>
 </div>

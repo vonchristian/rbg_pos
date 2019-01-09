@@ -1,7 +1,7 @@
 module AccountingModule
   module AmountsExtension
     def balance(hash={})
-      first_entry_date = AccountingModule::Entry.order(entry_date: :desc).last.entry_date
+      first_entry_date = AccountingModule::Entry.order(entry_date: :desc).last.try(:entry_date) || 999.years.ago
       from_date = hash[:from_date]
       to_date = hash[:to_date]
       commercial_document = hash[:commercial_document_id]

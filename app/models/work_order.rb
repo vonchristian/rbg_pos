@@ -75,14 +75,22 @@ class WorkOrder < ApplicationRecord
     end
   end
   def self.from(hash={}) #refactor
-      if hash[:from_date] && hash[:to_date]
-       from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date])
-        to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date])
-        where('created_at' => (from_date.beginning_of_day)..(to_date.end_of_day))
-      else
-        all
-      end
+    if hash[:from_date] && hash[:to_date]
+     from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date])
+      to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date])
+      where('created_at' => (from_date.beginning_of_day)..(to_date.end_of_day))
+    else
+      all
     end
+  end
+
+  def self.released_on(args={})
+    if args[:from_date] && args[:to_date]
+      date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
+      released.where('release_date' => date_range.range)
+    end
+  end
+
   def self.payments
     select{ |a| a.payments }
   end
@@ -123,7 +131,15 @@ class WorkOrder < ApplicationRecord
   end
 
   def payments_total
-   StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account.credits_balance(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
+    StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account.credits_balance(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
+  end
+
+  def service_charge_payments
+    payments_total - total_spare_parts_cost
+  end
+
+  def incentivized_charges
+    service_charge_payments / technicians.count
   end
 
 

@@ -4,16 +4,18 @@
       <div class="box-body">
         <div class="row">
           <div class="col-md-6 border-right">
-            <p><small class="condensed-text">VIEW PER TECHNICIAN</small></p>
-            <% User.technician.each do |technician| %>
-              <%=link_to computer_repair_section_dashboard_index_path(technician: technician) do %>
-                <span data-toggle="tooltip" title="<%=technician.first_name %>" data-placement="top">
-                  <%= image_tag(technician.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %> &nbsp;
-                </span>
+            <% if current_user.proprietor? %>
+              <p><small class="condensed-text">VIEW PER TECHNICIAN</small></p>
+              <% User.technician.each do |technician| %>
+                <%=link_to repair_services_per_employee_dashboards_path(user_id: technician.id) do %>
+                  <span data-toggle="tooltip" title="<%=technician.first_name %>" data-placement="top">
+                    <%= image_tag(technician.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %> &nbsp;
+                  </span>
+                <% end %>
               <% end %>
+              <br>
+              <br>
             <% end %>
-            <br>
-            <br>
             <p><small class="condensed-text">VIEW PER SECTION</small></p>
              <% Section.all.each do |section| %>
               <%=link_to computer_repair_section_dashboard_index_path(section_id: section.id) do %>

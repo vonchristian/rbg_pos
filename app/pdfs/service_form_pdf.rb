@@ -75,7 +75,7 @@ class ServiceFormPdf < Prawn::Document
     move_down 5
   end
   def product_details_data
-    @product_details_data ||=  [["", "Date Released",  "#{@work_order.updated_at.strftime("%B %e, %Y")}"]] +
+    @product_details_data ||=  [["", "Date Released",  "#{@work_order.release_date.try(:strftime,("%B %e, %Y"))}"]] +
                                 [["", "Description",  "#{@work_order.description}"]] +
                                 [["", "Model Number", "#{@work_order.model_number.try(:upcase)}"]] +
                                 [["", "Serial Number", "#{@work_order.serial_number.try(:upcase)}"]] +

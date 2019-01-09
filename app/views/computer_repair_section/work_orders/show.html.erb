@@ -97,6 +97,16 @@
                 </div>
               </div>
               <br>
+              <div class="row min-margin">
+              <div class="col-md-6">
+                  Release Date
+                </div>
+                <div class="col-md-6">
+                    <%= @work_order.release_date.try(:strftime, ("%B %e, %Y")) %>
+
+                </div>
+              </div>
+              <hr>
               <% if @work_order.under_warranty? %>
                 <p> Warranty Details </p>
                 <div class="row">
@@ -117,11 +127,11 @@
                 </div>
               </div>
               <br><div class="row">
-                <div class="col-md-6">
-                  Elapsed Time
+              <div class="col-md-6">
+                  Release Date
                 </div>
                 <div class="col-md-6">
-                  <%= @work_order.expiry_date.strftime("%B %e, %Y") %>
+                    <%= @work_order.release_date.try(:strftime, ("%B %e, %Y")) %>
 
                 </div>
               </div>

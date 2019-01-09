@@ -1,0 +1,26 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Released Work Order") do |sheet|
+  sheet.add_row ["Released Work Orders from #{@from_date.strftime('%B %e, %Y')} - to #{@to_date.strftime('%B %e, %Y')}"]
+  sheet.add_row ["Employee: #{@employee.full_name}"]
+  sheet.add_row [""]
+  
+  sheet.add_row ["Work Order",
+   "Service #",
+   "Customer",
+   "Date Released",
+   "Technicians",
+   "Total Service Charges",
+   "Technicians Count"
+   ]
+   @work_orders.each do |work_order|
+     sheet.add_row [work_order.description,
+     work_order.service_number,
+     work_order.customer.full_name,
+     work_order.release_date.try(:strftime, ("%B, %e, %Y")),
+     work_order.technicians.map{|a| a.full_name }.join("/"),
+     work_order.service_charge_payments,
+     work_order.technicians.count
+
+     ]
+    end
+ end
