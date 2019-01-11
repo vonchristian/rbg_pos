@@ -127,6 +127,8 @@
                   <%= f.input :total_cost, input_html: { id: 'total_cost', value: @cart.total_cost }, as: :hidden %>
                   <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
                   <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
+                  <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+
                   <%= f.submit "Save Order", class: "btn btn-lg btn-success btn-block" %>
                 </div>
               </div>

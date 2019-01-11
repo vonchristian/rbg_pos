@@ -1,7 +1,9 @@
 class WorkOrder < ApplicationRecord
   include PgSearch
+  enum status: [:received, :work_in_progress, :done, :released]
+
   pg_search_scope :text_search, against: [:service_number, :reported_problem, :physical_condition, :customer_name, :product_name],
-  :associated_against => { :charge_invoice => [:number]}
+  :associated_against => { :charge_invoice => [:number], product_unit: [:description, :model_number, :serial_number] }
   multisearchable :against => [:description, :model_number, :serial_number,
     :updates_content, :reported_problem, :physical_condition, :service_number, :customer_name, :product_name]
   belongs_to :product_unit
@@ -16,20 +18,23 @@ class WorkOrder < ApplicationRecord
   has_many :work_order_updates, as: :updateable, class_name: "Post", dependent: :destroy
   has_many :work_order_service_charges, dependent: :destroy
   has_many :service_charges, through: :work_order_service_charges
-  has_many :spare_part_orders, class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document, dependent: :destroy
-  has_many :spare_parts, through: :spare_part_orders, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem", source: :sales_order_line_items
+  has_many :sales_orders, class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document, dependent: :destroy
+  has_many :sales_order_line_items, through: :sales_orders, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem"
   has_many :accessories, dependent: :destroy
-  has_many :work_order_line_items, class_name: "StoreFrontModule::LineItems::WorkOrderLineItem"
-  enum status: [:received, :work_in_progress, :done, :released]
-  accepts_nested_attributes_for :product_unit
-  delegate :description, :model_number, :serial_number, to: :product_unit, allow_nil: true
-  delegate :full_name, :address, :contact_number, to: :customer, allow_nil: true, prefix: true
   has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
+
+  accepts_nested_attributes_for :product_unit
+
   validates :description, :physical_condition, :reported_problem, presence: true
   validates :customer_id, presence: true
-  after_commit :set_service_number, :set_customer_name, :set_product_name,  on: [:create, :update]
+
+  delegate :description, :model_number, :serial_number, to: :product_unit, allow_nil: true
+  delegate :full_name, :address, :contact_number, to: :customer, allow_nil: true, prefix: true
   delegate :avatar, :full_name, to: :customer
   delegate :number, to: :charge_invoice, prefix: true, allow_nil: true
+
+  after_commit :set_service_number, :set_customer_name, :set_product_name,  on: [:create, :update]
+
   def self.payment_entries #refactor
     payments = []
     all.each do |work_order|
@@ -43,15 +48,10 @@ class WorkOrder < ApplicationRecord
     "#{product_name}"
   end
 
-  def formatted_service_number
-    "##{service_number.sub(/^0+/, "")}"
-  end
-
-  def self.total_charges_cost(hash ={} ) #refactor
+  def self.total_charges_cost(args={} ) #refactor
     if hash[:from_date] && hash[:to_date]
-       from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date])
-        to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date])
-        where('created_at' => (from_date.beginning_of_day)..(to_date.end_of_day)).sum(&:total_charges_cost)
+       date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
+        where('created_at' => (date_range.range).sum(&:total_charges_cost)
     else
       all.sum(&:total_charges_cost)
     end
@@ -186,7 +186,7 @@ class WorkOrder < ApplicationRecord
   private
   def set_service_number
     self.service_number = nil
-    self.service_number = self.id.to_s.rjust(12, '0')
+    self.service_number = self.id.to_s
   end
   def set_customer_name
     self.customer_name = self.customer.full_name

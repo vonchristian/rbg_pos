@@ -2,49 +2,50 @@ class Order < ApplicationRecord
   include PgSearch
   pg_search_scope :text_search, against: [:reference_number, :search_term]
   multisearchable against: [:reference_number]
-  belongs_to :destination_store_front, class_name: "StoreFront", foreign_key: 'destination_store_front_id', optional: true
-  belongs_to :commercial_document, polymorphic: true, optional: true
-  belongs_to :employee, class_name: "User", foreign_key: 'employee_id'
-  has_one :cash_payment, as: :cash_paymentable, class_name: "StoreFrontModule::CashPayment"
-  has_one :entry, as: :commercial_document, class_name: "AccountingModule::Entry", dependent: :destroy
-  has_many :line_items, dependent: :destroy
+  belongs_to :store_front
+  belongs_to :commercial_document,     polymorphic: true, optional: true
+  belongs_to :employee,                class_name: "User", foreign_key: 'employee_id'
+  has_one :cash_payment,               as: :cash_paymentable, class_name: "StoreFrontModule::CashPayment"
+  has_one :entry,                      as: :commercial_document, class_name: "AccountingModule::Entry", dependent: :destroy
+  belongs_to :voucher,                 optional: true
+  has_many :line_items,                dependent: :destroy
 
-  delegate :full_name, to: :customer, prefix: true, allow_nil: true
-  delegate :full_name, to: :technician, prefix: true, allow_nil: true
+  delegate :full_name, to: :technician, prefix: true, allow_nil: true #WTF
   delegate :cash_tendered, to: :cash_payment, prefix: true, allow_nil: true
   delegate :full_name, to: :employee, prefix: true, allow_nil: true
-  delegate :discount_amount, to: :cash_payment, allow_nil: true
-  delegate :name, to: :destination_store_front, prefix: true, allow_nil: true
+
+
   before_validation :set_date
 
+  validates :account_number,  presence: true, uniqueness: true
+  validates :store_front_id, presence: true
   def self.credit
-    all.select{|a| a.credit? }
+    where(credit: true)
   end
 
-  def self.ordered_on(hash={})
-    if hash[:from_date] && hash[:to_date]
-      from_date = Chronic.parse(hash[:from_date].to_date)
-      to_date = Chronic.parse(hash[:to_date].to_date)
-      where('date' => (from_date.beginning_of_day)..(to_date.end_of_day))
+  def self.total
+    all.map{|a| a.total_cost }.compact.sum
+  end
+
+  def self.ordered_on(args={})
+    if args[:from_date] && args[:to_date]
+      date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
+
+      where('date' => date_range.start_date..date_range.end_date)
     else
       all
     end
   end
+
   def total_cost
-    entry.try(:total) || try(:cash_payment).try(:cash_tendered)
+    line_items.total_cost
   end
   def total_quantity
     line_items.sum(&:quantity)
   end
 
   def self.created_between(hash={})
-    if hash[:from_date] && hash[:to_date]
-      from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : Chronic.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
-      to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : Chronic.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
-      where('date' => (from_date.beginning_of_day)..(to_date.end_of_day))
-    else
-      all
-    end
+    ordered_on(args)
   end
   def line_items_total_cost
     line_items.sum(:total_cost)
@@ -63,9 +64,21 @@ class Order < ApplicationRecord
     line_items.sum(&:cost_of_goods_sold)
   end
 
+
   def income
     total_cost_less_discount - cost_of_goods_sold
   end
+
+  def total_cost_less_discount
+    total_cost - discount_amount
+  end
+
+  def discount_amount
+    cash_payment.try(:discount_amount) || 0
+  end
+
+
+
 
   private
   def set_date

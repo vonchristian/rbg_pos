@@ -12,6 +12,8 @@ class Voucher < ApplicationRecord
   delegate :name, to: :disburser, prefix: true, allow_nil: true
   delegate :name, to: :payee, prefix: true
   delegate :total, to: :entry, allow_nil: true
+
+  validates :account_number, presence: true, uniqueness: true
   def self.unused
     select{ |a| a.unused? }
   end

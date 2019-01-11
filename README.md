@@ -1,3 +1,7 @@
+stock transfer
+  origi
+
+
 Add sales on employee show
 add purchases/sales/returns/on excel
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190109132030) do
+ActiveRecord::Schema.define(version: 20190111130707) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -221,11 +221,20 @@ ActiveRecord::Schema.define(version: 20190109132030) do
     t.string "commercial_document_type"
     t.bigint "commercial_document_id"
     t.bigint "destination_store_front_id"
+    t.boolean "credit", default: false
+    t.bigint "voucher_id"
+    t.bigint "store_front_id"
+    t.string "account_number"
+    t.bigint "origin_store_front_id"
+    t.index ["account_number"], name: "index_orders_on_account_number", unique: true
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_orders"
     t.index ["destination_store_front_id"], name: "index_orders_on_destination_store_front_id"
     t.index ["employee_id"], name: "index_orders_on_employee_id"
+    t.index ["origin_store_front_id"], name: "index_orders_on_origin_store_front_id"
     t.index ["reference_number"], name: "index_orders_on_reference_number"
+    t.index ["store_front_id"], name: "index_orders_on_store_front_id"
     t.index ["type"], name: "index_orders_on_type"
+    t.index ["voucher_id"], name: "index_orders_on_voucher_id"
   end
 
   create_table "other_sales_line_items", force: :cascade do |t|
@@ -459,13 +468,21 @@ ActiveRecord::Schema.define(version: 20190109132030) do
     t.bigint "sales_return_account_id"
     t.bigint "sales_account_id"
     t.bigint "sales_discount_account_id"
+    t.bigint "receivable_account_id"
+    t.bigint "internal_use_account_id"
+    t.bigint "purchase_return_account_id"
+    t.bigint "spoilage_account_id"
     t.index ["business_id"], name: "index_store_fronts_on_business_id"
     t.index ["cost_of_goods_sold_account_id"], name: "index_store_fronts_on_cost_of_goods_sold_account_id"
+    t.index ["internal_use_account_id"], name: "index_store_fronts_on_internal_use_account_id"
     t.index ["merchandise_inventory_account_id"], name: "index_store_fronts_on_merchandise_inventory_account_id"
     t.index ["name"], name: "index_store_fronts_on_name", unique: true
+    t.index ["purchase_return_account_id"], name: "index_store_fronts_on_purchase_return_account_id"
+    t.index ["receivable_account_id"], name: "index_store_fronts_on_receivable_account_id"
     t.index ["sales_account_id"], name: "index_store_fronts_on_sales_account_id"
     t.index ["sales_discount_account_id"], name: "index_store_fronts_on_sales_discount_account_id"
     t.index ["sales_return_account_id"], name: "index_store_fronts_on_sales_return_account_id"
+    t.index ["spoilage_account_id"], name: "index_store_fronts_on_spoilage_account_id"
   end
 
   create_table "suppliers", force: :cascade do |t|
@@ -475,13 +492,13 @@ ActiveRecord::Schema.define(version: 20190109132030) do
     t.string "contact_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "accounts_payable_account_id"
+    t.bigint "payable_account_id"
     t.string "avatar_file_name"
     t.string "avatar_content_type"
     t.integer "avatar_file_size"
     t.datetime "avatar_updated_at"
-    t.index ["accounts_payable_account_id"], name: "index_suppliers_on_accounts_payable_account_id"
     t.index ["business_name"], name: "index_suppliers_on_business_name", unique: true
+    t.index ["payable_account_id"], name: "index_suppliers_on_payable_account_id"
   end
 
   create_table "technician_work_orders", force: :cascade do |t|
@@ -581,6 +598,8 @@ ActiveRecord::Schema.define(version: 20190109132030) do
     t.string "reference_number"
     t.string "commercial_document_type"
     t.bigint "commercial_document_id"
+    t.string "account_number"
+    t.index ["account_number"], name: "index_vouchers_on_account_number", unique: true
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_vouchers"
     t.index ["payee_type", "payee_id"], name: "index_vouchers_on_payee_type_and_payee_id"
     t.index ["preparer_id"], name: "index_vouchers_on_preparer_id"
@@ -677,8 +696,11 @@ ActiveRecord::Schema.define(version: 20190109132030) do
   add_foreign_key "line_items", "stock_transfers"
   add_foreign_key "line_items", "unit_of_measurements"
   add_foreign_key "line_items", "users"
+  add_foreign_key "orders", "store_fronts"
   add_foreign_key "orders", "store_fronts", column: "destination_store_front_id"
+  add_foreign_key "orders", "store_fronts", column: "origin_store_front_id"
   add_foreign_key "orders", "users", column: "employee_id"
+  add_foreign_key "orders", "vouchers"
   add_foreign_key "other_sales_line_items", "carts"
   add_foreign_key "other_sales_line_items", "orders"
   add_foreign_key "payments", "orders"
@@ -704,12 +726,16 @@ ActiveRecord::Schema.define(version: 20190109132030) do
   add_foreign_key "store_front_configs", "accounts", column: "accounts_receivable_account_id"
   add_foreign_key "store_front_configs", "store_fronts"
   add_foreign_key "store_fronts", "accounts", column: "cost_of_goods_sold_account_id"
+  add_foreign_key "store_fronts", "accounts", column: "internal_use_account_id"
   add_foreign_key "store_fronts", "accounts", column: "merchandise_inventory_account_id"
+  add_foreign_key "store_fronts", "accounts", column: "purchase_return_account_id"
+  add_foreign_key "store_fronts", "accounts", column: "receivable_account_id"
   add_foreign_key "store_fronts", "accounts", column: "sales_account_id"
   add_foreign_key "store_fronts", "accounts", column: "sales_discount_account_id"
   add_foreign_key "store_fronts", "accounts", column: "sales_return_account_id"
+  add_foreign_key "store_fronts", "accounts", column: "spoilage_account_id"
   add_foreign_key "store_fronts", "businesses"
-  add_foreign_key "suppliers", "accounts", column: "accounts_payable_account_id"
+  add_foreign_key "suppliers", "accounts", column: "payable_account_id"
   add_foreign_key "technician_work_orders", "users", column: "technician_id"
   add_foreign_key "technician_work_orders", "work_orders"
   add_foreign_key "unit_of_measurements", "products"

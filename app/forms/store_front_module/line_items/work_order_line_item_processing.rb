@@ -20,8 +20,8 @@ module StoreFrontModule
       end
 
       def quantity_for(purchase, remaining_quantity)
-        if purchase.available_quantity >= BigDecimal.new(remaining_quantity)
-          BigDecimal.new(remaining_quantity)
+        if purchase.available_quantity >= BigDecimal(remaining_quantity)
+          BigDecimal(remaining_quantity)
         else
           purchase.available_quantity.to_f
         end

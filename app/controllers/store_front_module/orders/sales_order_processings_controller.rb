@@ -4,7 +4,13 @@ module StoreFrontModule
       def create
         @sales_order = StoreFrontModule::Orders::SalesOrderProcessing.new(order_params)
         if @sales_order.valid?
-          @sales_order.process!
+          ActiveRecord::Base.transaction do
+            @sales_order.process!
+            @processed_order = @sales_order.find_order
+            create_voucher
+            create_entry
+            update_order
+          end
           redirect_to store_index_url, notice: "Order saved successfully."
         else
           redirect_to store_index_url, alert: "Error"
@@ -12,6 +18,18 @@ module StoreFrontModule
       end
 
       private
+      def create_voucher
+        SalesOrderVoucher.new(order: @processed_order, employee: current_user).create_voucher!
+      end
+
+      def create_entry
+        VoucherEntryCreation.new(voucher: Voucher.find_by(account_number: @processed_order.account_number)).create_entry!
+      end
+
+      def update_order
+        @processed_order.update_attributes!(store_front: current_user.store_front, voucher: @voucher_processing)
+      end
+
       def order_params
         params.require(:store_front_module_orders_sales_order_processing).
         permit(:customer_id,
@@ -21,9 +39,9 @@ module StoreFrontModule
                :employee_id,
                :cart_id,
                :discount_amount,
+               :account_number,
                :reference_number)
       end
     end
   end
 end
-

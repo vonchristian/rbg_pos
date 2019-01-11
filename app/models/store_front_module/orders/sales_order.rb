@@ -1,16 +1,14 @@
 module StoreFrontModule
   module Orders
     class SalesOrder < Order
+
       has_one :cash_payment, as: :cash_paymentable, class_name: "StoreFrontModule::CashPayment", dependent: :destroy
       has_many :sales_order_line_items, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem", foreign_key: 'order_id', dependent: :destroy
       has_many :other_sales_line_items, foreign_key: 'order_id'
       delegate :name, to: :customer, prefix: true, allow_nil: true
-      delegate :discount_amount, to: :cash_payment, allow_nil: true
-      before_destroy :delete_entry
+      delegate :full_name, to: :customer, prefix: true, allow_nil: true
 
-      def credit?
-        balance.present?
-      end
+      before_destroy :delete_entryz
 
       def has_balance?
         balance > 0

@@ -63,8 +63,8 @@ module StoreFrontModule
       end
 
       def quantity_for(sales, requested_quantity)
-        if sales.quantity >= BigDecimal.new(requested_quantity)
-          BigDecimal.new(requested_quantity)
+        if sales.quantity >= BigDecimal(requested_quantity)
+          BigDecimal(requested_quantity)
         else
           sales.available_quantity.to_f
         end

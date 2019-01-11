@@ -99,18 +99,20 @@
     <div class="col-md-4">
       <div class="box box-success">
         <div class="box-body">
-<% if @cart.stock_transfer_order_line_items.present? %>
-          <%= simple_form_for @stock_transfer_order, url: :store_front_module_stock_transfer_order_processings do |f| %>
-            <%= f.input :destination_store_front_id, collection: StoreFront.all.map{|a| [ a.name, a.id] } %>
-            <%= f.input :origin_store_front_id, input_html: { value: current_user.store_front_id }, as: :hidden %>
-            <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-            <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
-            <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-            <%= f.input :reference_number %>
-        <%=f.submit "Save Stock Transfer", class: "btn btn-success btn-block btn-lg", :accesskey => "C" %>
-        <% end %>
-      <% end %>
-      </div>
+          <% if @cart.stock_transfer_order_line_items.present? %>
+            <%= simple_form_for @stock_transfer_order, url: :store_front_module_stock_transfer_order_processings do |f| %>
+              <%= f.input :destination_store_front_id, collection: StoreFront.all.map{|a| [ a.name, a.id] } %>
+              <%= f.input :origin_store_front_id, input_html: { value: current_user.store_front.id }, as: :hidden %>
+              <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+              <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
+              <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+              <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
 
+              <%= f.input :reference_number %>
+              <%=f.submit "Save Stock Transfer", class: "btn btn-success btn-block btn-lg", :accesskey => "C" %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
     </div>
   </div>
