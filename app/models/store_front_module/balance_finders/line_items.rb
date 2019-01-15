@@ -1,4 +1,6 @@
 module StoreFrontModule
-  class LineItems < DefaultBalanceFinder
+  module BalanceFinders
+    class LineItems < DefaultBalanceFinder
+    end
   end
-end 
+end

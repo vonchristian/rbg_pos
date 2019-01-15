@@ -12,7 +12,7 @@ module StoreFrontModule
         line_items.
         with_orders.
         where('created_at' => date_range).
-        where(product: product),
+        where(product: product).
         total_converted_quantity
       end
     end

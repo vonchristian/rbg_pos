@@ -51,7 +51,7 @@ class WorkOrder < ApplicationRecord
   def self.total_charges_cost(args={} ) #refactor
     if hash[:from_date] && hash[:to_date]
        date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
-        where('created_at' => (date_range.range).sum(&:total_charges_cost)
+        where('created_at' => (date_range.range)).sum(&:total_charges_cost)
     else
       all.sum(&:total_charges_cost)
     end
