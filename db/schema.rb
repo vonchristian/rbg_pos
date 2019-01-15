@@ -71,15 +71,6 @@ ActiveRecord::Schema.define(version: 20190115044559) do
     t.index ["cash_in_bank_account_id"], name: "index_bank_accounts_on_cash_in_bank_account_id"
   end
 
-  create_table "branches", force: :cascade do |t|
-    t.bigint "business_id"
-    t.string "name"
-    t.string "address"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["business_id"], name: "index_branches_on_business_id"
-  end
-
   create_table "businesses", force: :cascade do |t|
     t.string "name"
     t.string "owner"
@@ -122,7 +113,7 @@ ActiveRecord::Schema.define(version: 20190115044559) do
     t.datetime "updated_at", null: false
     t.string "avatar_file_name"
     t.string "avatar_content_type"
-    t.integer "avatar_file_size"
+    t.bigint "avatar_file_size"
     t.datetime "avatar_updated_at"
     t.boolean "enable_interest", default: false
   end
@@ -156,20 +147,6 @@ ActiveRecord::Schema.define(version: 20190115044559) do
     t.index ["type"], name: "index_invoices_on_type"
   end
 
-  create_table "job_orders", force: :cascade do |t|
-    t.bigint "unit_id"
-    t.datetime "date"
-    t.integer "status"
-    t.text "remarks"
-    t.integer "actions_taken"
-    t.bigint "customer_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["customer_id"], name: "index_job_orders_on_customer_id"
-    t.index ["status"], name: "index_job_orders_on_status"
-    t.index ["unit_id"], name: "index_job_orders_on_unit_id"
-  end
-
   create_table "line_items", force: :cascade do |t|
     t.bigint "cart_id"
     t.decimal "unit_cost"
@@ -180,7 +157,6 @@ ActiveRecord::Schema.define(version: 20190115044559) do
     t.bigint "order_id"
     t.bigint "user_id"
     t.string "search"
-    t.bigint "stock_transfer_id"
     t.string "type"
     t.bigint "referenced_line_item_id"
     t.bigint "product_id"
@@ -204,7 +180,6 @@ ActiveRecord::Schema.define(version: 20190115044559) do
     t.index ["referencer_type", "referencer_id"], name: "index_line_items_on_referencer_type_and_referencer_id"
     t.index ["registry_id"], name: "index_line_items_on_registry_id"
     t.index ["sales_order_line_item_id"], name: "index_line_items_on_sales_order_line_item_id"
-    t.index ["stock_transfer_id"], name: "index_line_items_on_stock_transfer_id"
     t.index ["store_front_id"], name: "index_line_items_on_store_front_id"
     t.index ["type"], name: "index_line_items_on_type"
     t.index ["unit_of_measurement_id"], name: "index_line_items_on_unit_of_measurement_id"
@@ -227,12 +202,10 @@ ActiveRecord::Schema.define(version: 20190115044559) do
     t.bigint "voucher_id"
     t.bigint "store_front_id"
     t.string "account_number"
-    t.bigint "origin_store_front_id"
     t.index ["account_number"], name: "index_orders_on_account_number", unique: true
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_orders"
     t.index ["destination_store_front_id"], name: "index_orders_on_destination_store_front_id"
     t.index ["employee_id"], name: "index_orders_on_employee_id"
-    t.index ["origin_store_front_id"], name: "index_orders_on_origin_store_front_id"
     t.index ["reference_number"], name: "index_orders_on_reference_number"
     t.index ["store_front_id"], name: "index_orders_on_store_front_id"
     t.index ["type"], name: "index_orders_on_type"
@@ -289,15 +262,6 @@ ActiveRecord::Schema.define(version: 20190115044559) do
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
-  create_table "product_unit_service_charges", force: :cascade do |t|
-    t.bigint "product_unit_id"
-    t.bigint "service_charge_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["product_unit_id"], name: "index_product_unit_service_charges_on_product_unit_id"
-    t.index ["service_charge_id"], name: "index_product_unit_service_charges_on_service_charge_id"
-  end
-
   create_table "product_units", force: :cascade do |t|
     t.string "description"
     t.string "model_number"
@@ -319,7 +283,7 @@ ActiveRecord::Schema.define(version: 20190115044559) do
     t.datetime "updated_at", null: false
     t.string "avatar_file_name"
     t.string "avatar_content_type"
-    t.integer "avatar_file_size"
+    t.bigint "avatar_file_size"
     t.datetime "avatar_updated_at"
     t.bigint "category_id"
     t.decimal "low_stock_count", default: "0.0"
@@ -330,7 +294,7 @@ ActiveRecord::Schema.define(version: 20190115044559) do
   create_table "registries", force: :cascade do |t|
     t.string "spreadsheet_file_name"
     t.string "spreadsheet_content_type"
-    t.integer "spreadsheet_file_size"
+    t.bigint "spreadsheet_file_size"
     t.datetime "spreadsheet_updated_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -340,47 +304,11 @@ ActiveRecord::Schema.define(version: 20190115044559) do
     t.index ["type"], name: "index_registries_on_type"
   end
 
-  create_table "repair_services_front_configs", force: :cascade do |t|
-    t.bigint "accounts_receivable_account_id"
-    t.bigint "repair_services_front_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["accounts_receivable_account_id"], name: "index_accounts_receivable_account_on_repair_services_config"
-    t.index ["repair_services_front_id"], name: "index_repair_services_front_configs_on_repair_services_front_id"
-  end
-
-  create_table "repair_services_fronts", force: :cascade do |t|
-    t.bigint "business_id"
-    t.string "name"
-    t.string "address"
-    t.string "contact_number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["business_id"], name: "index_repair_services_fronts_on_business_id"
-    t.index ["name"], name: "index_repair_services_fronts_on_name", unique: true
-  end
-
   create_table "repairs", force: :cascade do |t|
     t.text "symptoms_observed"
     t.text "repair_description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "sales_returns", force: :cascade do |t|
-    t.bigint "line_item_id"
-    t.integer "sales_return_type"
-    t.datetime "date"
-    t.string "remarks"
-    t.bigint "order_id"
-    t.decimal "quantity"
-    t.string "name"
-    t.string "barcode"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["line_item_id"], name: "index_sales_returns_on_line_item_id"
-    t.index ["order_id"], name: "index_sales_returns_on_order_id"
-    t.index ["sales_return_type"], name: "index_sales_returns_on_sales_return_type"
   end
 
   create_table "sections", force: :cascade do |t|
@@ -407,49 +335,6 @@ ActiveRecord::Schema.define(version: 20190115044559) do
     t.datetime "updated_at", null: false
     t.integer "charge_type"
     t.index ["charge_type"], name: "index_service_charges_on_charge_type"
-  end
-
-  create_table "stock_transfers", force: :cascade do |t|
-    t.bigint "stock_id"
-    t.datetime "date"
-    t.decimal "quantity"
-    t.bigint "destination_branch_id"
-    t.bigint "origin_branch_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "employee_id"
-    t.index ["destination_branch_id"], name: "index_stock_transfers_on_destination_branch_id"
-    t.index ["employee_id"], name: "index_stock_transfers_on_employee_id"
-    t.index ["origin_branch_id"], name: "index_stock_transfers_on_origin_branch_id"
-    t.index ["stock_id"], name: "index_stock_transfers_on_stock_id"
-  end
-
-  create_table "stocks", force: :cascade do |t|
-    t.decimal "unit_cost"
-    t.bigint "product_id"
-    t.bigint "supplier_id"
-    t.decimal "total_cost"
-    t.decimal "quantity"
-    t.datetime "date"
-    t.string "barcode"
-    t.integer "mode_of_payment"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.decimal "retail_price"
-    t.decimal "wholesale_price"
-    t.bigint "branch_id"
-    t.integer "stock_type"
-    t.bigint "origin_branch_id"
-    t.string "name"
-    t.bigint "registry_id"
-    t.bigint "employee_id"
-    t.index ["branch_id"], name: "index_stocks_on_branch_id"
-    t.index ["employee_id"], name: "index_stocks_on_employee_id"
-    t.index ["origin_branch_id"], name: "index_stocks_on_origin_branch_id"
-    t.index ["product_id"], name: "index_stocks_on_product_id"
-    t.index ["registry_id"], name: "index_stocks_on_registry_id"
-    t.index ["stock_type"], name: "index_stocks_on_stock_type"
-    t.index ["supplier_id"], name: "index_stocks_on_supplier_id"
   end
 
   create_table "store_front_configs", force: :cascade do |t|
@@ -499,7 +384,7 @@ ActiveRecord::Schema.define(version: 20190115044559) do
     t.bigint "payable_account_id"
     t.string "avatar_file_name"
     t.string "avatar_content_type"
-    t.integer "avatar_file_size"
+    t.bigint "avatar_file_size"
     t.datetime "avatar_updated_at"
     t.index ["business_name"], name: "index_suppliers_on_business_name", unique: true
     t.index ["payable_account_id"], name: "index_suppliers_on_payable_account_id"
@@ -526,18 +411,6 @@ ActiveRecord::Schema.define(version: 20190115044559) do
     t.index ["product_id"], name: "index_unit_of_measurements_on_product_id"
   end
 
-  create_table "units", force: :cascade do |t|
-    t.string "brand"
-    t.string "model"
-    t.string "serial_number"
-    t.datetime "purchase_date"
-    t.datetime "warranty_date"
-    t.bigint "customer_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["customer_id"], name: "index_units_on_customer_id"
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -554,17 +427,15 @@ ActiveRecord::Schema.define(version: 20190115044559) do
     t.integer "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "branch_id"
     t.string "avatar_file_name"
     t.string "avatar_content_type"
-    t.integer "avatar_file_size"
+    t.bigint "avatar_file_size"
     t.datetime "avatar_updated_at"
     t.string "designation"
     t.bigint "section_id"
     t.bigint "cash_on_hand_account_id"
     t.bigint "store_front_id"
     t.bigint "business_id"
-    t.index ["branch_id"], name: "index_users_on_branch_id"
     t.index ["business_id"], name: "index_users_on_business_id"
     t.index ["cash_on_hand_account_id"], name: "index_users_on_cash_on_hand_account_id"
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -611,36 +482,6 @@ ActiveRecord::Schema.define(version: 20190115044559) do
     t.index ["type"], name: "index_vouchers_on_type"
   end
 
-  create_table "warranties", force: :cascade do |t|
-    t.string "barcode"
-    t.string "name"
-    t.string "remarks"
-    t.decimal "quantity"
-    t.bigint "sales_return_id"
-    t.bigint "supplier_id"
-    t.bigint "customer_id"
-    t.datetime "date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["customer_id"], name: "index_warranties_on_customer_id"
-    t.index ["sales_return_id"], name: "index_warranties_on_sales_return_id"
-    t.index ["supplier_id"], name: "index_warranties_on_supplier_id"
-  end
-
-  create_table "warranty_releases", force: :cascade do |t|
-    t.datetime "release_date"
-    t.bigint "user_id"
-    t.bigint "warranty_id"
-    t.bigint "customer_id"
-    t.string "remarks"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.decimal "quantity"
-    t.index ["customer_id"], name: "index_warranty_releases_on_customer_id"
-    t.index ["user_id"], name: "index_warranty_releases_on_user_id"
-    t.index ["warranty_id"], name: "index_warranty_releases_on_warranty_id"
-  end
-
   create_table "work_order_service_charges", force: :cascade do |t|
     t.bigint "service_charge_id"
     t.bigint "work_order_id"
@@ -685,11 +526,8 @@ ActiveRecord::Schema.define(version: 20190115044559) do
   add_foreign_key "amounts", "entries"
   add_foreign_key "bank_accounts", "accounts", column: "cash_in_bank_account_id"
   add_foreign_key "bank_accounts", "businesses"
-  add_foreign_key "branches", "businesses"
   add_foreign_key "entries", "users"
   add_foreign_key "entries", "users", column: "recorder_id"
-  add_foreign_key "job_orders", "customers"
-  add_foreign_key "job_orders", "units"
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "line_items", column: "purchase_order_line_item_id"
   add_foreign_key "line_items", "line_items", column: "referenced_line_item_id"
@@ -697,38 +535,19 @@ ActiveRecord::Schema.define(version: 20190115044559) do
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
   add_foreign_key "line_items", "registries"
-  add_foreign_key "line_items", "stock_transfers"
   add_foreign_key "line_items", "store_fronts"
   add_foreign_key "line_items", "unit_of_measurements"
   add_foreign_key "line_items", "users"
   add_foreign_key "orders", "store_fronts"
   add_foreign_key "orders", "store_fronts", column: "destination_store_front_id"
-  add_foreign_key "orders", "store_fronts", column: "origin_store_front_id"
   add_foreign_key "orders", "users", column: "employee_id"
   add_foreign_key "orders", "vouchers"
   add_foreign_key "other_sales_line_items", "carts"
   add_foreign_key "other_sales_line_items", "orders"
   add_foreign_key "payments", "orders"
   add_foreign_key "posts", "users"
-  add_foreign_key "product_unit_service_charges", "product_units"
-  add_foreign_key "product_unit_service_charges", "service_charges"
   add_foreign_key "products", "categories"
   add_foreign_key "registries", "users", column: "employee_id"
-  add_foreign_key "repair_services_front_configs", "accounts", column: "accounts_receivable_account_id"
-  add_foreign_key "repair_services_front_configs", "repair_services_fronts"
-  add_foreign_key "repair_services_fronts", "businesses"
-  add_foreign_key "sales_returns", "line_items"
-  add_foreign_key "sales_returns", "orders"
-  add_foreign_key "stock_transfers", "branches", column: "destination_branch_id"
-  add_foreign_key "stock_transfers", "branches", column: "origin_branch_id"
-  add_foreign_key "stock_transfers", "stocks"
-  add_foreign_key "stock_transfers", "users", column: "employee_id"
-  add_foreign_key "stocks", "branches"
-  add_foreign_key "stocks", "branches", column: "origin_branch_id"
-  add_foreign_key "stocks", "products"
-  add_foreign_key "stocks", "registries"
-  add_foreign_key "stocks", "suppliers"
-  add_foreign_key "stocks", "users", column: "employee_id"
   add_foreign_key "store_front_configs", "accounts", column: "accounts_receivable_account_id"
   add_foreign_key "store_front_configs", "store_fronts"
   add_foreign_key "store_fronts", "accounts", column: "cost_of_goods_sold_account_id"
@@ -745,21 +564,13 @@ ActiveRecord::Schema.define(version: 20190115044559) do
   add_foreign_key "technician_work_orders", "users", column: "technician_id"
   add_foreign_key "technician_work_orders", "work_orders"
   add_foreign_key "unit_of_measurements", "products"
-  add_foreign_key "units", "customers"
   add_foreign_key "users", "accounts", column: "cash_on_hand_account_id"
-  add_foreign_key "users", "branches"
   add_foreign_key "users", "businesses"
   add_foreign_key "users", "sections"
   add_foreign_key "users", "store_fronts"
   add_foreign_key "voucher_amounts", "accounts"
   add_foreign_key "voucher_amounts", "vouchers"
   add_foreign_key "vouchers", "users", column: "preparer_id"
-  add_foreign_key "warranties", "customers"
-  add_foreign_key "warranties", "sales_returns"
-  add_foreign_key "warranties", "suppliers"
-  add_foreign_key "warranty_releases", "customers"
-  add_foreign_key "warranty_releases", "users"
-  add_foreign_key "warranty_releases", "warranties"
   add_foreign_key "work_order_service_charges", "service_charges"
   add_foreign_key "work_order_service_charges", "users"
   add_foreign_key "work_order_service_charges", "work_orders"
