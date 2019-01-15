@@ -11,7 +11,6 @@ module StoreFrontModule
       def total_cost
         stock_transfer_order_line_items.sum(&:total_cost)
       end
-
     end
   end
 end
