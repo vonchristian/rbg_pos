@@ -21,13 +21,13 @@ module StoreFrontModule
         if product = Product.find_by(name: row["Product Name"]).present?
           product
         else
-          Product.find_or_create_by(name: row["Product Name"], category: find_category(row))
+          Product.find_or_create_by!(name: row["Product Name"], category: find_category(row))
         end
       end
 
       def create_or_find_line_item(row)
         if quantity(row).present? && quantity(row) > 0
-          StoreFrontModule::LineItems::PurchaseOrderLineItem.find_or_create_by(
+          StoreFrontModule::LineItems::PurchaseOrderLineItem.find_or_create_by!(
             store_front: employee.store_front,
             quantity: quantity(row),
             unit_cost: unit_cost(row),
@@ -83,7 +83,7 @@ module StoreFrontModule
       end
 
       def unit_of_measurement(row)
-        StoreFrontModule::UnitOfMeasurement.find_or_create_by(
+        StoreFrontModule::UnitOfMeasurement.find_or_create_by!(
           unit_code:           unit_code(row),
           product:             find_product(row),
           base_measurement:    base_measurement(row),
@@ -93,7 +93,7 @@ module StoreFrontModule
       end
 
       def find_or_create_selling_price(row)
-        StoreFrontModule::SellingPrice.create(
+        StoreFrontModule::SellingPrice.create!(
           price:               selling_price(row),
           product:             find_product(row),
           unit_of_measurement: unit_of_measurement(row))
