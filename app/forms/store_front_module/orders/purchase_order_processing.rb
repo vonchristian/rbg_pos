@@ -17,6 +17,8 @@ module StoreFrontModule
       def create_purchase_order
         order = find_supplier.purchase_orders.create!(
           date: date,
+          store_front: find_employee.store_front,
+          account_number: SecureRandom.uuid,
           voucher: find_voucher,
           search_term: find_supplier.business_name,
           employee: find_employee)

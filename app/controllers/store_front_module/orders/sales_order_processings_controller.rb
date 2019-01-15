@@ -19,7 +19,7 @@ module StoreFrontModule
 
       private
       def create_voucher
-        SalesOrderVoucher.new(order: @processed_order, employee: current_user).create_voucher!
+        Vouchers::SalesOrderVoucher.new(order: @processed_order, employee: current_user).create_voucher!
       end
 
       def create_entry

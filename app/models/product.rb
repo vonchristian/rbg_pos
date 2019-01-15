@@ -39,7 +39,7 @@ class Product < ApplicationRecord
   :path => ":rails_root/public/system/:attachment/:id/:style/:filename",
   :url => "/system/:attachment/:id/:style/:filename"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
-  validates :name, presence: true
+  # validates :name, presence: true
 
   delegate :name, to: :category, prefix: true, allow_nil: true
   delegate :unit_code, to: :base_measurement, prefix: true, allow_nil: true
@@ -125,7 +125,6 @@ class Product < ApplicationRecord
   end
   def balance(options={})
     sales_returns_balance +
-    received_stock_transfers_balance(options) +
     purchases_balance(options) -
     sales_balance(options) -
     stock_transfers_balance(options) -
@@ -133,26 +132,23 @@ class Product < ApplicationRecord
     internal_use_orders_balance(options)
   end
   def sales_balance(options={})
-    sales.balance(product_id: self.id)
+    sales.balance(product: self)
   end
   def sales_returns_balance(options={})
-    sales_returns.balance(product_id: self.id)
+    sales_returns.balance(product: self)
   end
 
   def purchases_balance(options={})
-    purchases.balance(product_id: self.id) -
-    purchase_returns.balance(product_id: self.id)
+    purchases.balance(product: self) -
+    purchase_returns.balance(product: self)
   end
   def spoilages_balance(options={})
-    spoilages.balance(product_id: self.id)
+    spoilages.balance(product: self)
   end
   def stock_transfers_balance(options={})
-    stock_transfers.balance(product_id: self.id)
+    stock_transfers.balance(product: self)
   end
   def internal_use_orders_balance(options={})
-    internal_uses.balance(product_id: self.id)
-  end
-  def received_stock_transfers_balance(options={})
-    received_stock_transfers.balance(product_id: self.id)
+    internal_uses.balance(product: self)
   end
 end

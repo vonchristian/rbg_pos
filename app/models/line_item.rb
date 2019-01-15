@@ -2,7 +2,7 @@ class LineItem < ApplicationRecord
   include PgSearch
   pg_search_scope :text_search, against: [:bar_code]
   multisearchable against: [:bar_code]
-  belongs_to :store_front
+  belongs_to :store_front, optional: true
   belongs_to :commercial_document, polymorphic: true, optional: true
   belongs_to :cart, optional: true
   belongs_to :order, optional: true
@@ -14,7 +14,7 @@ class LineItem < ApplicationRecord
   delegate :name, to: :product
   delegate :name, to: :product, prefix: true
 
-  validates :store_front_id, presence: true
+
   def self.with_orders
     where.not(order_id: nil)
   end

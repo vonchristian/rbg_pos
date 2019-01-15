@@ -40,22 +40,22 @@ module StoreFrontModule
       end
 
       def quantity(row)
-        row["Quantity"]
+        row["Quantity"].to_f
       end
       def find_category(row)
         Category.find_or_create_by(name: row["Category"])
       end
 
       def unit_cost(row)
-        row["Unit Cost"]
+        row["Unit Cost"].to_f
       end
 
       def total_cost(row)
-        row["Total Cost"]
+        row["Total Cost"].to_f
       end
 
       def find_product(row)
-        Product.find_by(name: row["Product Name"])
+        Product.find_or_create_by(name: row["Product Name"])
       end
 
       def bar_code(row)
