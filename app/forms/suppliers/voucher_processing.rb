@@ -15,6 +15,7 @@ module Suppliers
     def create_voucher
       voucher = find_supplier.vouchers.create!(
         date: date,
+        account_number: SecureRandom.uuid,
         description: description,
         reference_number: reference_number,
         preparer: find_employee)
