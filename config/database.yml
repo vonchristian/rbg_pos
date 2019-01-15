@@ -80,6 +80,6 @@ test:
 #
 production:
   <<: *default
-  database: rbg_pos_production
+  database: rbg_production
   username: deploy
-  password: deploy@itworx
+  password: deploy@rbg
