@@ -9,7 +9,6 @@ module StoreFrontModule
             @processed_order = @sales_order.find_order
             create_voucher
             create_entry
-            update_order
           end
           redirect_to store_index_url, notice: "Order saved successfully."
         else
@@ -24,10 +23,6 @@ module StoreFrontModule
 
       def create_entry
         VoucherEntryCreation.new(voucher: Voucher.find_by(account_number: @processed_order.account_number)).create_entry!
-      end
-
-      def update_order
-        @processed_order.update_attributes!(store_front: current_user.store_front, voucher: @voucher_processing)
       end
 
       def order_params

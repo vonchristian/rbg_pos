@@ -1,4 +1,3 @@
-require 'roo'
 module StoreFrontModule
   module Registries
     class PurchaseOrderRegistry < Registry
@@ -18,25 +17,19 @@ module StoreFrontModule
       end
 
       def create_or_find_product(row)
-        if product = Product.find_by(name: row["Product Name"]).present?
-          product
-        else
-          Product.find_or_create_by!(name: row["Product Name"], category: find_category(row))
-        end
+        Product.find_or_create_by!(name: row["Product Name"], category: find_category(row))
       end
 
       def create_or_find_line_item(row)
-        if quantity(row).present? && quantity(row) > 0
-          StoreFrontModule::LineItems::PurchaseOrderLineItem.find_or_create_by!(
-            store_front: employee.store_front,
-            quantity: quantity(row),
-            unit_cost: unit_cost(row),
-            total_cost: total_cost(row),
-            product: find_product(row),
-            unit_of_measurement: unit_of_measurement(row),
-            bar_code: bar_code(row),
-            registry_id: self.id)
-        end
+        StoreFrontModule::LineItems::PurchaseOrderLineItem.find_or_create_by!(
+          store_front: employee.store_front,
+          quantity: quantity(row),
+          unit_cost: unit_cost(row),
+          total_cost: total_cost(row),
+          product: create_or_find_product(row),
+          unit_of_measurement: unit_of_measurement(row),
+          bar_code: bar_code(row),
+          registry_id: self.id)
       end
 
       def quantity(row)
@@ -54,9 +47,6 @@ module StoreFrontModule
         row["Total Cost"].to_f
       end
 
-      def find_product(row)
-        Product.find_or_create_by(name: row["Product Name"])
-      end
 
       def bar_code(row)
         normalized_barcode(row)
@@ -85,7 +75,7 @@ module StoreFrontModule
       def unit_of_measurement(row)
         StoreFrontModule::UnitOfMeasurement.find_or_create_by!(
           unit_code:           unit_code(row),
-          product:             find_product(row),
+          product:             create_or_find_product(row),
           base_measurement:    base_measurement(row),
           conversion_quantity: conversion_quantity(row),
           quantity:            1
@@ -93,14 +83,14 @@ module StoreFrontModule
       end
 
       def find_or_create_selling_price(row)
-        StoreFrontModule::SellingPrice.create!(
+        StoreFrontModule::SellingPrice.find_or_create_by!(
           price:               selling_price(row),
-          product:             find_product(row),
+          product:             create_or_find_product(row),
           unit_of_measurement: unit_of_measurement(row))
       end
 
       def find_unit_of_measurement(row)
-        find_product(row).unit_of_measurements.find_by(
+        create_or_find_product(row).unit_of_measurements.find_by(
           unit_code:           unit_code(row),
           base_measurement:    base_measurement(row),
           conversion_quantity: conversion_quantity(row),

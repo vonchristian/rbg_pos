@@ -8,6 +8,7 @@
         <span class="help-block"> Find excel file to upload. Please ensure file extension ends with '.xls' </span>
         <%= simple_form_for @registry, multipart: true, url: :store_front_module_stock_transfer_registries do |f| %>
           <%= f.input :spreadsheet, label: false %>
+          <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
           <div class="box-footer">
             <%= f.submit "Upload Stock Transfer", class: "btn btn-primary btn-lg" %>
           </div>

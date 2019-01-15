@@ -1,3 +1,4 @@
+check delete of cart
 stock transfer
   origi
 

@@ -6,7 +6,8 @@ module StoreFrontModule
       end
       def create
         @registry = StoreFrontModule::Registries::StockTransferRegistry.new(registry_params)
-        if @registry.save
+        if @registry.valid?
+          @registry.save
           @registry.parse_for_records
           redirect_to store_front_module_stock_transfer_registry_url(@registry), notice: "uploaded successfully"
         else
@@ -21,7 +22,7 @@ module StoreFrontModule
       private
       def registry_params
         params.require(:store_front_module_registries_stock_transfer_registry).
-        permit(:spreadsheet)
+        permit(:spreadsheet, :employee_id)
       end
     end
   end

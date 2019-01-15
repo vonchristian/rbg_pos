@@ -4,10 +4,10 @@ module Vouchers
     attr_reader :order, :origin_store_front, :destination_store_front
 
     def initialize(args={})
-      @order                             = args.fetch(:order)
-      @employee                          = args.fetch(:employee)
-      @origin_store_front                = @order.store_front
-      @destination_store_front           = @order.destination_store_front
+      @order                   = args.fetch(:order)
+      @employee                = args.fetch(:employee)
+      @origin_store_front             = @order.store_front
+      @destination_store_front = @order.destination_store_front
     end
 
     def create_voucher!
@@ -32,7 +32,7 @@ module Vouchers
         commercial_document: order
       )
     voucher.save!
-    order.update_attributes(voucher: voucher)
+    order.update_attributes!(voucher: voucher)
     end
   end
 end

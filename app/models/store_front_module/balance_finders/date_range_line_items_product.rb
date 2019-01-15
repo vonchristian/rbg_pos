@@ -1,9 +1,10 @@
 module StoreFrontModule
   module BalanceFinders
-    class DateRangeLineItemsProduct < DefaultBalanceFinder
-      attr_reader :date_range, :product
+    class DateRangeLineItemsProduct
+      attr_reader :date_range, :product, :line_items
 
       def post_initialize(args)
+        @line_items = args.fetch(:line_items)
         @product    = args.fecth(:product)
         @date_range = args.fecth(:date_range)
       end

@@ -5,7 +5,6 @@ module StoreFrontModule
 
       def initialize(args)
         @line_items = args.fetch(:line_items)
-        post_initialize(args)
       end
 
       def compute

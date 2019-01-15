@@ -1,6 +1,6 @@
 module StoreFrontModule
   module BalanceFinders
-    class LineItemsProduct < DefaultBalanceFinder
+    class LineItemsProduct
       attr_reader :product, :to_date
 
       def post_initialize(args)
