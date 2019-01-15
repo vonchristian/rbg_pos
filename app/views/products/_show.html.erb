@@ -9,13 +9,15 @@
             </div>
             <div class="col-md-9">
               <h4 class="title"><%= @product.name.try(:upcase) %></h4>
+              <h4><%= @product.available_quantity %></h4> IN STOCK
+
               <p class="category"> <%= @product.description %> </p>
               <div class="row">
                 <div class="col-md-3">
                   <h4><%= @product.purchases_balance %></h4>
                   <small>PURCHASES</small>
 
-                
+
                    <h4><%= @product.stock_transfers_balance %></h4>
                   <small>STOCK TRANSFERS</small>
                 </div>
@@ -24,6 +26,8 @@
                   <small>SALES</small><br><br>
                   <small class="text-danger"><%= @product.sales_returns_balance %></small><br>
                   <small>SALES RETURNS</small>
+                  <small class="text-danger"><%= @product.spoilages_balance %></small><br>
+                  <small>SPOILAGES</small>
                 </div>
                 <div class="col-md-3">
                   <h4><%= @product.available_quantity %></h4>

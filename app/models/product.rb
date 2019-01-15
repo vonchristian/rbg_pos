@@ -10,7 +10,7 @@ class Product < ApplicationRecord
 	has_many :stocks
 	has_many :line_items
 	has_many :orders, through: :sold_items
-	has_many :sales_returns, through: :sold_items
+	has_many :sales_returns,  class_name: "StoreFrontModule::LineItems::SalesReturnOrderLineItem"
 	has_many :returned_items, through: :sold_items,  source: :sales_return #Sales Return
 	has_many :items_under_warranty, through: :sales_returns, source: :warranty #forwarded items to supplier
 	has_many :released_warranties, through: :items_under_warranty, source: :warranty_release

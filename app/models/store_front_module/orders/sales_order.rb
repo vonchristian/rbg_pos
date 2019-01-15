@@ -8,7 +8,7 @@ module StoreFrontModule
       delegate :name, to: :customer, prefix: true, allow_nil: true
       delegate :full_name, to: :customer, prefix: true, allow_nil: true
 
-      before_destroy :delete_entryz
+      before_destroy :delete_entry
 
       def has_balance?
         balance > 0
