@@ -1,6 +1,6 @@
 module StoreFrontModule
   module BalanceFinders
-    class LineItems
+    class DefaultBalanceFinder
       attr_reader :line_items
 
       def initialize(args)
