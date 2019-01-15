@@ -29,7 +29,7 @@ module StoreFrontModule
 
       private
       def registry_params
-        params.require(:store_front_module_registries_purchase_order_registry).permit(:spreadsheet)
+        params.require(:store_front_module_registries_purchase_order_registry).permit(:spreadsheet, :employee_id)
       end
     end
   end

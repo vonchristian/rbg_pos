@@ -28,6 +28,7 @@ module StoreFrontModule
       def create_or_find_line_item(row)
         if quantity(row).present? && quantity(row) > 0
           StoreFrontModule::LineItems::PurchaseOrderLineItem.find_or_create_by(
+            store_front: employee.store_front,
             quantity: quantity(row),
             unit_cost: unit_cost(row),
             total_cost: total_cost(row),

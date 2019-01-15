@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190111130707) do
+ActiveRecord::Schema.define(version: 20190115044559) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -194,6 +194,7 @@ ActiveRecord::Schema.define(version: 20190111130707) do
     t.bigint "referencer_id"
     t.bigint "registry_id"
     t.datetime "date"
+    t.bigint "store_front_id"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_line_items"
     t.index ["order_id"], name: "index_line_items_on_order_id"
@@ -204,6 +205,7 @@ ActiveRecord::Schema.define(version: 20190111130707) do
     t.index ["registry_id"], name: "index_line_items_on_registry_id"
     t.index ["sales_order_line_item_id"], name: "index_line_items_on_sales_order_line_item_id"
     t.index ["stock_transfer_id"], name: "index_line_items_on_stock_transfer_id"
+    t.index ["store_front_id"], name: "index_line_items_on_store_front_id"
     t.index ["type"], name: "index_line_items_on_type"
     t.index ["unit_of_measurement_id"], name: "index_line_items_on_unit_of_measurement_id"
     t.index ["user_id"], name: "index_line_items_on_user_id"
@@ -333,6 +335,8 @@ ActiveRecord::Schema.define(version: 20190111130707) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "type"
+    t.bigint "employee_id"
+    t.index ["employee_id"], name: "index_registries_on_employee_id"
     t.index ["type"], name: "index_registries_on_type"
   end
 
@@ -694,6 +698,7 @@ ActiveRecord::Schema.define(version: 20190111130707) do
   add_foreign_key "line_items", "products"
   add_foreign_key "line_items", "registries"
   add_foreign_key "line_items", "stock_transfers"
+  add_foreign_key "line_items", "store_fronts"
   add_foreign_key "line_items", "unit_of_measurements"
   add_foreign_key "line_items", "users"
   add_foreign_key "orders", "store_fronts"
@@ -708,6 +713,7 @@ ActiveRecord::Schema.define(version: 20190111130707) do
   add_foreign_key "product_unit_service_charges", "product_units"
   add_foreign_key "product_unit_service_charges", "service_charges"
   add_foreign_key "products", "categories"
+  add_foreign_key "registries", "users", column: "employee_id"
   add_foreign_key "repair_services_front_configs", "accounts", column: "accounts_receivable_account_id"
   add_foreign_key "repair_services_front_configs", "repair_services_fronts"
   add_foreign_key "repair_services_fronts", "businesses"
