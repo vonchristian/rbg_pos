@@ -75,5 +75,8 @@ group :test do
   gem 'capybara'
 end
 gem 'rack-mini-profiler'
+gem 'flamegraph'
+gem 'stackprof'
 gem 'memory_profiler'
+
 gem 'whenever', :require => false

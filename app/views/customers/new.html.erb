@@ -9,6 +9,7 @@
       <div class="content">
 <%= simple_form_for @customer do |f| %>
   <%= f.error_notification %>
+  <%= f.input :business_id, input_html: { value: current_business.id }, as: :hidden %>
   <%= f.input :first_name %>
   <%= f.input :last_name %>
   <%= f.input :contact_number %>

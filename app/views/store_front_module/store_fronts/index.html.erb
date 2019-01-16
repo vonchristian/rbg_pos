@@ -1,0 +1,45 @@
+<h3 class="box-title"><%= @business.name.upcase %></h3>
+<ul class="nav nav-tabs">
+  <li class= <%= 'active' if current_page?(store_front_module_store_fronts_path) %>>
+    <%= link_to "Summary", store_front_module_store_fronts_path %>
+  </li>
+
+</ul>
+<%= @from_date.strftime("%B %e, %Y") %>
+<% @store_fronts.each do |store_front| %>
+<div class="box box-solid">
+  <div class="box-body">
+    <span class="title"><%= store_front.name.try(:upcase) %></span><br><br>
+    <div class="row">
+      <div class="col-md-3 border-right">
+        <small>SALES </small>
+        <br>
+        <span class="dashboard-number">
+          <%= number_to_currency store_front.sales_orders.ordered_on(from_date: @from_date, to_date: @to_date).total %>
+        </span>
+      </div>
+      <div class="col-md-3 border-right">
+        <small>COST OF GOODS SOLD </small>
+        <br>
+        <span class="dashboard-number">
+          <%= number_to_currency store_front.sales_orders.ordered_on(from_date: @from_date, to_date: @to_date).total_cost_of_goods_sold %>
+        </span>
+      </div>
+      <div class="col-md-3 border-right">
+        <small>NET INCOME </small>
+        <br>
+        <span class="dashboard-number">
+          <%= number_to_currency store_front.sales_orders.ordered_on(from_date: @from_date, to_date: @to_date).total_income %>
+        </span>
+      </div>
+      <div class="col-md-3 border-right">
+        <small>SALES COUNT </small>
+        <br>
+        <span class="dashboard-number">
+          <%= store_front.sales_orders.ordered_on(from_date: @from_date, to_date: @to_date).count %>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

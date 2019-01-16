@@ -127,7 +127,7 @@ class WorkOrder < ApplicationRecord
   end
 
   def payment_entries
-    store_front.default_accounts_receivable_account.amounts.where(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
+    store_front.receivable_account.amounts.where(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
   end
 
   def payments_total

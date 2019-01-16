@@ -1,5 +1,3 @@
-<h4><%= @product.balance(store_front: current_user.store_front) %></h4> IN STOCK
-
 <div class="content">
   <div class="row">
     <div class="col-md-12">
@@ -25,15 +23,15 @@
                 <div class="col-md-3">
                   <h4><%= @product.sales_balance(store_front: current_store_front) %></h4>
                   <small>SALES</small><br><br>
-                  <small class="text-danger"><%= @product.sales_returns_balance %></small><br>
+                  <small class="text-danger"><%= @product.sales_returns_balance(store_front: current_store_front) %></small><br>
                   <small>SALES RETURNS</small>
-                  <small class="text-danger"><%= @product.spoilages_balance %></small><br>
+                  <small class="text-danger"><%= @product.spoilages_balance(store_front: current_store_front) %></small><br>
                   <small>SPOILAGES</small>
                 </div>
                 <h4><%= @product.delivered_stock_transfers_balance(store_front: current_user.store_front) %></h4>
-                <small>DELIVERED STOCK TRANSFERS</small><br><br>
+                <small>TRANSFERRED STOCKS</small><br><br>
                 <h4><%= @product.received_stock_transfers_balance(store_front: current_user.store_front) %></h4>
-                <small>RECEIVED STOCK TRANSFERS</small><br><br>
+                <small>RECEIVED STOCKS</small><br><br>
                 <div class="col-md-3">
                   <h4><%= @product.balance(store_front: current_user.store_front) %></h4>
                   <small>AVAILABLE QTY</small>
@@ -54,6 +52,7 @@
             <li class="<%= 'active' if current_page?(product_stocks_path(@product))%>">
               <%= link_to 'Stocks', product_stocks_path(@product) %>
             </li>
+            
           </ul>
           <div class="tab-content">
             <div class="tab-pane" id="tab_default_1">

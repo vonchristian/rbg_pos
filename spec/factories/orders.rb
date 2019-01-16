@@ -8,9 +8,6 @@ FactoryBot.define do
 
     factory :sales_order, class: StoreFrontModule::Orders::SalesOrder do |order_cd|
       order_cd.association :commercial_document, factory: :customer
-      order_cd.after(:build) do |t|
-        t.sales_order_line_items << create(:sales_order_line_item)
-      end
     end
 
 

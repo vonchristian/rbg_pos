@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190116050209) do
+ActiveRecord::Schema.define(version: 20190116125624) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -116,6 +116,8 @@ ActiveRecord::Schema.define(version: 20190116050209) do
     t.bigint "avatar_file_size"
     t.datetime "avatar_updated_at"
     t.boolean "enable_interest", default: false
+    t.bigint "business_id"
+    t.index ["business_id"], name: "index_customers_on_business_id"
   end
 
   create_table "entries", force: :cascade do |t|
@@ -290,6 +292,8 @@ ActiveRecord::Schema.define(version: 20190116050209) do
     t.datetime "avatar_updated_at"
     t.bigint "category_id"
     t.decimal "low_stock_count", default: "0.0"
+    t.bigint "business_id"
+    t.index ["business_id"], name: "index_products_on_business_id"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["name"], name: "index_products_on_name", unique: true
   end
@@ -529,6 +533,7 @@ ActiveRecord::Schema.define(version: 20190116050209) do
   add_foreign_key "amounts", "entries"
   add_foreign_key "bank_accounts", "accounts", column: "cash_in_bank_account_id"
   add_foreign_key "bank_accounts", "businesses"
+  add_foreign_key "customers", "businesses"
   add_foreign_key "entries", "users"
   add_foreign_key "entries", "users", column: "recorder_id"
   add_foreign_key "line_items", "carts"
@@ -549,6 +554,7 @@ ActiveRecord::Schema.define(version: 20190116050209) do
   add_foreign_key "other_sales_line_items", "orders"
   add_foreign_key "payments", "orders"
   add_foreign_key "posts", "users"
+  add_foreign_key "products", "businesses"
   add_foreign_key "products", "categories"
   add_foreign_key "registries", "users", column: "employee_id"
   add_foreign_key "store_front_configs", "accounts", column: "accounts_receivable_account_id"

@@ -2,7 +2,6 @@ require 'rails_helper'
 
 describe Order do
   describe 'associations' do
-    it { is_expected.to belong_to(:destination_store_front).optional } # move to stock_transfer_order
     it { is_expected.to belong_to(:commercial_document).optional }
     it { is_expected.to belong_to :employee }
     it { is_expected.to have_one :cash_payment }
@@ -23,6 +22,20 @@ describe Order do
 
     expect(described_class.credit).to include(credit_order)
     expect(described_class.credit).to_not include(cash_order)
+  end
+
+  it ".total_cost" do
+    order_1 = create(:sales_order)
+    5.times do
+      order_1.sales_order_line_items << create(:sales_order_line_item, quantity: 1, unit_cost: 100, total_cost: 100)
+    end
+
+    order_2 = create(:sales_order)
+    5.times do
+      order_2.sales_order_line_items << create(:sales_order_line_item, quantity: 1, unit_cost: 100, total_cost: 100)
+    end
+
+    expect(described_class.total_cost).to eql 1_000
   end
 
   it ".ordered_on(args={})" do

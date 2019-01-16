@@ -4,7 +4,7 @@ class ProductsController < ApplicationController
     if params[:search].present?
       @products = Product.text_search(params[:search]).paginate(page: params[:page], per_page: 65)
     else
-      @products = Product.includes(:line_items).order(:name).paginate(page: params[:page], per_page: 65)
+      @products = Product.includes(:selling_prices, :unit_of_measurements).order(:name).paginate(page: params[:page], per_page: 65)
     end
     @categories = Category.all
     @registry = Registry.new

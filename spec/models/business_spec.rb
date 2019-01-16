@@ -1,5 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe Business, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe Business do
+  describe 'associations' do
+    it { is_expected.to have_many :customers }
+    it { is_expected.to have_many :employees }
+    it { is_expected.to have_many :store_fronts }
+  end
+
+  describe 'validations' do
+    it { is_expected.to validate_presence_of :name }
+  end
 end

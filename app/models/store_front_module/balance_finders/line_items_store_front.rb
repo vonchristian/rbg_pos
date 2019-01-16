@@ -11,8 +11,8 @@ module StoreFrontModule
       def compute
         line_items.
         with_orders.
-        includes(:order).
-        where('orders.store_front_id' => store_front.id).
+        for_store_front(store_front).
+        includes(:unit_of_measurement).
         total_converted_quantity
       end
     end

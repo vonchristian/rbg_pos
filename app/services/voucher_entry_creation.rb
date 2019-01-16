@@ -8,7 +8,7 @@ class VoucherEntryCreation
   def create_entry!
     entry = AccountingModule::Entry.new(
       recorder: voucher.preparer,
-      commercial_document: voucher,
+      commercial_document: voucher.payee,
       entry_date: voucher.date,
       description: voucher.description
     )

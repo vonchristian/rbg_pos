@@ -15,7 +15,10 @@ module StoreFrontModule
       def create_purchase_order
         order = find_supplier.purchase_return_orders.create!(
           date: date,
-          employee_id: employee_id,
+          store_front: find_employee.store_front,
+          employee: find_employee,
+          account_number: SecureRandom.uuid,
+          commercial_document: find_supplier,
           search_term: find_supplier.business_name,
           description: description)
         find_cart.purchase_return_order_line_items.each do |line_item|
@@ -37,7 +40,7 @@ module StoreFrontModule
       def create_entry(order)
         merchandise_inventory = find_employee.store_front.merchandise_inventory_account
         accounts_payable = find_supplier.default_accounts_payable_account
-        find_employee.entries.create!(
+        AccountingModule::Entry.create!(
           recorder: find_employee,
           commercial_document: find_supplier,
           entry_date: date,

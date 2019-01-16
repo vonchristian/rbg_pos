@@ -1,12 +1,13 @@
 module Reports
   class SalesPdf < Prawn::Document
-    attr_reader :from_date, :to_date, :orders, :employee, :view_context
+    attr_reader :from_date, :to_date, :orders, :employee, :view_context, :business
     def initialize(args)
       super(margin: 30, page_size: 'A4')
       @from_date    = args[:from_date]
       @to_date      = args[:to_date]
       @orders       = args[:orders]
       @employee     = args[:employee]
+      @business     = @employee.business
       @view_context = args[:view_context]
       heading
       cash_on_hand_account_details
@@ -25,13 +26,14 @@ module Reports
       end
     end
     def heading
-      text 'SALES REPORT', align: :center, style: :bold
-      if @from_date && @to_date && @from_date.strftime("%B %e, %Y") == @to_date.strftime("%B %e, %Y")
-        text "Date: #{@from_date.strftime('%B %e, %Y')}", align: :center
-      else
-        text "From: #{@from_date.strftime('%B %e, %Y')} To: #{@to_date.strftime('%B %e, %Y')} ", align: :center
-      end
-      move_down 5
+      bounding_box [360, 770], width: 200 do
+        text "#{business.name.upcase }", style: :bold, size: 12
+    end
+    bounding_box [0, 770], width: 400 do
+      text "SALES REPORT", style: :bold, size: 12
+      text "Date Covered: #{from_date.strftime("%b. %e, %Y")} - #{to_date.strftime("%b. %e, %Y")}", size: 10
+    end
+      move_down 10
       stroke_horizontal_rule
     end
     def cash_on_hand_account_details
@@ -69,11 +71,16 @@ module Reports
       if @employee.present?
         [["DATE", "OR", "CUSTOMER", "ITEMS", "DISCOUNT", "TOTAL COST"]] +
         @orders_data ||= @employee.sales_orders.ordered_on(from_date: (@from_date.beginning_of_day), to_date: @to_date.end_of_day).map{|o| [o.date.strftime("%B %e, %Y"), o.reference_number, o.commercial_document.try(:name).try(:upcase), order_description(o), price(o.discount_amount), price(o.try(:total_cost))] } +
-        [["", "","", "TOTAL", "#{price(@employee.sales_orders.ordered_on(from_date: (@from_date.beginning_of_day), to_date: @to_date.end_of_day).map{|a| a.total_cost}.to_a.compact.sum)}"]]
+        [["",
+          "",
+          "",
+          "",
+          "#{price(@employee.sales_orders.ordered_on(from_date: @from_date, to_date: @to_date).total_discount)}",
+           "#{price(@employee.sales_orders.ordered_on(from_date: @from_date, to_date: @to_date).total_cost)}"]]
       else
          [["DATE", "OR", "CUSTOMER", "ITEMS", "DISCOUNT", "TOTAL COST"]] +
         @orders_data ||= @orders.ordered_on(from_date: (@from_date.beginning_of_day), to_date: @to_date.end_of_day).map{|o| [o.date.strftime("%B %e, %Y"), o.reference_number, o.commercial_document.try(:name).try(:upcase),  order_description(o),  price(o.discount_amount), price(o.try(:total_cost))] } +
-        [["", "","", "", "<b>TOTAL</b>", "<b>#{price(@orders.to_a.map{|a| a.total_cost}.compact.sum)}</b>"]]
+        [["", "","", "", "TOTAL", "", "<b>#{price(@orders.total_cost_less_discount)}</b>"]]
           end
     end
 

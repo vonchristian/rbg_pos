@@ -48,7 +48,7 @@ class Supplier < ApplicationRecord
 
   end
   def default_accounts_payable_account
-    return accounts_payable_account if accounts_payable_account.present?
+    return payable_account if payable_account.present?
     AccountingModule::Liability.find_by(name: 'Accounts Payable-Trade')
   end
 end

@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format == 'application/json' }
   before_action :authenticate_user!
   rescue_from Pundit::NotAuthorizedError, with: :permission_denied
-  helper_method :current_store_front
+  helper_method :current_store_front, :current_business
 
 
   private
@@ -18,7 +18,11 @@ class ApplicationController < ActionController::Base
     session[:cart_id] = cart.id
     cart
   end
+  
   def current_store_front
     current_user.store_front
+  end
+  def current_business
+    current_user.business
   end
 end

@@ -1,12 +1,13 @@
 module Reports
   class CashReceiptsPdf < Prawn::Document
-    attr_reader :from_date, :to_date, :cash_receipts, :employee, :view_context
+    attr_reader :from_date, :to_date, :cash_receipts, :employee, :view_context, :business
     def initialize(args)
       super(margin: 30, page_size: 'A4')
       @from_date = args[:from_date]
       @to_date = args[:to_date]
       @cash_receipts = args[:cash_receipts]
       @employee = args[:employee]
+      @business = @employee.business
       @view_context = args[:view_context]
       heading
       cash_on_hand_account_details
@@ -18,16 +19,15 @@ module Reports
     end
 
     def heading
-      text 'CASH RECEIPTS REPORT', align: :center, style: :bold
-      if from_date && to_date && from_date.strftime("%B %e, %Y") == to_date.strftime("%B %e, %Y")
-        text "Date: #{from_date.strftime('%B %e, %Y')}", align: :center
-      else
-        text "From: #{from_date.strftime('%B %e, %Y')} To: #{to_date.strftime('%B %e, %Y')} ", align: :center
-      end
-
-      move_down 5
-      stroke_horizontal_rule
+      bounding_box [360, 770], width: 200 do
+        text "#{business.name.upcase }", style: :bold, size: 12
+    end
+    bounding_box [0, 770], width: 400 do
+      text "CASH RECEIPTS REPORT", style: :bold, size: 12
+      text "Date Covered: #{from_date.strftime("%b. %e, %Y")} - #{to_date.strftime("%b. %e, %Y")}", size: 10
+    end
       move_down 10
+      stroke_horizontal_rule
     end
     def cash_on_hand_account_details
       if employee.present?

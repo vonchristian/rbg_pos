@@ -15,7 +15,7 @@ module Vouchers
     end
     def create_voucher!
       voucher = Voucher.new(
-        description: "Sales",
+        description: order.line_items_name,
         date: order.date,
         payee: order.customer,
         preparer: order.employee,

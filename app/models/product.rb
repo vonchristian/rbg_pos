@@ -6,29 +6,21 @@ class Product < ApplicationRecord
   :associated_against => {
     :purchases => [:bar_code]}
 
-  belongs_to :category, optional: true
-	has_many :stocks
+  belongs_to :business
+  belongs_to :category,           optional: true
 	has_many :line_items
-	has_many :orders, through: :sold_items
-	has_many :sales_returns,  class_name: "StoreFrontModule::LineItems::SalesReturnOrderLineItem"
-	has_many :returned_items, through: :sold_items,  source: :sales_return #Sales Return
-	has_many :items_under_warranty, through: :sales_returns, source: :warranty #forwarded items to supplier
-	has_many :released_warranties, through: :items_under_warranty, source: :warranty_release
-
-  has_many :unit_of_measurements, class_name: "StoreFrontModule::UnitOfMeasurement"
-
-  has_many :purchases, :class_name => 'StoreFrontModule::LineItems::PurchaseOrderLineItem'
-
-  has_many :internal_uses, :class_name => 'StoreFrontModule::LineItems::InternalUseOrderLineItem'
-  has_many :sales, :class_name => 'StoreFrontModule::LineItems::SalesOrderLineItem'
-  has_many :sales_orders, :through => :sales, :source => :sales_order, :class_name => 'StoreFrontModule::Orders::SalesOrder'
-  has_many :purchase_orders, :through => :purchases, :source => :order, :class_name => 'StoreFrontModule::Orders::PurchaseOrder'
-
-  has_many :sales_returns, class_name: "StoreFrontModule::LineItems::SalesReturnOrderLineItem"
-  has_many :purchase_returns, class_name: "StoreFrontModule::LineItems::PurchaseReturnOrderLineItem"
-  has_many :spoilages, class_name: "StoreFrontModule::LineItems::SpoilageOrderLineItem"
-  has_many :selling_prices, class_name: "StoreFrontModule::SellingPrice"
-  has_many :received_stock_transfers, class_name: "StoreFrontModule::LineItems::ReceivedStockTransferOrderLineItem"
+	has_many :orders,               through: :line_items
+	has_many :sales_returns,        class_name: "StoreFrontModule::LineItems::SalesReturnOrderLineItem"
+	has_many :unit_of_measurements, class_name: "StoreFrontModule::UnitOfMeasurement"
+  has_many :purchases,            class_name:'StoreFrontModule::LineItems::PurchaseOrderLineItem'
+  has_many :internal_uses,        class_name: 'StoreFrontModule::LineItems::InternalUseOrderLineItem'
+  has_many :sales,                class_name: 'StoreFrontModule::LineItems::SalesOrderLineItem'
+  has_many :sales_orders,         through: :sales, :source => :sales_order, :class_name => 'StoreFrontModule::Orders::SalesOrder'
+  has_many :purchase_orders,      through: :purchases, :source => :order, :class_name => 'StoreFrontModule::Orders::PurchaseOrder'
+  has_many :sales_returns,        class_name: "StoreFrontModule::LineItems::SalesReturnOrderLineItem"
+  has_many :purchase_returns,     class_name: "StoreFrontModule::LineItems::PurchaseReturnOrderLineItem"
+  has_many :spoilages,            class_name: "StoreFrontModule::LineItems::SpoilageOrderLineItem"
+  has_many :selling_prices,       class_name: "StoreFrontModule::SellingPrice"
 	has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",
@@ -124,36 +116,36 @@ class Product < ApplicationRecord
   def available_quantity(args={})
     balance(args)
   end
-  def balance(options={})
-    sales_returns_balance(options) +
-    purchases_balance(options) +
-    received_stock_transfers_balance(options) -
-    sales_balance(options) -
-    spoilages_balance(options) -
-    delivered_stock_transfers_balance(options) -
-    internal_use_orders_balance(options)
+  def balance(args={})
+    sales_returns_balance(args) +
+    purchases_balance(args) +
+    received_stock_transfers_balance(args) -
+    sales_balance(args) -
+    spoilages_balance(args) -
+    delivered_stock_transfers_balance(args) -
+    internal_use_orders_balance(args) -
+    purchase_returns_balance(args)
   end
+
   def sales_balance(args={})
-    if args[:store_front].present?
-      sales.for_store_front(:store_front).balance(args)
-    else
       sales.balance(args)
-    end
   end
-  def sales_returns_balance(options={})
-    sales_returns.balance(options)
-  end
-
-  def purchases_balance(options={})
-    purchases.not_stock_transfers.balance(options) -
-    purchase_returns.balance(options)
-  end
-  def spoilages_balance(options={})
-    spoilages.balance(options)
+  def sales_returns_balance(args={})
+    sales_returns.balance(args)
   end
 
-  def internal_use_orders_balance(options={})
-    internal_uses.balance(options)
+  def purchases_balance(args={})
+    purchases.not_stock_transfers.balance(args)
+  end
+  def purchase_returns_balance(args={})
+    purchase_returns.balance(args)
+  end
+  def spoilages_balance(args={})
+    spoilages.balance(args)
+  end
+
+  def internal_use_orders_balance(args={})
+    internal_uses.balance(args)
   end
 
   def delivered_stock_transfers_balance(args={})

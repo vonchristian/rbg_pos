@@ -15,19 +15,15 @@ class LineItem < ApplicationRecord
   delegate :name, to: :product, prefix: true
 
   def self.stock_transfers
-    joins(:purchase_order).
+    includes(:purchase_order).
     where('orders.supplier_type' => "StoreFront")
   end
-  def self.for_store_front(args={})
-    joins(:order).
-    where('order.store_front_id' => args[:store_front].id)
+  def self.for_store_front(store_front)
+    includes(:order).
+    where('orders.store_front_id' => store_front.id)
   end
   def self.with_orders
     where.not(order_id: nil)
-  end
-
-  def self.for_store_front(store_front)
-    where(store_front: store_front)
   end
 
   def self.processed

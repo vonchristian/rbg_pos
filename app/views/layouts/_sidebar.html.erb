@@ -32,14 +32,30 @@
           <li class=<%= 'active' if current_page?(dashboard_index_path) %> ><a href="/dashboard"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
           <li class="treeview">
             <a href="#">
+              <i class="fa fa-building"></i> <span>Store Fronts</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+
+            <ul class="treeview-menu">
+              <li><a href="/store_front_module/store_fronts"><i class="fa fa-circle-o"></i> All</a></li>
+              <% current_user.business.store_fronts.each do |store_front| %>
+                <li><a href="/store_front_module/store_fronts/<%=store_front.id %>"><i class="fa fa-circle-o"></i> <%= store_front.name %></a></li>
+              <% end %>
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
               <i class="fa fa-server"></i> <span>Orders</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
             </a>
+
             <ul class="treeview-menu">
               <li><a href="/store_front_module/sales_orders"><i class="fa fa-circle-o"></i> Sales</a></li>
-            
+
               <li><a href="/store_front_module/purchase_orders"><i class="fa fa-circle-o"></i> Purchases</a></li>
               <li><a href="/store_front_module/stock_transfers"><i class="fa fa-circle-o"></i> Stock Transfers</a></li>
               <li><a href="/store_front_module/received_stock_transfers"><i class="fa fa-circle-o"></i> Received Stock Transfers</a></li>

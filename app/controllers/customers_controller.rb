@@ -1,9 +1,9 @@
 class CustomersController < ApplicationController
 	def index
 		if params[:search].present?
-			@customers = Customer.text_search(params[:search]).paginate(page: params[:page], per_page: 20)
+			@customers = current_business.text_search(params[:search]).paginate(page: params[:page], per_page: 20)
 		else
-			@customers = Customer.all.paginate(page: params[:page], per_page: 35)
+			@customers = current_business.customers.paginate(page: params[:page], per_page: 35)
 		end
 	end
 	def new
@@ -42,6 +42,6 @@ class CustomersController < ApplicationController
 
 	private
 	def customer_params
-		params.require(:customer).permit(:first_name, :last_name, :contact_number, :address)
+		params.require(:customer).permit(:first_name, :last_name, :contact_number, :address, :business_id)
 	end
 end

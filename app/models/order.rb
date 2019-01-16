@@ -11,7 +11,7 @@ class Order < ApplicationRecord
   has_many :line_items,                dependent: :destroy
 
   delegate :full_name, to: :technician, prefix: true, allow_nil: true #WTF
-  delegate :cash_tendered, to: :cash_payment, prefix: true, allow_nil: true
+  delegate :cash_tendered, :discount_amount, to: :cash_payment, prefix: true, allow_nil: true
   delegate :full_name, to: :employee, prefix: true, allow_nil: true
 
 
@@ -22,9 +22,27 @@ class Order < ApplicationRecord
   def self.credit
     where(credit: true)
   end
-
+  def self.for_store_front(store_front)
+    where(store_front: store_front)
+  end
   def self.total
+    total_cost
+  end
+
+  def self.total_cost
     all.map{|a| a.total_cost }.compact.sum
+  end
+
+  def self.total_discount
+    all.map{|a| a.discount_amount }.compact.sum
+  end
+
+  def self.total_cost_of_goods_sold
+    all.map{|a| a.cost_of_goods_sold }.compact.sum
+  end
+
+  def self.total_income
+    all.map{|a| a.income }.compact.sum
   end
 
   def self.ordered_on(args={})

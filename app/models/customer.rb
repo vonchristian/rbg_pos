@@ -2,6 +2,8 @@ class Customer < ApplicationRecord
 	include PgSearch
 	pg_search_scope :text_search, against: [:first_name, :last_name, :contact_number, :address]
   multisearchable against: [:first_name, :last_name]
+
+  belongs_to :business
 	has_many :orders, as: :commercial_document
   has_many :repair_service_orders, class_name: "RepairServicesModule::RepairServiceOrder", as: :commercial_document
 	has_many :entries, through: :orders

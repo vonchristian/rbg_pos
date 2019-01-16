@@ -16,7 +16,7 @@
                                       <tr>
                                       <td><%=stock.name %><br>
                                         <% if stock.stock_transfer? %>
-                                          <span class="badge bg-gray"> Stock Transfer </span>
+                                          <span class="badge bg-gray"><%= stock.origin_store_front_name %> --> <%= stock.destination_store_front_name %> </span>
                                         <% end %>
                                       <small><%= stock.bar_code %></small><br>
                                         <% if stock.sold? %>
