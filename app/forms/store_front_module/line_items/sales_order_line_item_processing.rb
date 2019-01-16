@@ -54,10 +54,10 @@ module StoreFrontModule
 
       def decrease_purchase_line_item_quantity
         sales = find_cart.sales_order_line_items.create!(
-          quantity: quantity,
-          unit_cost: selling_cost,
-          total_cost: set_total_cost,
-          product_id: product_id,
+          quantity:            quantity,
+          unit_cost:           selling_cost,
+          total_cost:          set_total_cost,
+          product_id:          product_id,
           unit_of_measurement: find_unit_of_measurement,
           bar_code: bar_code
           )
@@ -85,7 +85,7 @@ module StoreFrontModule
       end
 
       def find_cart
-        Cart.find_by_id(cart_id)
+        Cart.find(cart_id)
       end
 
       def selling_cost
@@ -109,7 +109,7 @@ module StoreFrontModule
       end
 
       def find_product
-        Product.find_by_id(product_id)
+        Product.find(product_id)
       end
 
       def find_store_front

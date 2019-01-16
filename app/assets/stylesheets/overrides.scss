@@ -1,27 +1,3 @@
-@font-face {
-    font-family: 'roboto-condensed-webfont';
-    src: font-url('roboto-condensed-webfont.eot');
-    src: font-url('roboto-condensed-webfont.eot?#iefix') format('embedded-opentype'),
-         font-url('roboto-condensed-webfont.woff') format('woff'),
-         font-url('roboto-condensed-webfont.ttf') format('truetype'),
-         font-url('roboto-condensed-webfont.svg#roboto-condensed-webfont') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
-    font-family: 'open_sans_regular';
-    src: font-url('open_sans_regular.eot');
-    src: font-url('open_sans_regular.eot?#iefix') format('embedded-opentype'),
-         font-url('open_sans_regular.woff') format('woff'),
-         font-url('open_sans_regular.ttf') format('truetype'),
-         font-url('open_sans_regular.svg#open_sans_light') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
-
-.dashboard-number {
-  font-size: 24px;
-  font-family: 'open-sans-regular';
-}
 .badge-notify{
    background:green;
    position:relative;
@@ -35,14 +11,24 @@
    left: -15px;
 }
 
+@font-face {
+    font-family: 'roboto-condensed-webfont';
+    src: font-url('roboto-condensed-webfont.eot');
+    src: font-url('roboto-condensed-webfont.eot?#iefix') format('embedded-opentype'),
+         font-url('roboto-condensed-webfont.woff') format('woff'),
+         font-url('roboto-condensed-webfont.ttf') format('truetype'),
+         font-url('roboto-condensed-webfont.svg#roboto-condensed-webfont') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 .title {
   font-family:  'roboto-condensed-webfont';
   text-transform: uppercase;
-  font-weight: bolder;
+  font-weight: bold;
   font-size: 16px;
-}
-.title .heading-dashboard {
-
+  color: #3D3E44;
 }
 .no-padding {
   padding: 0px;
