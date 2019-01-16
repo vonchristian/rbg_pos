@@ -15,7 +15,8 @@ module StoreFrontModule
 
       private
       def create_purchase_order
-        order = find_supplier.purchase_orders.create!(
+        order = StoreFrontModule::Orders::PurchaseOrder.create!(
+          supplier: find_supplier,
           date: date,
           store_front: find_employee.store_front,
           account_number: SecureRandom.uuid,
@@ -36,7 +37,7 @@ module StoreFrontModule
         end
       end
       def find_supplier
-        Supplier.find_by_id(supplier_id)
+        Supplier.find(supplier_id)
       end
       def find_voucher
         Voucher.find_by_id(voucher_id)

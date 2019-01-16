@@ -15,6 +15,9 @@
                                       <% @stocks.each do |stock| %>
                                       <tr>
                                       <td><%=stock.name %><br>
+                                        <% if stock.stock_transfer? %>
+                                          <span class="badge bg-gray"> Stock Transfer </span>
+                                        <% end %>
                                       <small><%= stock.bar_code %></small><br>
                                         <% if stock.sold? %>
                                           <span class="label bg-green"> Sold </span><br>

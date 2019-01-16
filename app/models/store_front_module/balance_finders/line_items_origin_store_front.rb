@@ -10,9 +10,10 @@ module StoreFrontModule
 
       def compute
         line_items.
+        stock_transfers.
         with_orders.
         includes(:order).
-        where('orders.store_front_id' => origin_store_front.id).
+        where('orders.supplier_id' => origin_store_front.id).
         total_converted_quantity
       end
     end

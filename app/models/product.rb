@@ -18,15 +18,15 @@ class Product < ApplicationRecord
   has_many :unit_of_measurements, class_name: "StoreFrontModule::UnitOfMeasurement"
 
   has_many :purchases, :class_name => 'StoreFrontModule::LineItems::PurchaseOrderLineItem'
+
   has_many :internal_uses, :class_name => 'StoreFrontModule::LineItems::InternalUseOrderLineItem'
   has_many :sales, :class_name => 'StoreFrontModule::LineItems::SalesOrderLineItem'
   has_many :sales_orders, :through => :sales, :source => :sales_order, :class_name => 'StoreFrontModule::Orders::SalesOrder'
   has_many :purchase_orders, :through => :purchases, :source => :order, :class_name => 'StoreFrontModule::Orders::PurchaseOrder'
-  has_many :received_stock_transfer_orders, through: :received_stock_transfers, source: :order, class_name: "StoreFrontModule::Orders::ReceivedStockTransferOrder"
+
   has_many :sales_returns, class_name: "StoreFrontModule::LineItems::SalesReturnOrderLineItem"
   has_many :purchase_returns, class_name: "StoreFrontModule::LineItems::PurchaseReturnOrderLineItem"
   has_many :spoilages, class_name: "StoreFrontModule::LineItems::SpoilageOrderLineItem"
-  has_many :stock_transfers, class_name: "StoreFrontModule::LineItems::StockTransferOrderLineItem"
   has_many :selling_prices, class_name: "StoreFrontModule::SellingPrice"
   has_many :received_stock_transfers, class_name: "StoreFrontModule::LineItems::ReceivedStockTransferOrderLineItem"
 	has_attached_file :avatar,
@@ -39,13 +39,14 @@ class Product < ApplicationRecord
   :path => ":rails_root/public/system/:attachment/:id/:style/:filename",
   :url => "/system/:attachment/:id/:style/:filename"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
-  # validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
 
   delegate :name, to: :category, prefix: true, allow_nil: true
   delegate :unit_code, to: :base_measurement, prefix: true, allow_nil: true
   def base_measurement
     unit_of_measurements.base_measurement
   end
+
 
   def self.low_on_stock
     all.select{ |a| a.low_on_stock? }
@@ -93,8 +94,8 @@ class Product < ApplicationRecord
 
 
 
-	def in_stock
-		balance
+	def in_stock(args={})
+		balance(args)
 	end
 	def sold_items_count
 		sales_balance
@@ -125,34 +126,50 @@ class Product < ApplicationRecord
   end
   def balance(options={})
     sales_returns_balance(options) +
-    purchases_balance(options) -
+    purchases_balance(options) +
+    received_stock_transfers_balance(options) -
     sales_balance(options) -
-    delivered_stock_transfers_balance(options) -
     spoilages_balance(options) -
+    delivered_stock_transfers_balance(options) -
     internal_use_orders_balance(options)
   end
-  def sales_balance(options={})
-    sales.balance(options)
+  def sales_balance(args={})
+    if args[:store_front].present?
+      sales.for_store_front(:store_front).balance(args)
+    else
+      sales.balance(args)
+    end
   end
   def sales_returns_balance(options={})
     sales_returns.balance(options)
   end
 
   def purchases_balance(options={})
-    purchases.balance(options) -
+    purchases.not_stock_transfers.balance(options) -
     purchase_returns.balance(options)
   end
   def spoilages_balance(options={})
     spoilages.balance(options)
   end
-  def delivered_stock_transfers_balance(options={})
-    stock_transfers.balance(options)
-  end
+
   def internal_use_orders_balance(options={})
     internal_uses.balance(options)
   end
 
-  def stock_transfers_balance(options={})
-    stock_transfers.balance(options)
+  def delivered_stock_transfers_balance(args={})
+    if args[:store_front].present?
+      purchases.stock_transfers.balance(store_front: args[:store_front])
+    else
+      0
+    end
+  end
+
+  def received_stock_transfers_balance(args={})
+    if args[:store_front].present?
+    purchases.received_stock_transfers(store_front: args[:store_front]).
+    balance(destination_store_front: args[:store_front])
+    else
+      0
+    end
   end
 end

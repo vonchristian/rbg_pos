@@ -24,31 +24,32 @@ module StoreFrontModule
 
       private
       def create_stock_transfer_order
-        order = StoreFrontModule::Orders::StockTransferOrder.create!(
+        order = StoreFrontModule::Orders::PurchaseOrder.create!(
+          credit: true,
           date:                    date,
           description:             reference_number,
           employee:                find_employee,
           account_number:          SecureRandom.uuid,
           commercial_document:     find_employee.store_front,
-          search_term:             find_destination_store_front.name,
           store_front:             find_employee.store_front,
-          destination_store_front: find_destination_store_front,
+          supplier:                find_employee.store_front,
+          search_term:             find_destination_store_front.name,
+          destination_store_front_id: destination_store_front_id,
           reference_number:        reference_number)
-        find_cart.stock_transfer_order_line_items.each do |line_item|
-          line_item.update_attributes!(date: date)
-          line_item.cart_id = nil
-          order.stock_transfer_order_line_items << line_item
-        end
-        if find_registry.present?
-          find_registry.stock_transfer_order_line_items.each do |line_item|
+          find_cart.purchase_order_line_items.each do |line_item|
             line_item.update_attributes!(date: date)
             line_item.cart_id = nil
-            order.stock_transfer_order_line_items << line_item
+            order.purchase_order_line_items << line_item
           end
-        end
-
-        create_voucher(order)
-        create_entry(order)
+          if find_registry.present?
+            find_registry.purchase_order_line_items.each do |line_item|
+              line_item.update_attributes!(date: date)
+              line_item.cart_id = nil
+              order.purchase_order_line_items << line_item
+            end
+          end
+          create_voucher(order)
+          create_entry(order)
       end
 
       def find_destination_store_front
@@ -65,7 +66,7 @@ module StoreFrontModule
       end
 
       def create_voucher(order)
-        Vouchers::StockTransferOrderVoucher.new(
+        Vouchers::PurchaseOrderVoucher.new(
           order:    order,
           employee: order.employee).
           create_voucher!

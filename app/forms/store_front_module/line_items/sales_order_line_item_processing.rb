@@ -8,6 +8,7 @@ module StoreFrontModule
                     :product_id,
                     :unit_cost,
                     :bar_code,
+                    :store_front_id,
                     :purchase_order_line_item_id
       validates :quantity, numericality: { greater_than: 0.1 }
       validate :quantity_is_less_than_or_equal_to_available_quantity?
@@ -111,13 +112,17 @@ module StoreFrontModule
         Product.find_by_id(product_id)
       end
 
+      def find_store_front
+        StoreFront.find(store_front_id)
+      end
+
       def find_purchase_order_line_item
         StoreFrontModule::LineItems::PurchaseOrderLineItem.find_by_id(purchase_order_line_item_id)
       end
 
       def available_quantity
         if product_id.present? && bar_code.blank?
-          find_product.available_quantity
+          find_product.available_quantity(store_front: find_store_front)
         elsif purchase_order_line_item_id.present? && bar_code.present?
           find_purchase_order_line_item.available_quantity
         end

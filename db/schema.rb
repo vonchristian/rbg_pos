@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190115044559) do
+ActiveRecord::Schema.define(version: 20190116050209) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -202,12 +202,15 @@ ActiveRecord::Schema.define(version: 20190115044559) do
     t.bigint "voucher_id"
     t.bigint "store_front_id"
     t.string "account_number"
+    t.string "supplier_type"
+    t.bigint "supplier_id"
     t.index ["account_number"], name: "index_orders_on_account_number", unique: true
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_orders"
     t.index ["destination_store_front_id"], name: "index_orders_on_destination_store_front_id"
     t.index ["employee_id"], name: "index_orders_on_employee_id"
     t.index ["reference_number"], name: "index_orders_on_reference_number"
     t.index ["store_front_id"], name: "index_orders_on_store_front_id"
+    t.index ["supplier_type", "supplier_id"], name: "index_orders_on_supplier_type_and_supplier_id"
     t.index ["type"], name: "index_orders_on_type"
     t.index ["voucher_id"], name: "index_orders_on_voucher_id"
   end

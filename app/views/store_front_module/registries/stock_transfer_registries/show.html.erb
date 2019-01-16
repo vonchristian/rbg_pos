@@ -1,4 +1,4 @@
-<%= @registry.stock_transfer_order_line_items.count %>
+
 <div class="row">
   <div class="col-md-8">
     <div class="box box-solid">
@@ -16,7 +16,7 @@
               </tr>
             </thead>
             <tbody>
-              <% @registry.stock_transfer_order_line_items.each do |line_item| %>
+              <% @registry.purchase_order_line_items.each do |line_item| %>
                 <tr>
                   <td><%= line_item.quantity %> <%= line_item.unit_code %></td>
                   <td width="300px"><%= line_item.name.try(:titleize) %> <span class="text-muted"><%= line_item.bar_code %></span><br>

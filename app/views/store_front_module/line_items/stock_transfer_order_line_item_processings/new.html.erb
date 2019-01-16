@@ -64,7 +64,7 @@
                 </tr>
               </thead>
               <tbody>
-                <% @cart.stock_transfer_order_line_items.each do |line_item| %>
+                <% @cart.delivered_stock_transfer_order_line_items.each do |line_item| %>
                   <tr>
                     <td><%= line_item.quantity %> <%= line_item.unit_code %></td>
                     <td width="300px"><%= line_item.name.try(:titleize) %> <span class="text-muted"><%= line_item.bar_code %></span>
@@ -99,7 +99,7 @@
     <div class="col-md-4">
       <div class="box box-success">
         <div class="box-body">
-          <% if @cart.stock_transfer_order_line_items.present? %>
+          <% if @cart.delivered_stock_transfer_order_line_items.present? %>
             <%= simple_form_for @stock_transfer_order, url: :store_front_module_stock_transfer_order_processings do |f| %>
               <%= f.input :destination_store_front_id, collection: StoreFront.all.map{|a| [ a.name, a.id] } %>
               <%= f.input :origin_store_front_id, input_html: { value: current_user.store_front.id }, as: :hidden %>

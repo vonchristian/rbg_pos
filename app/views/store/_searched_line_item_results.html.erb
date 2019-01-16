@@ -2,8 +2,8 @@
   <div class="row">
     <div class="col-md-10">
       <b><%= line_item.name.try(:upcase) %></b>
-      <% if line_item.available_quantity > 0 %>
-        &nbsp; <span class="badge bg-gray"><%= line_item.available_quantity %> left</span>
+      <% if line_item.available_quantity(store_front: current_store_front) > 0 %>
+        &nbsp; <span class="badge bg-gray"><%= line_item.available_quantity(store_front: current_store_front) %> left</span>
       <% else %>
         <span class="label bg-red"> Out Of Stock </span>
       <% end %><br>
@@ -16,6 +16,8 @@
   </div>
   <br>
     <%= simple_form_for @sales_order_line_item, url: :store_front_module_sales_order_line_item_processings do |f| %>
+    <%= f.input :store_front_id, input_html: { value: current_store_front.id }, as: :hidden %>
+
       <div class="row">
       <div class="col-md-3">
         <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, autofocus: true, label: false %>
@@ -31,7 +33,7 @@
         <%= f.input :unit_of_measurement_id, collection: line_item.product.unit_of_measurements.map{|a| [a.unit_code, a.id] }, selected: line_item.product.base_measurement, label: false %>
       </div>
       <div class="col-md-2">
-        <% if line_item.available_quantity > 0 %>
+        <% if line_item.available_quantity(store_front: current_store_front) > 0 %>
         <%= button_tag type: 'submit', class: "btn btn-success btn-sm" do %>
           <i class="fa fa-shopping-basket" aria-hidden="true"></i> Add to Cart
         <% end %>
@@ -43,4 +45,3 @@
   </div>
   <hr>
 <% end %>
-

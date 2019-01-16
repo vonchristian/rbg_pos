@@ -6,12 +6,6 @@ FactoryBot.define do
     association :employee, factory: :user
     association :store_front
 
-
-
-    factory :stock_transfer_order, class: StoreFrontModule::Orders::StockTransferOrder do
-      association :destination_store_front, factory: :store_front
-    end
-
     factory :sales_order, class: StoreFrontModule::Orders::SalesOrder do |order_cd|
       order_cd.association :commercial_document, factory: :customer
       order_cd.after(:build) do |t|

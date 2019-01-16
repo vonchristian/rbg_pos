@@ -2,10 +2,10 @@ module StoreFrontModule
   module Orders
     class StockTransfersController < ApplicationController
       def index
-        @stock_transfer_orders = StoreFrontModule::Orders::StockTransferOrder.order(date: :desc).paginate(page: params[:page], per_page: 35)
+      @stock_transfer_orders = StoreFrontModule::Orders::PurchaseOrder.stock_transfers.order(date: :desc).paginate(page: params[:page], per_page: 35)
       end
       def show
-        @order = StoreFrontModule::Orders::StockTransferOrder.find(params[:id])
+        @order = StoreFrontModule::Orders::PurchaseOrder.find(params[:id])
         respond_to do |format|
           format.html
           if current_user.proprietor?
@@ -14,7 +14,7 @@ module StoreFrontModule
         end
       end
       def edit
-        @stock_transfer = StoreFrontModule::Orders::StockTransferOrder.find(params[:id])
+        @stock_transfer = StoreFrontModule::Orders::PurchaseOrder.find(params[:id])
       end
       def update
         @stock_transfer = StoreFrontModule::Orders::StockTransferOrder.find(params[:id])

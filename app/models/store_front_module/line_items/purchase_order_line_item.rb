@@ -8,13 +8,26 @@
       has_many :internal_use_order_line_items, class_name: "StoreFrontModule::LineItems::InternalUseOrderLineItem", foreign_key: 'purchase_order_line_item_id'
       has_many :stock_transfer_line_items, class_name: "StoreFrontModule::LineItems::StockTransferOrderLineItem", foreign_key: 'purchase_order_line_item_id'
       has_many :sales_return_order_line_items, class_name: "StoreFrontModule::LineItems::SalesReturnOrderLineItem", foreign_key: 'purchase_order_line_item_id'
-      delegate :supplier, to: :purchase_order, allow_nil: true
+      delegate :supplier, :stock_transfer?,  to: :purchase_order, allow_nil: true
       delegate :business_name, to: :supplier, prefix: true, allow_nil: true
+
+      def self.stock_transfers
+        joins(:purchase_order).
+        where('orders.supplier_type' => "StoreFront")
+      end
+      def self.not_stock_transfers
+        joins(:purchase_order).
+        where.not('orders.supplier_type' => "StoreFront")
+      end
+      def self.received_stock_transfers(args={})
+        joins(:purchase_order).
+        where('orders.destination_store_front_id' => args[:store_front].id)
+      end
       def self.processed
         where.not(order_id: nil)
       end
       def processed?
-        order_id.present?
+        orde_id.present?
       end
 
       def self.available
@@ -28,6 +41,8 @@
         referenced_purchase_order_line_items.last.try(:sales_order_line_item).try(:order).try(:date)
 
       end
+
+
 
       def out_of_stock?
         available_quantity <= 0

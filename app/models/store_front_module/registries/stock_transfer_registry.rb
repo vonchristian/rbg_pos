@@ -1,7 +1,7 @@
 module StoreFrontModule
   module Registries
     class StockTransferRegistry < Registry
-      has_many :stock_transfer_order_line_items, class_name: "StoreFrontModule::LineItems::StockTransferOrderLineItem", foreign_key: 'registry_id'
+      has_many :delivered_stock_transfer_order_line_items, class_name: "StoreFrontModule::LineItems::DeliveredStockTransferOrderLineItem", foreign_key: 'registry_id'
 
       def parse_for_records
         product_spreadsheet = Roo::Spreadsheet.open(spreadsheet.path)
@@ -25,7 +25,7 @@ module StoreFrontModule
 
       def create_or_find_line_item(row)
         if quantity(row).present? && quantity(row) > 0
-          StoreFrontModule::LineItems::StockTransferOrderLineItem.find_or_create_by!(
+          StoreFrontModule::LineItems::DeliveredStockTransferOrderLineItem.find_or_create_by!(
             store_front: employee.store_front,
             quantity: quantity(row),
             unit_cost: unit_cost(row),

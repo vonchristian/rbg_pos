@@ -26,7 +26,7 @@ module StoreFrontModule
       end
 
       def decrease_product_available_quantity
-        transfer = find_cart.stock_transfer_order_line_items.create!(
+        transfer = find_cart.delivered_stock_transfer_order_line_items.create!(
             quantity:                 quantity,
             unit_cost:                purchase_cost,
             total_cost:               set_total_cost,
@@ -48,7 +48,7 @@ module StoreFrontModule
       end
 
       def decrease_purchase_line_item_quantity
-        transfer = find_cart.stock_transfer_order_line_items.create!(
+        transfer = find_cart.delivered_stock_transfer_order_line_items.create!(
           quantity: quantity,
           unit_cost: purchase_cost,
           total_cost: set_total_cost,

@@ -1,10 +1,13 @@
 
 <% @products.each do |product| %>
+<% StoreFront.all.each do |store_front| %>
+  <%= store_front.name %><%= product.available_quantity(store_front: store_front) %>
+<% end %>
  <div class="row">
     <div class="col-md-12">
       <b><%= product.name.try(:upcase) %></b>
-      <% if product.available_quantity > 0 %>
-        &nbsp; <span class="badge bg-gray"><%= product.available_quantity %> left</span>
+      <% if product.available_quantity(store_front: current_store_front) > 0 %>
+        &nbsp; <span class="badge bg-gray"><%= product.available_quantity(store_front: current_store_front) %> left</span>
       <% else %>
         <span class="label bg-red"> Out Of Stock </span>
       <% end %><br>
@@ -17,7 +20,7 @@
     </div>
   </div>
   <br>
-  <% if product.available_quantity > 0 %>
+  <% if product.available_quantity(store_front: current_store_front) > 0 %>
     <%= simple_form_for [@work_order, @repair_service_order_line_item], url: :repair_services_module_work_order_repair_service_order_line_item_processings do |f| %>
       <div class="row">
         <div class="col-md-3">

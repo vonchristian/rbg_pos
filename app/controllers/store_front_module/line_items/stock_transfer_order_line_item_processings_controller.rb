@@ -9,7 +9,7 @@ module StoreFrontModule
         @cart = current_cart
         @stock_transfer_order_line_item = StoreFrontModule::LineItems::StockTransferOrderLineItemProcessing.new
         @stock_transfer_order = StoreFrontModule::Orders::StockTransferOrderProcessing.new
-        @stock_transfer_order_line_items = @cart.stock_transfer_order_line_items.order(created_at: :desc)
+        @stock_transfer_order_line_items = @cart.delivered_stock_transfer_order_line_items.order(created_at: :desc)
       end
 
       def create
