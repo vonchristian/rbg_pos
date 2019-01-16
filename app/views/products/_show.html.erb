@@ -1,3 +1,9 @@
+<% StoreFront.all.each do |store_front| %>
+<%= store_front.name %>
+<%= @product.stock_transfers_balance(origin_store_front: store_front) %>
+<%= @product.stock_transfers_balance(destination_store_front: store_front) %>
+
+<% end %>
 <div class="content">
   <div class="row">
     <div class="col-md-12">
@@ -9,7 +15,7 @@
             </div>
             <div class="col-md-9">
               <h4 class="title"><%= @product.name.try(:upcase) %></h4>
-              <h4><%= @product.available_quantity %></h4> IN STOCK
+              <h4><%= @product.available_quantity(store_front: current_user.store_front) %></h4> IN STOCK
 
               <p class="category"> <%= @product.description %> </p>
               <div class="row">
@@ -18,8 +24,11 @@
                   <small>PURCHASES</small>
 
 
-                   <h4><%= @product.stock_transfers_balance %></h4>
-                  <small>STOCK TRANSFERS</small>
+                   <h4><%= @product.stock_transfers_balance(origin_store_front: current_user.store_front) %></h4>
+                  <small>DELIVERED STOCK TRANSFERS</small>
+                  <hr>
+                  <h4><%= @product.stock_transfers_balance(destination_store_front: current_user.store_front) %></h4>
+                 <small>RECEIVED STOCK TRANSFERS</small>
                 </div>
                 <div class="col-md-3">
                   <h4><%= @product.sales_balance %></h4>

@@ -51,19 +51,19 @@ class LineItem < ApplicationRecord
   end
 
   def self.balance(args={})
-    balance_finder.new(args.merge(line_items: self)).compute
+    balance_finder(args.merge(line_items: self)).new(args.merge(line_items: self)).compute
   end
 
-  private
+
   def self.balance_finder(args={})
-    if args.present?
+    # if args.present?
       klass = args.select{|key, value| !value.nil?}.keys.sort.map{ |key| key.to_s.titleize }.join.gsub(" ", "")
-    else
-      klass = "DefaultBalanceFinder"
-    end
+    # else
+    #   klass = "DefaultBalanceFinder"
+    # end
       ("StoreFrontModule::BalanceFinders::" + klass).constantize
   end
-
+  private
   def exceeds_available_stock?
     errors[:base] << "Exceeded available stock" if quantity > stock.in_stock
   end

@@ -5,7 +5,7 @@ module StoreFrontModule
         if params[:search].present?
           @orders = StoreFrontModule::Orders::SalesOrder.text_search(params[:search]).paginate(page: params[:page], per_page: 30)
         else
-          @orders = StoreFrontModule::Orders::SalesOrder.order(date: :desc).
+          @orders = current_store_front.sales_orders.order(date: :desc).
           paginate(page: params[:page], per_page: 30)
         end
         @sales_for_today = StoreFrontModule::Orders::SalesOrder.ordered_on(from_date: Date.today, to_date: Date.today)

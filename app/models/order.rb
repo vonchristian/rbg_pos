@@ -38,7 +38,11 @@ class Order < ApplicationRecord
   end
 
   def total_cost
-    line_items.total_cost
+    if line_items.present?
+      line_items.total_cost
+    else
+      cash_payment.cash_tendered
+    end
   end
   def total_quantity
     line_items.sum(&:quantity)

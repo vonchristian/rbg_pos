@@ -5,30 +5,40 @@ class OtherSalesForm
 
   def save
     ActiveRecord::Base.transaction do
-      save_other_sales
       create_order
     end
   end
 
   private
-  def save_other_sales
-    AccountingModule::Entry.create!(commercial_document: find_customer, recorder_id: recorder_id, entry_date: date, reference_number: reference_number, description: description,
-      credit_amounts_attributes: [amount: amount, account: credit_account,commercial_document: find_customer],
-      debit_amounts_attributes: [amount: amount, account: debit_account, commercial_document: find_customer])
+  def create_order
+    order = StoreFrontModule::Orders::SalesOrder.create!(
+      description: description,
+      commercial_document: find_customer,
+      date: date, employee_id: recorder_id,
+      reference_number: reference_number,
+      store_front: find_employee.store_front,
+      account_number: SecureRandom.uuid)
+    order.create_cash_payment(cash_tendered: amount)
+
+    create_voucher(order)
+    create_entry(order)
   end
 
-  def credit_account
-    AccountingModule::Account.find_by(name: "Other Income")
-  end
-  def debit_account
-    User.find_by(id: recorder_id).default_cash_on_hand_account
-  end
-  def create_order
-    order = StoreFrontModule::Orders::SalesOrder.create!(description: description, commercial_document: find_customer, date: date, employee_id: recorder_id, reference_number: reference_number)
-    order.create_cash_payment(cash_tendered: amount)
-  end
+
   def find_customer
     Customer.find(customer_id)
+  end
+
+  def find_employee
+    User.find(recorder_id)
+  end
+
+  def create_voucher(order)
+    Vouchers::OtherSalesOrderVoucher.new(order: order, employee: find_employee).create_voucher!
+  end
+
+  def create_entry(order)
+    VoucherEntryCreation.new(voucher: order.voucher).create_entry!
   end
 
 end

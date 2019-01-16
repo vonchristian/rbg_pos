@@ -10,6 +10,7 @@ class StoreFront < ApplicationRecord
   belongs_to :purchase_return_account,       class_name: "AccountingModule::Account", foreign_key: 'purchase_return_account_id'
   belongs_to :spoilage_account,              class_name: "AccountingModule::Account", foreign_key: 'spoilage_account_id'
 
+  has_many :sales_orders, class_name: "StoreFrontModule::Orders::SalesOrder", foreign_key: 'store_front_id'
 
   has_many :received_stock_transfer_orders, class_name: "StoreFrontModule::Orders::StockTransferOrder", as: :commercial_document
   def default_sales_return_account

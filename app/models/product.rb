@@ -120,14 +120,14 @@ class Product < ApplicationRecord
   def last_purchase_cost
     purchases.order(created_at: :desc).last.try(:unit_cost)
   end
-  def available_quantity
-    balance
+  def available_quantity(args={})
+    balance(args)
   end
   def balance(options={})
     sales_returns_balance(options) +
     purchases_balance(options) -
     sales_balance(options) -
-    stock_transfers_balance(options) -
+    delivered_stock_transfers_balance(options) -
     spoilages_balance(options) -
     internal_use_orders_balance(options)
   end
@@ -145,10 +145,14 @@ class Product < ApplicationRecord
   def spoilages_balance(options={})
     spoilages.balance(options)
   end
-  def stock_transfers_balance(options={})
+  def delivered_stock_transfers_balance(options={})
     stock_transfers.balance(options)
   end
   def internal_use_orders_balance(options={})
     internal_uses.balance(options)
+  end
+
+  def stock_transfers_balance(options={})
+    stock_transfers.balance(options)
   end
 end
