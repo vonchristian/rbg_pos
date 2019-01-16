@@ -150,7 +150,8 @@ class Product < ApplicationRecord
 
   def delivered_stock_transfers_balance(args={})
     if args[:store_front].present?
-      purchases.stock_transfers.balance(store_front: args[:store_front])
+      purchases.delivered_stock_transfers(store_front: args[:store_front]).
+      balance(origin_store_front: args[:store_front])
     else
       0
     end
