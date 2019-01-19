@@ -74,5 +74,8 @@
 
           <% end %>
           <hr>
+          <% current_business.store_fronts.each do |store_front| %>
+            <%= link_to "#{store_front.name} Inventory", reports_store_front_inventories_path(store_front_id: store_front.id) %>
+          <% end %>
            <%= link_to 'Inventory (Excel)', reports_products_path(Product.all, format: 'xlsx'), class: "btn btn-primary" %>
           <%= link_to "Work Orders", reports_work_orders_path(WorkOrder.all, format: 'xlsx'), class: "btn btn-primary" %>

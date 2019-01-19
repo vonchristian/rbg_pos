@@ -36,6 +36,9 @@ Rails.application.routes.draw do
   resources :reports, only: [:index]
   resources :customer_registrations, only: [:new, :create]
   namespace :reports do
+    resources :store_fronts, only: [:show], module: :store_fronts do
+      resources :inventories, only: [:index]
+    end
     resources :work_orders, only: [:index]
     resources :released_work_orders, only: [:index]
 
