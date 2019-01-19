@@ -3,7 +3,7 @@ wb.add_worksheet(name: "Products") do |sheet|
   sheet.add_row ["#{@store_front.name.upcase} INVENTORY (Date covered: #{@from_date.strftime("%B %e, %Y")} -  #{@to_date.strftime("%B %e, %Y")})"]
   sheet.add_row [
   "Product Name",
-  "Beginning Inventory",
+  "Beginning Inventory(#{@from_date.strftime("%B %e, %Y")})",
   "Purchases",
   "Sales Returns",
   "Received Stock Transfers",
@@ -17,9 +17,16 @@ wb.add_worksheet(name: "Products") do |sheet|
 @products.each do |product|
 sheet.add_row [
   product.name,
-  product.balance(from_date: @from_date, to_date: @to_date, store_front: @store_front),
+  product.balance(to_date: @from_date, store_front: @store_front),
   product.purchases_balance(store_front: @store_front, to_date: @to_date),
-  product.sales_balance(store_front: @store_front),
+  product.sales_returns_balance(store_front: @store_front, to_date: @to_date),
+  product.received_stock_transfers_balance(store_front: @store_front, to_date: @to_date),
+  product.sales_balance(store_front: @store_front, to_date: @to_date),
+  product.spoilages_balance(store_front: @store_front, to_date: @to_date),
+  product.delivered_stock_transfers_balance(store_front: @store_front, to_date: @to_date),
+  product.internal_use_orders_balance(store_front: @store_front, to_date: @to_date),
+  product.purchase_returns_balance(store_front: @store_front, to_date: @to_date),
+  product.balance(store_front: @store_front, to_date: @to_date)
 
 ]
 end

@@ -12,11 +12,11 @@ module StoreFrontModule
 
       def compute
         line_items.
-        with_orders.
         for_store_front(store_front).
         entered_on(from_date: from_date, to_date: to_date).
+        with_orders.
         total_converted_quantity
       end
     end
   end
-end 
+end

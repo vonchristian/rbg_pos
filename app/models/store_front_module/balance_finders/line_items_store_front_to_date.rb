@@ -7,7 +7,7 @@ module StoreFrontModule
         @line_items  = args.fetch(:line_items)
         @store_front = args.fetch(:store_front)
         @to_date     = args.fetch(:to_date)
-        @from_date   = Date.current - 999.years.ago
+        @from_date   = args.fetch(:from_date, Date.current - 999.years)
       end
 
       def compute

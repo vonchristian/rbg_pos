@@ -20,11 +20,12 @@ class LineItem < ApplicationRecord
   end
   def self.entered_on(args)
     from_date = args[:from_date]
-    to_date   = args[:to_date]
+    to_date   = args[:to_date] || Date.current - 999.years
     date_range = DateRange.new(from_date: from_date, to_date: to_date)
     joins(:order).
-    where('orders.date' => date_range.range )
+    where('orders.date' => date_range.range)
   end
+  
   def self.for_store_front(store_front)
     includes(:order).
     where('orders.store_front_id' => store_front.id)
