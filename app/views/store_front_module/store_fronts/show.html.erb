@@ -1,5 +1,13 @@
 <h2> <%= @store_front.name %></h2>
+<ul class="nav nav-tabs">
+  <li class= <%= 'active' if current_page?(store_front_module_store_fronts_path) %>>
+    <%= link_to "Summary", store_front_module_store_fronts_path %>
+  </li>
+  <li class= <%= 'active' if current_page?(store_front_module_store_front_reports_path(@store_front)) %>>
+    <%= link_to "Reports", store_front_module_store_front_reports_path(@store_front) %>
+  </li>
 
+</ul>
     <div class="box box-solid">
       <div class="box-body">
         <%=@from_date.strftime("%B %e, %Y") %><br><br>

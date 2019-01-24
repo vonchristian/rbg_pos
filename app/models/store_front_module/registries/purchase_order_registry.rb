@@ -21,7 +21,7 @@ module StoreFrontModule
           if product.present?
           product
         else
-          Product.find_or_create_by!(name: row["Product Name"], category: find_category(row))
+          Product.find_or_create_by!(name: row["Product Name"], category: find_category(row),  business:  employee.business)
         end
       end
 

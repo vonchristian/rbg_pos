@@ -115,7 +115,11 @@ Rails.application.routes.draw do
 
   namespace :store_front_module do
 
-    resources :store_fronts, only: [:index, :show]
+    resources :store_fronts, only: [:index, :show] do
+      resources :reports, only: [:index], module: :store_fronts
+      resources :inventories, only: [:index], module: :store_fronts
+      resources :work_orders, only: [:index], module: :store_fronts
+    end
     resources :stock_registry_processings, only: [:create]
     resources :stock_transfer_registries, only: [:new, :create, :show], module: :registries
     resources :received_stock_transfer_registries, only: [:new, :create, :show], module: :registries

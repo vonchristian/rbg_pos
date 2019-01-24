@@ -1,4 +1,4 @@
-module Reports
+module StoreFrontModule
   module StoreFronts
     class InventoriesController < ApplicationController
       def index
