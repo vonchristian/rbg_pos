@@ -5,6 +5,7 @@
     </div>
     <%=simple_form_for @customer, url: :customer_registrations, remote: true do |f| %>
     <%= f.error_notification %>
+    <%= f.input :business_id, input_html: { value: current_user.business_id }, as: :hidden %>
       <div class="modal-body">
         <ul class="errors text-danger">
         </ul>
