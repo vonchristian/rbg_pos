@@ -199,6 +199,11 @@ AccountingModule::Revenue.create(account_code: 40130, name: 'Filing Fees')
 AccountingModule::Revenue.create(account_code: 40140, name: 'Fines, Penalties, Surcharges')
 AccountingModule::Revenue.create(account_code: 40200, name: 'Income from Service Operations')
 AccountingModule::Revenue.create(account_code: 40200, name: 'Service Income')
+AccountingModule::Revenue.create(account_code: 402001, name: 'Service Income (Lamut)')
+AccountingModule::Revenue.create(account_code: 402002, name: 'Service Income (Bambang)')
+AccountingModule::Revenue.create(account_code: 402003, name: 'Service Income (Lagawe)')
+
+
 AccountingModule::Revenue.create(account_code: 40201, name: 'Interest Income from Credit Sales')
 AccountingModule::Revenue.create(account_code: 40220, name: 'Interest Income from Lease Agreement')
 AccountingModule::Revenue.create(account_code: 40300, name: 'Income from Marketing/Consumers/Production Operations Net Sales')

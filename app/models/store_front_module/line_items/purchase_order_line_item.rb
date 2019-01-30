@@ -40,7 +40,7 @@
         where.not(order_id: nil)
       end
       def processed?
-        orde_id.present?
+        order_id.present?
       end
 
       def self.available
@@ -62,7 +62,7 @@
       end
 
       def sold_quantity(args={})
-        referenced_purchase_order_line_items.total
+        referenced_purchase_order_line_items.processed.sum(&:quantity)
       end
 
       def customer

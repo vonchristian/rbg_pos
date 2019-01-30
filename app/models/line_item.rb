@@ -25,7 +25,7 @@ class LineItem < ApplicationRecord
     joins(:order).
     where('orders.date' => date_range.range)
   end
-  
+
   def self.for_store_front(store_front)
     includes(:order).
     where('orders.store_front_id' => store_front.id)
@@ -47,7 +47,7 @@ class LineItem < ApplicationRecord
   end
 
   def self.total
-    all.sum(&:converted_quantity)
+    processed.all.sum(&:converted_quantity)
   end
   def self.total_converted_quantity
     all.sum(&:converted_quantity)

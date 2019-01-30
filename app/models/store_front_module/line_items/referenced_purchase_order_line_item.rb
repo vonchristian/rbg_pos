@@ -9,6 +9,10 @@ module StoreFrontModule
         sum(&:cost_of_goods_sold)
       end
 
+      def self.processed
+        select{ |a| a.purchase_order_line_item.processed? }
+      end
+
       def cost_of_goods_sold
         unit_cost * quantity
       end

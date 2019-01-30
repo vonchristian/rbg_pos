@@ -116,12 +116,12 @@ class WorkOrder < ApplicationRecord
   end
 
   def spare_parts_receivable
-    self.store_front.default_accounts_receivable_account.debits_balance(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
+    self.store_front.receivable_account.debits_balance(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
   end
   def service_charges_receivable
     balance = []
     work_order_service_charges.each do |service_charge|
-      balance << RepairServicesModule::RepairServicesFrontConfig.default_services_revenue_account.credit_amounts.where(commercial_document: service_charge).sum(&:amount)
+      balance << RepairServicesModule::RepairServicesFrontConfig.services_revenue_account.credit_amounts.where(commercial_document: service_charge).sum(&:amount)
     end
     balance.sum
   end

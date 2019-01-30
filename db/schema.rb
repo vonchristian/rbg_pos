@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190116125624) do
+ActiveRecord::Schema.define(version: 20190130055817) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -368,6 +368,7 @@ ActiveRecord::Schema.define(version: 20190116125624) do
     t.bigint "internal_use_account_id"
     t.bigint "purchase_return_account_id"
     t.bigint "spoilage_account_id"
+    t.bigint "service_revenue_account_id"
     t.index ["business_id"], name: "index_store_fronts_on_business_id"
     t.index ["cost_of_goods_sold_account_id"], name: "index_store_fronts_on_cost_of_goods_sold_account_id"
     t.index ["internal_use_account_id"], name: "index_store_fronts_on_internal_use_account_id"
@@ -378,6 +379,7 @@ ActiveRecord::Schema.define(version: 20190116125624) do
     t.index ["sales_account_id"], name: "index_store_fronts_on_sales_account_id"
     t.index ["sales_discount_account_id"], name: "index_store_fronts_on_sales_discount_account_id"
     t.index ["sales_return_account_id"], name: "index_store_fronts_on_sales_return_account_id"
+    t.index ["service_revenue_account_id"], name: "index_store_fronts_on_service_revenue_account_id"
     t.index ["spoilage_account_id"], name: "index_store_fronts_on_spoilage_account_id"
   end
 
@@ -567,6 +569,7 @@ ActiveRecord::Schema.define(version: 20190116125624) do
   add_foreign_key "store_fronts", "accounts", column: "sales_account_id"
   add_foreign_key "store_fronts", "accounts", column: "sales_discount_account_id"
   add_foreign_key "store_fronts", "accounts", column: "sales_return_account_id"
+  add_foreign_key "store_fronts", "accounts", column: "service_revenue_account_id"
   add_foreign_key "store_fronts", "accounts", column: "spoilage_account_id"
   add_foreign_key "store_fronts", "businesses"
   add_foreign_key "suppliers", "accounts", column: "payable_account_id"

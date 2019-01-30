@@ -11,6 +11,7 @@ describe StoreFront do
     it { is_expected.to belong_to :internal_use_account }
     it { is_expected.to belong_to :purchase_return_account }
     it { is_expected.to belong_to :spoilage_account }
+    it { is_expected.to belong_to :service_revenue_account }
 
     it { is_expected.to have_many :sales_orders }
     it { is_expected.to have_many :delivered_stock_transfer_orders }
