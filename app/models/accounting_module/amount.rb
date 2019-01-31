@@ -18,6 +18,18 @@ module AccountingModule
     def self.total
       sum(&:amount)
     end
+    def self.balance(args={})
+      balance_finder.new(args.merge(amounts: self)).compute
+    end
+
+    def self.balance_finder(args={})
+      if args.present?
+        klass = args.compact.keys.sort.map{ |key| key.to_s.titleize }.join.gsub(" ", "")
+      else
+        klass = "DefaultBalanceFinder"
+      end
+      ("AccountingModule::BalanceFinders::" + klass).constantize
+    end
 
     def self.entered_on(options={})
       if options[:from_date] && options[:to_date]

@@ -17,8 +17,8 @@ module RepairServicesModule
       create_entry(service_charge)
     end
     def create_entry(service_charge)
-      accounts_receivable = StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account
-      services_revenue = RepairServicesModule::RepairServicesFrontConfig.default_services_revenue_account
+      accounts_receivable = find_work_order.store_front.receivable_account
+      services_revenue = find_work_order.store_front.service_revenue_account
         find_employee.entries.create!(
           recorder: find_employee,
           commercial_document: find_customer,

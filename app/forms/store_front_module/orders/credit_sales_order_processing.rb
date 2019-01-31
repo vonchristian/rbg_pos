@@ -7,6 +7,8 @@ module StoreFrontModule
                      :description,
                      :employee_id,
                      :cart_id,
+                     :store_front_id,
+                     :account_number,
                      :reference_number
 
       validates :cart_id,
@@ -25,7 +27,9 @@ module StoreFrontModule
       end
       private
       def create_sales_order
-          order = StoreFrontModule::Orders::SalesOrder.create(
+          order = StoreFrontModule::Orders::SalesOrder.create!(
+          store_front_id: store_front_id,
+          account_number: account_number,
           date: date,
           employee: find_employee,
           commercial_document: find_customer,
@@ -42,16 +46,16 @@ module StoreFrontModule
         create_entry(order)
       end
       def find_customer
-        Customer.find_by_id(customer_id)
+        Customer.find(customer_id)
       end
 
       def find_employee
-        User.find_by_id(employee_id)
+        User.find(employee_id)
       end
 
       def create_entry(order)
         store_front = find_employee.store_front
-        accounts_receivable = store_front.default_accounts_receivable_account
+        accounts_receivable = store_front.receivable_account
         cost_of_goods_sold = store_front.cost_of_goods_sold_account
         sales = store_front.sales_account
         sales_discount = store_front.sales_discount_account

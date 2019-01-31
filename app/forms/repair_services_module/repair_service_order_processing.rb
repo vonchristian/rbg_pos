@@ -12,8 +12,10 @@ module RepairServicesModule
     private
 
     def create_repair_service_order
-      order  = find_work_order.spare_part_orders.create(
+      order  = find_work_order.sales_orders.create!(
         date: date,
+        store_front: find_work_order.store_front,
+        account_number: SecureRandom.uuid,
         reference_number: reference_number,
         search_term: find_customer.name,
         employee: find_employee)
@@ -25,15 +27,15 @@ module RepairServicesModule
       create_entry(order)
     end
     def create_entry(order)
-        accounts_receivable = find_work_order.store_front.default_accounts_receivable_account
-        cost_of_goods_sold = find_employee.store_front.cost_of_goods_sold_account
-        sales = find_employee.store_front.sales_account
-        merchandise_inventory = find_employee.store_front.merchandise_inventory_account
+        accounts_receivable = find_work_order.store_front.receivable_account
+        cost_of_goods_sold = find_work_order.store_front.cost_of_goods_sold_account
+        sales = find_work_order.store_front.sales_account
+        merchandise_inventory = find_work_order.store_front.merchandise_inventory_account
         find_employee.entries.create!(
           recorder: find_employee,
           commercial_document: find_customer,
           entry_date: order.date,
-          description: "Spare parts for work order ##{find_work_order.formatted_service_number}",
+          description: "Spare parts for work order ##{find_work_order.service_number}",
           debit_amounts_attributes: [{  amount: order.total_cost,
                                         account: accounts_receivable,
                                         commercial_document: find_work_order},
@@ -48,16 +50,16 @@ module RepairServicesModule
                                         commercial_document: find_work_order}])
       end
       def find_customer
-        Customer.find_by_id(customer_id)
+        Customer.find(customer_id)
       end
       def find_employee
-        User.find_by_id(employee_id)
+        User.find(employee_id)
       end
       def find_cart
-        Cart.find_by_id(cart_id)
+        Cart.find(cart_id)
       end
       def find_work_order
-        WorkOrder.find_by_id(work_order_id)
+        WorkOrder.find(work_order_id)
       end
   end
 end

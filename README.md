@@ -1,6 +1,11 @@
+amounts extension
+update to 2.6
+update to 5.2.2
 scope to store front
 
-
+error on adding charges 
+uninitialized constant RepairServicesModule::RepairServicesFrontConfig
+Did you mean?  RepairServicesModule::RepairServiceOrderProcessingsController):
 
 
 

@@ -26,7 +26,7 @@ class WorkOrder < ApplicationRecord
   accepts_nested_attributes_for :product_unit
 
   validates :description, :physical_condition, :reported_problem, presence: true
-  validates :customer_id, presence: true
+  validates :customer_id, :date_received, presence: true
 
   delegate :description, :model_number, :serial_number, to: :product_unit, allow_nil: true
   delegate :full_name, :address, :contact_number, to: :customer, allow_nil: true, prefix: true
@@ -121,7 +121,7 @@ class WorkOrder < ApplicationRecord
   def service_charges_receivable
     balance = []
     work_order_service_charges.each do |service_charge|
-      balance << RepairServicesModule::RepairServicesFrontConfig.services_revenue_account.credit_amounts.where(commercial_document: service_charge).sum(&:amount)
+      balance << store_front.service_revenue_account.credit_amounts.where(commercial_document: service_charge).sum(&:amount)
     end
     balance.sum
   end

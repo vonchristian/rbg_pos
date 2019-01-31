@@ -20,6 +20,8 @@ module StoreFrontModule
                :employee_id,
                :cart_id,
                :description,
+               :store_front_id,
+               :account_number,
                :reference_number)
       end
     end

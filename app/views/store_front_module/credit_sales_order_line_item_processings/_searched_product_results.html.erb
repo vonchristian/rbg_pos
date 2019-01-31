@@ -3,8 +3,8 @@
   <div class="row">
     <div class="col-md-12">
       <b><%= product.name.try(:upcase) %></b>
-      <% if product.available_quantity > 0 %>
-        &nbsp; <span class="badge bg-gray"><%= product.available_quantity %> left</span>
+      <% if product.available_quantity(store_front: current_store_front) > 0 %>
+        &nbsp; <span class="badge bg-gray"><%= product.available_quantity(store_front: current_store_front) %> left</span>
       <% else %>
         <span class="label bg-red"> Out Of Stock </span>
       <% end %><br>
@@ -17,8 +17,10 @@
     </div>
   </div>
   <br>
-  <% if product.available_quantity > 0 %>
+  <% if product.available_quantity(store_front: current_store_front) > 0 %>
     <%= simple_form_for @line_item, url: :store_front_module_customer_credit_sales_order_line_item_processings do |f| %>
+    <%= f.input :store_front_id, input_html: { value: current_store_front.id }, as: :hidden %>
+
       <div class="row">
         <div class="col-md-3">
           <%= f.input :quantity, as: :string, label: false, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, autofocus: true %>

@@ -102,7 +102,7 @@
 
                   <%= f.input :customer_id, input_html: { value: @work_order.customer_id }, as: :hidden %>
                   <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-                  <%= f.input :reference_number, input_html: { value: @work_order.formatted_service_number.gsub("#", "") }, as: :hidden %>
+                  <%= f.input :reference_number, input_html: { value: @work_order.service_number.gsub("#", "") }, as: :hidden %>
                   <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
                   <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
                   <%= f.input :work_order_id, input_html: { value: @work_order.id }, as: :hidden %>

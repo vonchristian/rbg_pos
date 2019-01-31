@@ -14,17 +14,17 @@ module StoreFrontModule
         balance > 0
       end
       def balance
-        StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.balance(commercial_document_id: self.id, commercial_document_type: "Order")
+        store_front.receivable_account.balance(commercial_document_id: self.id, commercial_document_type: "Order")
       end
 
       def accounts_receivable_total
-        StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.debits_balance(commercial_document_id: self.id, commercial_document_type: "Order")
+        store_front.receivable_account.debits_balance(commercial_document_id: self.id, commercial_document_type: "Order")
       end
       def payments_total
-        StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.credits_balance(commercial_document_id: self.id, commercial_document_type: "Order")
+        store_front.receivable_account.credits_balance(commercial_document_id: self.id, commercial_document_type: "Order")
       end
       def payment_entries
-        ids = StoreFrontModule::StoreFrontConfig.new.default_accounts_receivable_account.credit_amounts.where(commercial_document: self).pluck(:entry_id)
+        ids = store_front.receivable_account.credit_amounts.where(commercial_document: self).pluck(:entry_id)
         AccountingModule::Entry.where(id: ids)
       end
 
