@@ -25,7 +25,7 @@
           <%= link_to "Edit", edit_store_front_module_stock_transfer_path(@order), class: "btn btn-danger" %>
         <% end %>
         <hr>
-              <% @order.line_items.each do |line_item| %>
+              <% @order.purchase_order_line_items.each do |line_item| %>
                 <div class="row">
                   <div class="col-md-2">
                     <%= line_item.quantity %> <%= line_item.unit_code %>

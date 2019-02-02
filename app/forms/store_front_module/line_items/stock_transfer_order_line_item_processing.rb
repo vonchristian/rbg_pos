@@ -26,7 +26,7 @@ module StoreFrontModule
       end
 
       def decrease_product_available_quantity
-        transfer = find_cart.delivered_stock_transfer_order_line_items.create!(
+        transfer = find_cart.purchase_order_line_items.create!(
             quantity:                 quantity,
             unit_cost:                purchase_cost,
             total_cost:               set_total_cost,
@@ -35,7 +35,7 @@ module StoreFrontModule
             product_id:               product_id)
         requested_quantity = converted_quantity
         find_product.purchases.order(created_at: :asc).available.each do |purchase|
-          temp_transfer = transfer.referenced_purchase_order_line_items.create!(
+          temp_transfer = transfer.stock_transfer_order_line_items.create!(
             quantity:                 quantity_for(purchase, requested_quantity),
             unit_cost:                purchase.purchase_cost,
             total_cost:               total_cost_for(purchase, quantity),
@@ -48,7 +48,7 @@ module StoreFrontModule
       end
 
       def decrease_purchase_line_item_quantity
-        transfer = find_cart.delivered_stock_transfer_order_line_items.create!(
+        transfer = find_cart.purchase_order_line_items.create!(
           quantity: quantity,
           unit_cost: purchase_cost,
           total_cost: set_total_cost,
@@ -57,10 +57,11 @@ module StoreFrontModule
           bar_code: bar_code
           )
         purchase = find_purchase_order_line_item
-        transfer.referenced_purchase_order_line_items.create!(
+        purchase.stock_transfer_order_line_items.create!(
+            cart:                     find_cart,
             quantity:                 converted_quantity,
             unit_cost:                purchase.purchase_cost,
-          total_cost:               total_cost_for(purchase, quantity),
+            total_cost:               total_cost_for(purchase, quantity),
             unit_of_measurement:      find_product.base_measurement,
             product_id:               product_id,
             purchase_order_line_item_id: purchase.id)

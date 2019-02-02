@@ -3,7 +3,7 @@ module Products
   class StocksController < ApplicationController
     def index
       @product = Product.find(params[:product_id])
-      @stocks = @product.purchases.includes(:product, :purchase_order).purchases_and_stock_transfers(current_store_front).paginate(page: params[:page], per_page: 50)
+      @stocks = @product.purchases.for_store_front(current_store_front).includes(:product, :purchase_order).paginate(page: params[:page], per_page: 50)
     end
     def new
       @product = Product.find(params[:product_id])

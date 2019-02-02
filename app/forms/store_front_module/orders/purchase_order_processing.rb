@@ -19,6 +19,7 @@ module StoreFrontModule
           supplier: find_supplier,
           date: date,
           store_front: find_employee.store_front,
+          destination_store_front: find_employee.store_front,
           account_number: SecureRandom.uuid,
           voucher: find_voucher,
           search_term: find_supplier.business_name,

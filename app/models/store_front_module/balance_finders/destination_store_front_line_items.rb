@@ -13,6 +13,7 @@ module StoreFrontModule
         with_orders.
         includes(:order).
         where('orders.destination_store_front_id' => destination_store_front.id).
+        where.not('orders.store_front_id' => destination_store_front.id).
         total_converted_quantity
       end
     end

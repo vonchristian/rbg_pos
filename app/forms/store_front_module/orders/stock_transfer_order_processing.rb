@@ -36,16 +36,22 @@ module StoreFrontModule
           search_term:             find_destination_store_front.name,
           destination_store_front_id: destination_store_front_id,
           reference_number:        reference_number)
+
           find_cart.purchase_order_line_items.each do |line_item|
             line_item.update_attributes!(date: date)
             line_item.cart_id = nil
             order.purchase_order_line_items << line_item
           end
+          find_cart.stock_transfer_order_line_items.each do |line_item|
+            line_item.update_attributes!(order_id: order.id)
+          end
+
           if find_registry.present?
             find_registry.purchase_order_line_items.each do |line_item|
               line_item.update_attributes!(date: date)
               line_item.cart_id = nil
               order.purchase_order_line_items << line_item
+              order.stock_transfer_order_line_items << purchase_order_line_item.stock_transfer_order_line_items
             end
           end
           create_voucher(order)

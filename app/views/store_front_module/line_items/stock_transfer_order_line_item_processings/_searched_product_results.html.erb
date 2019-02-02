@@ -11,7 +11,7 @@
                           <% end %>
                         </div>
                         <div class="col-md-2">
-                          <%=product.available_quantity %> <%= product.base_measurement_unit_code %><br>
+                          <%=product.available_quantity(store_front: current_store_front) %> <%= product.base_measurement_unit_code %><br>
                           <small class="text-success">AVAILABLE</small>
                         </div>
                         <div class="col-md-3">
@@ -25,7 +25,7 @@
 
                       <div class="col-md-2">
                         <br>
-                        <% if product.available_quantity > 0 %>
+                        <% if product.available_quantity(store_front: current_store_front) > 0 %>
                           <%= f.submit "Add", class: "btn btn-success" %>
                         <% else %>
                           <label class="label bg-red"> OUT OF STOCK </label>

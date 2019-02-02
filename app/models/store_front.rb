@@ -12,6 +12,8 @@ class StoreFront < ApplicationRecord
   belongs_to :service_revenue_account,       class_name: "AccountingModule::Account", foreign_key: 'service_revenue_account_id'
 
   has_many :sales_orders,                    class_name: "StoreFrontModule::Orders::SalesOrder", foreign_key: 'store_front_id'
+  has_many :purchase_orders,                 class_name: "StoreFrontModule::Orders::PurchaseOrder", foreign_key: 'store_front_id'
+  has_many :purchase_order_line_items,       through: :purchase_orders, class_name: "StoreFrontModule::LineItems::PurchaseOrderLineItem"
   has_many :delivered_stock_transfer_orders, class_name: "StoreFrontModule::Orders::PurchaseOrder", as: :supplier
   has_many :received_stock_transfer_orders,  class_name: "StoreFrontModule::Orders::PurchaseOrder", foreign_key: 'destination_store_front_id'
   has_many :delivered_stock_transfers,       through: :delivered_stock_transfer_orders, source: :purchase_order_line_items

@@ -3,14 +3,16 @@
     class PurchaseOrderLineItem < LineItem
 
       belongs_to :purchase_order, class_name: "StoreFrontModule::Orders::PurchaseOrder", foreign_key: 'order_id', optional: true
-      has_many :referenced_purchase_order_line_items, class_name: "StoreFrontModule::LineItems::ReferencedPurchaseOrderLineItem", foreign_key: 'purchase_order_line_item_id'
+      has_many :referenced_purchase_order_line_items, class_name: "StoreFrontModule::LineItems::ReferencedPurchaseOrderLineItem", foreign_key: 'purchase_order_line_item_id', dependent: :destroy
       has_many :purchase_return_order_line_items, class_name: "StoreFrontModule::LineItems::PurchaseReturnOrderLineItem", foreign_key: 'purchase_order_line_item_id'
       has_many :internal_use_order_line_items, class_name: "StoreFrontModule::LineItems::InternalUseOrderLineItem", foreign_key: 'purchase_order_line_item_id'
-      has_many :stock_transfer_line_items, class_name: "StoreFrontModule::LineItems::StockTransferOrderLineItem", foreign_key: 'purchase_order_line_item_id'
+      has_many :stock_transfer_order_line_items, class_name: "StoreFrontModule::LineItems::StockTransferOrderLineItem", foreign_key: 'purchase_order_line_item_id',  dependent: :destroy
       has_many :sales_return_order_line_items, class_name: "StoreFrontModule::LineItems::SalesReturnOrderLineItem", foreign_key: 'purchase_order_line_item_id'
       delegate :supplier, :origin_store_front_name, :destination_store_front_name, :stock_transfer?,  to: :purchase_order, allow_nil: true
       delegate :business_name, to: :supplier, prefix: true, allow_nil: true
-
+      def self.for_store_front(store_front)
+        joins(:purchase_order).where('orders.destination_store_front_id' => store_front.id)
+      end
       def self.stock_transfers
         joins(:purchase_order).
         where('orders.supplier_type' => "StoreFront")
@@ -87,7 +89,7 @@
       end
 
       def stock_transfers_quantity(args={})
-        stock_transfer_line_items.total
+        stock_transfer_order_line_items.total
       end
 
       def sales_returns_quantity(args={})

@@ -36,7 +36,7 @@
                 <td><%= link_to stock_transfer.destination_store_front_name, store_front_module_stock_transfer_path(stock_transfer) %></td>
 
                 <td>
-                  <% stock_transfer.line_items.each do |line_item|  %>
+                  <% stock_transfer.purchase_order_line_items.each do |line_item|  %>
                     <div class="row">
                       <div class="col-md-9">
                         <%= line_item.product_name %><br>

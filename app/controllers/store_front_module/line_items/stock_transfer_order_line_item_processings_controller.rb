@@ -4,12 +4,12 @@ module StoreFrontModule
       def new
         if params[:search].present?
           @products = Product.text_search(params[:search]).all
-          @line_items = StoreFrontModule::LineItems::PurchaseOrderLineItem.processed.text_search(params[:search])
+          @line_items = StoreFrontModule::LineItems::PurchaseOrderLineItem.processed.for_store_front(current_store_front).text_search(params[:search])
         end
         @cart = current_cart
         @stock_transfer_order_line_item = StoreFrontModule::LineItems::StockTransferOrderLineItemProcessing.new
         @stock_transfer_order = StoreFrontModule::Orders::StockTransferOrderProcessing.new
-        @stock_transfer_order_line_items = @cart.delivered_stock_transfer_order_line_items.order(created_at: :desc)
+        @purchase_order_line_items = @cart.purchase_order_line_items.order(created_at: :desc)
       end
 
       def create
@@ -22,7 +22,7 @@ module StoreFrontModule
         end
       end
       def destroy
-        @line_item = StoreFrontModule::LineItems::StockTransferOrderLineItem.find(params[:id])
+        @line_item = StoreFrontModule::LineItems::PurchaseOrderLineItem.find(params[:id])
         @line_item.destroy
         redirect_to new_store_front_module_stock_transfer_order_line_item_processing_url, notice: "Removed successfully"
       end
