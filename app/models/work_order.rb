@@ -1,6 +1,6 @@
 class WorkOrder < ApplicationRecord
   include PgSearch
-  enum status: [:received, :work_in_progress, :done, :released]
+  enum status: [:received, :work_in_progress, :done,  :released, :return_to_owner]
 
   pg_search_scope :text_search, against: [:service_number, :reported_problem, :physical_condition, :customer_name, :product_name],
   :associated_against => { :charge_invoice => [:number], product_unit: [:description, :model_number, :serial_number] }
@@ -154,7 +154,7 @@ class WorkOrder < ApplicationRecord
     work_order_updates.pluck(:content)
   end
   def total_spare_parts_cost
-    spare_parts.total_cost
+    sales_order_line_items.total_cost
   end
   def total_service_charges_cost
     service_charges.sum(&:amount)

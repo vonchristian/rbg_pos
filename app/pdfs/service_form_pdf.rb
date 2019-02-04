@@ -166,8 +166,8 @@ class ServiceFormPdf < Prawn::Document
     move_down 10
 end
   def spare_part_details_data
-    @spare_part_details_data ||= @work_order.spare_parts.map{|a| ["", a.product_name, price(a.total_cost)] } +
-    [["", "SUBTOTAL", "<b>#{price(@work_order.spare_parts.sum(:total_cost))}</b>"]]
+    @spare_part_details_data ||= @work_order.sales_order_line_items.map{|a| ["", a.product_name, price(a.total_cost)] } +
+    [["", "SUBTOTAL", "<b>#{price(@work_order.sales_order_line_items.sum(:total_cost))}</b>"]]
   end
 
   def summary_details

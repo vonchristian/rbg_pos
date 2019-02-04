@@ -20,6 +20,8 @@ module StoreFrontModule
       def create_stock_transfer_order
         order = StoreFrontModule::Orders::InternalUseOrder.create!(
           date: date,
+          account_number: SecureRandom.uuid,
+          store_front: find_employee.store_front,
           description: description,
           employee: find_employee,
           commercial_document: find_commercial_document,
@@ -47,7 +49,7 @@ module StoreFrontModule
 
       def create_entry(order)
         merchandise_inventory = find_employee.store_front.merchandise_inventory_account
-        internal_use_expenses = find_employee.store_front.default_internal_use_expenses_account
+        internal_use_expenses = find_employee.store_front.internal_use_account
         find_employee.entries.create!(
           recorder: find_employee,
           commercial_document: find_employee,

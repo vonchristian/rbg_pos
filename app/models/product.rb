@@ -103,12 +103,6 @@ class Product < ApplicationRecord
 	end
 
 
-  def update_stocks_name
-    stocks.each do |stock|
-      stock.name = self.name
-      stock.save
-    end
-  end
   ################################
   def last_purchase_cost
     purchases.order(created_at: :desc).last.try(:unit_cost)
