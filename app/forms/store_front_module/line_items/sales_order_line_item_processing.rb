@@ -124,7 +124,7 @@ module StoreFrontModule
         if product_id.present? && bar_code.blank?
           find_product.available_quantity(store_front: find_store_front)
         elsif purchase_order_line_item_id.present? && bar_code.present?
-          find_purchase_order_line_item.available_quantity
+          find_purchase_order_line_item.available_quantity(store_front: find_store_front)
         end
       end
 

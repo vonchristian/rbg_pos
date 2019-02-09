@@ -51,7 +51,7 @@ module StoreFrontModule
               line_item.update_attributes!(date: date)
               line_item.cart_id = nil
               order.purchase_order_line_items << line_item
-              order.stock_transfer_order_line_items << purchase_order_line_item.stock_transfer_order_line_items
+            
             end
           end
           create_voucher(order)

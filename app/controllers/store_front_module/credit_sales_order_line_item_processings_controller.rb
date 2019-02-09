@@ -4,7 +4,7 @@ module StoreFrontModule
       @customer = Customer.find(params[:customer_id])
       if params[:search].present?
         @products = Product.text_search(params[:search]).all.paginate(page: params[:page], per_page: 25)
-        @line_items = StoreFrontModule::LineItems::PurchaseOrderLineItem.text_search(params[:search])
+        @line_items = StoreFrontModule::LineItems::PurchaseOrderLineItem.processed.for_store_front(current_store_front).text_search(params[:search]).paginate(page: params[:page], per_page: 25)
       end
       @cart = current_cart
       @line_item = StoreFrontModule::LineItems::SalesOrderLineItemProcessing.new

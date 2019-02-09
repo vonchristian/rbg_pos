@@ -13,6 +13,7 @@
       def self.for_store_front(store_front)
         joins(:purchase_order).where('orders.destination_store_front_id' => store_front.id)
       end
+
       def self.stock_transfers
         joins(:purchase_order).
         where('orders.supplier_type' => "StoreFront")
@@ -89,7 +90,11 @@
       end
 
       def stock_transfers_quantity(args={})
-        stock_transfer_order_line_items.total
+        if args[:store_front].present?
+          stock_transfer_order_line_items.for_store_front(args[:store_front]).total
+        else
+          stock_transfer_order_line_items.total
+        end
       end
 
       def sales_returns_quantity(args={})

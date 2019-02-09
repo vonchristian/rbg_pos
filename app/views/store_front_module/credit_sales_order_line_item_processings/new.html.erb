@@ -36,10 +36,11 @@
     <% end %>
 
        <br>
-       <% if @products.present? %>
-         <%= render 'store_front_module/credit_sales_order_line_item_processings/searched_product_results' %>
-       <% elsif @line_items.present? %>
+      <% if @line_items.present? %>
          <%= render 'store_front_module/credit_sales_order_line_item_processings/searched_line_item_results' %>
+      <% elsif @products.present? %>
+           <%= render 'store_front_module/credit_sales_order_line_item_processings/searched_product_results' %>
+
        <% end %>
       <% if @cart.sales_order_line_items.present? %>
         <% @cart.sales_order_line_items.each do |line_item| %>
@@ -49,6 +50,7 @@
             </div>
             <div class="col-md-5">
               <b><%= line_item.name.try(:upcase) %></b><br>
+              <small><%= line_item.bar_code %></small>
               <span class="text-muted">
                 <% if line_item.bar_code.present? %>
                   <i class="fa fa-barcode"></i> <%= line_item.bar_code %> &nbsp;

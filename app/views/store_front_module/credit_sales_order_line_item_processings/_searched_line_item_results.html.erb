@@ -3,7 +3,7 @@
     <div class="col-md-5">
       <b><%= line_item.name.try(:upcase) %></b>
       <% if line_item.available_quantity(store_front: current_store_front) > 0 %>
-        &nbsp; <span class="badge bg-gray"><%= line_item.available_quantity(store_front: current_store_front) > 0 %> left</span>
+        &nbsp; <span class="badge bg-gray"><%= line_item.available_quantity(store_front: current_store_front) %> left</span>
       <% else %>
         <span class="label bg-red"> Out Of Stock </span>
       <% end %><br>

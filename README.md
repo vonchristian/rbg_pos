@@ -1,4 +1,8 @@
 
+loan product
+ adjustable interest rate
+
+ add interest rate to loan applications
 
 amounts extension
 update to 2.6
