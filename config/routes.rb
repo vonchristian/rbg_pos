@@ -192,6 +192,8 @@ Rails.application.routes.draw do
 
   resources :income_statement, only: [:index]
   namespace :accounting do
+    resources :adjusting_entries, only: [:create]
+    resources :entry_line_items, only: [:new, :create]
     resources :employees, only: [:show] do
       resources :cash_transfers, only: [:new, :create]
     end

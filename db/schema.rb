@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190218013132) do
+ActiveRecord::Schema.define(version: 20190218063943) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -472,9 +472,11 @@ ActiveRecord::Schema.define(version: 20190218013132) do
     t.integer "amount_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "recorder_id"
     t.index ["account_id"], name: "index_voucher_amounts_on_account_id"
     t.index ["amount_type"], name: "index_voucher_amounts_on_amount_type"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_voucher_amounts"
+    t.index ["recorder_id"], name: "index_voucher_amounts_on_recorder_id"
     t.index ["voucher_id"], name: "index_voucher_amounts_on_voucher_id"
   end
 
@@ -593,6 +595,7 @@ ActiveRecord::Schema.define(version: 20190218013132) do
   add_foreign_key "users", "sections"
   add_foreign_key "users", "store_fronts"
   add_foreign_key "voucher_amounts", "accounts"
+  add_foreign_key "voucher_amounts", "users", column: "recorder_id"
   add_foreign_key "voucher_amounts", "vouchers"
   add_foreign_key "vouchers", "users", column: "preparer_id"
   add_foreign_key "work_order_service_charges", "service_charges"

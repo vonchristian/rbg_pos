@@ -1,0 +1,20 @@
+<%= simple_form_for @entry_line_item, url: :accounting_entry_line_items do |f| %>
+  <%= f.input :amount %>
+  <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+  <%= f.input :account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+  <%= f.input :amount_type, collection: Vouchers::VoucherAmount.amount_types.keys.to_a.map{|a| [a.titleize, a] } %>
+  <%= f.submit "Add" %>
+<% end %>
+
+<% current_user.voucher_amounts.without_voucher.each do |voucher_amount| %>
+  <%= voucher_amount.amount %>
+  <%= voucher_amount.account_name %>
+<% end %>
+<%= simple_form_for @adjusting_entry, url: :accounting_adjusting_entries do |f| %>
+  <%= f.input :entry_date, input_html: { class: "datepicker" } %>
+  <%= f.input :reference_number %>
+  <%= f.input :description %>
+  <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+  <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+  <%= f.submit "Proceed" %>
+<% end %>

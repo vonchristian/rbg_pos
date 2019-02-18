@@ -1,7 +1,13 @@
-module Accounting 
+module Accounting
 	class EntriesController < ApplicationController
-		def show 
+    def index
+      @entries = AccountingModule::Entry.all
+    end
+    def new
+      @entry_line_item = Accounting::EntryLineItem.new
+    end
+		def show
 			@entry = AccountingModule::Entry.find(params[:id])
-		end 
-	end 
-end 
+		end
+	end
+end

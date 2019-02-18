@@ -12,10 +12,7 @@
                 <h4><%= number_to_currency @employee.default_cash_on_hand_account_balance %></h4>
                 <small> CASH ON HAND</small><br>
                 <% if current_user.proprietor? %>
-                  <%=link_to "New Remittance (Cash on Hand)", new_employee_remittance_path(employee_id: @employee.id, cash_account_id: cash_account.id), class: "btn btn-success btn-sm" %>
-                  <%=link_to "New Remittance (Bank)", new_employee_bank_remittance_path(employee_id: @employee.id, cash_account_id: cash_account.id), class: "btn btn-success btn-sm" %>
-
-                  <%= link_to 'New Cash Transfer', new_accounting_employee_cash_transfer_path(@employee), class: "btn btn-danger btn-sm" %>
+                  <%=link_to "New Remittance", new_employee_remittance_path(employee_id: @employee.id, cash_account_id: cash_account.id), class: "btn btn-success btn-sm" %>
                 <% end %>
           </div>
 

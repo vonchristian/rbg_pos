@@ -1,11 +1,14 @@
 FactoryBot.define do
   factory :voucher do
     date "2018-02-21 08:42:37"
-    payee nil
+
     description "MyString"
     payable_amount "9.99"
     type ""
-    preparer nil
-    disburser nil
+
+    account_number { SecureRandom.uuid }
+    association :preparer, factory: :user
+    association :payee, factory: :user
+
   end
 end
