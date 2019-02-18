@@ -15,6 +15,9 @@ class User < ApplicationRecord
   has_many :entries, class_name: "AccountingModule::Entry", foreign_key: 'recorder_id'
   has_many :fund_transfers, class_name: "AccountingModule::Entry", as: :commercial_document
   has_many :actions_taken, class_name: "ActionsTaken"
+  has_many :employee_cash_accounts, class_name: "Employees::EmployeeCashAccount", foreign_key: 'employee_id'
+  has_many :cash_accounts, through: :employee_cash_accounts, class_name: "AccountingModule::Account", foreign_key: 'cash_account_id'
+
   enum role: [:proprietor, :sales_clerk, :stock_custodian, :technician]
   has_attached_file :avatar,
   styles: { large: "120x120>",

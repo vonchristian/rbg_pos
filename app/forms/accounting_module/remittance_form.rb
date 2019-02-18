@@ -31,18 +31,11 @@ module AccountingModule
 	  	User.find_by_id(cashier_id)
 	  end
 	  def credit_account
-	  	if credit_account_id.present?
-	  		AccountingModule::Account.find_by_id(credit_account_id)
-	  	else
-	  	  find_cashier.cash_on_hand_account
-	  	end
+      AccountingModule::Account.find(credit_account_id)
 	  end
+
 	  def debit_account
-	  	if debit_account_id.present?
-	  		AccountingModule::Account.find_by_id(debit_account_id)
-	  	else
-	  	  find_proprietor.cash_on_hand_account
-	  	end
+	  	AccountingModule::Account.find(debit_account_id)
 	  end
 	end
 end

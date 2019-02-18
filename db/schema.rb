@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190130222225) do
+ActiveRecord::Schema.define(version: 20190218013132) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -118,6 +118,15 @@ ActiveRecord::Schema.define(version: 20190130222225) do
     t.boolean "enable_interest", default: false
     t.bigint "business_id"
     t.index ["business_id"], name: "index_customers_on_business_id"
+  end
+
+  create_table "employee_cash_accounts", force: :cascade do |t|
+    t.bigint "employee_id"
+    t.bigint "cash_account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cash_account_id"], name: "index_employee_cash_accounts_on_cash_account_id"
+    t.index ["employee_id"], name: "index_employee_cash_accounts_on_employee_id"
   end
 
   create_table "entries", force: :cascade do |t|
@@ -537,6 +546,8 @@ ActiveRecord::Schema.define(version: 20190130222225) do
   add_foreign_key "bank_accounts", "accounts", column: "cash_in_bank_account_id"
   add_foreign_key "bank_accounts", "businesses"
   add_foreign_key "customers", "businesses"
+  add_foreign_key "employee_cash_accounts", "accounts", column: "cash_account_id"
+  add_foreign_key "employee_cash_accounts", "users", column: "employee_id"
   add_foreign_key "entries", "users"
   add_foreign_key "entries", "users", column: "recorder_id"
   add_foreign_key "line_items", "carts"
