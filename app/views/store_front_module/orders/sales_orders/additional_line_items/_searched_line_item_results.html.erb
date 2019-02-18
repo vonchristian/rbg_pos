@@ -23,6 +23,7 @@
         <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
         <%= f.input :bar_code, input_html: { value: params[:search] }, as: :hidden %>
         <%= f.input :purchase_order_line_item_id, input_html: { value: line_item.id }, as: :hidden %>
+        <%= f.input :store_front_id, input_html: { value: current_store_front.id } %>
       </div>
       <div class="col-md-3">
         <%= f.input :unit_cost, placeholder: "Selling Price", label: false %>

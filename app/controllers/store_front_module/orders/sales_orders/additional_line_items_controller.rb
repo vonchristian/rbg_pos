@@ -41,6 +41,7 @@ module StoreFrontModule
                         :cart_id,
                         :product_id,
                         :unit_cost,
+                        :store_front_id,
                         :bar_code,
                         :purchase_order_line_item_id)
         end

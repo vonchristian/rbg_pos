@@ -19,6 +19,8 @@
   <br>
   <% if product.available_quantity > 0 %>
     <%= simple_form_for @sales_order_line_item, url: :store_front_module_sales_order_additional_line_items do |f| %>
+    <%= f.input :store_front_id, input_html: { value: current_store_front.id }, as: :hidden %>
+    
       <div class="row">
         <div class="col-md-3">
           <%= f.input :quantity, as: :string, label: false, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, autofocus: true %>

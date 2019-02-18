@@ -28,7 +28,7 @@ module StoreFrontModule
       end
       def create_entry
         store_front = employee.store_front
-        accounts_receivable = store_front.default_accounts_receivable_account
+        accounts_receivable = store_front.receivable_account
         cost_of_goods_sold = store_front.cost_of_goods_sold_account
         sales = store_front.sales_account
         sales_discount = store_front.sales_discount_account
