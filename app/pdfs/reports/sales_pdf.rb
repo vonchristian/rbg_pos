@@ -7,7 +7,7 @@ module Reports
       @to_date      = args[:to_date]
       @orders       = args[:orders]
       @employee     = args[:employee]
-      @business     = @employee.business
+      @business     = args[:business]
       @view_context = args[:view_context]
       heading
       cash_on_hand_account_details
