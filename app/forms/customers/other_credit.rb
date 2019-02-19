@@ -15,15 +15,17 @@ module Customers
 
     private
     def create_other_credit
-      order = StoreFrontModule::Orders::SalesOrder.create(
+      order = StoreFrontModule::Orders::SalesOrder.create!(
+        store_front: find_employee.store_front,
+        account_number: SecureRandom.uuid,
         description: description,
         reference_number: reference_number,
         date: date,
         employee: find_employee,
         commercial_document: find_customer)
 
-      accounts_receivable = find_employee.store_front.default_accounts_receivable_account
-      other_income = find_employee.store_front.default_other_income_account
+      accounts_receivable = find_employee.store_front.receivable_account
+      other_income = find_employee.store_front.sales_account
       AccountingModule::Entry.create!(
         recorder: find_employee,
         commercial_document: find_customer,

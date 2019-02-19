@@ -156,7 +156,7 @@ class ServiceFormPdf < Prawn::Document
   end
   def spare_parts_details
     text "SPARE PARTS", style: :bold, size: 10
-    if @work_order.spare_parts.present?
+    if @work_order.sales_order_line_items.present?
       table(spare_part_details_data, cell_style: { size: 10, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [10, 120, 50]) do
           cells.borders = []
           column(2).align = :right
