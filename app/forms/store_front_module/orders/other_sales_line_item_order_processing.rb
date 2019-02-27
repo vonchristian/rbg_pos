@@ -20,7 +20,7 @@ module StoreFrontModule
 
       def create_entry
         store_front = find_employee.store_front
-        accounts_receivable = store_front.default_accounts_receivable_account
+        accounts_receivable = store_front.receivable_account
         sales = store_front.sales_account
         AccountingModule::Entry.create!(
           recorder: find_employee,
