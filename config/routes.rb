@@ -74,6 +74,7 @@ Rails.application.routes.draw do
   resources :users, only: [:edit, :update]
   resources :registries, only: [:create, :show, :destroy]
   resources :employees, only: [:show, :edit, :update] do
+    resources :repairs, only: [:index], module: :employees
     resources :remittances, only: [:new, :create], module: :employees
     resources :bank_remittances, only: [:new, :create], module: :employees
     resources :reports, only: [:index], module: :employees
