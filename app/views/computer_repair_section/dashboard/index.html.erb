@@ -52,7 +52,8 @@
     </div>
 
     <div class="row">
-      <div class="col-md-3 border-right">
+
+      <div class="col-md-2 border-right">
         <div class="box box-solid">
           <div class="box-header">
             <div class="row">
@@ -133,10 +134,10 @@
       <div class="col-md-3 border-right">
         <div class="box box-solid">
         <div class="box-header">
-          <h4 class="box-title"> <span class="label label-success"><%= WorkOrder.done.count %> </span> &nbsp; Done </h4>
+          <h4 class="box-title"> <span class="label label-success"><%= WorkOrder.done_and_rto.count %> </span> &nbsp; Done / TRO </h4>
         </div>
          <div class="box-body">
-          <% @work_orders.done.each do |work_order| %>
+          <% @work_orders.done_and_rto.each do |work_order| %>
           <%=link_to computer_repair_section_work_order_path(work_order) do %>
            <div class="row">
               <div class="col-md-9">

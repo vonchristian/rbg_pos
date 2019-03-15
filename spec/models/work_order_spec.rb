@@ -20,6 +20,17 @@ describe WorkOrder do
   end
   describe 'enums' do
   end
+
+  it ".done_and_rto" do
+    received_work_order = create(:work_order, status: 'received')
+    done_work_order     = create(:work_order, status: 'done')
+    rto_work_order      = create(:work_order, status: 'return_to_owner')
+
+    expect(described_class.done_and_rto).to include(done_work_order)
+    expect(described_class.done_and_rto).to include(rto_work_order)
+    expect(described_class.done_and_rto).to_not include(received_work_order)
+  end
+
   describe 'validations' do
     it { is_expected.to validate_presence_of :description }
     it { is_expected.to validate_presence_of :physical_condition }
@@ -37,7 +48,7 @@ describe WorkOrder do
     it { is_expected.to delegate_method(:avatar).to(:customer) }
     it { is_expected.to delegate_method(:number).to(:charge_invoice) }
 
-
+  end
 
 
 

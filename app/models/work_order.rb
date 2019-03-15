@@ -34,7 +34,9 @@ class WorkOrder < ApplicationRecord
   delegate :number, to: :charge_invoice, prefix: true, allow_nil: true
 
   after_commit :set_service_number, :set_customer_name, :set_product_name,  on: [:create, :update]
-
+  def self.done_and_rto
+    done + return_to_owner
+  end
   def self.payment_entries #refactor
     payments = []
     all.each do |work_order|
