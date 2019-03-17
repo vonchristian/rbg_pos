@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   resources :reports, only: [:index]
   resources :customer_registrations, only: [:new, :create]
   namespace :reports do
+    resources :purchase_returns, only: [:index]
     resources :store_fronts, only: [:show], module: :store_fronts do
       resources :inventories, only: [:index]
     end
@@ -116,6 +117,7 @@ Rails.application.routes.draw do
   resources :cash_on_hand_accounts, only: [:new, :create], module: :accounting
 
   namespace :store_front_module do
+    resources :purchase_order_line_items, only: [:show]
 
     resources :store_fronts, only: [:index, :show] do
       resources :reports, only: [:index], module: :store_fronts

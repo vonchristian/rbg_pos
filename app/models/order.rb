@@ -19,6 +19,9 @@ class Order < ApplicationRecord
 
   validates :account_number,  presence: true, uniqueness: true
   validates :store_front_id, presence: true
+  def self.total_cost_less_discount
+    all.map{|a| a.total_cost_less_discount}.to_a.sum
+  end
   def self.credit
     where(credit: true)
   end
@@ -58,7 +61,7 @@ class Order < ApplicationRecord
   def total_cost
     if line_items.present?
       line_items.total_cost
-    else
+    elsif
       cash_payment.cash_tendered
     end
   end

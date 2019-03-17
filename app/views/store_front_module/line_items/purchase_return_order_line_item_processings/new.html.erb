@@ -31,11 +31,10 @@
         <br>
         <table class="table table-responsive">
           <tbody>
-            <% if @products.present? %>
-              <%= render 'store_front_module/line_items/purchase_return_order_line_item_processings/searched_product_results' %>
-            <% elsif @line_items.present? %>
+            <% if @line_items.present? %>
               <%= render 'store_front_module/line_items/purchase_return_order_line_item_processings/searched_line_item_results' %>
-
+            <% elsif @products.present? %>
+              <%= render 'store_front_module/line_items/purchase_return_order_line_item_processings/searched_product_results' %>
             <% end %>
           </tbody>
         </table>
@@ -55,6 +54,7 @@
               <tbody>
                 <% @cart.purchase_return_order_line_items.each do |line_item| %>
                   <tr>
+                    <%= line_item.inspect %>
                     <td><%= line_item.quantity %> <%= line_item.unit_code %></td>
                     <td width="300px"><b><%= line_item.name.try(:titleize) %></b><br> <span class="text-muted"><%= line_item.bar_code %></span>
                     </td>
@@ -91,6 +91,7 @@
             <%= f.input :description %>
             <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
             <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+            <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
         <%=f.submit "Save Purchase Return", class: "btn btn-danger btn-block btn-lg", :accesskey => "C" %>
         <% end %>
       <% end %>
@@ -98,4 +99,3 @@
 
     </div>
   </div>
-

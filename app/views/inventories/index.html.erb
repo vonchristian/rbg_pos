@@ -4,6 +4,16 @@
       <div class="box-header with-border">
         <h3 class="box-title">Inventories</h3><br>
         <span class="text-muted"> List of delivered inventories </span>
+        <%=form_tag inventories_path, method: :get, id: "search-form" do %>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search product...", type: "search" %>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', class: "btn btn-default") do %>
+                 Browse Inventories
+              <% end %>
+            </span>
+          </div>
+        <% end %>
       </div>
       <div class="box-body">
         <div class="table table-responsive">
@@ -12,6 +22,7 @@
               <tr>
                 <th>Date Delivered</th>
                 <th>Product</th>
+                <th> Barcode </th>
                 <th>Quantity</th>
                 <th>Available QTY</th>
               </tr>
@@ -20,9 +31,10 @@
               <% @inventories.each do |inventory| %>
                 <tr>
                   <td><%= inventory.created_at.strftime("%B %e, %Y") %></td>
-                  <td><%= inventory.name %></td>
+                  <td><%= link_to inventory.name, store_front_module_purchase_order_line_item_path(inventory) %></td>
+                  <td><%= inventory.bar_code %></td>
                   <td><%= inventory.quantity %></td>
-                  <td><%= inventory.available_quantity %></td>
+                  <td><%= inventory.available_quantity(store_front: current_store_front) %></td>
                 </tr>
               <% end %>
             </tbody>

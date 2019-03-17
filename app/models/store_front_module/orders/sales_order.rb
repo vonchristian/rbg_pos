@@ -54,9 +54,7 @@ module StoreFrontModule
           0
         end
       end
-      def income
-        total_cost - cost_of_goods_sold
-      end
+    
       def self.caret_status
         "up"
       end

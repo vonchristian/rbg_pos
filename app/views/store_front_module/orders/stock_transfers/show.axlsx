@@ -3,8 +3,6 @@ wb.add_worksheet(name: "Stock Transfer") do |sheet|
   sheet.add_row [
   "Product Name",
   "Quantity",
-  "Unit Cost",
-  "Total Cost",
   "UOM",
   "Barcode",
   "Selling Price",
@@ -12,14 +10,12 @@ wb.add_worksheet(name: "Stock Transfer") do |sheet|
   "",
   "",
   "Category"]
-  @order.stock_transfer_order_line_items.each do |line_item|
+  @order.purchase_order_line_items.each do |line_item|
     sheet.add_row [
     line_item.product_name,
     line_item.quantity,
-    line_item.unit_cost,
-    line_item.total_cost,
     line_item.unit_of_measurement.try(:unit_code),
-    line_item.bar_code,
+    line_item.bar_code.to_s,
     line_item.product.base_measurement.price,
     "",
     "",

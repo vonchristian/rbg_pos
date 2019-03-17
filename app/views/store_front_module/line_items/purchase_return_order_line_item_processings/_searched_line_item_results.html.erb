@@ -11,7 +11,7 @@
 
                         </div>
                         <div class="col-md-2">
-                          <%=line_item.available_quantity %> <%= line_item.unit_code %><br>
+                          <%=line_item.available_quantity(store_front: current_store_front) %> <%= line_item.unit_code %><br>
                           <small class="text-danger">AVAILABLE QTY</small>
                         </div>
                         <div class="col-md-3">
@@ -27,7 +27,7 @@
 
                       <div class="col-md-2">
                         <br>
-                        <% if line_item.available_quantity <= 0 %>
+                        <% if line_item.available_quantity(store_front: current_store_front) <= 0 %>
                           <span class="badge bg-red"> OUT OF STOCK </span>
                         <% else %>
                           <%= f.submit "Add", class: "btn btn-danger btn-sm" %>

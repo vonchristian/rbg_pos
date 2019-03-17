@@ -6,6 +6,7 @@
                                       <th>Product</th>
                                       <th>Date Purchased </th>
                                       <th>Quantity</th>
+                                      <th> In Stock </th>
                                       <th>Unit Cost</th>
                                       <th>Total Cost</th>
                                       <th>Supplier</th>
@@ -14,12 +15,18 @@
                                     <tbody>
                                       <% @stocks.each do |stock| %>
                                       <tr>
-                                      <td><%=stock.name %><br>
-                                        <% if stock.stock_transfer? %>
-                                          <span class="badge bg-gray"><%= stock.origin_store_front_name %> --> <%= stock.destination_store_front_name %> </span>
+                                      <td><%=link_to stock.name, store_front_module_purchase_order_line_item_path(stock) %><br>
+                                        <small><%= stock.bar_code %></small><br>
+
+                                        <% if stock.stock_transfer_order_line_items.present? %>
+                                          <% stock.stock_transfer_order_line_items.each do |transfer| %>
+                                            <span class="badge bg-yellow"> Transfer <%= transfer.quantity %> </span>
+                                            <%= transfer.order.try(:origin_store_front).try(:name) %> to
+                                            <%= transfer.order.try(:destination_store_front).try(:name) %>
+
+                                          <% end %>
                                         <% end %>
-                                      <small><%= stock.bar_code %></small><br>
-                                        <% if stock.sold? %>
+                                        <% if stock.sold?  %>
                                           <span class="label bg-green"> Sold </span><br>
                                           Customer:
                                           <%= stock.customer %>
@@ -31,6 +38,7 @@
                                       <td><%= stock.try(:date).try(:strftime, ("%B %e, %Y")) %></td>
 
                                       <td><%= stock.quantity %></td>
+                                      <td> <%= stock.available_quantity(store_front: current_store_front) %></td>
                                        <% if current_user.proprietor? %>
                                           <td><%= number_to_currency stock.unit_cost %></td>
                                           <td><%= number_to_currency stock.total_cost %></td>

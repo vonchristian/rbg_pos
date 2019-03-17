@@ -1,0 +1,21 @@
+<div class="box box-solid">
+  <div class="box-header">
+    <h3 class="box-title"> Stock Details </h3>
+  </div>
+  <div class="box-body">
+    <%= @stock.product_name %>
+    <%= @stock.bar_code %>
+    p return
+    <%= @stock.purchase_returns_quantity %>
+    on stock
+    <%= @stock.available_quantity(store_front: current_store_front) %>
+  </div>
+</div>
+<% if @stock.purchase_return_order_line_items.processed.present? %>
+<h3 class="box-title">Purchase Returns </h3>
+<% @stock.purchase_return_order_line_items.processed.each do |line_item| %>
+<%= line_item.order.date.strftime("%B %e, %Y") %>
+<%= line_item.quantity %>
+<%= line_item.order.commercial_document.name %>
+<% end %>
+<% end %>

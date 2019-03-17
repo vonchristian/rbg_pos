@@ -95,7 +95,7 @@ module StoreFrontModule
           price:               selling_price(row),
           product:             find_product(row),
           unit_of_measurement: unit_of_measurement(row))
-      end
+    end
 
       def find_unit_of_measurement(row)
         find_product(row).unit_of_measurements.find_by(

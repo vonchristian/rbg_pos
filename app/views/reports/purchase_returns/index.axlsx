@@ -1,0 +1,22 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Purchase Returns") do |sheet|
+  sheet.add_row ["Date Covered", "From Date: #{@from_date.strftime("%B %e, %Y")}", "To Date: #{@to_date.strftime("%B %e, %Y")}"]
+  sheet.add_row ["Date", "Description", "Supplier", "Item", "Barcode", "Quantity"]
+  @orders.each do |order|
+    sheet.add_row [
+    order.date.strftime("%B %e, %Y"),
+    order.description,
+    order.commercial_document.try(:name)
+    ]
+    order.purchase_return_order_line_items.each do |line_item|
+    sheet.add_row [
+      "",
+      "",
+      "",
+      line_item.name,
+      line_item.bar_code,
+      line_item.quantity
+    ]
+    end
+  end
+end
