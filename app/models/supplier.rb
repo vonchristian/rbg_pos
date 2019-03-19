@@ -8,7 +8,7 @@ class Supplier < ApplicationRecord
 	has_many :entries, through: :delivered_stocks
   has_many :payments, as: :commercial_document, class_name: "AccountingModule::Entry"
 
-  has_many :purchase_orders, class_name: "StoreFrontModule::Orders::PurchaseOrder", as: :commercial_document
+  has_many :purchase_orders, class_name: "StoreFrontModule::Orders::PurchaseOrder", as: :supplier
   has_many :purchase_return_orders, class_name: "StoreFrontModule::Orders::PurchaseReturnOrder", as: :commercial_document
 
   has_many :vouchers, as: :payee
