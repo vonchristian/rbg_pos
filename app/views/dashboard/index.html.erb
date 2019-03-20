@@ -4,51 +4,7 @@
       </h1>
     </section>
     <br>
-<div class="row">
-  <div class="col-md-12">
-    <div class="box box-solid">
-      <div class="box-footer">
-        <p>Sales for Today <%= Time.zone.now.strftime("%B %e, %Y") %></p>
-        <div class="row">
-          <div class="col-sm-3 col-xs-6">
-            <div class="description-block border-right">
-              <span class="description-percentage text-<%= @sales_for_today.percentage_text_color %>"><i class="fa fa-caret-<%= @sales_for_today.caret_status %>"></i> 17%</span>
-              <h5 class="description-header"><%= number_to_currency @sales_for_today.map{ |a| a.total_cost }.to_a.compact.sum %></h5>
-              <span class="description-text">TOTAL SALES</span>
-            </div>
-            <!-- /.description-block -->
-          </div>
-          <!-- /.col -->
-          <div class="col-sm-3 col-xs-6">
-            <div class="description-block border-right">
-              <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>
-              <h5 class="description-header"><%= number_to_currency @sales_for_today.map{ |a| a.cost_of_goods_sold }.to_a.compact.sum %></h5>
-              <span class="description-text">TOTAL COGS</span>
-            </div>
-            <!-- /.description-block -->
-          </div>
-          <!-- /.col -->
-          <div class="col-sm-3 col-xs-6">
-            <div class="description-block border-right">
-              <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>
-              <h5 class="description-header"><%= number_to_currency @sales_for_today.map{ |a| a.income }.to_a.compact.sum %></h5>
-              <span class="description-text">TOTAL PROFIT</span>
-            </div>
-            <!-- /.description-block -->
-          </div>
-          <!-- /.col -->
-          <div class="col-sm-3 col-xs-6">
-            <div class="description-block">
-              <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>
-              <h5 class="description-header">1200</h5>
-              <span class="description-text">GOAL COMPLETIONS</span>
-            </div>
-            <!-- /.description-block -->
-          </div>
-        </div>
-        <!-- /.row -->
-      </div>
-    </div>
+
   <div class="row">
     <div class="col-md-6">
       <div class="box box-success">
