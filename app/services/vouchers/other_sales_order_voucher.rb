@@ -1,10 +1,11 @@
 module Vouchers
   class OtherSalesOrderVoucher
-    attr_reader :order, :employee, :cash_on_hand, :sales
+    attr_reader :order, :employee, :cash_on_hand, :sales, :amount
 
     def initialize(args)
       @order                 = args.fetch(:order)
       @employee              = args.fetch(:employee)
+      @amount                = args.fetch(:amount)
       @store_front           = @employee.store_front
       @cash_on_hand          = @employee.cash_on_hand_account
       @sales                 = @store_front.sales_account
@@ -20,13 +21,13 @@ module Vouchers
         account_number: order.account_number
       )
       voucher.voucher_amounts.debit.build(
-        amount: order.total_cost,
+        amount: amount,
         account: cash_on_hand,
         commercial_document: order
       )
 
       voucher.voucher_amounts.credit.build(
-        amount: order.total_cost,
+        amount: amount,
         account: sales,
         commercial_document: order
       )

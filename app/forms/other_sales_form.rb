@@ -34,7 +34,7 @@ class OtherSalesForm
   end
 
   def create_voucher(order)
-    Vouchers::OtherSalesOrderVoucher.new(order: order, employee: find_employee).create_voucher!
+    Vouchers::OtherSalesOrderVoucher.new(order: order, employee: find_employee, amount: amount).create_voucher!
   end
 
   def create_entry(order)
