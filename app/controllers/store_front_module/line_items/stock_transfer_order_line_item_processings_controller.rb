@@ -14,7 +14,7 @@ module StoreFrontModule
 
       def create
         @line_item = StoreFrontModule::LineItems::StockTransferOrderLineItemProcessing.new(line_item_params)
-        if @line_item.process!s
+        if @line_item.process!
           redirect_to new_store_front_module_stock_transfer_order_line_item_processing_url, notice: "added successfully"
         else
           render :new, alert: "Error"
