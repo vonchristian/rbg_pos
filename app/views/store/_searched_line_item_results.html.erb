@@ -1,5 +1,4 @@
 <% @line_items.each do |line_item| %>
-  <%= line_item.inspect %>
   <%= line_item.available_quantity(store_front: current_store_front) %>pcs
   <div class="row">
     <div class="col-md-10">
