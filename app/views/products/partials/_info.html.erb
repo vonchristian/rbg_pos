@@ -27,7 +27,7 @@
           <%= unit.unit_code %>
         </div>
         <div class="col-md-2">
-          <%= number_to_currency unit.price %>
+          <%= number_to_currency unit.price_for_store_front(store_front: current_store_front) %>
         </div>
         <div class="col-md-2">
         </div>
@@ -40,7 +40,7 @@
     <% end %>
     <hr>
     <h4>Price History</h4>
-      <% @product.selling_prices.each do |price| %>
+      <% @product.selling_prices.where(store_front: current_store_front).each do |price| %>
         <div class="row">
           <div class="col-md-3">
             <%= price.date.strftime("%B %e, %Y") %>

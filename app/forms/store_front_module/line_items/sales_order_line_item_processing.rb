@@ -92,7 +92,7 @@ module StoreFrontModule
         if unit_cost.present?
           unit_cost.to_f
         else
-          find_unit_of_measurement.price
+          find_unit_of_measurement.price_for_store_front(store_front: find_store_front)
         end
       end
 

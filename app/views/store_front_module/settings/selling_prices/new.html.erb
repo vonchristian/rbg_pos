@@ -11,6 +11,8 @@
         <%= f.input :selling_price %>
         <%= f.input :product_id, input_html: { value: @product.id }, as: :hidden %>
         <%= f.input :unit_of_measurement_id, input_html: { value: @unit_of_measurement.id }, as: :hidden %>
+        <%= f.input :store_front_id, input_html: { value: current_store_front.id }, as: :hidden %>
+
         <div class="box-footer">
           <%= f.submit "Update Price", class: "btn btn-primary pull-right" %>
         </div>

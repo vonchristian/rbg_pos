@@ -38,13 +38,13 @@ module StoreFrontModule
 
         find_product.purchases.order(created_at: :asc).each do |purchase|
           temp_sales_return = sale_return.referenced_sales_order_line_items.create!(
-            quantity:                 quantity_for(purchase, requested_quantity),
-            unit_cost:                purchase.unit_cost,
-            total_cost:               total_cost_for(purchase, quantity),
-            unit_of_measurement:      find_unit_of_measurement,
-            product_id:               product_id,
-            bar_code:                 bar_code,
-            purchase_order_line_item_id:   purchase.id)
+            quantity:                    quantity_for(purchase, requested_quantity),
+            unit_cost:                   purchase.unit_cost,
+            total_cost:                  total_cost_for(purchase, quantity),
+            unit_of_measurement:         find_unit_of_measurement,
+            product_id:                  product_id,
+            bar_code:                    bar_code,
+            purchase_order_line_item_id: purchase.id)
           requested_quantity -= temp_sales_return.quantity
           break if requested_quantity.zero?
         end
@@ -52,12 +52,12 @@ module StoreFrontModule
 
       def increase_purchase_order_line_item_quantity
         sales_return = find_cart.sales_return_order_line_items.create!(
-          quantity: quantity,
-          unit_cost: selling_cost,
-          total_cost: set_total_cost,
-          product_id: product_id,
-          unit_of_measurement: find_unit_of_measurement,
-          bar_code: bar_code,
+          quantity:                    quantity,
+          unit_cost:                   selling_cost,
+          total_cost:                  set_total_cost,
+          product_id:                  product_id,
+          unit_of_measurement:         find_unit_of_measurement,
+          bar_code:                    bar_code,
           purchase_order_line_item_id: purchase_order_line_item_id
           )
       end
@@ -74,14 +74,14 @@ module StoreFrontModule
         find_unit_of_measurement.conversion_multiplier * quantity.to_f
       end
       def find_cart
-        Cart.find_by_id(cart_id)
+        Cart.find(cart_id)
       end
 
       def selling_cost
         if unit_cost.present?
           unit_cost.to_f
         else
-          find_unit_of_measurement.price
+          find_unit_of_measurement.price_for_store_front(store_front: find_store_front)
         end
       end
 
@@ -98,11 +98,11 @@ module StoreFrontModule
       end
 
       def find_product
-        Product.find_by_id(product_id)
+        Product.find(product_id)
       end
 
       def find_purchase_order_line_item
-        StoreFrontModule::LineItems::PurchaseOrderLineItem.find_by_id(purchase_order_line_item_id)
+        StoreFrontModule::LineItems::PurchaseOrderLineItem.find(purchase_order_line_item_id)
       end
 
       def available_quantity

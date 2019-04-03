@@ -2,7 +2,7 @@ module StoreFrontModule
   module LineItems
     class WorkOrderLineItemProcessing
      include ActiveModel::Model
-      attr_accessor :unit_of_measurement_id, :quantity, :cart_id, :product_id, :unit_cost, :total_cost, :cart_id, :barcode, :referenced_line_item_id
+      attr_accessor :unit_of_measurement_id, :quantity, :cart_id, :product_id, :unit_cost, :total_cost, :cart_id, :barcode, :referenced_line_item_id, :store_front_id
       validates :quantity, numericality: { greater_than: 0.1 }
       validate :quantity_is_less_than_or_equal_to_available_quantity?
 
@@ -48,7 +48,7 @@ module StoreFrontModule
       end
 
       def selling_cost
-        find_unit_of_measurement.base_selling_price
+        find_unit_of_measurement.price_for_store_front(store_front: find_store_front)
       end
 
       def set_total_cost(purchase, remaining_quantity)
@@ -63,6 +63,9 @@ module StoreFrontModule
         Product.find_by_id(product_id)
       end
 
+      def find_store_front
+        StoreFront.find(store_front_id)
+      end
 
       def find_purchase_order_line_item
         StoreFrontModule::LineItems::PurchaseOrderLineItem.find_by_id(referenced_line_item_id)

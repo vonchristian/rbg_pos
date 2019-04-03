@@ -18,7 +18,7 @@ module StoreFrontModule
 
       private
       def price_params
-        params.require(:store_front_module_selling_price_update).permit(:selling_price, :product_id, :unit_of_measurement_id, :date)
+        params.require(:store_front_module_selling_price_update).permit(:selling_price, :product_id, :unit_of_measurement_id, :date, :store_front_id)
       end
     end
   end
