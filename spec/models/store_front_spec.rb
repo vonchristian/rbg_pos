@@ -18,7 +18,9 @@ describe StoreFront do
     it { is_expected.to have_many :received_stock_transfer_orders }
     it { is_expected.to have_many :delivered_stock_transfers }
     it { is_expected.to have_many :received_stock_transfers }
+    it { is_expected.to have_many :selling_prices }
   end
+
   describe 'associations' do
     it { is_expected.to validate_presence_of :name }
   end

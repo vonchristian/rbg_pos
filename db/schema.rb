@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190218063943) do
+ActiveRecord::Schema.define(version: 20190403113144) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -340,7 +340,9 @@ ActiveRecord::Schema.define(version: 20190218063943) do
     t.datetime "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "store_front_id"
     t.index ["product_id"], name: "index_selling_prices_on_product_id"
+    t.index ["store_front_id"], name: "index_selling_prices_on_store_front_id"
     t.index ["unit_of_measurement_id"], name: "index_selling_prices_on_unit_of_measurement_id"
   end
 
@@ -573,6 +575,7 @@ ActiveRecord::Schema.define(version: 20190218063943) do
   add_foreign_key "products", "businesses"
   add_foreign_key "products", "categories"
   add_foreign_key "registries", "users", column: "employee_id"
+  add_foreign_key "selling_prices", "store_fronts"
   add_foreign_key "store_front_configs", "accounts", column: "accounts_receivable_account_id"
   add_foreign_key "store_front_configs", "store_fronts"
   add_foreign_key "store_fronts", "accounts", column: "cost_of_goods_sold_account_id"
