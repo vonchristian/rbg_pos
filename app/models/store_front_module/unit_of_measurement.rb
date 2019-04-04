@@ -13,7 +13,7 @@ module StoreFrontModule
     def self.latest
       order(created_at: :asc).last
     end
-    def price
+    def price #remove
       selling_prices.current_price
     end
 

@@ -21,7 +21,8 @@ class Product < ApplicationRecord
   has_many :purchase_returns,     class_name: "StoreFrontModule::LineItems::PurchaseReturnOrderLineItem"
   has_many :spoilages,            class_name: "StoreFrontModule::LineItems::SpoilageOrderLineItem"
   has_many :selling_prices,       class_name: "StoreFrontModule::SellingPrice"
-	has_attached_file :avatar,
+
+  has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",
            thumb: "40x40>",
@@ -31,14 +32,15 @@ class Product < ApplicationRecord
   :path => ":rails_root/public/system/:attachment/:id/:style/:filename",
   :url => "/system/:attachment/:id/:style/:filename"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
-  validates :name, presence: true, uniqueness: true
+
+  validates :name, presence: true, uniqueness: { scope: :business_id }
 
   delegate :name, to: :category, prefix: true, allow_nil: true
   delegate :unit_code, to: :base_measurement, prefix: true, allow_nil: true
+
   def base_measurement
     unit_of_measurements.base_measurement
   end
-
 
   def self.low_on_stock
     all.select{ |a| a.low_on_stock? }

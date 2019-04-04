@@ -8,10 +8,16 @@ module StoreFrontModule
       it { is_expected.to belong_to :store_front }
     end
 
+    describe 'validations' do
+      it { is_expected.to validate_presence_of :price }
+      it { is_expected.to validate_numericality_of :price }
+    end
+
+
     it ".price_for_unit_of_measurement(unit_of_measurement:)" do
       business            = create(:business)
       store_front         = create(:store_front, business: business)
-      store_front_2        = create(:store_front, business: business)
+      store_front_2       = create(:store_front, business: business)
       product             = create(:product, business: business)
       unit_of_measurement = create(:unit_of_measurement, product: product)
       selling_price       = create(:selling_price, store_front: store_front, product: product, unit_of_measurement: unit_of_measurement, price: 100)
@@ -24,7 +30,7 @@ module StoreFrontModule
     it ".for_unit_of_measurement(unit_of_measurement:)" do
       business            = create(:business)
       store_front         = create(:store_front, business: business)
-      store_front_2        = create(:store_front, business: business)
+      store_front_2       = create(:store_front, business: business)
       product             = create(:product, business: business)
       unit_of_measurement = create(:unit_of_measurement, product: product)
       selling_price       = create(:selling_price, store_front: store_front, product: product, unit_of_measurement: unit_of_measurement, price: 100)
@@ -37,7 +43,7 @@ module StoreFrontModule
     it ".price_for_store_front(store_front:)" do
       business            = create(:business)
       store_front         = create(:store_front, business: business)
-      store_front_2        = create(:store_front, business: business)
+      store_front_2       = create(:store_front, business: business)
       product             = create(:product, business: business)
       unit_of_measurement = create(:unit_of_measurement, product: product)
       selling_price       = create(:selling_price, store_front: store_front, product: product, unit_of_measurement: unit_of_measurement, price: 100)
