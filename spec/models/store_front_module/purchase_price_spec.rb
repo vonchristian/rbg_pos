@@ -14,7 +14,7 @@ module StoreFrontModule
     end
 
     it ".latest" do
-      old = create(:purchase_price, date: Date.yesterday)
+      old    = create(:purchase_price, date: Date.yesterday)
       latest = create(:purchase_price, date: Date.current)
 
       expect(described_class.latest).to eql latest

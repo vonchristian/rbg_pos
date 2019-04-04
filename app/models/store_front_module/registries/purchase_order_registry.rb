@@ -95,6 +95,7 @@ module StoreFrontModule
         StoreFrontModule::SellingPrice.find_or_create_by!(
           price:               selling_price(row),
           product:             find_product(row),
+          store_front:         employee.store_front,
           unit_of_measurement: unit_of_measurement(row))
       end
 

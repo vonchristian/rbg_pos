@@ -68,6 +68,7 @@
             <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
             <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
             <%= f.input :registry_id, input_html: { value: @registry.id }, as: :hidden %>
+            <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
             <%= f.input :voucher_id, collection: Voucher.unused.map{|a| [a.reference_number, a.id] } %>
             <%=f.submit "Save Purchase", class: "btn btn-primary btn-block btn-lg", :accesskey => "C" %>
           <% end %>
