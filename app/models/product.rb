@@ -71,6 +71,7 @@ class Product < ApplicationRecord
     end
   end
   def last_purchase_cost
+    purchase_prices.latest_price
     purchases.last.try(:unit_cost)
   end
 
