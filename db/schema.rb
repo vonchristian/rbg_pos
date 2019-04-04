@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190403113144) do
+ActiveRecord::Schema.define(version: 20190404003018) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -307,6 +307,19 @@ ActiveRecord::Schema.define(version: 20190403113144) do
     t.index ["name"], name: "index_products_on_name", unique: true
   end
 
+  create_table "purchase_prices", force: :cascade do |t|
+    t.bigint "product_id"
+    t.bigint "unit_of_measurement_id"
+    t.bigint "store_front_id"
+    t.decimal "price"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_purchase_prices_on_product_id"
+    t.index ["store_front_id"], name: "index_purchase_prices_on_store_front_id"
+    t.index ["unit_of_measurement_id"], name: "index_purchase_prices_on_unit_of_measurement_id"
+  end
+
   create_table "registries", force: :cascade do |t|
     t.string "spreadsheet_file_name"
     t.string "spreadsheet_content_type"
@@ -574,6 +587,9 @@ ActiveRecord::Schema.define(version: 20190403113144) do
   add_foreign_key "posts", "users"
   add_foreign_key "products", "businesses"
   add_foreign_key "products", "categories"
+  add_foreign_key "purchase_prices", "products"
+  add_foreign_key "purchase_prices", "store_fronts"
+  add_foreign_key "purchase_prices", "unit_of_measurements"
   add_foreign_key "registries", "users", column: "employee_id"
   add_foreign_key "selling_prices", "store_fronts"
   add_foreign_key "store_front_configs", "accounts", column: "accounts_receivable_account_id"

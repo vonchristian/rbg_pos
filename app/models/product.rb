@@ -21,6 +21,8 @@ class Product < ApplicationRecord
   has_many :purchase_returns,     class_name: "StoreFrontModule::LineItems::PurchaseReturnOrderLineItem"
   has_many :spoilages,            class_name: "StoreFrontModule::LineItems::SpoilageOrderLineItem"
   has_many :selling_prices,       class_name: "StoreFrontModule::SellingPrice"
+  has_many :purchase_prices,      class_name: "StoreFrontModule::PurchasePrice"
+
 	has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",
@@ -69,6 +71,7 @@ class Product < ApplicationRecord
     end
   end
   def last_purchase_cost
+    purchase_prices.latest_price
     purchases.last.try(:unit_cost)
   end
 
