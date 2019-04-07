@@ -6,59 +6,132 @@ class ServiceTagPdf < Prawn::Document
     super(margin: 40, page_size: 'A4')
     @work_order = work_order
     @view_context = view_context
-    heading
-    barcode
-    customer_details
-    product_details
-    if @work_order.under_warranty?
-      warranty_details
+    bounding_box [300, 770], width: 220 do
+      contact_details
     end
-    reported_problem
-    message
+    bounding_box [0, 770], width: 250 do
+      heading
+      customer_details
+      product_details
+      if @work_order.under_warranty?
+        warranty_details
+      end
+      reported_problem
+
+    end
+    bounding_box [0,330], width: 600 do
+      tech_support
+    end
+    bounding_box [0,260], width: 250 do
+      problem_statement
+    end
+    bounding_box [300,260], width: 250 do
+      solution_statement
+    end
   end
 
   private
   def price(number)
     @view_context.number_to_currency(number, :unit => "P ")
   end
-  def barcode
+  def contact_details
+    text "NOTE:", size: 12, style: :bold
+    move_down 5
+    text "<i>Please DO NOT FORGET to present this CLAIM FORM when claiming your unit.</i>", inline_format: true, size: 10
+    move_down 5
+     text "CONTACT US:", size: 10
+    move_down 10
+      text "LAGAWE REPAIR CENTER", size: 12, style: :bold
+      move_down 2
+      table([["0945-6207-651", "0945-6207-651"]],cell_style: {font: "Helvetica", :padding => [3,0,0,0]}, column_widths: [100, 100]) do
+        cells.borders = []
+        row(0).font_style = :bold
+      end
+      table([["COMPUTER REPAIR", "CELLPHONE REPAIR"]],cell_style: {size: 8, font: "Helvetica", :padding => [0,0,0,0]}, column_widths: [100, 100]) do
+        cells.borders = []
+      end
+      move_down 10
+      stroke_horizontal_rule
+      move_down 10
+      text "LAMUT REPAIR CENTER", size: 12, style: :bold
+      move_down 2
+      table([["0945-6207-651"]],cell_style: {font: "Helvetica", :padding => [3,0,0,0]}, column_widths: [150, 100]) do
+        cells.borders = []
+        row(0).font_style = :bold
+      end
+      table([["COMPUTER/CELLPHONE REPAIR"]],cell_style: {size: 8, font: "Helvetica", :padding => [0,0,0,0]}, column_widths: [150, 100]) do
+        cells.borders = []
+      end
+      move_down 10
+      stroke_horizontal_rule
+      move_down 10
+      text "BAMBANG REPAIR CENTER", size: 12, style: :bold
+      move_down 2
+      table([["0945-6207-651"]],cell_style: {font: "Helvetica", :padding => [3,0,0,0]}, column_widths: [150, 100]) do
+        cells.borders = []
+        row(0).font_style = :bold
+      end
+      table([["COMPUTER/CELLPHONE REPAIR"]],cell_style: {size: 8, font: "Helvetica", :padding => [0,0,0,0]}, column_widths: [150, 100]) do
+        cells.borders = []
+      end
+      move_down 10
+      stroke_horizontal_rule
+      move_down 10
+      text "ALFONSO LISTA REPAIR CENTER", size: 12, style: :bold
+      move_down 2
+      table([["0945-6207-651"]],cell_style: {font: "Helvetica", :padding => [3,0,0,0]}, column_widths: [150, 100]) do
+        cells.borders = []
+        row(0).font_style = :bold
+      end
+      table([["COMPUTER/CELLPHONE REPAIR"]],cell_style: {size: 8, font: "Helvetica", :padding => [0,0,0,0]}, column_widths: [150, 100]) do
+        cells.borders = []
+      end
+  end
 
-      bounding_box [340, 770], width: 180 do
-        text "SERVICE CLAIM FORM", size: 15
-        move_down 40
-        barcode = Barby::Code39.new(@work_order.service_number)
-        barcode.annotate_pdf(self, height: 40)
-        move_down 3
-        text  "##{@work_order.service_number}", size: 18, style: :bold
+  def heading
+      table([["RBG", "COMPUTERS, CELLSHOP AND ENTERPRISES"]], cell_style: { font: "Helvetica", :padding => [0,0,0,0]}, column_widths: [80]) do
+        cells.borders = []
+        column(0).size = 33
+        column(0).font_style = :bold
+        column(1).font_style = :bold
 
       end
-    end
-  def heading
-    bounding_box [0, 780], width: 300 do
-      image "#{Rails.root}/app/assets/images/letterhead.jpg", width: 320, height: 80
-    end
+      table([["CLAIM FORM #: #{@work_order.service_number}"]], cell_style: { font: "Helvetica"}, column_widths: [250]) do
+      end
+
+      # text "RBG", style: :bold, size: 37
+      #
+      # text "COMPUTERS, CELLSHOP AND ENTERPRISES", style: :bold, size: 14
+      #
+      #
+      # text "<u>SERVICE #: #{@work_order.service_number}</u>", size: 12, style: :bold, inline_format: true
+
   end
+
   def customer_details
-    move_down 20
-    text "CUSTOMER DETAILS", style: :bold
-    move_down 2
-    table(customer_details_data, cell_style: { size: 11, font: "Helvetica", inline_format: true, :padding => [2,0,0,0]}, column_widths: [20, 150, 150]) do
-        cells.borders = []
-        # column(0).background_color = "CCCCCC"
-    end
-    move_down 5
-    stroke_horizontal_rule
+
+      move_down 10
+      text "CUSTOMER DETAILS", style: :bold, size: 10
+      move_down 2
+      table(customer_details_data, cell_style: { size: 10, font: "Helvetica", inline_format: true, :padding => [2,0,0,0]}, column_widths: [20, 110, 100]) do
+          cells.borders = []
+          # column(0).background_color = "CCCCCC"
+      end
+      move_down 5
+      stroke_horizontal_rule
+
+
   end
   def customer_details_data
-    @customer_details_data ||=  [["","Customer",  "<b>#{@work_order.customer_full_name.try(:upcase)}</b>"]] +
-                                [["", "Contact Person", "#{@work_order.contact_person}"]] +
-                                [["", "Address", "#{@work_order.customer_address}"]] +
-                                [["", "Contact NUmber",  "#{@work_order.customer_contact_number}"]]
+    @customer_details_data ||=  [["","Customer:",  "<b>#{@work_order.customer_full_name.try(:upcase)}</b>"]] +
+                                [["", "Contact Person:", "#{@work_order.contact_person}"]] +
+                                [["", "Address:", "#{@work_order.customer_address}"]] +
+                                [["", "Contact #:",  "#{@work_order.customer_contact_number}"]]
   end
   def product_details
     move_down 5
-    text "PRODUCT DETAILS", style: :bold
-    table(product_details_data, cell_style: { size: 11, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [20, 150, 200]) do
+    text "PRODUCT DETAILS", style: :bold, size: 10
+    table(product_details_data, cell_style: { size: 11, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [20, 110, 100]) do
         cells.borders = []
         # column(0).background_color = "CCCCCC"
     end
@@ -67,17 +140,17 @@ class ServiceTagPdf < Prawn::Document
     move_down 5
   end
   def product_details_data
-    @product_details_data ||=   [["", "Date Received",  "#{@work_order.created_at.strftime("%B %e, %Y")}"]] +
-                                [["", "Description",  "#{@work_order.description}"]] +
-                                [["", "Model Number", "#{@work_order.model_number.try(:upcase)}"]] +
-                                [["", "Serial Number", "#{@work_order.serial_number.try(:upcase)}"]] +
-                                [["", "Physical Condition", "#{@work_order.physical_condition}"]] +
+    @product_details_data ||=   [["", "Date Received:",  "#{@work_order.created_at.strftime("%B %e, %Y")}"]] +
+                                [["", "Description:",  "#{@work_order.description}"]] +
+                                [["", "Model Number:", "#{@work_order.model_number.try(:upcase)}"]] +
+                                [["", "Serial Number:", "#{@work_order.serial_number.try(:upcase)}"]] +
+                                [["", "Physical Condition:", "#{@work_order.physical_condition}"]] +
                                 [["", "<b>ACCESSORIES</b>"]] +
                                 @work_order.accessories.map{|a| ["","", "#{a.quantity.to_i} - #{a.description} <i>(#{a.serial_number})</i>"] }
   end
   def warranty_details
     text "WARRANTY DETAILS", style: :bold, size: 10
-    table(warranty_details_data, cell_style: { size: 11, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [20, 150, 200]) do
+    table(warranty_details_data, cell_style: { size: 11, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [20, 110, 100]) do
         cells.borders = []
         # column(0).background_color = "CCCCCC"
     end
@@ -86,15 +159,15 @@ class ServiceTagPdf < Prawn::Document
     move_down 5
   end
   def warranty_details_data
-    @warranty_details_data ||= [["", "Supplier", "#{@work_order.supplier.try(:business_name)}"]] +
-                               [["", "Purchase Date", "#{@work_order.purchase_date.strftime("%B %e, %Y")}"]] +
-                               [["", "Warranty Expiry Date", "#{@work_order.expiry_date.strftime("%B %e, %Y")}"]]
+    @warranty_details_data ||= [["", "Supplier:", "#{@work_order.supplier.try(:business_name)}"]] +
+                               [["", "Purchase Date:", "#{@work_order.purchase_date.strftime("%B %e, %Y")}"]] +
+                               [["", "Warranty Expiry Date:", "#{@work_order.expiry_date.strftime("%B %e, %Y")}"]]
 
   end
 
   def reported_problem
-    text "REPORTED PROBLEM", style: :bold
-    table(reported_problem_data, cell_style: { size: 11, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [20, 150, 200]) do
+    text "REPORTED PROBLEM", style: :bold, size: 10
+    table(reported_problem_data, cell_style: { size: 11, font: "Helvetica", inline_format: true, :padding => [3,0,0,0]}, column_widths: [20, 200]) do
         cells.borders = []
         # column(0).background_color = "CCCCCC"
     end
@@ -103,10 +176,60 @@ class ServiceTagPdf < Prawn::Document
     move_down 5
   end
   def reported_problem_data
-    @reported_problem_data ||= [["", "", "#{@work_order.reported_problem}"]]
+    @reported_problem_data ||= [["", "#{@work_order.reported_problem}"]]
   end
-  def message
+  def tech_support
+    text '**************************************************************************************************************'
+    move_down 5
+    text "RBG TOTAL TECH SUPPORT", size: 14, style: :bold
+    text 'Your busy. We get it. With RBG Total Tech Support, we maintain your computers and printers,
+    making sure they function properly, so that you can do your work without distractions.', size: 10
     move_down 10
+  end
+  def problem_statement
+    text 'YOUR PROBLEM', size: 12, style: :bold
+    move_down 5
+    text 'Your work depends on your computers and
+printers. When it is not maintained
+properly, they hang up, slows down and breaks down.', size: 10
+move_down 10
 
+text 'When your IT equipment is not functioning
+properly, they delay your work, adding
+stress, and distraction to your office.', size: 10
+move_down 10
+
+text 'Hiring an IT employee to maintain your IT
+equipment is costly.', size: 10
+move_down 10
+text 'Carrying your computers to the repair
+centers takes your precious time, even
+damaging it due to improper handling.', size: 10
+  end
+  def solution_statement
+    text 'THE SOLUTION', size: 12, style: :bold
+    move_down 5
+    text 'MAINTAIN', size: 10, style: :bold
+    text 'We will do preventive maintenance,
+making sure your computers and
+printers are functioning properly.', size: 10
+move_down 5
+text 'PROTECT', size: 10, style: :bold
+text 'We will install licensed antivirus and
+update it regularly protecting your precious
+files and software from viruses.', size: 10
+move_down 5
+text 'SUPPORT', size: 10, style: :bold
+text 'With years of experience, we know what it
+takes to provide great IT support. We will
+send out technicians to your office and fix
+your IT problems as quick as possible.', size: 10
+move_down 10
+text 'INQUIRE NOW:', size: 10, style: :bold
+move_down 10
+text '0998-7889-909', style: :bold
+move_down 3
+text 'RONALD B. GODOY', style: :bold, size: 10
+text 'Manager', size: 10
   end
 end
