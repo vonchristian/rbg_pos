@@ -19,13 +19,13 @@ class ServiceTagPdf < Prawn::Document
       reported_problem
 
     end
-    bounding_box [0,330], width: 600 do
+    bounding_box [0,360], width: 600 do
       tech_support
     end
-    bounding_box [0,260], width: 250 do
+    bounding_box [0,290], width: 250 do
       problem_statement
     end
-    bounding_box [300,260], width: 250 do
+    bounding_box [290,290], width: 250 do
       solution_statement
     end
   end
@@ -35,15 +35,11 @@ class ServiceTagPdf < Prawn::Document
     @view_context.number_to_currency(number, :unit => "P ")
   end
   def contact_details
-    text "NOTE:", size: 12, style: :bold
-    move_down 5
-    text "<i>Please DO NOT FORGET to present this CLAIM FORM when claiming your unit.</i>", inline_format: true, size: 10
-    move_down 5
-     text "CONTACT US:", size: 10
+    text "SERVICE #: #{@work_order.service_number}", size: 16, style: :bold
     move_down 10
-      text "LAGAWE REPAIR CENTER", size: 12, style: :bold
+      text "LAGAWE REPAIR CENTER", size: 10, style: :bold
       move_down 2
-      table([["0945-6207-651", "0945-6207-651"]],cell_style: {font: "Helvetica", :padding => [3,0,0,0]}, column_widths: [100, 100]) do
+      table([["0945-620-7651", "0935-603-8798"]],cell_style: {font: "Helvetica", :padding => [3,0,0,0]}, column_widths: [100, 100]) do
         cells.borders = []
         row(0).font_style = :bold
       end
@@ -53,9 +49,9 @@ class ServiceTagPdf < Prawn::Document
       move_down 10
       stroke_horizontal_rule
       move_down 10
-      text "LAMUT REPAIR CENTER", size: 12, style: :bold
+      text "LAMUT REPAIR CENTER", size: 10, style: :bold
       move_down 2
-      table([["0945-6207-651"]],cell_style: {font: "Helvetica", :padding => [3,0,0,0]}, column_widths: [150, 100]) do
+      table([["0917-100-0659"]],cell_style: {font: "Helvetica", :padding => [3,0,0,0]}, column_widths: [150, 100]) do
         cells.borders = []
         row(0).font_style = :bold
       end
@@ -65,9 +61,9 @@ class ServiceTagPdf < Prawn::Document
       move_down 10
       stroke_horizontal_rule
       move_down 10
-      text "BAMBANG REPAIR CENTER", size: 12, style: :bold
+      text "BAMBANG REPAIR CENTER", size: 10, style: :bold
       move_down 2
-      table([["0945-6207-651"]],cell_style: {font: "Helvetica", :padding => [3,0,0,0]}, column_widths: [150, 100]) do
+      table([["0917-504-3789"]],cell_style: {font: "Helvetica", :padding => [3,0,0,0]}, column_widths: [150, 100]) do
         cells.borders = []
         row(0).font_style = :bold
       end
@@ -77,9 +73,9 @@ class ServiceTagPdf < Prawn::Document
       move_down 10
       stroke_horizontal_rule
       move_down 10
-      text "ALFONSO LISTA REPAIR CENTER", size: 12, style: :bold
+      text "ALFONSO LISTA REPAIR CENTER", size: 10, style: :bold
       move_down 2
-      table([["0945-6207-651"]],cell_style: {font: "Helvetica", :padding => [3,0,0,0]}, column_widths: [150, 100]) do
+      table([["0956-246-5678"]],cell_style: {font: "Helvetica", :padding => [3,0,0,0]}, column_widths: [150, 100]) do
         cells.borders = []
         row(0).font_style = :bold
       end
@@ -96,7 +92,7 @@ class ServiceTagPdf < Prawn::Document
         column(1).font_style = :bold
 
       end
-      table([["CLAIM FORM #: #{@work_order.service_number}"]], cell_style: { font: "Helvetica"}, column_widths: [250]) do
+      table([["Please DO NOT FORGET to present this CLAIM FORM when claiming your unit."]], cell_style: { size: 9, font: "Helvetica"}, column_widths: [250]) do
       end
 
       # text "RBG", style: :bold, size: 37
@@ -172,8 +168,6 @@ class ServiceTagPdf < Prawn::Document
         # column(0).background_color = "CCCCCC"
     end
     move_down 5
-    stroke_horizontal_rule
-    move_down 5
   end
   def reported_problem_data
     @reported_problem_data ||= [["", "#{@work_order.reported_problem}"]]
@@ -181,8 +175,8 @@ class ServiceTagPdf < Prawn::Document
   def tech_support
     text '**************************************************************************************************************'
     move_down 5
-    text "RBG TOTAL TECH SUPPORT", size: 14, style: :bold
-    text 'Your busy. We get it. With RBG Total Tech Support, we maintain your computers and printers,
+    text "SUBSCRIBE TO RBG TOTAL TECH SUPPORT", size: 14, style: :bold
+    text 'Your busy. We get it. With RBG TOTAL TECH SUPPORT, we maintain your computers and printers,
     making sure they function properly, so that you can do your work without distractions.', size: 10
     move_down 10
   end
@@ -205,9 +199,12 @@ move_down 10
 text 'Carrying your computers to the repair
 centers takes your precious time, even
 damaging it due to improper handling.', size: 10
+move_down 20
+text 'DO YOUR WORK WITHOUT DISTRACTIONS.', size: 16
   end
   def solution_statement
     text 'THE SOLUTION', size: 12, style: :bold
+    text "When you SUBSCRIBE, we will:", size: 10
     move_down 5
     text 'MAINTAIN', size: 10, style: :bold
     text 'We will do preventive maintenance,
@@ -227,7 +224,7 @@ your IT problems as quick as possible.', size: 10
 move_down 10
 text 'INQUIRE NOW:', size: 10, style: :bold
 move_down 10
-text '0998-7889-909', style: :bold
+text '0927-7365-057', style: :bold
 move_down 3
 text 'RONALD B. GODOY', style: :bold, size: 10
 text 'Manager', size: 10
