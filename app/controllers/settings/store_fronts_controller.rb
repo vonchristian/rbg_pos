@@ -36,9 +36,15 @@ module Settings
         :business_id,
         :merchandise_inventory_account_id,
         :sales_account_id,
+        :sales_return_account_id,
         :sales_discount_account_id,
         :sales_return_account_id,
-        :cost_of_goods_sold_account_id
+        :cost_of_goods_sold_account_id,
+        :receivable_account_id,
+        :internal_use_account_id,
+        :purchase_return_account_id,
+        :spoilage_account_id,
+        :service_revenue_account_id
         )
     end
   end

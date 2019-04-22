@@ -8,5 +8,11 @@
   <%= f.input :sales_discount_account_id, collection: AccountingModule::Revenue.all.map{ |a| [a.name, a.id] } %>
   <%= f.input :sales_return_account_id, collection: AccountingModule::Revenue.all.map{ |a| [a.name, a.id] } %>
   <%= f.input :cost_of_goods_sold_account_id, collection: AccountingModule::Expense.all.map{ |a| [a.name, a.id] } %>
+  <%= f.input :receivable_account_id, collection: AccountingModule::Asset.all.map{ |a| [a.name, a.id] } %>
+  <%= f.input :internal_use_account_id, collection: AccountingModule::Expense.all.map{ |a| [a.name, a.id] } %>
+  <%= f.input :purchase_return_account_id, collection: AccountingModule::Expense.all.map{ |a| [a.name, a.id] } %>
+  <%= f.input :spoilage_account_id, collection: AccountingModule::Expense.all.map{ |a| [a.name, a.id] } %>
+  <%= f.input :service_revenue_account_id, collection: AccountingModule::Revenue.all.map{ |a| [a.name, a.id] } %>
+
   <%= f.submit "Create Store Front", class: "btn btn-primary" %>
 <% end %>

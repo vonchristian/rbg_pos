@@ -1,4 +1,10 @@
 
+Account
+belongs_to business
+
+StoreFrontAccount
+
+
 loan product
  adjustable interest rate
 

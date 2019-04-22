@@ -53,13 +53,6 @@ gem 'will_paginate', '~> 3.1.0'
 gem "chartkick"
 gem "groupdate"
 gem "roo", "~> 2.7.0"
-group :development, :test do
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'rspec-rails'
-  gem 'factory_bot_rails'
-  gem 'rspec-its'
-  gem 'faker'
-end
 
 group :development do
   gem 'pry-rails'
@@ -69,10 +62,21 @@ group :development do
   gem 'listen'
 end
 
+group :development, :test do
+  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'rspec-rails', '~>3.8.0'
+  gem 'factory_bot_rails'
+  gem 'faker'
+  gem 'rspec-its'
+
+end
+
 group :test do
-  gem 'shoulda-matchers', '4.0.0.rc1'
-  gem 'database_cleaner'
+  gem 'shoulda-matchers'
   gem 'capybara'
+  gem "launchy"
+  gem 'webdrivers', '~> 3.0'
+  gem 'database_rewinder'
 end
 gem 'rack-mini-profiler'
 gem 'flamegraph'
