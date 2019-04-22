@@ -368,15 +368,6 @@ ActiveRecord::Schema.define(version: 20190404003018) do
     t.index ["charge_type"], name: "index_service_charges_on_charge_type"
   end
 
-  create_table "store_front_configs", force: :cascade do |t|
-    t.bigint "accounts_receivable_account_id"
-    t.bigint "store_front_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["accounts_receivable_account_id"], name: "index_store_front_configs_on_accounts_receivable_account_id"
-    t.index ["store_front_id"], name: "index_store_front_configs_on_store_front_id"
-  end
-
   create_table "store_fronts", force: :cascade do |t|
     t.bigint "business_id"
     t.bigint "merchandise_inventory_account_id"
@@ -592,8 +583,6 @@ ActiveRecord::Schema.define(version: 20190404003018) do
   add_foreign_key "purchase_prices", "unit_of_measurements"
   add_foreign_key "registries", "users", column: "employee_id"
   add_foreign_key "selling_prices", "store_fronts"
-  add_foreign_key "store_front_configs", "accounts", column: "accounts_receivable_account_id"
-  add_foreign_key "store_front_configs", "store_fronts"
   add_foreign_key "store_fronts", "accounts", column: "cost_of_goods_sold_account_id"
   add_foreign_key "store_fronts", "accounts", column: "internal_use_account_id"
   add_foreign_key "store_fronts", "accounts", column: "merchandise_inventory_account_id"
