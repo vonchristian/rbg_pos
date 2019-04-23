@@ -1,0 +1,16 @@
+<%= simple_form_for @account, url: :accounting_accounts do |f| %>
+  <%= f.input :name %>
+  <%= f.input :account_code %>
+  <%= f.input :contra %>
+  <%= f.input :type, collection: AccountingModule::Account.types.map{|a| [a, a] } %>
+
+  <%= f.submit "Create Account" %>
+<% end %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#accounting_module_asset_main_account_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>
