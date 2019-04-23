@@ -13,7 +13,7 @@ module RepairServicesModule
 
     private
     def create_payment
-      accounts_receivable = StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account
+      accounts_receivable = find_employee.store_front.receivable_account
       cash_on_hand_account = find_employee.cash_on_hand_account
       if expense_account_id.blank? && expense_amount.to_i.zero?
         find_employee.entries.create!(
