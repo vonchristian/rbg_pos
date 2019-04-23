@@ -1,4 +1,5 @@
 <%= simple_form_for @account, url: :accounting_accounts do |f| %>
+  <%= f.input :business_id, input_html: { value: current_business.id }, as: :hidden %>
   <%= f.input :name %>
   <%= f.input :account_code %>
   <%= f.input :contra %>

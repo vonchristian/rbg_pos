@@ -47,7 +47,7 @@ module Accounting
     end
 
     def new_account_params
-      params.require(:accounting_module_account).permit(:name, :account_code, :contra, :type, :main_account_id)
+      params.require(:accounting_module_account).permit(:name, :account_code, :contra, :type, :main_account_id, :business_id)
     end
 
     def require_param
