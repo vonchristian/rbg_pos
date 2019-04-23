@@ -19,7 +19,9 @@
     <% end %>
     <hr>
     <h4>Unit of Measurements</h4>
+      <% if current_user.proprietor? %>
       <%= link_to 'Add Unit Of Measurement', new_product_unit_of_measurement_path(@product) %>
+      <% end %>
     <% @product.unit_of_measurements.each do |unit| %>
       <div class="row">
         <div class="col-md-2">
@@ -32,8 +34,10 @@
         <div class="col-md-2">
         </div>
         <div class="col-md-4">
+          <% if current_user.proprietor? %>
           <%= link_to "Update Info", edit_store_front_module_unit_of_measurement_path(unit), class: "btn btn-warning btn-xs" %>
           <%= link_to "Update Price", new_store_front_module_selling_price_path(product_id: @product.id, unit_of_measurement_id: unit.id), class: "btn btn-warning btn-xs" %>
+          <% end %>
         </div>
       </div>
       <br>
@@ -57,8 +61,9 @@
       <% end %>
     <% end %>
       <hr>
+      <% if current_user.proprietor? %>
       <h4>Purchase Price History</h4>
-        <% @product.purchase_prices.where(store_front: current_store_front).each do |price| %>
+        <% @product.purchase_prices.each do |price| %>
           <div class="row">
             <div class="col-md-3">
               <%= price.date.strftime("%B %e, %Y") %>
@@ -69,5 +74,6 @@
           </div>
           <br>
         <% end %>
+      <% end %>
   </div>
 </div>
