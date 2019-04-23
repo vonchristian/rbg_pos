@@ -133,7 +133,7 @@ class WorkOrder < ApplicationRecord
   end
 
   def payments_total
-    StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account.credits_balance(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
+    store_front.receivable_account.credits_balance(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
   end
 
   def service_charge_payments
