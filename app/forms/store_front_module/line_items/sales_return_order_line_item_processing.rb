@@ -9,7 +9,8 @@ module StoreFrontModule
                     :bar_code,
                     :unit_cost,
                     :bar_code,
-                    :purchase_order_line_item_id
+                    :purchase_order_line_item_id,
+                    :store_front_id
       validates :quantity, numericality: { greater_than: 0.1 }
       validate :quantity_is_less_than_or_equal_to_available_quantity?
       def process!
@@ -83,6 +84,10 @@ module StoreFrontModule
         else
           find_unit_of_measurement.price_for_store_front(store_front: find_store_front)
         end
+      end
+
+      def find_store_front
+        StoreFront.find(store_front_id)
       end
 
       def set_total_cost

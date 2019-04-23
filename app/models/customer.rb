@@ -25,14 +25,7 @@ class Customer < ApplicationRecord
   scope :recent, ->(num) { order('created_at DESC').limit(num) }
 
   def work_order_payments
-    entries = []
-    work_orders.each do |work_order|
-    StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account.amounts.
-      where(commercial_document: work_order).each do |amount|
-        entries << amount.entry
-      end
-    end
-    entries
+    #
   end
 	def self.with_credits
     all.select{ |a| a.with_credits? }

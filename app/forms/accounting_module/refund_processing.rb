@@ -15,7 +15,7 @@ module AccountingModule
     private
     def save_refund
       cash_on_hand_account = find_employee.cash_on_hand_account
-      accounts_receivable = StoreFrontModule::StoreFrontConfig.default_accounts_receivable_account
+      accounts_receivable = find_employee.store_front.receivable_account
 
       AccountingModule::Entry.create(
         recorder: find_employee,

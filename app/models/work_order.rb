@@ -148,8 +148,9 @@ class WorkOrder < ApplicationRecord
   def balance_total
     accounts_receivable_total - payments_total
   end
+
   def discounts_total
-    StoreFrontModule::StoreFrontConfig.default_discount_account.debits_balance(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
+    store_front.sales_discount_account.debits_balance(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
   end
 
   def updates_content
@@ -190,9 +191,11 @@ class WorkOrder < ApplicationRecord
     self.service_number = nil
     self.service_number = self.id.to_s
   end
+
   def set_customer_name
     self.customer_name = self.customer.full_name
   end
+
   def set_product_name
     self.product_name = self.product_unit.description
   end

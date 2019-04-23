@@ -23,6 +23,8 @@
                         <%= f.input :bar_code, input_html: { value: params[:search] }, label: "IMEI", as: :hidden %>
                         <%= f.input :purchase_order_line_item_id, input_html: { value: line_item.id }, as: :hidden %>
                         <%= f.input :unit_cost, input_html: { value: line_item.product.try(:base_measurement).try(:price) }, as: :hidden %>
+                        <%= f.input :store_front_id, input_html: { value: current_store_front.id }, as: :hidden %>
+
                       </div>
 
                       <div class="col-md-2">
