@@ -39,8 +39,11 @@
       <br>
     <% end %>
     <hr>
-    <h4>Selling Price History</h4>
-      <% @product.selling_prices.where(store_front: current_store_front).each do |price| %>
+    <
+    <h4>Selling Prices</h4>
+    <% current_business.store_fronts.each do |store_front| %>
+      <%= store_front.name %>
+      <% @product.selling_prices.where(store_front: store_front).each do |price| %>
         <div class="row">
           <div class="col-md-3">
             <%= price.date.strftime("%B %e, %Y") %>
@@ -49,8 +52,9 @@
             <%= number_to_currency price.price %> Selling Price
           </div>
         </div>
-        <br>
+        <hr>
       <% end %>
+    <% end %>
       <hr>
       <h4>Purchase Price History</h4>
         <% @product.purchase_prices.where(store_front: current_store_front).each do |price| %>

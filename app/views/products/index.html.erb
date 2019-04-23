@@ -47,7 +47,7 @@
                     <% end %>
                    </td>
                    <% if current_user.proprietor? %>
-                     <td><%= number_to_currency product.last_purchase_cost %></td>
+                     <td><%= number_to_currency product.try(:last_purchase_cost) %></td>
                     <% end %>
                   <td><%= product.available_quantity(store_front: current_store_front) %></td>
                   </tr>
