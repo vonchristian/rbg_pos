@@ -5,7 +5,6 @@ class Customer < ApplicationRecord
 
   belongs_to :business
 	has_many :orders, as: :commercial_document
-  has_many :repair_service_orders, class_name: "RepairServicesModule::RepairServiceOrder", as: :commercial_document
 	has_many :entries, through: :orders
   has_many :payments, as: :commercial_document, class_name: "AccountingModule::Entry"
 	has_many :line_items, through: :orders

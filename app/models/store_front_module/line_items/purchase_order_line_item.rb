@@ -13,7 +13,7 @@
       def self.for_store_front(store_front)
         joins(:purchase_order).where('orders.destination_store_front_id' => store_front.id)
       end
-
+x
       def self.stock_transfers
         joins(:purchase_order).
         where('orders.supplier_type' => "StoreFront")
