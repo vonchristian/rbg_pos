@@ -62,7 +62,7 @@ class Order < ApplicationRecord
     if line_items.present?
       line_items.total_cost
     elsif
-      cash_payment.cash_tendered
+      cash_payment.try(:cash_tendered)
     end
   end
   def total_quantity
