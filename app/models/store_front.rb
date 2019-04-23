@@ -20,6 +20,9 @@ class StoreFront < ApplicationRecord
   has_many :received_stock_transfers,        through:  :received_stock_transfer_orders, source: :purchase_order_line_items, class_name: "StoreFrontModule::LineItems::PurchaseOrderLineItem"
   has_many :work_orders
   has_many :selling_prices,                  class_name: "StoreFrontModule::SellingPrice"
+  has_many :employees,                       class_name: 'User'
+  has_many :store_front_accounts,            class_name: 'StoreFronts::StoreFrontAccount'
+  has_many :accounts,                        through: :store_front_accounts
 
   validates :name, presence: true
 

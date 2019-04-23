@@ -39,10 +39,10 @@
          <% @users.each do |user| %>
             <div class="row">
             <div class="col-md-4">
-                <%= user.full_name %>
+                <%= link_to user.full_name, admin_employee_path(user) %>
               </div>
               <div class="col-md-4">
-                <%= user.email %>
+                <%= link_to user.email, admin_employee_path(user) %>
               </div>
               <div class="col-md-2">
                 <%= user.role %><br>

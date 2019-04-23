@@ -1,0 +1,21 @@
+<%= link_to 'Add Account', new_store_front_module_store_front_account_path(store_front) %>
+<div class="table table-responsive">
+  <table class="table table-responsive">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Name</th>
+        <th>Balance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% accounts.each do |account| %>
+      <tr>
+        <td><%= account.account_code %></td>
+        <td><%= account.name %></td>
+        <td><%= number_to_currency account.balance %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

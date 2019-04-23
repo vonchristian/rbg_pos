@@ -105,6 +105,7 @@ class Customer < ApplicationRecord
     other_payments +
     work_order_payments
   end
+
   def other_payments
     payments = []
     User.cash_on_hand_accounts.each do |cash_account|

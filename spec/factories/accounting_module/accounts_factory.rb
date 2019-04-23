@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :account, class: AccountingModule::Account do
+    association :business
     sequence(:name) { |n| "#{n}" }
     account_code { Faker::Number.number(12) }
 

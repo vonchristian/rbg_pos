@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190404003018) do
+ActiveRecord::Schema.define(version: 2019_04_23_070227) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,7 +36,9 @@ ActiveRecord::Schema.define(version: 20190404003018) do
     t.datetime "updated_at", null: false
     t.bigint "main_account_id"
     t.boolean "active", default: true
+    t.bigint "business_id"
     t.index ["account_code"], name: "index_accounts_on_account_code", unique: true
+    t.index ["business_id"], name: "index_accounts_on_business_id"
     t.index ["main_account_id"], name: "index_accounts_on_main_account_id"
     t.index ["name"], name: "index_accounts_on_name", unique: true
     t.index ["type"], name: "index_accounts_on_type"
@@ -368,6 +370,24 @@ ActiveRecord::Schema.define(version: 20190404003018) do
     t.index ["charge_type"], name: "index_service_charges_on_charge_type"
   end
 
+  create_table "store_front_accounts", force: :cascade do |t|
+    t.bigint "store_front_id"
+    t.bigint "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_store_front_accounts_on_account_id"
+    t.index ["store_front_id"], name: "index_store_front_accounts_on_store_front_id"
+  end
+
+  create_table "store_front_configs", force: :cascade do |t|
+    t.bigint "accounts_receivable_account_id"
+    t.bigint "store_front_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["accounts_receivable_account_id"], name: "index_store_front_configs_on_accounts_receivable_account_id"
+    t.index ["store_front_id"], name: "index_store_front_configs_on_store_front_id"
+  end
+
   create_table "store_fronts", force: :cascade do |t|
     t.bigint "business_id"
     t.bigint "merchandise_inventory_account_id"
@@ -549,6 +569,7 @@ ActiveRecord::Schema.define(version: 20190404003018) do
   add_foreign_key "accessories", "product_units"
   add_foreign_key "accessories", "work_orders"
   add_foreign_key "accounts", "accounts", column: "main_account_id"
+  add_foreign_key "accounts", "businesses"
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
   add_foreign_key "bank_accounts", "accounts", column: "cash_in_bank_account_id"
@@ -583,6 +604,10 @@ ActiveRecord::Schema.define(version: 20190404003018) do
   add_foreign_key "purchase_prices", "unit_of_measurements"
   add_foreign_key "registries", "users", column: "employee_id"
   add_foreign_key "selling_prices", "store_fronts"
+  add_foreign_key "store_front_accounts", "accounts"
+  add_foreign_key "store_front_accounts", "store_fronts"
+  add_foreign_key "store_front_configs", "accounts", column: "accounts_receivable_account_id"
+  add_foreign_key "store_front_configs", "store_fronts"
   add_foreign_key "store_fronts", "accounts", column: "cost_of_goods_sold_account_id"
   add_foreign_key "store_fronts", "accounts", column: "internal_use_account_id"
   add_foreign_key "store_fronts", "accounts", column: "merchandise_inventory_account_id"

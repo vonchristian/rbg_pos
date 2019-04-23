@@ -120,9 +120,10 @@ Rails.application.routes.draw do
     resources :purchase_order_line_items, only: [:show]
 
     resources :store_fronts, only: [:index, :show] do
-      resources :reports, only: [:index], module: :store_fronts
-      resources :inventories, only: [:index], module: :store_fronts
-      resources :work_orders, only: [:index], module: :store_fronts
+      resources :accounts,    only: [:index, :new, :create], module: :store_fronts
+      resources :reports,     only: [:index],                module: :store_fronts
+      resources :inventories, only: [:index],                module: :store_fronts
+      resources :work_orders, only: [:index],                module: :store_fronts
     end
     resources :stock_registry_processings, only: [:create]
     resources :stock_transfer_registries, only: [:new, :create, :show], module: :registries
@@ -216,10 +217,11 @@ Rails.application.routes.draw do
   resources :dashboard, only: [:index]
   namespace :admin do
     resources :employees, only: [:show] do
-      resources :reports, only: [:index], module: :employees
-      resources :sales, only: [:index], module: :employees
-
-      resources :entries, only: [:index], module: :employees
+      resources :reports,  only: [:index], module: :employees
+      resources :sales,    only: [:index], module: :employees
+      resources :entries,  only: [:index], module: :employees
+      resources :settings, only: [:index], module: :employees
+      resources :cash_accounts, only: [:new, :create], module: :employees
     end
   end
   resources :work_order_service_charges, only: [:destroy]

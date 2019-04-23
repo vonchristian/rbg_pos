@@ -1,0 +1,4 @@
+<%= simple_form_for [@employee, @cash_account], url: :admin_employee_cash_accounts do |f| %>
+  <%= f.input :cash_account_id, collection: current_store_front.accounts.assets.map{|a| [a.name, a.id] } %>
+  <%= f.submit 'Add to Cash Account' %>
+<% end %>

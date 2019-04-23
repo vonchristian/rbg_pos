@@ -1,0 +1,4 @@
+<%= link_to 'New Cash Account', new_admin_employee_cash_account_path(@employee) %>
+<% @employee.cash_accounts.each do |cash_account| %>
+  <%= cash_account.name %>
+<% end %>

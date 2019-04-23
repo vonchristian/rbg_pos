@@ -20,6 +20,10 @@
           <li class= <%= 'active' if current_page?(admin_employee_entries_path(@employee)) %>>
             <%= link_to "Journal Entries", admin_employee_entries_path(@employee) %>
           </li>
+
+          <li class= <%= 'active' if current_page?(admin_employee_settings_path(@employee)) %>>
+            <%= link_to "Settings", admin_employee_settings_path(@employee) %>
+          </li>
         </ul>
         <div class="tab-content">
             <% if current_page? admin_employee_path(@employee) %>

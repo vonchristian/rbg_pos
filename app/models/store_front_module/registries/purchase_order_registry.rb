@@ -26,7 +26,7 @@ module StoreFrontModule
       end
 
       def create_or_find_line_item(row)
-        StoreFrontModule::LineItems::PurchaseOrderLineItem.find_or_create_by!(
+        StoreFrontModule::LineItems::PurchaseOrderLineItem.create!(
           store_front: employee.store_front,
           quantity: quantity(row),
           unit_cost: unit_cost(row),

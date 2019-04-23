@@ -1,0 +1,4 @@
+<%= simple_form_for [@store_front, @account], url: :store_front_module_store_front_accounts do |f| %>
+  <%= f.input :account_id, collection: current_business.accounts.map{ |a| [a.name, a.id] } %>
+  <%= f.submit 'Add Account' %>
+<% end %>

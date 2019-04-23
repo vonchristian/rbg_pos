@@ -1,3 +1,4 @@
+
 <h2> <%= @store_front.name %></h2>
 <ul class="nav nav-tabs">
   <li class= <%= 'active' if current_page?(store_front_module_store_fronts_path) %>>
@@ -5,6 +6,10 @@
   </li>
   <li class= <%= 'active' if current_page?(store_front_module_store_front_reports_path(@store_front)) %>>
     <%= link_to "Reports", store_front_module_store_front_reports_path(@store_front) %>
+  </li>
+
+  <li class= <%= 'active' if current_page?(store_front_module_store_front_accounts_path(@store_front)) %>>
+    <%= link_to "Accounts", store_front_module_store_front_accounts_path(@store_front) %>
   </li>
 
 </ul>

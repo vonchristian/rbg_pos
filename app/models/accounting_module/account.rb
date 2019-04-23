@@ -6,6 +6,7 @@ module AccountingModule
 
 
     class_attribute :normal_credit_balance
+    belongs_to :business
     has_many :sub_accounts, class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
     has_one :main_account, class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
     has_many :amounts, class_name: "AccountingModule::Amount"
@@ -17,6 +18,12 @@ module AccountingModule
 
     validates :type, presence: true
     validates :name, :account_code, presence: true, uniqueness: true
+
+     scope :assets,     -> { where(type: 'AccountingModule::Asset') }
+    scope :liabilities, -> { where(type: 'AccountingModule::Liability') }
+    scope :equities,    -> { where(type: 'AccountingModule::Equity') }
+    scope :revenues,    -> { where(type: 'AccountingModule::Revenue') }
+    scope :expenses,    -> { where(type: 'AccountingModule::Expense') }
 
     def self.cash_on_hand_accounts
       accounts = User.pluck(:cash_on_hand_account_id)

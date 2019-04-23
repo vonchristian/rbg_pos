@@ -19,6 +19,9 @@ describe StoreFront do
     it { is_expected.to have_many :delivered_stock_transfers }
     it { is_expected.to have_many :received_stock_transfers }
     it { is_expected.to have_many :selling_prices }
+    it { is_expected.to have_many :employees }
+    it { is_expected.to have_many :store_front_accounts }
+    it { is_expected.to have_many :accounts }
   end
 
   describe 'validations' do
