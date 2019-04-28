@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_23_070227) do
+ActiveRecord::Schema.define(version: 2019_04_26_001600) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -73,6 +73,23 @@ ActiveRecord::Schema.define(version: 2019_04_23_070227) do
     t.index ["cash_in_bank_account_id"], name: "index_bank_accounts_on_cash_in_bank_account_id"
   end
 
+  create_table "bill_counts", force: :cascade do |t|
+    t.bigint "bill_id"
+    t.decimal "bill_count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "cash_count_id"
+    t.index ["bill_id"], name: "index_bill_counts_on_bill_id"
+    t.index ["cash_count_id"], name: "index_bill_counts_on_cash_count_id"
+  end
+
+  create_table "bills", force: :cascade do |t|
+    t.string "name"
+    t.string "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "businesses", force: :cascade do |t|
     t.string "name"
     t.string "owner"
@@ -86,6 +103,14 @@ ActiveRecord::Schema.define(version: 2019_04_23_070227) do
   create_table "carts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "cash_counts", force: :cascade do |t|
+    t.bigint "employee_id"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["employee_id"], name: "index_cash_counts_on_employee_id"
   end
 
   create_table "cash_payments", force: :cascade do |t|
@@ -574,6 +599,9 @@ ActiveRecord::Schema.define(version: 2019_04_23_070227) do
   add_foreign_key "amounts", "entries"
   add_foreign_key "bank_accounts", "accounts", column: "cash_in_bank_account_id"
   add_foreign_key "bank_accounts", "businesses"
+  add_foreign_key "bill_counts", "bills"
+  add_foreign_key "bill_counts", "cash_counts"
+  add_foreign_key "cash_counts", "users", column: "employee_id"
   add_foreign_key "customers", "businesses"
   add_foreign_key "employee_cash_accounts", "accounts", column: "cash_account_id"
   add_foreign_key "employee_cash_accounts", "users", column: "employee_id"

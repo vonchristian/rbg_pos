@@ -18,6 +18,8 @@ class User < ApplicationRecord
   has_many :employee_cash_accounts, class_name: "Employees::EmployeeCashAccount", foreign_key: 'employee_id'
   has_many :cash_accounts, through: :employee_cash_accounts, class_name: "AccountingModule::Account", foreign_key: 'cash_account_id'
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", foreign_key: 'recorder_id'
+  has_many :cash_counts, foreign_key: 'employee_id'
+
   enum role: [:proprietor, :sales_clerk, :stock_custodian, :technician]
   has_attached_file :avatar,
   styles: { large: "120x120>",

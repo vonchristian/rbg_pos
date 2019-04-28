@@ -1,0 +1,23 @@
+<%= @account.balance %>
+<%= @account.balance(to_date: @to_date) %>
+<p>Transactions for this Day</p>
+<div class="table table-responsive">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Date </th>
+        <th> Particulars </th>
+        <th>Customer </th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @account.debit_entries.entered_on(from_date: Date.current, to_date: Date.current).each do |entry| %>
+        <tr>
+        <td><%= entry.entry_date.strftime("%B %e, %Y") %></td>
+        <td><%= entry.description %></td>
+        <td><%= entry.commercial_document.try(:name) %></td>
+        <td><%= number_to_currency entry.total %></td>
+      <% end %>
+    </tbody>
+  </table>

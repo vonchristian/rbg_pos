@@ -3,12 +3,12 @@ module Reports
     attr_reader :from_date, :to_date, :cash_receipts, :employee, :view_context, :business
     def initialize(args)
       super(margin: 30, page_size: 'A4')
-      @from_date = args[:from_date]
-      @to_date = args[:to_date]
+      @from_date     = args[:from_date]
+      @to_date       = args[:to_date]
       @cash_receipts = args[:cash_receipts]
-      @employee = args[:employee]
-      @business = @employee.business
-      @view_context = args[:view_context]
+      @employee      = args[:employee]
+      @business      = @employee.business
+      @view_context  = args[:view_context]
       heading
       cash_on_hand_account_details
       cash_receipts_table

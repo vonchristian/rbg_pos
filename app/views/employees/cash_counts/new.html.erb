@@ -1,0 +1,95 @@
+    <span>Total: </span><input type="text" id="billTotal" value=''/>
+
+<% Bill.all.each do |bill| %>
+    <%= simple_form_for @bill_count, url: :employee_bill_counts do |f| %>
+      <div class="row">
+        <div class="col-md-2">
+  <%= bill.amount %>
+
+        </div>
+        <div class="col-md-2">
+          <%= f.input :bill_count, input_html: { id: "bill_#{bill.amount}", oninput: 'calculateBillSubTotal()'} %>
+          <%= f.input :bill_amount, input_html: { value: bill.amount, id: "#{bill.amount}" }, as: :hidden %>
+          <%= f.input :bill_id, input_html: { value: bill.id }, as: :hidden %>
+        </div>
+        <div class="col-md-3">
+          <%= f.input :bill_subtotal, readonly: true, input_html: { id: "bill_subtotal_#{bill.amount}" } %>
+        </div>
+      </div>
+
+    <% end %>
+
+<% end %>
+
+<script type="text/javascript">
+  function calculateBillSubTotal() {
+  var bill_amount_1000    = document.getElementById('bill_1000').value;
+  var bill_count_1000     = document.getElementById('1000').value;
+  var billSubTotal_1000   = document.getElementById('bill_subtotal_1000');
+  var result_1000         = bill_amount_1000 * bill_count_1000;
+  billSubTotal_1000.value = result_1000;
+
+  var bill_amount_500    = document.getElementById('bill_500').value;
+  var bill_count_500     = document.getElementById('500').value;
+  var billSubTotal_500   = document.getElementById('bill_subtotal_500');
+  var result_500         = bill_amount_500 * bill_count_500;
+  billSubTotal_500.value = result_500;
+
+  var bill_amount_200    = document.getElementById('bill_200').value;
+  var bill_count_200     = document.getElementById('200').value;
+  var billSubTotal_200   = document.getElementById('bill_subtotal_200');
+  var result_200         = bill_amount_200 * bill_count_200;
+  billSubTotal_200.value = result_200;
+
+  var bill_amount_100    = document.getElementById('bill_100').value;
+  var bill_count_100     = document.getElementById('100').value;
+  var billSubTotal_100   = document.getElementById('bill_subtotal_100');
+  var result_100         = bill_amount_100 * bill_count_100;
+  billSubTotal_100.value = result_100;
+
+  var bill_amount_50    = document.getElementById('bill_50').value;
+  var bill_count_50     = document.getElementById('50').value;
+  var billSubTotal_50   = document.getElementById('bill_subtotal_50');
+  var result_50         = bill_amount_50 * bill_count_50;
+  billSubTotal_50.value = result_50;
+
+  var bill_amount_20    = document.getElementById('bill_20').value;
+  var bill_count_20     = document.getElementById('20').value;
+  var billSubTotal_20   = document.getElementById('bill_subtotal_20');
+  var result_20         = bill_amount_20 * bill_count_20;
+  billSubTotal_20.value = result_20;
+
+  var bill_amount_10    = document.getElementById('bill_10').value;
+  var bill_count_10     = document.getElementById('10').value;
+  var billSubTotal_10   = document.getElementById('bill_subtotal_10');
+  var result_10         = bill_amount_10 * bill_count_10;
+  billSubTotal_10.value = result_10;
+
+  var bill_amount_5    = document.getElementById('bill_5').value;
+  var bill_count_5     = document.getElementById('5').value;
+  var billSubTotal_5   = document.getElementById('bill_subtotal_5');
+  var result_5         = bill_amount_5 * bill_count_5;
+  billSubTotal_5.value = result_5;
+
+  var bill_amount_1    = document.getElementById('bill_1').value;
+  var bill_count_1     = document.getElementById('1').value;
+  var billSubTotal_1   = document.getElementById('bill_subtotal_1');
+  var result_1         = bill_amount_1 * bill_count_1;
+  billSubTotal_1.value = result_1;
+
+   var bill_amount_025    = document.getElementById('bill_0.25').value;
+  var bill_count_025     = document.getElementById('0.25').value;
+  var billSubTotal_025   = document.getElementById('bill_subtotal_0.25');
+  var result_025        = bill_amount_025 * bill_count_025;
+  billSubTotal_025.value = result_025;
+
+  var billTotal   = document.getElementById('billTotal');
+
+  var result_bill_total       = parseFloat(document.getElementById('bill_subtotal_1000').value) + parseFloat(document.getElementById('bill_subtotal_500').value);
+  billTotal.value = result_bill_total;
+
+
+
+}
+
+</script>

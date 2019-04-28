@@ -10,6 +10,7 @@
           <p><%=link_to current_user.first_name, employee_path(current_user) %></p>
           <a href="#"><i class="fa fa-circle text-success"></i> <small><%=current_user.role.titleize %></small></a>
         </div>
+        <%= current_user.cash_on_hand_account.balance %>
       </div>
       <!-- search form -->
       <%=form_tag search_results_path, method: :get, class: "sidebar-form" do %>
