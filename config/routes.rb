@@ -93,7 +93,7 @@ Rails.application.routes.draw do
     resources :dashboard, only: [:index]
 
     resources :work_orders do
-      resources :service_charges, only: [:new, :create], module: :work_orders
+      resources :service_charges, only: [:new, :create, :destroy], module: :work_orders
       resources :additional_charges, only: [:new, :create], module: :work_orders
       resources :spare_parts, only: [:new, :create, :destroy]
       resources :service_claim_tags, only: [:show]
@@ -101,7 +101,6 @@ Rails.application.routes.draw do
       resources :refunds, module: :work_orders, only: [:new, :create]
       resources :charge_invoices, only: [:new, :create], module: :work_orders
     end
-    resources :work_order_service_charges, only: [:destroy]
     resources :work_order_updates, only: [:new, :create, :edit, :update, :destroy]
   end
   resources :knowledge_center, only: [:index]
@@ -122,7 +121,7 @@ Rails.application.routes.draw do
   namespace :store_front_module do
     resources :sales_order_line_items, only: [:show] do
       resources :cancellations, only: [:create], module: :sales_order_line_items
-    end 
+    end
     resources :purchase_order_line_items, only: [:show]
 
     resources :store_fronts, only: [:index, :show] do
@@ -232,7 +231,6 @@ Rails.application.routes.draw do
       resources :cash_accounts, only: [:new, :create], module: :employees
     end
   end
-  resources :work_order_service_charges, only: [:destroy]
   resources :credit_payments, only: [:index, :show]
   resources :employees, only: [:index, :show]
   namespace :repair_services do

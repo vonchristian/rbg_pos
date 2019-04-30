@@ -12,17 +12,20 @@
   <div class="row">
     <div class="col-md-10 col-md-offset-1">
   <%= f.error_notification %>
+  <%= f.input :technician_id, input_html: { value: current_user.id }, as: :hidden %>
+  <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+
   <%= f.input :date_received, as: :string, input_html: { class: "datepicker" } %>
   <%= f.input :store_front_id, input_html: { value: current_user.store_front_id }, as: :hidden %>
   <span class="pull-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span>
-  
+
   <%= f.input :customer_id, collection: Customer.all.map{|a| [a.full_name, a.id] } %>
   <%= f.input :contact_person %>
-  <%= f.simple_fields_for :product_unit do |ff| %>
-  <%= ff.input :description, label: "Manufacturer/Description" %>
-  <%= ff.input :model_number %>
-  <%= ff.input :serial_number %>
-  <% end %>
+
+  <%= f.input :description, label: "Manufacturer/Description" %>
+  <%= f.input :model_number %>
+  <%= f.input :serial_number %>
+
   <%= f.input :physical_condition %>
   <%= f.input :reported_problem, as: :text %>
   <%= f.input :under_warranty %>
@@ -55,12 +58,12 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-    $("#work_order_customer_id").select2({
+    $("#work_orders_registration_customer_id").select2({
       theme: "bootstrap"
     });
   });
   $(document).ready(function() {
-    $("#work_order_supplier_id").select2({
+    $("#work_orders_registration_supplier_id").select2({
       theme: "bootstrap"
     });
   });

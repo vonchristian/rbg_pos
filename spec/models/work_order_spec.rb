@@ -4,8 +4,10 @@ describe WorkOrder do
   describe 'associations' do
     it { is_expected.to belong_to :product_unit }
     it { is_expected.to belong_to(:supplier).optional }
-    it { is_expected.to belong_to :section }
-    it { is_expected.to belong_to :receivable_account }
+    it { is_expected.to belong_to(:section).optional }
+    it { is_expected.to belong_to(:receivable_account).optional }
+    it { is_expected.to belong_to(:service_revenue_account).optional }
+    it { is_expected.to belong_to(:sales_discount_account).optional }
     it { is_expected.to have_many :accessories }
     it { is_expected.to belong_to(:customer).optional }
     it { is_expected.to belong_to :store_front }
@@ -33,7 +35,6 @@ describe WorkOrder do
   end
 
   describe 'validations' do
-    it { is_expected.to validate_presence_of :description }
     it { is_expected.to validate_presence_of :physical_condition }
     it { is_expected.to validate_presence_of :reported_problem }
     it { is_expected.to validate_presence_of :customer_id }
@@ -47,8 +48,35 @@ describe WorkOrder do
     it { is_expected.to delegate_method(:contact_number).to(:customer).with_prefix }
     it { is_expected.to delegate_method(:address).to(:customer).with_prefix }
     it { is_expected.to delegate_method(:avatar).to(:customer) }
-    it { is_expected.to delegate_method(:number).to(:charge_invoice) }
+    it { is_expected.to delegate_method(:number).to(:charge_invoice).with_prefix }
 
+  end
+
+  it '#default_receivable_account' do
+    receivable_account = create(:asset)
+    work_order         = create(:work_order, receivable_account: nil)
+    work_order_2       = create(:work_order, receivable_account: receivable_account)
+
+    expect(work_order.default_receivable_account).to eql work_order.store_front.receivable_account
+    expect(work_order_2.default_receivable_account).to eql receivable_account
+  end
+
+  it '#default_sales_discount_account' do
+    discount_account = create(:revenue)
+    work_order         = create(:work_order, sales_discount_account: nil)
+    work_order_2       = create(:work_order, sales_discount_account: discount_account)
+
+    expect(work_order.default_sales_discount_account).to eql work_order.store_front.sales_discount_account
+    expect(work_order_2.default_sales_discount_account).to eql discount_account
+  end
+
+  it '#default_service_revenue_account' do
+    service_revenue_account = create(:revenue)
+    work_order              = create(:work_order, service_revenue_account: nil)
+    work_order_2            = create(:work_order, service_revenue_account: service_revenue_account)
+
+    expect(work_order.default_service_revenue_account).to eql work_order.store_front.service_revenue_account
+    expect(work_order_2.default_service_revenue_account).to eql service_revenue_account
   end
 
 

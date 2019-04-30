@@ -17,16 +17,16 @@ module RepairServicesModule
       create_entry(service_charge)
     end
     def create_entry(service_charge)
-      accounts_receivable = find_work_order.store_front.receivable_account
-      services_revenue = find_work_order.store_front.service_revenue_account
+      accounts_receivable = find_work_order.default_receivable_account
+      services_revenue = find_work_order.default_service_revenue_account
         find_employee.entries.create!(
           recorder: find_employee,
           commercial_document: find_customer,
           entry_date: date,
           description: description,
           debit_amounts_attributes: [amount: service_charge.amount,
-                                        account: accounts_receivable,
-                                        commercial_document: service_charge
+                                     account: accounts_receivable,
+                                     commercial_document: service_charge
                                      ],
             credit_amounts_attributes:[ amount: service_charge.amount,
                                         account: services_revenue,

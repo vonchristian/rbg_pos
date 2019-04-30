@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_30_022039) do
+ActiveRecord::Schema.define(version: 2019_04_30_070108) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -604,10 +604,16 @@ ActiveRecord::Schema.define(version: 2019_04_30_022039) do
     t.datetime "release_date"
     t.datetime "date_received"
     t.bigint "receivable_account_id"
+    t.bigint "sales_discount_account_id"
+    t.bigint "service_revenue_account_id"
+    t.string "account_number"
+    t.index ["account_number"], name: "index_work_orders_on_account_number", unique: true
     t.index ["customer_id"], name: "index_work_orders_on_customer_id"
     t.index ["product_unit_id"], name: "index_work_orders_on_product_unit_id"
     t.index ["receivable_account_id"], name: "index_work_orders_on_receivable_account_id"
+    t.index ["sales_discount_account_id"], name: "index_work_orders_on_sales_discount_account_id"
     t.index ["section_id"], name: "index_work_orders_on_section_id"
+    t.index ["service_revenue_account_id"], name: "index_work_orders_on_service_revenue_account_id"
     t.index ["status"], name: "index_work_orders_on_status"
     t.index ["store_front_id"], name: "index_work_orders_on_store_front_id"
   end
@@ -690,6 +696,8 @@ ActiveRecord::Schema.define(version: 2019_04_30_022039) do
   add_foreign_key "work_order_service_charges", "users"
   add_foreign_key "work_order_service_charges", "work_orders"
   add_foreign_key "work_orders", "accounts", column: "receivable_account_id"
+  add_foreign_key "work_orders", "accounts", column: "sales_discount_account_id"
+  add_foreign_key "work_orders", "accounts", column: "service_revenue_account_id"
   add_foreign_key "work_orders", "customers"
   add_foreign_key "work_orders", "product_units"
   add_foreign_key "work_orders", "sections"

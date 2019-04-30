@@ -1,16 +1,13 @@
 module ComputerRepairSection
   class WorkOrdersController < ApplicationController
     def new
-      @work_order = WorkOrder.new
-      @work_order.build_product_unit
+      @work_order = ::WorkOrders::Registration.new
     end
     def create
-      @work_order = WorkOrder.create(work_order_params)
+      @work_order = ::WorkOrders::Registration.new(work_order_params)
       if @work_order.valid?
-        @work_order.save!
-        @work_order.technician_work_orders.create(technician: current_user)
-        redirect_to computer_repair_section_work_order_url(@work_order), notice: "Received successfully."
-        @work_order.received!
+        @work_order.register!
+        redirect_to computer_repair_section_work_order_url(@work_order.find_work_order), notice: "Received successfully."
       else
         render :new
       end
@@ -50,7 +47,7 @@ module ComputerRepairSection
 
     private
     def work_order_params
-      params.require(:work_order).permit(:date_received, :contact_person, :store_front_id, :section_id, :under_warranty, :supplier_id, :purchase_date, :expiry_date, :service_number, :status, :customer_id, :reported_problem, :physical_condition, product_unit_attributes: [:description, :model_number, :serial_number])
+      params.require(:work_orders_registration).permit(:date_received, :contact_person, :store_front_id, :section_id, :under_warranty, :supplier_id, :purchase_date, :expiry_date, :service_number, :status, :customer_id, :reported_problem, :physical_condition, :description, :model_number, :serial_number, :technician_id, :account_number)
     end
   end
 end

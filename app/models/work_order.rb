@@ -6,23 +6,27 @@ class WorkOrder < ApplicationRecord
   :associated_against => { :charge_invoice => [:number], product_unit: [:description, :model_number, :serial_number] }
   multisearchable :against => [:description, :model_number, :serial_number,
     :updates_content, :reported_problem, :physical_condition, :service_number, :customer_name, :product_name]
-  belongs_to :receivable_account, class_name: 'AccountingModule::Account', optional: true
+
+  belongs_to :receivable_account,      class_name: 'AccountingModule::Account', optional: true
+  belongs_to :sales_discount_account,  class_name: 'AccountingModule::Account', optional: true
+  belongs_to :service_revenue_account, class_name: 'AccountingModule::Account', optional: true
+
   belongs_to :product_unit
   belongs_to :supplier, optional: true
   belongs_to :section, optional: true
   has_many :accessories
   belongs_to :customer, optional: true
   belongs_to :store_front
-  has_one :charge_invoice, as: :invoiceable, class_name: "Invoices::ChargeInvoice"
-  has_many :technician_work_orders, dependent: :destroy
-  has_many :technicians, through: :technician_work_orders
-  has_many :work_order_updates, as: :updateable, class_name: "Post", dependent: :destroy
-  has_many :work_order_service_charges, dependent: :destroy
-  has_many :service_charges, through: :work_order_service_charges
-  has_many :sales_orders, class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document, dependent: :destroy
-  has_many :sales_order_line_items, through: :sales_orders, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem"
-  has_many :accessories, dependent: :destroy
-  has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
+  has_one :charge_invoice,              as: :invoiceable, class_name: "Invoices::ChargeInvoice"
+  has_many :technician_work_orders,     dependent: :destroy
+  has_many :technicians,                through: :technician_work_orders
+  has_many :work_order_updates,         as: :updateable, class_name: "Post", dependent: :destroy
+  has_many :work_order_service_charges, class_name: 'WorkOrders::WorkOrderServiceCharge', dependent: :destroy
+  has_many :service_charges,            through: :work_order_service_charges
+  has_many :sales_orders,               class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document, dependent: :destroy
+  has_many :sales_order_line_items,     through: :sales_orders, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem"
+  has_many :accessories,                dependent: :destroy
+  has_many :entries,                    class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
 
   accepts_nested_attributes_for :product_unit
 
@@ -35,10 +39,12 @@ class WorkOrder < ApplicationRecord
   delegate :number, to: :charge_invoice, prefix: true, allow_nil: true
   delegate :business, to: :store_front
 
-  after_commit :set_service_number, :set_customer_name, :set_product_name,  on: [:create, :update]
+  after_commit :set_customer_name, :set_product_name,  on: [:create, :update]
+
   def self.done_and_rto
     done + return_to_owner
   end
+
   def self.payment_entries #refactor
     payments = []
     all.each do |work_order|
@@ -48,6 +54,7 @@ class WorkOrder < ApplicationRecord
      end
     payments
   end
+
   def name
     "#{product_name}"
   end
@@ -108,11 +115,11 @@ class WorkOrder < ApplicationRecord
     technicians.map{|a| a.full_name }.join(",")
   end
 
-  def accounts_receivable
-    spare_parts = entries.work_order_credit.map{|a| a.debit_amounts.distinct.pluck(:amount).sum}.sum
-    service_charges = entries.work_order_service_charge.map{|a| a.debit_amounts.distinct.pluck(:amount).sum}.sum
-    spare_parts + service_charges
-  end
+  # def accounts_receivable
+  #   spare_parts = entries.work_order_credit.map{|a| a.debit_amounts.distinct.pluck(:amount).sum}.sum
+  #   service_charges = entries.work_order_service_charge.map{|a| a.debit_amounts.distinct.pluck(:amount).sum}.sum
+  #   spare_parts + service_charges
+  # end
   def accounts_receivable_total
     service_charges_receivable +
     spare_parts_receivable
@@ -121,22 +128,24 @@ class WorkOrder < ApplicationRecord
   end
 
   def spare_parts_receivable
-    self.store_front.receivable_account.debits_balance(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
+    default_receivable_account.debits_balance(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
   end
   def service_charges_receivable
     balance = []
     work_order_service_charges.each do |service_charge|
-      balance << store_front.service_revenue_account.credit_amounts.where(commercial_document: service_charge).sum(&:amount)
+      balance << default_service_revenue_account.credit_amounts.where(commercial_document: service_charge).sum(&:amount)
     end
     balance.sum
   end
 
   def payment_entries
-    store_front.receivable_account.amounts.where(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
+    default_receivable_account.amounts.where(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
   end
 
+
+
   def payments_total
-    store_front.receivable_account.credits_balance(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
+    default_receivable_account.credits_balance(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
   end
 
   def service_charge_payments
@@ -153,7 +162,7 @@ class WorkOrder < ApplicationRecord
   end
 
   def discounts_total
-    store_front.sales_discount_account.debits_balance(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
+    default_sales_discount_account.debits_balance(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
   end
 
   def updates_content
@@ -197,11 +206,23 @@ class WorkOrder < ApplicationRecord
     end
   end
 
-  private
-  def set_service_number
-    self.service_number = nil
-    self.service_number = self.id.to_s
+  def default_sales_discount_account
+    if sales_discount_account.blank?
+      store_front.sales_discount_account
+    else
+      sales_discount_account
+    end
   end
+
+  def default_service_revenue_account
+    if service_revenue_account.blank?
+      store_front.service_revenue_account
+    else
+      service_revenue_account
+    end
+  end
+
+  private
 
   def set_customer_name
     self.customer_name = self.customer.full_name

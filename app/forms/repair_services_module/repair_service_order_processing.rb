@@ -13,8 +13,8 @@ module RepairServicesModule
 
     def create_repair_service_order
       order  = find_work_order.sales_orders.create!(
-        date: date,
-        store_front: find_work_order.store_front,
+        date:           date,
+        store_front:    find_work_order.store_front,
         account_number: SecureRandom.uuid,
         reference_number: reference_number,
         search_term: find_customer.name,
@@ -27,7 +27,7 @@ module RepairServicesModule
       create_entry(order)
     end
     def create_entry(order)
-        accounts_receivable = find_work_order.store_front.receivable_account
+        accounts_receivable = find_work_order.default_receivable_account
         cost_of_goods_sold = find_work_order.store_front.cost_of_goods_sold_account
         sales = find_work_order.store_front.sales_account
         merchandise_inventory = find_work_order.store_front.merchandise_inventory_account

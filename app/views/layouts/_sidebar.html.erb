@@ -16,11 +16,13 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
-
+          <% if current_user.cash_on_hand_account.present? %>
           <%= link_to employee_cash_on_hand_account_path(id: current_user.cash_on_hand_account_id, employee_id: current_user.id)  do %>
-          &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<b><%= number_to_currency current_user.cash_on_hand_account.balance %></b><br>
+          <h4><b>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<%= number_to_currency current_user.cash_on_hand_account.balance %></b></h4>
           &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<small>CASH BALANCE</small>
           <% end %>
+          <% end %>
+          <hr>
           <li class="header"> STORE FRONT </li>
           <!-- <li><a href="/dashboard"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li> -->
           <li class=<%= 'active' if current_page?(store_index_path) %> ><a href="/store"><i class="fa fa-home"></i> <span>Store</span></a></li>
