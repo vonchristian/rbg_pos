@@ -5,7 +5,8 @@ module WorkOrders
     :under_warranty, :supplier_id, :purchase_date, :expiry_date, :status,
     :customer_id, :reported_problem, :physical_condition, :description,
     :model_number, :serial_number, :technician_id, :account_number
-    validates :date_received, :description, presence: true
+    validates :date_received, :description, :date_received, :reported_problem,
+    :physical_condition, :customer_id, :model_number,presence: true
     def find_work_order
       WorkOrder.find_by(account_number: account_number)
     end
