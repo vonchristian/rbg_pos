@@ -7,8 +7,7 @@ module AccountingModule
 
     class_attribute :normal_credit_balance
     belongs_to :business
-    has_many :sub_accounts, class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
-    has_one :main_account, class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
+    has_many :sub_accounts, class_name: "AccountingModule::SubAccount", foreign_key: 'main_account_id'
     has_many :amounts, class_name: "AccountingModule::Amount"
     has_many :credit_amounts, :extend => AmountsExtension, :class_name => 'AccountingModule::CreditAmount'
     has_many :debit_amounts, :extend => AmountsExtension, :class_name => 'AccountingModule::DebitAmount'

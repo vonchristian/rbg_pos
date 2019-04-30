@@ -9,6 +9,7 @@ describe WorkOrder do
     it { is_expected.to belong_to(:receivable_account).optional }
     it { is_expected.to belong_to(:service_revenue_account).optional }
     it { is_expected.to belong_to(:sales_discount_account).optional }
+    it { is_expected.to belong_to(:sales_revenue_account).optional }
     it { is_expected.to have_many :accessories }
     it { is_expected.to belong_to(:customer).optional }
     it { is_expected.to belong_to :store_front }

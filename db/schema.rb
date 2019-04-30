@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_30_091803) do
+ActiveRecord::Schema.define(version: 2019_04_30_115721) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,12 +34,10 @@ ActiveRecord::Schema.define(version: 2019_04_30_091803) do
     t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "main_account_id"
     t.boolean "active", default: true
     t.bigint "business_id"
     t.index ["account_code"], name: "index_accounts_on_account_code", unique: true
     t.index ["business_id"], name: "index_accounts_on_business_id"
-    t.index ["main_account_id"], name: "index_accounts_on_main_account_id"
     t.index ["name"], name: "index_accounts_on_name", unique: true
     t.index ["type"], name: "index_accounts_on_type"
   end
@@ -159,9 +157,15 @@ ActiveRecord::Schema.define(version: 2019_04_30_091803) do
     t.bigint "business_id"
     t.bigint "receivable_account_id"
     t.string "account_number"
+    t.bigint "service_revenue_account_id"
+    t.bigint "sales_revenue_account_id"
+    t.bigint "sales_discount_account_id"
     t.index ["account_number"], name: "index_customers_on_account_number", unique: true
     t.index ["business_id"], name: "index_customers_on_business_id"
     t.index ["receivable_account_id"], name: "index_customers_on_receivable_account_id"
+    t.index ["sales_discount_account_id"], name: "index_customers_on_sales_discount_account_id"
+    t.index ["sales_revenue_account_id"], name: "index_customers_on_sales_revenue_account_id"
+    t.index ["service_revenue_account_id"], name: "index_customers_on_service_revenue_account_id"
   end
 
   create_table "employee_cash_accounts", force: :cascade do |t|
@@ -462,6 +466,15 @@ ActiveRecord::Schema.define(version: 2019_04_30_091803) do
     t.index ["spoilage_account_id"], name: "index_store_fronts_on_spoilage_account_id"
   end
 
+  create_table "sub_accounts", force: :cascade do |t|
+    t.bigint "main_account_id"
+    t.bigint "sub_account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["main_account_id"], name: "index_sub_accounts_on_main_account_id"
+    t.index ["sub_account_id"], name: "index_sub_accounts_on_sub_account_id"
+  end
+
   create_table "suppliers", force: :cascade do |t|
     t.string "business_name"
     t.string "owner_name"
@@ -615,11 +628,13 @@ ActiveRecord::Schema.define(version: 2019_04_30_091803) do
     t.bigint "service_revenue_account_id"
     t.string "account_number"
     t.bigint "work_order_category_id"
+    t.bigint "sales_revenue_account_id"
     t.index ["account_number"], name: "index_work_orders_on_account_number", unique: true
     t.index ["customer_id"], name: "index_work_orders_on_customer_id"
     t.index ["product_unit_id"], name: "index_work_orders_on_product_unit_id"
     t.index ["receivable_account_id"], name: "index_work_orders_on_receivable_account_id"
     t.index ["sales_discount_account_id"], name: "index_work_orders_on_sales_discount_account_id"
+    t.index ["sales_revenue_account_id"], name: "index_work_orders_on_sales_revenue_account_id"
     t.index ["section_id"], name: "index_work_orders_on_section_id"
     t.index ["service_revenue_account_id"], name: "index_work_orders_on_service_revenue_account_id"
     t.index ["status"], name: "index_work_orders_on_status"
@@ -629,7 +644,6 @@ ActiveRecord::Schema.define(version: 2019_04_30_091803) do
 
   add_foreign_key "accessories", "product_units"
   add_foreign_key "accessories", "work_orders"
-  add_foreign_key "accounts", "accounts", column: "main_account_id"
   add_foreign_key "accounts", "businesses"
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
@@ -643,6 +657,9 @@ ActiveRecord::Schema.define(version: 2019_04_30_091803) do
   add_foreign_key "customer_accounts", "accounts", column: "sales_account_id"
   add_foreign_key "customer_accounts", "accounts", column: "service_income_account_id"
   add_foreign_key "customers", "accounts", column: "receivable_account_id"
+  add_foreign_key "customers", "accounts", column: "sales_discount_account_id"
+  add_foreign_key "customers", "accounts", column: "sales_revenue_account_id"
+  add_foreign_key "customers", "accounts", column: "service_revenue_account_id"
   add_foreign_key "customers", "businesses"
   add_foreign_key "employee_cash_accounts", "accounts", column: "cash_account_id"
   add_foreign_key "employee_cash_accounts", "users", column: "employee_id"
@@ -689,6 +706,8 @@ ActiveRecord::Schema.define(version: 2019_04_30_091803) do
   add_foreign_key "store_fronts", "accounts", column: "service_revenue_account_id"
   add_foreign_key "store_fronts", "accounts", column: "spoilage_account_id"
   add_foreign_key "store_fronts", "businesses"
+  add_foreign_key "sub_accounts", "accounts", column: "main_account_id"
+  add_foreign_key "sub_accounts", "accounts", column: "sub_account_id"
   add_foreign_key "suppliers", "accounts", column: "payable_account_id"
   add_foreign_key "technician_work_orders", "users", column: "technician_id"
   add_foreign_key "technician_work_orders", "work_orders"
@@ -706,6 +725,7 @@ ActiveRecord::Schema.define(version: 2019_04_30_091803) do
   add_foreign_key "work_order_service_charges", "work_orders"
   add_foreign_key "work_orders", "accounts", column: "receivable_account_id"
   add_foreign_key "work_orders", "accounts", column: "sales_discount_account_id"
+  add_foreign_key "work_orders", "accounts", column: "sales_revenue_account_id"
   add_foreign_key "work_orders", "accounts", column: "service_revenue_account_id"
   add_foreign_key "work_orders", "customers"
   add_foreign_key "work_orders", "product_units"

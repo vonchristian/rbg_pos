@@ -8,6 +8,7 @@ class WorkOrder < ApplicationRecord
     :updates_content, :reported_problem, :physical_condition, :service_number, :customer_name, :product_name]
 
   belongs_to :receivable_account,      class_name: 'AccountingModule::Account', optional: true
+  belongs_to :sales_revenue_account,   class_name: 'AccountingModule::Account', optional: true
   belongs_to :sales_discount_account,  class_name: 'AccountingModule::Account', optional: true
   belongs_to :service_revenue_account, class_name: 'AccountingModule::Account', optional: true
 

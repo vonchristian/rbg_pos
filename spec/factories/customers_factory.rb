@@ -5,5 +5,8 @@ FactoryBot.define do
     contact_number { Faker::Number.number(11) }
     association :business
     association :receivable_account, factory: :asset
+    association :sales_revenue_account, factory: :asset
+    association :sales_discount_account, factory: :asset
+    association :service_revenue_account, factory: :asset
   end
 end
