@@ -10,6 +10,7 @@
       has_many :sales_return_order_line_items, class_name: "StoreFrontModule::LineItems::SalesReturnOrderLineItem", foreign_key: 'purchase_order_line_item_id'
       delegate :supplier, :origin_store_front_name, :destination_store_front_name, :stock_transfer?,  to: :purchase_order, allow_nil: true
       delegate :business_name, to: :supplier, prefix: true, allow_nil: true
+
       def self.for_store_front(store_front)
         joins(:purchase_order).where('orders.destination_store_front_id' => store_front.id)
       end

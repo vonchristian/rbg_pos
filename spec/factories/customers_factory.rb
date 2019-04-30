@@ -4,5 +4,6 @@ FactoryBot.define do
     last_name  { Faker::Name.last_name }
     contact_number { Faker::Number.number(11) }
     association :business
+    association :receivable_account, factory: :asset
   end
 end

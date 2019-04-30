@@ -156,7 +156,9 @@ Rails.application.routes.draw do
     resources :received_stock_transfer_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items
     resources :sales_return_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items
     resources :product_mergings, only: [:new, :create], module: :settings
-    resources :purchase_orders, only: [:new, :index, :show], module: :orders
+    resources :purchase_orders, only: [:new, :index, :show], module: :orders do
+      resources :cancellations, only: [:create], module: :purchase_orders
+    end
     resources :internal_use_orders, only: [:index, :show], module: :orders
     resources :purchase_returns, only: [:index, :show], module: :orders
     resources :sales_orders, only: [:index, :show, :destroy], module: :orders do

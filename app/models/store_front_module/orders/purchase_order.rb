@@ -4,7 +4,7 @@ module StoreFrontModule
       belongs_to :supplier, polymorphic: true
 
       belongs_to :destination_store_front, optional: true, class_name: "StoreFront", foreign_key: 'destination_store_front_id'
-      has_many :purchase_order_line_items, class_name: "StoreFrontModule::LineItems::PurchaseOrderLineItem", foreign_key: 'order_id'
+      has_many :purchase_order_line_items, class_name: "StoreFrontModule::LineItems::PurchaseOrderLineItem", foreign_key: 'order_id', dependent: :destroy
       delegate :name, to: :supplier, prefix: true, allow_nil: true
       delegate :name, to: :origin_store_front, prefix: true, allow_nil: true
       delegate :name, to: :destination_store_front, prefix: true, allow_nil: true

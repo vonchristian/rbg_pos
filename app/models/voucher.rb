@@ -5,7 +5,7 @@ class Voucher < ApplicationRecord
   has_one :entry,            class_name: "AccountingModule::Entry",
                              as: :commercial_document
 
-  has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount"
+  has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", dependent: :destroy
 
   delegate :name, to: :preparer, prefix: true, allow_nil: true
 
