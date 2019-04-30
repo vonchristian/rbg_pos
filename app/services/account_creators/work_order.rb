@@ -27,7 +27,7 @@ module AccountCreators
     end
 
     def create_sales_revenue_account
-      if sales_revenue_account.blank?
+      if work_order.sales_revenue_account.blank?
         account = AccountingModule::Revenue.create!(
         business:     business,
         name:         sales_revenue_account_name,
