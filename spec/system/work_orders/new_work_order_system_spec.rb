@@ -13,18 +13,18 @@ describe 'New work order' do
   end
   it 'with valid attributes' do
     select 'Desktop'
-    fill_in 'Date received', with: Date.current
+    fill_in 'Date received',            with: Date.current
     select 'Juan Cruz'
-    fill_in 'Contact person', with: 'none'
+    fill_in 'Contact person',           with: 'none'
     fill_in 'Manufacturer/Description', with: 'Asus'
-    fill_in 'Model number', with: 'XYZ'
-    fill_in 'Serial number', with: '4234243'
-    fill_in 'Physical condition', with: 'good'
-    fill_in 'Reported problem', with: 'no power'
+    fill_in 'Model number',             with: 'XYZ'
+    fill_in 'Serial number',            with: '4234243'
+    fill_in 'Physical condition',       with: 'good'
+    fill_in 'Reported problem',         with: 'no power'
     check 'Under warranty'
     select 'Test supplier'
-    fill_in 'Purchase date', with: Date.current
-    fill_in 'Expiry date', with: Date.current.next_year
+    fill_in 'Purchase date',            with: Date.current
+    fill_in 'Expiry date',              with: Date.current.next_year
 
     click_button 'Save Work Order'
 

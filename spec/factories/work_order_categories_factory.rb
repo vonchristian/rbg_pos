@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :work_order_category do
-    title { "MyString" }
+    title { Faker::Company.name }
   end
 end
