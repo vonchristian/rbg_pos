@@ -1,12 +1,12 @@
 module WorkOrders
   class Registration
     include ActiveModel::Model
-    attr_accessor :date_received, :contact_person, :store_front_id, :section_id,
+    attr_accessor :work_order_category_id, :date_received, :contact_person, :store_front_id, :section_id,
     :under_warranty, :supplier_id, :purchase_date, :expiry_date, :status,
     :customer_id, :reported_problem, :physical_condition, :description,
     :model_number, :serial_number, :technician_id, :account_number
     validates :date_received, :description, :date_received, :reported_problem,
-    :physical_condition, :customer_id, :model_number,presence: true
+    :physical_condition, :work_order_category_id, :customer_id, :model_number,presence: true
     def find_work_order
       WorkOrder.find_by(account_number: account_number)
     end
@@ -17,6 +17,7 @@ module WorkOrders
     private
     def create_work_order
       work_order = WorkOrder.received.new(
+        work_order_category_id: work_order_category_id,
         service_number:     WorkOrder.last.id.succ,
         date_received:      date_received,
         contact_person:     contact_person,

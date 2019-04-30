@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_30_070108) do
+ActiveRecord::Schema.define(version: 2019_04_30_091803) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -572,6 +572,13 @@ ActiveRecord::Schema.define(version: 2019_04_30_070108) do
     t.index ["type"], name: "index_vouchers_on_type"
   end
 
+  create_table "work_order_categories", force: :cascade do |t|
+    t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["title"], name: "index_work_order_categories_on_title", unique: true
+  end
+
   create_table "work_order_service_charges", force: :cascade do |t|
     t.bigint "service_charge_id"
     t.bigint "work_order_id"
@@ -607,6 +614,7 @@ ActiveRecord::Schema.define(version: 2019_04_30_070108) do
     t.bigint "sales_discount_account_id"
     t.bigint "service_revenue_account_id"
     t.string "account_number"
+    t.bigint "work_order_category_id"
     t.index ["account_number"], name: "index_work_orders_on_account_number", unique: true
     t.index ["customer_id"], name: "index_work_orders_on_customer_id"
     t.index ["product_unit_id"], name: "index_work_orders_on_product_unit_id"
@@ -616,6 +624,7 @@ ActiveRecord::Schema.define(version: 2019_04_30_070108) do
     t.index ["service_revenue_account_id"], name: "index_work_orders_on_service_revenue_account_id"
     t.index ["status"], name: "index_work_orders_on_status"
     t.index ["store_front_id"], name: "index_work_orders_on_store_front_id"
+    t.index ["work_order_category_id"], name: "index_work_orders_on_work_order_category_id"
   end
 
   add_foreign_key "accessories", "product_units"
@@ -702,4 +711,5 @@ ActiveRecord::Schema.define(version: 2019_04_30_070108) do
   add_foreign_key "work_orders", "product_units"
   add_foreign_key "work_orders", "sections"
   add_foreign_key "work_orders", "store_fronts"
+  add_foreign_key "work_orders", "work_order_categories"
 end

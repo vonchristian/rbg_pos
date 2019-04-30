@@ -69,7 +69,7 @@
                 <h4 class="title condensed-text"><span class="label label-default"><%= WorkOrder.received.count %></span> &nbsp; RECEIVED </h4>
               </div>
               <div class="col-md-4">
-                <%= link_to new_computer_repair_section_work_order_path do %>
+                <%= link_to new_computer_repair_section_work_order_path, title: 'New Work Order' do %>
                   <span class="btn btn-primary btn-flat pull-right" data-toggle="tooltip" title="New Work Order" data-placement="top"><i class="fa fa-plus-circle"></i> New</span>
                 <% end %>
               </div>
