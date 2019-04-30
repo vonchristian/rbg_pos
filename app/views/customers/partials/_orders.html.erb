@@ -2,7 +2,18 @@
   <div class="content">
     <%= link_to 'New Credit Sales', new_store_front_module_customer_credit_sales_order_line_item_processing_path(@customer), class: "btn btn-primary" %>
     <%= link_to 'New Credit(Others)', new_customer_other_credit_path(@customer), class: "btn btn-warning" %>
-
+    <br>
+    <br>
+    <%=form_tag customer_orders_path(@customer), method: :get, id: "search-form" do %>
+      <div class="input-group">
+        <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search orders...", type: "search" %>
+        <span class="input-group-btn">
+          <%= button_tag(type: 'submit', class: "btn btn-default") do %>
+             Browse Orders
+          <% end %>
+        </span>
+      </div>
+    <% end %>
     <div class="content table-responsive table-full-width">
       <table class="table table-hover">
         <thead>
@@ -16,7 +27,7 @@
           <th></th>
         </thead>
 	      <tbody>
-	        <% @customer.sales_orders.order(date: :desc).each do |order| %>
+	        <% @orders.each do |order| %>
 	          <tr>
 	            <% if order.line_items.count > 0  || order.description %>
 	            <td><%=link_to order.date.strftime("%B %e, %Y"), store_front_module_sales_order_path(order) %></td>

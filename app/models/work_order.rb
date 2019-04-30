@@ -189,6 +189,14 @@ class WorkOrder < ApplicationRecord
     end
   end
 
+  def default_receivable_account
+    if receivable_account.blank?
+      store_front.receivable_account
+    else
+      receivable_account
+    end
+  end
+
   private
   def set_service_number
     self.service_number = nil

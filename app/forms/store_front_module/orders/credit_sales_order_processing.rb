@@ -19,6 +19,7 @@ module StoreFrontModule
       presence: true
       def process!
         ActiveRecord::Base.transaction do
+          create_receivable_account
           create_sales_order
         end
       end
@@ -26,6 +27,14 @@ module StoreFrontModule
         Cart.find_by(id: cart_id)
       end
       private
+      def create_receivable_account
+        AccountingModule::Asset.create!(
+          business:     find_employee.business,
+          account_code: SecureRandom.uuid,
+          name:         account_name
+        )
+      end
+
       def create_sales_order
           order = StoreFrontModule::Orders::SalesOrder.create!(
           store_front_id: store_front_id,
@@ -35,7 +44,8 @@ module StoreFrontModule
           commercial_document: find_customer,
           description: description,
           search_term: find_customer.name,
-          reference_number: reference_number)
+          reference_number: reference_number,
+          receivable_account_id: AccountingModule::Asset.find_by!(name: account_name).id)
 
           find_cart.sales_order_line_items.each do |sales_order_line_item|
             sales_order_line_item.update_attributes!(date: date)
@@ -53,9 +63,13 @@ module StoreFrontModule
         User.find(employee_id)
       end
 
+      def account_name
+        "Accounts Receivable - #{find_customer.full_name}, #{account_number}"
+      end
+
       def create_entry(order)
         store_front = find_employee.store_front
-        accounts_receivable = store_front.receivable_account
+        accounts_receivable = order.receivable_account
         cost_of_goods_sold = store_front.cost_of_goods_sold_account
         sales = store_front.sales_account
         sales_discount = store_front.sales_discount_account

@@ -29,12 +29,8 @@
               <%= render 'employees/partials/orders' %>
             <% end %>
              <% if current_page? employee_entries_path(@employee) %>
-               <%=render 'employees/partials/account' %>
+               <%=render 'employees/partials/entries' %>
             <% end %>
             <% if current_page? employee_reports_path(@employee) %>
               <%= render 'employees/partials/reports' %>
             <% end %>
-
-
-
-

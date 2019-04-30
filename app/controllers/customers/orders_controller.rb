@@ -2,7 +2,11 @@ module Customers
   class OrdersController < ApplicationController
     def index
       @customer = Customer.find(params[:customer_id])
-      @orders = @customer.orders.order(date: :desc).all.paginate(page: params[:page], per_page: 50)
+      if params[:search].present?
+        @orders = @customer.orders.text_search(params[:search]).paginate(page: params[:page], per_page: 50)
+      else
+        @orders = @customer.orders.order(date: :desc).all.paginate(page: params[:page], per_page: 50)
+      end
     end
     def edit
       @customer = Customer.find(params[:customer_id])

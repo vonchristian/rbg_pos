@@ -120,6 +120,9 @@ Rails.application.routes.draw do
   resources :cash_on_hand_accounts, only: [:new, :create], module: :accounting
 
   namespace :store_front_module do
+    resources :sales_order_line_items, only: [:show] do
+      resources :cancellations, only: [:create], module: :sales_order_line_items
+    end 
     resources :purchase_order_line_items, only: [:show]
 
     resources :store_fronts, only: [:index, :show] do

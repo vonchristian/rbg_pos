@@ -2,6 +2,8 @@ module StoreFrontModule
   module Orders
     class SalesOrder < Order
 
+      belongs_to :receivable_account, class_name: 'AccountingModule::Account', optional: true
+
       has_one :cash_payment, as: :cash_paymentable, class_name: "StoreFrontModule::CashPayment", dependent: :destroy
       has_many :sales_order_line_items, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem", foreign_key: 'order_id', dependent: :destroy
       has_many :other_sales_line_items, foreign_key: 'order_id'
@@ -14,17 +16,18 @@ module StoreFrontModule
         balance > 0
       end
       def balance
-        store_front.receivable_account.balance(commercial_document_id: self.id, commercial_document_type: "Order")
+        default_receivable_account.balance(commercial_document_id: self.id, commercial_document_type: "Order")
       end
 
       def accounts_receivable_total
-        store_front.receivable_account.debits_balance(commercial_document_id: self.id, commercial_document_type: "Order")
+        default_receivable_account.debits_balance(commercial_document_id: self.id, commercial_document_type: "Order")
       end
       def payments_total
-        store_front.receivable_account.credits_balance(commercial_document_id: self.id, commercial_document_type: "Order")
+        default_receivable_account.credits_balance(commercial_document_id: self.id, commercial_document_type: "Order")
       end
+
       def payment_entries
-        ids = store_front.receivable_account.credit_amounts.where(commercial_document: self).pluck(:entry_id)
+        ids = AccountingModule::Amount.where(commercial_document: self).pluck(:entry_id)
         AccountingModule::Entry.where(id: ids)
       end
 
@@ -54,7 +57,7 @@ module StoreFrontModule
           0
         end
       end
-    
+
       def self.caret_status
         "up"
       end
@@ -69,6 +72,15 @@ module StoreFrontModule
 
       def destroy_work_order_entry!
       end
+
+      def default_receivable_account
+        if receivable_account.blank?
+          store_front.receivable_account
+        else
+          receivable_account
+        end
+      end
+
       private
       def delete_entry
         if payment_entries.present?

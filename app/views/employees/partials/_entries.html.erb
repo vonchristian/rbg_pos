@@ -13,9 +13,11 @@
           <% @entries.order(entry_date: :desc).each do |entry| %>
             <tr>
               <td>
+            
                 <%= link_to entry_path(entry), method: :delete, data: { confirm: "Are you sure you want to delete this entry?" } do %>
                 <i class="fa fa-trash text-danger"></i>
                 <% end %> &nbsp;
+
                 <%=entry.entry_date.strftime("%B %e, %Y")%></td>
               <td><%= entry.description %></td>
               <td>
