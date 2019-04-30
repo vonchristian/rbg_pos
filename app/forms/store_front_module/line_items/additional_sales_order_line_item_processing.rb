@@ -30,8 +30,8 @@ module StoreFrontModule
         store_front = employee.store_front
         accounts_receivable = sales_order.default_receivable_account
         cost_of_goods_sold = store_front.cost_of_goods_sold_account
-        sales = store_front.sales_account
-        sales_discount = store_front.sales_discount_account
+        sales = sales_order.default_sales_revenue_account
+        sales_discount = sales_order.default_sales_discount_account
         merchandise_inventory = store_front.merchandise_inventory_account
         employee.entries.create!(
           commercial_document: sales_order.customer,

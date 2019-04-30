@@ -50,6 +50,7 @@ module StoreFrontModule
             cash_tendered:    cash_tendered,
             cash_change:      order_change,
             discount_amount:  discount_amount)
+            create_accounts(order)
         end
 
         def create_sales_line_items
@@ -65,6 +66,9 @@ module StoreFrontModule
       end
       def find_employee
         User.find(employee_id)
+      end
+      def create_accounts(order)
+        AccountCreators::SalesOrder.new(sales_order: order).create_accounts!
       end
     end
   end

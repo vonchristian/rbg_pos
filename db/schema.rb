@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_30_115721) do
+ActiveRecord::Schema.define(version: 2019_04_30_211506) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -264,12 +264,16 @@ ActiveRecord::Schema.define(version: 2019_04_30_115721) do
     t.string "supplier_type"
     t.bigint "supplier_id"
     t.bigint "receivable_account_id"
+    t.bigint "sales_revenue_account_id"
+    t.bigint "sales_discount_account_id"
     t.index ["account_number"], name: "index_orders_on_account_number", unique: true
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_orders"
     t.index ["destination_store_front_id"], name: "index_orders_on_destination_store_front_id"
     t.index ["employee_id"], name: "index_orders_on_employee_id"
     t.index ["receivable_account_id"], name: "index_orders_on_receivable_account_id"
     t.index ["reference_number"], name: "index_orders_on_reference_number"
+    t.index ["sales_discount_account_id"], name: "index_orders_on_sales_discount_account_id"
+    t.index ["sales_revenue_account_id"], name: "index_orders_on_sales_revenue_account_id"
     t.index ["store_front_id"], name: "index_orders_on_store_front_id"
     t.index ["supplier_type", "supplier_id"], name: "index_orders_on_supplier_type_and_supplier_id"
     t.index ["type"], name: "index_orders_on_type"
@@ -676,6 +680,8 @@ ActiveRecord::Schema.define(version: 2019_04_30_115721) do
   add_foreign_key "line_items", "unit_of_measurements"
   add_foreign_key "line_items", "users"
   add_foreign_key "orders", "accounts", column: "receivable_account_id"
+  add_foreign_key "orders", "accounts", column: "sales_discount_account_id"
+  add_foreign_key "orders", "accounts", column: "sales_revenue_account_id"
   add_foreign_key "orders", "store_fronts"
   add_foreign_key "orders", "store_fronts", column: "destination_store_front_id"
   add_foreign_key "orders", "users", column: "employee_id"

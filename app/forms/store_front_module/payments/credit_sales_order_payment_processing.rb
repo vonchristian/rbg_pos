@@ -13,7 +13,7 @@ module StoreFrontModule
       private
       def save_payment
         store_front = find_employee.store_front
-        accounts_receivable = store_front.receivable_account
+        accounts_receivable = find_order.default_receivable_account
         cash_on_hand_account = find_employee.cash_on_hand_account
         if expense_amount.to_f > 0 && expense_account_id.present?
           AccountingModule::Entry.create!(
@@ -67,7 +67,7 @@ module StoreFrontModule
         User.find_by_id(employee_id)
       end
       def find_order
-        StoreFrontModule::Orders::SalesOrder.find_by_id(order_id)
+        StoreFrontModule::Orders::SalesOrder.find(order_id)
       end
     end
   end

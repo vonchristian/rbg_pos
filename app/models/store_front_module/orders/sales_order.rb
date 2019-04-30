@@ -2,7 +2,9 @@ module StoreFrontModule
   module Orders
     class SalesOrder < Order
 
-      belongs_to :receivable_account, class_name: 'AccountingModule::Account', optional: true
+      belongs_to :receivable_account,    class_name: 'AccountingModule::Account', optional: true
+      belongs_to :sales_revenue_account, class_name: 'AccountingModule::Account', optional: true
+      belongs_to :sales_discount_account, class_name: 'AccountingModule::Account', optional: true
 
       has_one :cash_payment, as: :cash_paymentable, class_name: "StoreFrontModule::CashPayment", dependent: :destroy
       has_many :sales_order_line_items, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem", foreign_key: 'order_id', dependent: :destroy
@@ -35,6 +37,7 @@ module StoreFrontModule
       def customer
         commercial_document
       end
+
       def name
         customer.full_name
       end
@@ -80,6 +83,23 @@ module StoreFrontModule
           receivable_account
         end
       end
+
+      def default_sales_revenue_account
+        if sales_revenue_account.blank?
+          store_front.sales_account
+        else
+          sales_revenue_account
+        end
+      end
+
+      def default_sales_discount_account
+        if sales_discount_account.blank?
+          store_front.sales_discount_account
+        else
+          sales_discount_account
+        end
+      end
+
 
       private
       def delete_entry

@@ -22,6 +22,7 @@ class OtherSalesForm
 
     create_voucher(order)
     create_entry(order)
+    create_accounts(order)
   end
 
 
@@ -39,6 +40,9 @@ class OtherSalesForm
 
   def create_entry(order)
     VoucherEntryCreation.new(voucher: order.voucher).create_entry!
+  end
+  def create_accounts(order)
+    AccountCreators::SalesOrder.new(sales_order: order).create_accounts!
   end
 
 end

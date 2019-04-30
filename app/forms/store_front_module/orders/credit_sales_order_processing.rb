@@ -69,10 +69,10 @@ module StoreFrontModule
 
       def create_entry(order)
         store_front = find_employee.store_front
-        accounts_receivable = order.receivable_account
+        accounts_receivable = order.default_receivable_account
         cost_of_goods_sold = store_front.cost_of_goods_sold_account
-        sales = store_front.sales_account
-        sales_discount = store_front.sales_discount_account
+        sales = order.default_sales_revenue_account
+        sales_discount = store_front.default_sales_discount_account
         merchandise_inventory = store_front.merchandise_inventory_account
         find_employee.entries.create!(
           recorder: find_employee,
