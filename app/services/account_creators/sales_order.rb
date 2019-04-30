@@ -20,7 +20,9 @@ module AccountCreators
         name:         receivable_account_name,
         account_code: SecureRandom.uuid)
         sales_order.update(receivable_account: account)
-        customer.receivable_account.sub_accounts.create(sub_account: account)
+        if customer.present? && customer.receivable_account.present?
+          customer.receivable_account.sub_accounts.create(sub_account: account)
+        end
       end
     end
 
@@ -31,10 +33,8 @@ module AccountCreators
         name:         sales_revenue_account_name,
         account_code: SecureRandom.uuid)
         sales_order.update(sales_revenue_account: account)
-        if sales_order.commercial_document_type != 'WorkOrder'
+        if customer.present? && customer.sales_revenue_account.present?
           AccountingModule::SubAccount.create!(main_account: customer.sales_revenue_account, sub_account: account)
-        else
-          AccountingModule::SubAccount.create!(main_account: customer.customer.sales_revenue_account, sub_account: account)
         end
       end
     end
@@ -47,7 +47,7 @@ module AccountCreators
         name:         sales_discount_account_name,
         account_code: SecureRandom.uuid)
         sales_order.update(sales_discount_account: account)
-        customer.receivable_account.sub_accounts.create(sub_account: account)
+        customer.sales_discount_account.sub_accounts.create(sub_account: account)
       end
     end
 
