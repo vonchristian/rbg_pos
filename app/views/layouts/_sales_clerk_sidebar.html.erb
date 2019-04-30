@@ -13,19 +13,17 @@
         <%= current_user.cash_on_hand_account.balance %>
       </div>
       <!-- search form -->
-      <%=form_tag search_results_path, method: :get, class: "sidebar-form" do %>
-      <div class="input-group">
-        <%= text_field_tag :multisearch, params[:multisearch], class: "form-control", placeholder: "Search..." %>
-        <span class="input-group-btn">
-          <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-            <i class="fa fa-search"></i>
-          <% end %>
-        </span>
-      </div>
-    <% end %>
+
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
+        <% if current_user.cash_on_hand_account.present? %>
+        <%= link_to employee_cash_on_hand_account_path(id: current_user.cash_on_hand_account_id, employee_id: current_user.id)  do %>
+        <h4><b>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<%= number_to_currency current_user.cash_on_hand_account.balance %></b></h4>
+        &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<small>CASH BALANCE</small>
+        <% end %>
+        <% end %>
+        <hr>
           <li class="header"> REPAIR SECTION </li>
 
           <li><a href="/store"><i class="fa fa-dashboard"></i> <span> Store</span></a></li>
@@ -59,4 +57,3 @@
     </section>
     <!-- /.sidebar -->
   </aside>
-

@@ -9,6 +9,8 @@ module StoreFrontModule
       def total_cost
         sales_return_order_line_items.sum(&:total_cost)
       end
+      def balance
+      end 
     end
   end
 end

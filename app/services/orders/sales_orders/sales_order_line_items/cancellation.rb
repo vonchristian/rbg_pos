@@ -18,8 +18,8 @@ module Orders
           store_front = employee.store_front
           accounts_receivable = order.default_receivable_account
           cost_of_goods_sold = store_front.cost_of_goods_sold_account
-          sales = store_front.sales_account
-          sales_discount = store_front.sales_discount_account
+          sales = order.default_sales_revenue_account
+          sales_discount = order.default_sales_discount_account
           merchandise_inventory = store_front.merchandise_inventory_account
           employee.entries.create!(
             commercial_document: order.customer,
@@ -45,7 +45,7 @@ module Orders
         end
 
         def credit_account
-          if order.receivable_account.blank?
+          if order.receivable_account.amounts.where(commercial_document: order).blank?
             order.employee.cash_on_hand_account
           else
             order.default_receivable_account

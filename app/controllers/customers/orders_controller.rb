@@ -3,9 +3,9 @@ module Customers
     def index
       @customer = Customer.find(params[:customer_id])
       if params[:search].present?
-        @orders = @customer.orders.text_search(params[:search]).paginate(page: params[:page], per_page: 50)
+        @orders = @customer.sales_orders.text_search(params[:search]).paginate(page: params[:page], per_page: 50)
       else
-        @orders = @customer.orders.order(date: :desc).all.paginate(page: params[:page], per_page: 50)
+        @orders = @customer.sales_orders.order(date: :desc).all.paginate(page: params[:page], per_page: 50)
       end
     end
     def edit
