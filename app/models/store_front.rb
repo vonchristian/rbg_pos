@@ -36,4 +36,9 @@ class StoreFront < ApplicationRecord
     ids = pluck(:receivable_account_id)
     AccountingModule::Account.where(id: ids)
   end
+
+  def self.sales_accounts
+    ids = pluck(:sales_account_id)
+    AccountingModule::Account.where(id: ids)
+  end
 end

@@ -1,17 +1,24 @@
 module WorkOrders
   class EntryMigrator
-    attr_reader :work_order, :receivable_account, :store_front
+    attr_reader :work_order
 
     def initialize(args)
       @work_order = args.fetch(:work_order)
-      @store_front = @work_order.store_front
-      @receivable_account = @work_order.receivable_account
     end
 
-    def migrate_service_charge_entries!
+    def migrate_receivable_account_entries!
       work_order.service_charges.each do |charge|
-        store_front.receivable_account.debit_amounts.where(commercial_document: charge).each do |amount|
-          amount.update(account: receivable_account)
+        StoreFront.receivable_accounts.each do |account|
+          account.debit_amounts.where(commercial_document: charge).each do |amount|
+            amount.update(account: work_order.receivable_account)
+          end
+        end
+      end
+    end
+    def migrate_sales_account_entries!
+      StoreFront.sales_accounts.each do |account|
+        account.credit_amounts.where(commercial_document: work_order).each do |amount|
+          amount.update(account: work_order.sales_revenue_account)
         end
       end
     end
