@@ -6,6 +6,7 @@ class WorkOrder < ApplicationRecord
   :associated_against => { :charge_invoice => [:number], product_unit: [:description, :model_number, :serial_number] }
   multisearchable :against => [:description, :model_number, :serial_number,
     :updates_content, :reported_problem, :physical_condition, :service_number, :customer_name, :product_name]
+  belongs_to :receivable_account, class_name: 'AccountingModule::Account', optional: true
   belongs_to :product_unit
   belongs_to :supplier, optional: true
   belongs_to :section, optional: true
@@ -32,6 +33,7 @@ class WorkOrder < ApplicationRecord
   delegate :full_name, :address, :contact_number, to: :customer, allow_nil: true, prefix: true
   delegate :avatar, :full_name, to: :customer
   delegate :number, to: :charge_invoice, prefix: true, allow_nil: true
+  delegate :business, to: :store_front
 
   after_commit :set_service_number, :set_customer_name, :set_product_name,  on: [:create, :update]
   def self.done_and_rto
@@ -51,9 +53,10 @@ class WorkOrder < ApplicationRecord
   end
 
   def self.total_charges_cost(args={} ) #refactor
-    if hash[:from_date] && hash[:to_date]
+    if args[:from_date] && args[:to_date]
        date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
-        where('created_at' => (date_range.range)).sum(&:total_charges_cost)
+        where('date_received' => (date_range.range)).
+        sum(&:total_charges_cost)
     else
       all.sum(&:total_charges_cost)
     end

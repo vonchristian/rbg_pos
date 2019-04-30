@@ -1,4 +1,14 @@
 
+add business to work orders
+todo
+migrate
+WORK ORDERS
+create liability account
+move entries to liability account
+CUSTOMER
+create customer account
+move sales to customer account
+move A/R to customer account
 Account
 belongs_to business
 

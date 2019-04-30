@@ -5,6 +5,7 @@ describe WorkOrder do
     it { is_expected.to belong_to :product_unit }
     it { is_expected.to belong_to(:supplier).optional }
     it { is_expected.to belong_to :section }
+    it { is_expected.to belong_to :receivable_account }
     it { is_expected.to have_many :accessories }
     it { is_expected.to belong_to(:customer).optional }
     it { is_expected.to belong_to :store_front }

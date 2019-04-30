@@ -4,6 +4,7 @@ class Customer < ApplicationRecord
   multisearchable against: [:first_name, :last_name]
 
   belongs_to :business
+  belongs_to :receivable_account, class_name: 'AccountingModule::Account'
 	has_many :orders, as: :commercial_document
 	has_many :entries, through: :orders
   has_many :payments, as: :commercial_document, class_name: "AccountingModule::Entry"
@@ -22,7 +23,7 @@ class Customer < ApplicationRecord
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
   validates :first_name, :last_name, :contact_number, presence: true
   scope :recent, ->(num) { order('created_at DESC').limit(num) }
-
+  before_validation :set_account_number
   def work_order_payments
     #
   end
@@ -112,5 +113,9 @@ class Customer < ApplicationRecord
       end
     end
     payments
+  end
+  private
+  def set_account_number
+    self.account_number||= SecureRandom.uuid
   end
 end

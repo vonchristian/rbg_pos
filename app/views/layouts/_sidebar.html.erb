@@ -18,8 +18,8 @@
       <ul class="sidebar-menu">
 
           <%= link_to employee_cash_on_hand_account_path(id: current_user.cash_on_hand_account_id, employee_id: current_user.id)  do %>
-          &nbsp; &nbsp; &nbsp;<%= number_to_currency current_user.cash_on_hand_account.balance %><br>
-          &nbsp; &nbsp; &nbsp;<small>CASH BALANCE</small>
+          &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<b><%= number_to_currency current_user.cash_on_hand_account.balance %></b><br>
+          &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<small>CASH BALANCE</small>
           <% end %>
           <li class="header"> STORE FRONT </li>
           <!-- <li><a href="/dashboard"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li> -->
