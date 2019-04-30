@@ -61,19 +61,19 @@ module AccountCreators
     end
 
     def receivable_account_name
-      "Accounts Receivable Work Orders - #{work_order.customer_name} ##{work_order.service_number}"
+      "Accounts Receivable Work Orders - #{work_order.customer_name} ##{work_order.account_number}"
     end
 
     def sales_revenue_account_name
-      "Sales (Work Orders) - #{work_order.customer_name} ##{work_order.service_number}"
+      "Sales (Work Orders) - #{work_order.customer_name} ##{work_order.account_number}"
     end
 
     def sales_discount_account_name
-      "Sales Discounts (Work Orders) - #{work_order.customer_name} ##{work_order.service_number}"
+      "Sales Discounts (Work Orders) - #{work_order.customer_name} ##{work_order.account_number}"
     end
 
     def service_revenue_account_name
-      "Service Income - #{work_order.customer_name} ##{work_order.service_number}"
+      "Service Income - #{work_order.customer_name} ##{work_order.account_number}"
     end
   end
 end

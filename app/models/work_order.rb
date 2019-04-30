@@ -13,7 +13,7 @@ class WorkOrder < ApplicationRecord
   belongs_to :service_revenue_account, class_name: 'AccountingModule::Account', optional: true
 
   belongs_to :product_unit
-  belongs_to :work_order_category
+  belongs_to :work_order_category, optional: true
   belongs_to :supplier, optional: true
   belongs_to :section, optional: true
   has_many :accessories
