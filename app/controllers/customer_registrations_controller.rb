@@ -4,6 +4,7 @@ class CustomerRegistrationsController < ApplicationController
 	end
 	def create
 		@customer = Customer.create(customer_params)
+    AccountCreators::Customer.new(customer: @customer).create_accounts!
 	end
 	private
 	def customer_params
