@@ -27,7 +27,6 @@ module WorkOrders
         supplier_id:        supplier_id,
         purchase_date:      purchase_date,
         expiry_date:        expiry_date,
-        status:             status,
         customer_id:        customer_id,
         reported_problem:   reported_problem,
         physical_condition: physical_condition,
