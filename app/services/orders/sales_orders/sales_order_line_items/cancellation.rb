@@ -45,7 +45,7 @@ module Orders
         end
 
         def credit_account
-          if order.receivable_account.amounts.where(commercial_document: order).blank?
+          if order.receivable_account.balance.zero?
             order.employee.cash_on_hand_account
           else
             order.default_receivable_account

@@ -92,7 +92,7 @@ class WorkOrder < ApplicationRecord
     if hash[:from_date] && hash[:to_date]
      from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date])
       to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date])
-      where('created_at' => (from_date.beginning_of_day)..(to_date.end_of_day))
+      where('updated_at' => (from_date.beginning_of_day)..(to_date.end_of_day))
     else
       all
     end
