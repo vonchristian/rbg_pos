@@ -72,7 +72,7 @@ module StoreFrontModule
         accounts_receivable = order.default_receivable_account
         cost_of_goods_sold = store_front.cost_of_goods_sold_account
         sales = order.default_sales_revenue_account
-        sales_discount = store_front.default_sales_discount_account
+        sales_discount = order.default_sales_discount_account
         merchandise_inventory = store_front.merchandise_inventory_account
         find_employee.entries.create!(
           recorder: find_employee,

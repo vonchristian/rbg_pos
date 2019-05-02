@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_30_211506) do
+ActiveRecord::Schema.define(version: 2019_05_02_055546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -204,6 +204,16 @@ ActiveRecord::Schema.define(version: 2019_04_30_211506) do
     t.datetime "updated_at", null: false
     t.index ["invoiceable_type", "invoiceable_id"], name: "index_invoices_on_invoiceable_type_and_invoiceable_id"
     t.index ["type"], name: "index_invoices_on_type"
+  end
+
+  create_table "ledger_accounts", force: :cascade do |t|
+    t.string "ledgerable_type"
+    t.bigint "ledgerable_id"
+    t.bigint "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_ledger_accounts_on_account_id"
+    t.index ["ledgerable_type", "ledgerable_id"], name: "index_ledger_accounts_on_ledgerable_type_and_ledgerable_id"
   end
 
   create_table "line_items", force: :cascade do |t|
@@ -669,6 +679,7 @@ ActiveRecord::Schema.define(version: 2019_04_30_211506) do
   add_foreign_key "employee_cash_accounts", "users", column: "employee_id"
   add_foreign_key "entries", "users"
   add_foreign_key "entries", "users", column: "recorder_id"
+  add_foreign_key "ledger_accounts", "accounts"
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "line_items", column: "purchase_order_line_item_id"
   add_foreign_key "line_items", "line_items", column: "referenced_line_item_id"

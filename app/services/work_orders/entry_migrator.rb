@@ -9,7 +9,7 @@ module WorkOrders
     def migrate_entries!
       migrate_receivable_account_entries
       migrate_sales_account_entries
-    end 
+    end
 
     def migrate_receivable_account_entries
       work_order.service_charges.each do |charge|
@@ -20,6 +20,7 @@ module WorkOrders
         end
       end
     end
+    
     def migrate_sales_account_entries
       StoreFront.sales_accounts.each do |account|
         account.credit_amounts.where(commercial_document: work_order).each do |amount|

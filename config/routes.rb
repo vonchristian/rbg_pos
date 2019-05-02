@@ -236,4 +236,7 @@ Rails.application.routes.draw do
   namespace :repair_services do
     resources :per_employee_dashboards, only: [:index]
   end
+  resources :businesses, only: [:show] do
+    resources :ledger_accounts, only: [:new, :create], module: :businesses
+  end
 end

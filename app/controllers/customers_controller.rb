@@ -13,6 +13,7 @@ class CustomersController < ApplicationController
 		@customer = Customer.create(customer_params)
 		if @customer.valid?
 			@customer.save
+      AccountCreators::Customer.new(customer: @customer).create_accounts!
 			redirect_to customers_url, notice: "Customer saved successfully"
 		else
 			render :new

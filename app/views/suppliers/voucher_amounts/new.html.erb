@@ -8,7 +8,7 @@
         <%= simple_form_for @voucher_amount, url: :supplier_voucher_amounts do |f| %>
           <div class="row">
             <div class="col-md-5">
-              <%= f.input :account_id, label: false, placeholder: "Select Account", collection: AccountingModule::Account.all.map{ |a| [ a.name, a.id] } %>
+              <%= f.input :account_id, label: false, placeholder: "Select Account", collection: current_business.accounts.all.map{ |a| [ a.name, a.id] } %>
             </div>
             <div class="col-md-3">
               <%= f.input :amount, label: false, placeholder: "Amount" %>

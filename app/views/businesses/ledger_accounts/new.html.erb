@@ -1,0 +1,17 @@
+<%=form_tag new_business_ledger_account_path(current_business), method: :get, id: "search-form" do %>
+              <div class="input-group">
+                <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search product...", type: "search" %>
+                <span class="input-group-btn">
+                  <%= button_tag(type: 'submit', class: "btn btn-default") do %>
+                     Browse Products
+                  <% end %>
+                </span>
+              </div>
+            <% end %>
+<% @accounts.each do |account| %>
+  <%= simple_form_for [current_business, @ledger_account], url: :business_ledger_accounts do |f| %>
+    <%= f.input :account_id, input_html: { value: account.id } %>
+    <%= f.submit "Add" %>
+  <% end %>
+<% end %>
+<%= will_paginate @accounts %>
