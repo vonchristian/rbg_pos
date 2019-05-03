@@ -18,7 +18,7 @@
           <hr>
           <p><b> Cash on Hand Account </b> </p>
           <span class="text-muted"> Select source of cash for this payment </span>
-          <%= f.input :credit_account_id, label: false, collection: AccountingModule::Account.all.map{ |a| [a.name, a.id] } %>
+          <%= f.input :credit_account_id, label: false, collection: current_business.accounts.map{ |a| [a.name, a.id] } %>
           <div class="box-footer">
             <%= f.submit "Save Payment", class: "btn btn-primary pull-right" %>
           </div>
