@@ -15,7 +15,7 @@
               <%= number_to_currency charge.amount %>
             </div>
             <div class="col-md-1">
-              <%= link_to computer_repair_section_work_order_service_charge_path(id: charge.id, work_order_id: @work_order.id), method: :delete, data: { confirm_with: "Are you sure you want to delete this charge?" } do %>
+              <%= link_to computer_repair_section_work_order_service_charge_path(id: charge.id, work_order_id: @work_order.id), method: :delete, data: { confirm: "Are you sure you want to delete this charge?" } do %>
                 <span title="Delete Charge" data-toggle="tooltip"><i class="fa fa-trash text-danger"></i></span>
               <% end %>
             </div>

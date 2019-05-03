@@ -3,7 +3,7 @@ module WorkOrders
     attr_reader :service_charge, :work_order
     def initialize(args)
       @service_charge = args.fetch(:service_charge)
-      @work_order = args.fetch(:work_order)
+      @work_order     = args.fetch(:work_order)
     end
     def cancel!
       delete_entry
