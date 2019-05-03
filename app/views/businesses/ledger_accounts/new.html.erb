@@ -9,6 +9,7 @@
               </div>
             <% end %>
 <% @accounts.each do |account| %>
+<%= account.name %>
   <%= simple_form_for [current_business, @ledger_account], url: :business_ledger_accounts do |f| %>
     <%= f.input :account_id, input_html: { value: account.id } %>
     <%= f.submit "Add" %>
