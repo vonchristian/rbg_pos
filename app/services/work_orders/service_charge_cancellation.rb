@@ -15,7 +15,7 @@ module WorkOrders
     end
 
     def delete_service_charge
-      work_order.work_order_service_charges.where(service_charge: service_charge).destroy_all
+      service_charge.destroy
     end
   end
 end
