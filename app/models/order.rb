@@ -60,11 +60,9 @@ class Order < ApplicationRecord
 
   def total_cost
     if line_items.present?
-      line_items.total_cost
-    elsif line_items.blank?
-      cash_payment.try(:cash_tendered)
+      line_items.sum(&:total_cost)
     else
-      0
+      cash_payment.try(:cash_tendered) || 0
     end
   end
 

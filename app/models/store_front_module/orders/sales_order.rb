@@ -48,8 +48,10 @@ module StoreFrontModule
         if line_items.present? || other_sales_line_items.present?
           total_line_items_cost +
           other_sales_line_items.total_cost
+        elsif cash_payment.present?
+          cash_payment.cash_tendered
         else
-          cash_payment_cash_tendered
+          0
         end
       end
 
