@@ -1,9 +1,8 @@
 module WorkOrders
   class ServiceChargeCancellation
-    attr_reader :service_charge, :work_order
+    attr_reader :service_charge
     def initialize(args)
       @service_charge = args.fetch(:service_charge)
-      @work_order     = args.fetch(:work_order)
     end
     def cancel!
       delete_entry

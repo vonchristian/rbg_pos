@@ -20,7 +20,7 @@ module ComputerRepairSection
       def destroy
         @work_order = WorkOrder.find(params[:work_order_id])
         @service_charge = @work_order.work_order_service_charges.find(params[:id])
-        ::WorkOrders::ServiceChargeCancellation.new(service_charge: @service_charge, work_order: @work_order).cancel!
+        ::WorkOrders::ServiceChargeCancellation.new(service_charge: @service_charge).cancel!
         redirect_to new_repair_services_module_work_order_service_charge_processing_path(@service_charge.work_order), notice: "Service charge deleted successfully"
       end
 
