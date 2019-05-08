@@ -5,6 +5,7 @@
       <%= link_to 'Withdraw Capital', new_capital_withdrawal_path, class: "btn btn-warning btn-sm" %>
     <% end %>
     <hr>
+    <%if @employee.cash_accounts.present? %>
       <% @employee.cash_accounts.each do |cash_account| %>
         <div class="row">
           <div class="col-md-5">
@@ -51,5 +52,6 @@
         <% end %>
       </div>
     </div>
+      <% end %>
   </div>
 </div>
