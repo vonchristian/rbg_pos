@@ -12,8 +12,8 @@ module StoreFrontModule
       end
       def process!
         ActiveRecord::Base.transaction do
-          add_items
           create_entry
+          add_items
           remove_cart_reference
         end
       end
@@ -28,10 +28,10 @@ module StoreFrontModule
       end
       def create_entry
         store_front = employee.store_front
-        accounts_receivable = sales_order.default_receivable_account
+        accounts_receivable = sales_order.receivable_account
         cost_of_goods_sold = store_front.cost_of_goods_sold_account
         sales = sales_order.default_sales_revenue_account
-        sales_discount = sales_order.default_sales_discount_account
+        sales_discount = sales_order.sales_discount_account
         merchandise_inventory = store_front.merchandise_inventory_account
         employee.entries.create!(
           commercial_document: sales_order.customer,
