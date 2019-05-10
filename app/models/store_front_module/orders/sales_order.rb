@@ -11,15 +11,13 @@ module StoreFrontModule
       has_many :other_sales_line_items, foreign_key: 'order_id'
       delegate :name, to: :customer, prefix: true, allow_nil: true
       delegate :full_name, to: :customer, prefix: true, allow_nil: true
-
+      delegate :balance, to: :receivable_account
       before_destroy :delete_entry
 
       def has_balance?
         balance > 0
       end
-      def balance
-        default_receivable_account.balance(commercial_document_id: self.id, commercial_document_type: "Order")
-      end
+
 
       def accounts_receivable_total
         default_receivable_account.debits_balance(commercial_document_id: self.id, commercial_document_type: "Order")
