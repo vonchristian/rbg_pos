@@ -5,9 +5,9 @@
         <div class="header">
            <h4 class="title">New Employee</h4>
           <p class="category">Details for this new employee</p>
-        </div> 
+        </div>
         <div class="content">
-<%= simple_form_for @user, url: :user_registration do |f| %> 
+<%= simple_form_for @user, url: :user_registration do |f| %>
   <%= f.error_notification %>
   <%if @user.avatar.blank? %>
             <center><%=image_tag("default.png", height: 80, width: 80, :class=>"img-square") %></center>
@@ -22,6 +22,9 @@
   <%= f.input :password_confirmation, label: "Comfirm Password" %>
   <%= f.input :role, collection: User.roles.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
   <%= f.input :designation %>
+  <%= f.input :business_id, input_html: { value: current_business.id }, as: :hidden %>
+  <%= f.input :store_front_id, collection: current_business.store_fronts.map{ |a| [a.name, a.id] } %>
+
   <%= f.input :section_id, collection: Section.all.map{|a| [a.name, a.id] }, as: :radio_buttons %>
   <%= f.submit "Save", class: "btn btn-danger" %>
 <% end %>
