@@ -27,23 +27,23 @@ module StoreFrontModule
 
       end
       def create_entry
-        store_front = employee.store_front
-        accounts_receivable = sales_order.receivable_account
-        cost_of_goods_sold = store_front.cost_of_goods_sold_account
-        sales = sales_order.default_sales_revenue_account
-        sales_discount = sales_order.sales_discount_account
+        store_front           = employee.store_front
+        accounts_receivable   = sales_order.receivable_account
+        cost_of_goods_sold    = store_front.cost_of_goods_sold_account
+        sales                 = sales_order.default_sales_revenue_account
+        sales_discount        = sales_order.sales_discount_account
         merchandise_inventory = store_front.merchandise_inventory_account
         employee.entries.create!(
           commercial_document: sales_order.customer,
           entry_date: date,
           description: "Credit sales",
-          debit_amounts_attributes: [{ amount: cart.total_cost,
+          debit_amounts_attributes: [{ amount: cart.sales_order_line_items.total_cost,
                                         account: accounts_receivable,
                                         commercial_document: sales_order},
                                       { amount: cart.cost_of_goods_sold,
                                         account: cost_of_goods_sold,
                                         commercial_document: sales_order } ],
-            credit_amounts_attributes:[{amount: cart.total_cost,
+            credit_amounts_attributes:[{amount: cart.sales_order_line_items.total_cost,
                                         account: sales,
                                         commercial_document: sales_order},
                                        { amount: cart.cost_of_goods_sold,
