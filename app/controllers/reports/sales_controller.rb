@@ -3,9 +3,8 @@ module Reports
 		def index
 			@from_date = Chronic.parse(params[:from_date].to_date)
       @to_date = Chronic.parse(params[:to_date].to_date)
-      @employee = User.find_by_id(params[:user_id])
-      if @employee.present?
-        @orders = @employee.sales_orders.ordered_on(from_date: @from_date, to_date: @to_date)
+      if !current_user.proprietor?
+        @orders = current_user.sales_orders.ordered_on(from_date: @from_date, to_date: @to_date)
       else
 			  @orders = StoreFrontModule::Orders::SalesOrder.ordered_on(from_date: @from_date, to_date: @to_date)
       end
