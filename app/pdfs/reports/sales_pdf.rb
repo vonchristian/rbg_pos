@@ -68,7 +68,7 @@ module Reports
       move_down 10
     end
     def orders_data
-      if @employee.present?
+      if @employee.present? && !@employee.proprietor?
         [["DATE", "OR", "CUSTOMER", "ITEMS", "DISCOUNT", "TOTAL COST"]] +
         @orders_data ||= @orders.map{|o| [
           o.date.strftime("%B %e, %Y"),

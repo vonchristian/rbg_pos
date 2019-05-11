@@ -16,9 +16,9 @@ module Orders
 
         def create_entry
           store_front = employee.store_front
-          accounts_receivable = order.default_receivable_account
+          accounts_receivable = order.receivable_account
           cost_of_goods_sold = store_front.cost_of_goods_sold_account
-          sales = order.default_sales_revenue_account
+          sales = order.sales_revenue_account
           sales_discount = order.default_sales_discount_account
           merchandise_inventory = store_front.merchandise_inventory_account
           employee.entries.create!(

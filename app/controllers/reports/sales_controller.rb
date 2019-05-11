@@ -16,7 +16,7 @@ module Reports
             to_date:      @to_date,
             orders:       @orders,
             business:     current_business,
-            employee:     @employee,
+            employee:     current_user,
             view_context: view_context)
 					send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Sales Report.pdf'
 		    end

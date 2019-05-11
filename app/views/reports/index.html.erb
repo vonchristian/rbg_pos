@@ -30,7 +30,7 @@
 
           <h4 class="title"> Sales </h4>
           <p class="category">Generate report for sales</p><br>
-          <%= form_tag({:action => "index", controller: "reports/sales", format: 'pdf'}, {:method => :get})  do %>
+          <%= form_tag({:action => "index", controller: "reports/sales", format: 'pdf', user_id: current_user.id}, {:method => :get})  do %>
               <div class="row">
                 <div class="col-md-3">
                   <div class="form-group">
