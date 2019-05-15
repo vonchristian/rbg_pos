@@ -122,6 +122,9 @@ Rails.application.routes.draw do
     resources :sales_order_line_items, only: [:show] do
       resources :cancellations, only: [:create], module: :sales_order_line_items
     end
+    resources :stock_transfer_order_line_items, only: [:show] do
+      resources :cancellations, only: [:create], module: :stock_transfer_order_line_items
+    end
     resources :purchase_order_line_items, only: [:show]
 
     resources :store_fronts, only: [:index, :show] do
