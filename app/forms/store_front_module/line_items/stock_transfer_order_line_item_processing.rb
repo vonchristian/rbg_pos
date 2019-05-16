@@ -48,15 +48,16 @@ module StoreFrontModule
       end
 
       def decrease_purchase_line_item_quantity
+        purchase = find_purchase_order_line_item
         transfer = find_cart.purchase_order_line_items.create!(
           quantity: quantity,
           unit_cost: purchase_cost,
           total_cost: set_total_cost,
           product_id: product_id,
+          purchase_order_line_item_id: purchase.id,
           unit_of_measurement: find_unit_of_measurement,
           bar_code: bar_code
           )
-        purchase = find_purchase_order_line_item
         purchase.stock_transfer_order_line_items.create!(
             cart:                     find_cart,
             quantity:                 converted_quantity,

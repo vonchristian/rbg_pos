@@ -27,7 +27,7 @@ module StoreFrontModule
         end
       end
       def destroy
-        @order = StoreFrontModule::Orders::StockTransferOrder.find(params[:id])
+        @order = StoreFrontModule::Orders::PurchaseOrder.find(params[:id])
         @order.destroy
         redirect_to store_front_module_stock_transfers_url, alert: "Deleted successfully"
       end

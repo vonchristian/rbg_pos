@@ -32,7 +32,7 @@
 
           <%= f.input :reference_number %>
           <%= f.input :description, input_html: { value: "Collection Remittance from #{@employee.name}" } %>
-          <%= f.input :amount, input_html: { value: @employee.default_cash_on_hand_account.balance } %>
+          <%= f.input :amount %>
           <%= f.input :credit_account_id, input_html: { value: @cash_account.id }, as: :hidden %>
           <%= f.input :debit_account_id, label: "Transfer To:", collection: Employees::EmployeeCashAccount.cash_accounts.map{|a| [a.name, a.id] } %>
           <%= f.submit "Save Remittance", class: "btn btn-primary pull-right" %>

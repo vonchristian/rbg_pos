@@ -5,19 +5,19 @@
       <%= link_to 'Withdraw Capital', new_capital_withdrawal_path, class: "btn btn-warning btn-sm" %>
     <% end %>
     <hr>
-    <%if @employee.cash_accounts.present? %>
-      <% @employee.cash_accounts.each do |cash_account| %>
+    <%if @employee.cash_on_hand_account.present? %>
+
         <div class="row">
           <div class="col-md-5">
-                <h4><%= number_to_currency @employee.default_cash_on_hand_account_balance %></h4>
+                <h4><%= number_to_currency @employee.cash_on_hand_account.balance %></h4>
                 <small> CASH ON HAND</small><br>
                 <% if current_user.proprietor? %>
-                  <%=link_to "New Remittance", new_employee_remittance_path(employee_id: @employee.id, cash_account_id: cash_account.id), class: "btn btn-success btn-sm" %>
+                  <%=link_to "New Remittance", new_employee_remittance_path(employee_id: @employee.id, cash_account_id: @employee.cash_on_hand_account.id), class: "btn btn-success btn-sm" %>
                 <% end %>
           </div>
 
           </div>
-        <% end %>
+
       <div class="col-md-7">
         <h4>Cash Transfers (<%= Time.zone.now.strftime("%B %e, %Y") %>)</h4>
         <% @employee.received_cash_transfers(from_date: Date.today, to_date: Date.today).each do |transfer| %>
