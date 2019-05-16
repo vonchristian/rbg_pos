@@ -1,7 +1,10 @@
 <h3 class="box-title"><%= number_to_currency @account.balance %></h3>
 <small>BALANCE</small>
-<%= link_to 'New Cash Transfer', new_
+<br>
 <%= @account.balance(to_date: @to_date) %>
+<small>BEGINNING BALANCE </small>
+
+
 <p>Transactions for this Day</p>
 <div class="table table-responsive">
   <table class="table table-hover">
