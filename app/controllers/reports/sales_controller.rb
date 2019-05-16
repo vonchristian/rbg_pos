@@ -3,6 +3,7 @@ module Reports
 		def index
 			@from_date = Chronic.parse(params[:from_date].to_date)
       @to_date = Chronic.parse(params[:to_date].to_date)
+      @employee = User.find(params[:user_id])
       if !current_user.proprietor?
         @orders = current_user.sales_orders.ordered_on(from_date: @from_date, to_date: @to_date)
       else
@@ -15,7 +16,8 @@ module Reports
             to_date:      @to_date,
             orders:       @orders,
             business:     current_business,
-            employee:     current_user,
+            cash_on_hand_account: @employee.cash_on_hand_account,
+            employee:     @employee,
             view_context: view_context)
 					send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Sales Report.pdf'
 		    end

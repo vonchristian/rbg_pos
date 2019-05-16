@@ -1,12 +1,13 @@
 module Reports
   class SalesPdf < Prawn::Document
-    attr_reader :from_date, :to_date, :orders, :employee, :view_context, :business
+    attr_reader :from_date, :to_date, :orders, :employee, :view_context, :business, :cash_on_hand_account
     def initialize(args)
       super(margin: 30, page_size: 'A4')
       @from_date    = args[:from_date]
       @to_date      = args[:to_date]
       @orders       = args[:orders]
       @employee     = args[:employee]
+      @cash_on_hand_account = args[:cash_on_hand_account]
       @business     = args[:business]
       @view_context = args[:view_context]
       heading
@@ -42,20 +43,20 @@ module Reports
           cells.borders = []
         end
 
-        table([["CASH ACCOUNT", "#{employee.cash_on_hand_account.try(:name)}"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
+        table([["CASH ACCOUNT", "#{cash_on_hand_account.try(:name)}"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
           cells.borders = []
         end
-        table([["BEGINNING BALANCE", "#{price employee.cash_on_hand_account.balance(to_date: to_date.yesterday.end_of_day)}"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
+        table([["BEGINNING BALANCE", "#{cash_on_hand_account.balance(to_date: to_date.yesterday.end_of_day)}"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
           cells.borders = []
         end
-        table([["ADD SALES", "#{price employee.cash_on_hand_account.debits_balance(from_date: from_date, to_date: to_date) - employee.received_cash_transfers(from_date: Date.today, to_date: Date.today).sum(&:amount) }"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
+        table([["ADD SALES", "#{cash_on_hand_account.debits_balance(from_date: from_date, to_date: to_date) - employee.received_cash_transfers(from_date: Date.today, to_date: Date.today).sum(&:amount) }"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
           cells.borders = []
         end
-        table([["LESS REMITTANCES", "#{price employee.cash_on_hand_account.credits_balance(from_date: from_date, to_date: to_date) }"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
+        table([["LESS REMITTANCES", "#{cash_on_hand_account.credits_balance(from_date: from_date, to_date: to_date) }"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
           cells.borders = []
         end
         stroke_horizontal_rule
-        table([["<b>ENDING BALANCE</b>", "<b>#{price employee.cash_on_hand_account.balance(to_date: to_date.end_of_day)}</b>"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
+        table([["<b>ENDING BALANCE</b>", "<b>#{cash_on_hand_account.balance(to_date: to_date.end_of_day)}</b>"]], cell_style: { size: 9, font: "Helvetica", :inline_format => true}, column_widths: [120, 150, 150, 100]) do
           cells.borders = []
           row(0).text_color = "008751"
         end
