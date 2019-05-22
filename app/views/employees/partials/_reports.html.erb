@@ -6,7 +6,8 @@
           <% end %>
           <br>
           <br>
-          <%= form_tag({:action => "index", controller: "/reports/sales", format: 'pdf', user_id: @employee.id}, {:method => :get})  do %>
+          <%= form_tag({:action => "index", controller: "/reports/sales", format: 'pdf', user_id: @employee.id }, {:method => :get})  do %>
+            <%= hidden_field_tag :user_id, value: @employee.id %>
               <div class="row">
                 <div class="col-md-3">
                   <div class="form-group">
