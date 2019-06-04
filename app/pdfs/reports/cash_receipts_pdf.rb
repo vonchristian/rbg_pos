@@ -66,7 +66,7 @@ module Reports
         @cash_receipts_data ||= cash_receipts.map{|entry|
           [entry.entry_date.strftime("%B %e, %Y"),
            entry.commercial_document.try(:name).try(:upcase),
-           entry.description,
+           entry.description.encode('iso-8859-9'),
            price(entry.debit_amounts.where(account: employee.cash_on_hand_account).sum(&:amount))] } +
         [["", "", "TOTAL", "#{price(cash_receipts.map{|entry| entry.debit_amounts.where(account: employee.cash_on_hand_account).sum(&:amount)}.sum)}"]]
     end

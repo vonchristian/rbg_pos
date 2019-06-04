@@ -27,8 +27,7 @@ module StoreFrontModule
       end
 
       def payment_entries
-        ids = AccountingModule::Amount.where(commercial_document: self).pluck(:entry_id)
-        AccountingModule::Entry.where(id: ids)
+        receivable_account.credit_entries
       end
 
 
