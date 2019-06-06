@@ -6,6 +6,7 @@
         <thead>
           <tr>
             <th>Date Received</th>
+            <th>Department</th>
             <th>Service Tag</th>
             <th>Charge Invoice </th>
             <th>Product</th>
@@ -19,6 +20,7 @@
           <% @repair_services.each do |work_order| %>
             <tr>
               <td><%= link_to work_order.created_at.strftime("%B %e, %Y"), computer_repair_section_work_order_path(work_order) %></td>
+              <td><%= work_order.department.try(:customer_name_and_department) %></td>
               <td>#<%= link_to work_order.service_number, computer_repair_section_work_order_path(work_order) %> </td>
               <td>#<%= work_order.charge_invoice_number %></td>
               <td><%= link_to work_order.product_unit.try(:description), computer_repair_section_work_order_path(work_order) %></td>
