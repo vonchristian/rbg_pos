@@ -75,7 +75,7 @@
                   Department
                 </div>
                 <div class="col-md-6">
-                  <%= @work_order.department_name %>
+                  <%= @work_order.department.try(:customer_name_and_department) %>
                 </div>
               </div>
               <br>

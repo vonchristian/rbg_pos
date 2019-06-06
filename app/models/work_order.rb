@@ -41,7 +41,7 @@ class WorkOrder < ApplicationRecord
   delegate :avatar, :full_name, to: :customer
   delegate :number, to: :charge_invoice, prefix: true, allow_nil: true
   delegate :business, to: :store_front
-  delegate :name, to: :department, prefix: true, allow_nil: true
+  delegate :name,  to: :department, prefix: true, allow_nil: true
 
   after_commit :set_customer_name, :set_product_name,  on: [:create, :update]
 
