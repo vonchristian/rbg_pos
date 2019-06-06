@@ -121,6 +121,7 @@ class ServiceTagPdf < Prawn::Document
   def customer_details_data
     @customer_details_data ||=  [["","Customer:",  "<b>#{@work_order.customer_full_name.try(:upcase)}</b>"]] +
                                 [["", "Contact Person:", "#{@work_order.contact_person}"]] +
+                                [["", "Department:", "#{@work_order.department_name}"]] +
                                 [["", "Address:", "#{@work_order.customer_address}"]] +
                                 [["", "Contact #:",  "#{@work_order.customer_contact_number}"]]
   end
