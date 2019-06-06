@@ -1,0 +1,4 @@
+<%= simple_form_for [@customer, @department], url: :customer_departments do |f| %>
+  <%= f.input :name %>
+  <%= f.submit 'Create Department' %>
+<% end %>

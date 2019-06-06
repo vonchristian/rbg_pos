@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_02_055546) do
+ActiveRecord::Schema.define(version: 2019_06_06_034120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -166,6 +166,14 @@ ActiveRecord::Schema.define(version: 2019_05_02_055546) do
     t.index ["sales_discount_account_id"], name: "index_customers_on_sales_discount_account_id"
     t.index ["sales_revenue_account_id"], name: "index_customers_on_sales_revenue_account_id"
     t.index ["service_revenue_account_id"], name: "index_customers_on_service_revenue_account_id"
+  end
+
+  create_table "departments", force: :cascade do |t|
+    t.string "name"
+    t.bigint "customer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_departments_on_customer_id"
   end
 
   create_table "employee_cash_accounts", force: :cascade do |t|
@@ -643,8 +651,10 @@ ActiveRecord::Schema.define(version: 2019_05_02_055546) do
     t.string "account_number"
     t.bigint "work_order_category_id"
     t.bigint "sales_revenue_account_id"
+    t.bigint "department_id"
     t.index ["account_number"], name: "index_work_orders_on_account_number", unique: true
     t.index ["customer_id"], name: "index_work_orders_on_customer_id"
+    t.index ["department_id"], name: "index_work_orders_on_department_id"
     t.index ["product_unit_id"], name: "index_work_orders_on_product_unit_id"
     t.index ["receivable_account_id"], name: "index_work_orders_on_receivable_account_id"
     t.index ["sales_discount_account_id"], name: "index_work_orders_on_sales_discount_account_id"
@@ -675,6 +685,7 @@ ActiveRecord::Schema.define(version: 2019_05_02_055546) do
   add_foreign_key "customers", "accounts", column: "sales_revenue_account_id"
   add_foreign_key "customers", "accounts", column: "service_revenue_account_id"
   add_foreign_key "customers", "businesses"
+  add_foreign_key "departments", "customers"
   add_foreign_key "employee_cash_accounts", "accounts", column: "cash_account_id"
   add_foreign_key "employee_cash_accounts", "users", column: "employee_id"
   add_foreign_key "entries", "users"
@@ -745,6 +756,7 @@ ActiveRecord::Schema.define(version: 2019_05_02_055546) do
   add_foreign_key "work_orders", "accounts", column: "sales_revenue_account_id"
   add_foreign_key "work_orders", "accounts", column: "service_revenue_account_id"
   add_foreign_key "work_orders", "customers"
+  add_foreign_key "work_orders", "departments"
   add_foreign_key "work_orders", "product_units"
   add_foreign_key "work_orders", "sections"
   add_foreign_key "work_orders", "store_fronts"

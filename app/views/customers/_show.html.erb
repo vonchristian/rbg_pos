@@ -28,6 +28,9 @@
           <li class= <%= 'active' if current_page?(customer_account_index_path(@customer)) %>>
             <%= link_to "Account", customer_account_index_path(@customer) %>
           </li>
+          <li class= <%= 'active' if current_page?(customer_settings_path(@customer)) %>>
+            <%= link_to "Settings", customer_settings_path(@customer) %>
+          </li>
         </ul>
         <div class="tab-content">
             <% if current_page? customer_path(@customer) %>
@@ -41,6 +44,9 @@
             <% end %>
             <% if current_page? customer_account_index_path(@customer) %>
               <%=render 'customers/partials/account' %>
+            <% end %>
+             <% if current_page? customer_settings_path(@customer) %>
+              <%=render 'customers/partials/settings' %>
             <% end %>
         </div>
       </div>

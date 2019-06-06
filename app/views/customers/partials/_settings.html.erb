@@ -1,0 +1,6 @@
+<h3> Settings</h3>
+<%= link_to 'New Department', new_customer_department_path(@customer), class: 'btn btn-warning' %>
+<% @customer.departments.each do |department| %>
+  <%= department.name %>
+  <br>
+<% end %>

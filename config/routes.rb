@@ -13,13 +13,14 @@ Rails.application.routes.draw do
   root :to => 'computer_repair_section/dashboard#index', :constraints => lambda { |request| request.env['warden'].user.role == 'technician' if request.env['warden'].user }, as: :technician_root
   resources :store, only: [:index]
 	resources :customers do
+    resources :departments, only: [:new, :create], module: :customers
     resources :refunds,         only: [:new, :create],                module: :customers
     resources :payments,        only: [:new, :create],                module: :customers
     resources :orders,          only: [:index, :edit, :update],                       module: :customers
     resources :repair_services, only: [:index],                       module: :customers
     resources :account,         only: [:index],                       module: :customers
     resources :other_credits,   only: [:index, :show, :new, :create], module: :customers
-
+    resources :settings, only: [:index], module: :customers
   end
   resources :products do
     resources :unit_of_measurements, only: [:new, :create]

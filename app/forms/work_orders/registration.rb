@@ -4,7 +4,7 @@ module WorkOrders
     attr_accessor :work_order_category_id, :date_received, :contact_person, :store_front_id, :section_id,
     :under_warranty, :supplier_id, :purchase_date, :expiry_date, :status,
     :customer_id, :reported_problem, :physical_condition, :description,
-    :model_number, :serial_number, :technician_id, :account_number
+    :model_number, :serial_number, :technician_id, :account_number, :department_id
     validates :date_received, :description, :date_received, :reported_problem,
     :physical_condition, :work_order_category_id, :customer_id, :model_number,presence: true
     def find_work_order
@@ -32,7 +32,8 @@ module WorkOrders
         physical_condition: physical_condition,
         account_number:     account_number,
         customer_name:      find_customer.full_name,
-        product_name:       description
+        product_name:       description,
+        department_id:      department_id
       )
       product_unit = ProductUnit.create!(
         description:   description,
