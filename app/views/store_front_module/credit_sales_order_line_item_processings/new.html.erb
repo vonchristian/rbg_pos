@@ -46,7 +46,11 @@
         <% @cart.sales_order_line_items.each do |line_item| %>
           <div class="row">
             <div class="col-md-2">
-              <center><%= line_item.quantity %></center>
+              <center>
+                <%= link_to store_front_module_customer_credit_sales_order_line_item_processing_path(customer_id: @customer.id, id: line_item.id), method: :delete do %>
+                      <i class="fa fa-times text-danger"></i>
+                <% end %>
+               <%= line_item.quantity %></center>
             </div>
             <div class="col-md-5">
               <b><%= line_item.name.try(:upcase) %></b><br>

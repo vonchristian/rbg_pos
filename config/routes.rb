@@ -170,7 +170,7 @@ Rails.application.routes.draw do
     resources :sales_orders, only: [:index, :show, :destroy], module: :orders do
       resources :additional_line_items, only: [:new, :create, :destroy], module: :sales_orders
       resources :additional_line_item_processings, only: [:create], module: :sales_orders
-      resources :additional_other_sales_items, only: [:new, :create], module: :sales_orders
+      resources :additional_other_sales_items, only: [:new, :create, :destroy], module: :sales_orders
       resources :additional_other_sales_item_order_processings, only: [:new, :create], module: :sales_orders
 
     end
