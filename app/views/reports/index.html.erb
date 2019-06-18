@@ -42,6 +42,11 @@
                     <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
                   </div>
                 </div>
+                <div class="col-md-3">
+                  <div clasps="form-group">
+                    <%= select_tag :store_front_id, options_for_select(current_business.store_fronts.map {|m| [m.name, m.id]}, params[:office_id]), class: ' form-control border-input', prompt: false %>
+                  </div>
+                </div>
                 <div class="col-md-1">
                   <button type="submit" class="btn btn-success"> Generate</button>
                 </div>
@@ -94,8 +99,10 @@
 
           <% end %>
           <hr>
+          <h4 class="title"> Inventories </h3>
           <% current_business.store_fronts.each do |store_front| %>
-            <%= link_to "#{store_front.name} Inventory", reports_store_front_inventories_path(store_front_id: store_front.id) %>
+            <%= link_to "#{store_front.name} Inventory", store_front_module_store_front_inventories_path(store_front_id: store_front.id) %>
+            <hr>
           <% end %>
            <%= link_to 'Inventory (Excel)', reports_products_path(Product.all, format: 'xlsx'), class: "btn btn-primary" %>
           <%= link_to "Work Orders", reports_work_orders_path(WorkOrder.all, format: 'xlsx'), class: "btn btn-primary" %>

@@ -1,12 +1,13 @@
 module Reports
   class SalesPdf < Prawn::Document
-    attr_reader :from_date, :to_date, :orders, :employee, :view_context, :business, :cash_on_hand_account
+    attr_reader :from_date, :to_date, :orders, :employee, :view_context, :business, :cash_on_hand_account, :store_front
     def initialize(args)
       super(margin: 30, page_size: 'A4')
       @from_date    = args[:from_date]
       @to_date      = args[:to_date]
       @orders       = args[:orders]
       @employee     = args[:employee]
+      @store_front  = args[:store_front]
       @cash_on_hand_account = args[:cash_on_hand_account]
       @business     = args[:business]
       @view_context = args[:view_context]
@@ -33,6 +34,10 @@ module Reports
     bounding_box [0, 770], width: 400 do
       text "SALES REPORT", style: :bold, size: 12
       text "Date Covered: #{from_date.strftime("%b. %e, %Y")} - #{to_date.strftime("%b. %e, %Y")}", size: 10
+      if store_front.present?
+        text "Branch: #{store_front.name}", style: :bold, size: 10
+      end
+
     end
       move_down 10
       stroke_horizontal_rule

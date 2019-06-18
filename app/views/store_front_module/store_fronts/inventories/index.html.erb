@@ -1,5 +1,5 @@
 <h3><%= @store_front.name %> Inventory</h3>
-<%= form_tag({:action => "index", controller: "/reports/store_fronts/inventories", format: 'xlsx'}, {:method => :get})  do %>
+<%= form_tag({:action => "index", controller: "/store_front_module/store_fronts/inventories", format: 'xlsx'}, {:method => :get})  do %>
     <div class="row">
       <div class="col-md-3">
         <div class="form-group">
@@ -17,7 +17,7 @@
       </div>
     </div>
   <% end %>
-<%= link_to 'Excel', reports_store_front_inventories_path(@store_front, format: 'xlsx') %>
+<%= link_to 'Excel', store_front_module_store_front_inventories_path(@store_front, format: 'xlsx') %>
 <div class="container">
   <div class="container-fluid">
     <div class="box box-solid">
