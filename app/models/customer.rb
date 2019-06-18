@@ -14,7 +14,7 @@ class Customer < ApplicationRecord
   has_many :payments, as: :commercial_document, class_name: "AccountingModule::Entry"
 	has_many :line_items, through: :orders
   has_many :work_orders
-  has_many :departments
+  has_many :departments, dependent: :nullify
   has_many :sales_orders, class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document
 	has_attached_file :avatar,
   styles: { large: "120x120>",
