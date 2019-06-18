@@ -54,6 +54,7 @@ module StoreFrontModule
 
         end
         create_entry(order)
+        create_accounts(order)
       end
       def find_customer
         Customer.find(customer_id)
@@ -65,6 +66,10 @@ module StoreFrontModule
 
       def account_name
         "Accounts Receivable - #{find_customer.full_name}, #{account_number}"
+      end
+
+      def create_accounts(order)
+        AccountCreators::SalesOrder.new(sales_order: order).create_accounts!
       end
 
       def create_entry(order)
