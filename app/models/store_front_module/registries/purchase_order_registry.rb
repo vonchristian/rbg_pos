@@ -77,8 +77,24 @@ module StoreFrontModule
         row["UOM"]
       end
 
-      def selling_price(row)
-        row["Selling Price"]
+      def lagawe_selling_price(row)
+        row["Lagawe Selling Price"]
+      end
+
+      def lamut_selling_price(row)
+        row["Lamut Selling Price"]
+      end
+
+      def alfonso_lista_selling_price(row)
+        row["Alfonso Lista Selling Price"]
+      end
+
+      def bambang_new_selling_price(row)
+        row["Bambang New Selling Price"]
+      end
+
+       def bambang_primark_selling_price(row)
+        row["Bambang Primark Selling Price"]
       end
 
       def unit_of_measurement(row)
@@ -92,10 +108,39 @@ module StoreFrontModule
       end
 
       def find_or_create_selling_price(row)
+        lagawe  = StoreFront.find_by(name: "Lagawe")
+        alfonso_lista  = StoreFront.find_by(name: "Alfonso Lista")
+        lamut   = StoreFront.find_by(name: "Lamut")
+        bambang_new = StoreFront.find_by(name: "Bambang New")
+        bambang_primark = StoreFront.find_by(name: 'Bambang Primark')
+
+
         StoreFrontModule::SellingPrice.find_or_create_by!(
-          price:               selling_price(row),
+          price:               lagawe_selling_price(row),
           product:             find_product(row),
-          store_front:         employee.store_front,
+          store_front:         lagawe,
+          unit_of_measurement: unit_of_measurement(row))
+
+        StoreFrontModule::SellingPrice.find_or_create_by!(
+          price:               alfonso_lista_selling_price(row),
+          product:             find_product(row),
+          store_front:         alfonso_lista,
+          unit_of_measurement: unit_of_measurement(row))
+         StoreFrontModule::SellingPrice.find_or_create_by!(
+          price:               lamut_selling_price(row),
+          product:             find_product(row),
+          store_front:         lamut,
+          unit_of_measurement: unit_of_measurement(row))
+
+          StoreFrontModule::SellingPrice.find_or_create_by!(
+          price:               bambang_new_selling_price(row),
+          product:             find_product(row),
+          store_front:         bambang_new,
+          unit_of_measurement: unit_of_measurement(row))
+          StoreFrontModule::SellingPrice.find_or_create_by!(
+          price:               bambang_primark_selling_price(row),
+          product:             find_product(row),
+          store_front:         bambang_primark,
           unit_of_measurement: unit_of_measurement(row))
       end
 

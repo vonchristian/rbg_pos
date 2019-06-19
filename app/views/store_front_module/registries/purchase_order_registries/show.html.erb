@@ -13,7 +13,12 @@
                 <th><b>DESCRIPTION</b></th>
                 <th><span class="pull-right"><b>UNIT COST</b></span></th>
                 <th><span class="pull-right"><b>TOTAL COST</b></span></th>
-                <th>SELLING COST</th>
+                <% StoreFront.all.order(:name).each do |store_front| %>
+                  <th><%= store_front.name %> Selling Price</th>
+               <% end %>
+
+
+
               </tr>
             </thead>
             <tbody>
@@ -31,7 +36,10 @@
                   <td>
                     <span class="pull-right"><%=number_to_currency line_item.total_cost %></span>
                   </td>
-                  <td><%= number_to_currency line_item.unit_of_measurement.try(:price) %></td>
+                  <% StoreFront.all.order(:name).each do |store_front| %>
+                    <td><%= number_to_currency store_front.selling_prices.where(product: line_item.product).last.try(:price) %></td>
+                  <% end %>
+
                   <td>
                   <%= link_to store_front_module_purchase_order_registry_purchase_order_line_item_path(id: line_item.id, purchase_order_registry_id: @registry.id), method: :delete do %>
                     <span class="fa fa-trash"></span>

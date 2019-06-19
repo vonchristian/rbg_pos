@@ -20,7 +20,7 @@ module StoreFrontModule
     end
 
     private
-    def registry_params
+     def registry_params
       params.require(:uploads_purchase_order_line_item).permit(:spreadsheet, :cart_id)
     end
   end
