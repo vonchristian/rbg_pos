@@ -11,7 +11,7 @@
         <%= f.input :selling_price %>
         <%= f.input :product_id, input_html: { value: @product.id }, as: :hidden %>
         <%= f.input :unit_of_measurement_id, input_html: { value: @unit_of_measurement.id }, as: :hidden %>
-        <%= f.input :store_front_id, collection: current_business.store_fronts.map{ |a| [a.name, a.id] } %>
+        <%= f.input :store_front_ids, collection: current_business.store_fronts.map{ |a| [a.name, a.id] }, as: :check_boxes %>
 
         <div class="box-footer">
           <%= f.submit "Update Price", class: "btn btn-primary pull-right" %>
