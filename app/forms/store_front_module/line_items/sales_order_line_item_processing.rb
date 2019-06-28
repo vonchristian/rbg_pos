@@ -117,7 +117,7 @@ module StoreFrontModule
       end
 
       def find_purchase_order_line_item
-        StoreFrontModule::LineItems::PurchaseOrderLineItem.find_by_id(purchase_order_line_item_id)
+        StoreFrontModule::LineItems::PurchaseOrderLineItem.find(purchase_order_line_item_id)
       end
 
       def available_quantity

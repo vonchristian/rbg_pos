@@ -21,9 +21,11 @@ module StoreFrontModule
     def self.for_store_front(store_front:)
       where(store_front: store_front).current
     end
+    
     def self.current
       order(date: :desc).first
     end
+
     def self.current_price
       current.try(:price)
     end

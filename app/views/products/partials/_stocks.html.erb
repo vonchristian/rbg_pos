@@ -23,15 +23,15 @@
                                             <span class="badge bg-yellow"> Transfer <%= transfer.quantity %> </span>
                                             <%= transfer.order.try(:origin_store_front).try(:name) %> to
                                             <%= transfer.order.try(:destination_store_front).try(:name) %>
-
+                                            <br>
                                           <% end %>
                                         <% end %>
-                                        <% if stock.sold?  %>
-                                          <span class="label bg-green"> Sold </span><br>
-                                          Customer:
-                                          <%= stock.customer %>
+                                        <% if stock.sold? && stock.customer.present?  %>
+                                          Customer: <%= stock.customer %>
                                           <br>
-                                          Date Sold:  <%= stock.try(:date_sold).try(:strftime, ("%B %e, %Y")) %>
+                                          Date Sold:  <%= stock.try(:date_sold).try(:strftime, ("%B %e, %Y")) %><br>
+                                          <span class="label bg-green"> Sold </span><br>
+
                                         <% end %>
                                       </td>
 
