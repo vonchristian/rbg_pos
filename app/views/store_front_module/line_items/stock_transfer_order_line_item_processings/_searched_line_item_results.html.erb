@@ -6,7 +6,7 @@
                         <div class="col-md-2">
                           <p><b><%= line_item.name.try(:upcase) %></b></p>
 
-                            <%= number_to_currency line_item.unit_of_measurement.price %>/<%= line_item.unit_code %><br>
+                            <%= number_to_currency line_item.try(:base_measurement).try(:price) %>/<%= line_item.unit_code %><br>
 
                         </div>
                         <div class="col-md-2">

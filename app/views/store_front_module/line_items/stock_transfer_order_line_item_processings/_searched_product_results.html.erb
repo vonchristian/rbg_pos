@@ -7,7 +7,7 @@
                         <div class="col-md-2">
                           <p><b><%= product.name.try(:upcase) %></b></p>
                           <% product.unit_of_measurements.each do |unit_of_measurement| %>
-                            <%= number_to_currency current_store_front.selling_prices.price_for_unit_of_measurement(unit_of_measurement: unit_of_measurement) %>/<%= unit_of_measurement.unit_code %><br>
+                            <%= number_to_currency unit_of_measurement.price_for_store_front(store_front: current_store_front) %>/<%= number_to_currency unit_of_measurement.unit_code,  unit: "", precision: 0 %>
                           <% end %>
                         </div>
                         <div class="col-md-2">
