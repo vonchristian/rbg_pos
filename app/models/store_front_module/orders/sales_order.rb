@@ -18,6 +18,14 @@ module StoreFrontModule
         balance > 0
       end
 
+      def order_description
+        if line_items.present?
+          line_items_name
+        elsif description.present?
+          description
+        end
+      end
+
 
       def accounts_receivable_total
         default_receivable_account.debits_balance(commercial_document_id: self.id, commercial_document_type: "Order")

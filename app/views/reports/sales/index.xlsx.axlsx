@@ -1,0 +1,16 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Sales") do |sheet|
+  sheet.add_row ["Date", "OR", "Customer", "Items", "COGS", "DIscount", "Total Cost", "Income"]
+  @orders.each do |order|
+    sheet.add_row [
+    order.date.strftime("%B %e, %Y"),
+    order.reference_number,
+    order.commercial_document.try(:name),
+    order.order_description,
+    order.cost_of_goods_sold,
+    order.discount_amount,
+    order.try(:total_cost),
+    order.income
+    ]
+  end
+end

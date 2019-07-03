@@ -13,6 +13,7 @@ module Reports
 			  @orders = StoreFrontModule::Orders::SalesOrder.ordered_on(from_date: @from_date, to_date: @to_date)
       end
 			respond_to do |format|
+        format.xlsx
 				format.pdf do
 					pdf = Reports::SalesPdf.new(
             from_date:    @from_date,
