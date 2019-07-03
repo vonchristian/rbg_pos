@@ -10,7 +10,7 @@
                             <%= number_to_currency line_item.unit_of_measurement.try(:price) %>/<%= line_item.unit_code %>
 
 
-                          <b><%=line_item.available_quantity %> <%= line_item.unit_code %></b><br>
+                          <b><%=line_item.available_quantity(store_front: current_store_front) %> <%= line_item.unit_code %></b><br>
                           <small class="text-success">IN STOCK</small>
                           </div>
 
@@ -30,7 +30,7 @@
                       </div>
 
                       <div class="col-md-2">
-                        <% if line_item.available_quantity <= 0 %>
+                        <% if line_item.available_quantity(store_front: current_store_front) <= 0 %>
                           <small class="label bg-red"> OUT OF STOCK </small>
                         <% else %>
                           <%= f.submit "Add to Cart", class: "btn btn-primary" %>
@@ -39,8 +39,6 @@
                     </div>
 
                       <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
-
-
 
 
               <% end %>
