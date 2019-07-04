@@ -23,9 +23,22 @@ module Customers
         date: date,
         employee: find_employee,
         commercial_document: find_customer)
+        order.other_sales_line_items.create(
+          description: description,
+          reference_number: reference_number,
+          date: date,
+          amount: amount
+        )
 
-      accounts_receivable = find_employee.store_front.receivable_account
-      other_income = find_employee.store_front.sales_account
+        create_accounts(order)
+        create_entry(order)
+    end
+
+    def create_accounts(order)
+      AccountCreators::SalesOrder.new(sales_order: order).create_accounts!
+    end
+
+    def create_entry(order)
       AccountingModule::Entry.create!(
         recorder: find_employee,
         commercial_document: find_customer,
@@ -34,13 +47,12 @@ module Customers
         entry_date: date,
         debit_amounts_attributes:
         [ amount: amount,
-          account: accounts_receivable,
+          account: order.receivable_account,
           commercial_document: order],
         credit_amounts_attributes: [ amount: amount,
-          account: other_income,
+          account: order.sales_revenue_account,
           commercial_document: order])
     end
-
     def find_customer
       Customer.find_by_id(customer_id)
     end

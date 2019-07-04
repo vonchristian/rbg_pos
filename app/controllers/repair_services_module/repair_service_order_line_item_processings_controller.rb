@@ -3,8 +3,8 @@ module RepairServicesModule
     def new
       @work_order = WorkOrder.find(params[:work_order_id])
       if params[:search].present?
+        @line_items = StoreFrontModule::LineItems::PurchaseOrderLineItem.processed.for_store_front(current_store_front).text_search(params[:search])
         @products = Product.text_search(params[:search]).all
-        @line_items = StoreFrontModule::LineItems::PurchaseOrderLineItem.processed.for_store_front(current_store_front).text_search(params[:search]).all
       end
       @repair_service_order_line_item = RepairServicesModule::RepairServiceOrderLineItemProcessing.new
       @cart = current_cart
