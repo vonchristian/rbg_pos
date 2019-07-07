@@ -20,8 +20,13 @@ module RepairServicesModule
 
       private
       def find_work_order
-        WorkOrder.find_by_id(work_order_id)
+        WorkOrder.find(work_order_id)
       end
+
+      def find_store_front
+        find_work_order.store_front
+      end
+
       def process_sales_order_line_item
         if product_id.present? && bar_code.blank?
           decrease_product_available_quantity
@@ -41,7 +46,7 @@ module RepairServicesModule
 
         requested_quantity = converted_quantity
 
-        find_product.purchases.order(created_at: :asc).available.each do |purchase|
+        find_product.purchases.for_store_front(find_store_front).order(created_at: :asc).available.each do |purchase|
           temp_sales = sales.referenced_purchase_order_line_items.create!(
             quantity:                 quantity_for(purchase, requested_quantity),
             unit_cost:                purchase.purchase_cost,
@@ -131,4 +136,3 @@ module RepairServicesModule
       end
     end
   end
-
