@@ -24,10 +24,10 @@ module Customers
         employee: find_employee,
         commercial_document: find_customer)
         order.other_sales_line_items.create(
-          description: description,
+          description:      description,
           reference_number: reference_number,
-          date: date,
-          amount: amount
+          date:             date,
+          amount:           amount
         )
 
         create_accounts(order)

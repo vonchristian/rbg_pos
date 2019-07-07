@@ -37,7 +37,7 @@ module StoreFrontModule
 
         requested_quantity = converted_quantity
 
-        find_product.purchases.order(created_at: :asc).available.each do |purchase|
+        find_product.purchases.for_store_front(find_store_front).order(created_at: :asc).available.each do |purchase|
           temp_sales = sales.referenced_purchase_order_line_items.create!(
             quantity:                 quantity_for(purchase, requested_quantity),
             unit_cost:                purchase.purchase_cost,
