@@ -6,6 +6,7 @@
       </div>
       <div class="box-body">
         <%= simple_form_for @voucher_amount, url: :supplier_voucher_amounts do |f| %>
+          <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
           <div class="row">
             <div class="col-md-5">
               <%= f.input :account_id, label: false, placeholder: "Select Accounte", collection: current_business.accounts.all.map{ |a| [ a.name, a.id] } %>
@@ -18,7 +19,7 @@
             </div>
             <div class="col-md-1">
               <%= f.input :supplier_id, input_html: { value: @supplier.id }, as: :hidden %>
-              <%= button_tag type: 'submit', class: "btn btn-default", id: "register-button" do %>
+              <%= button_tag type: 'submit', class: "btn btn-default", id: "register-button", title: 'Add' do %>
         <i class="fa fa-plus" aria-hidden="true"></i>
         <% end %>
             </div>
@@ -36,7 +37,7 @@
               </tr>
             </thead>
             <tbody>
-              <% @supplier.temporary_voucher_amounts.each do |amount| %>
+              <% current_cart.voucher_amounts.each do |amount| %>
                 <tr>
                   <td><%= amount.account_name %></td>
                   <td><%= number_to_currency amount.amount %></td>
@@ -62,9 +63,12 @@
       <div class="box-body">
         <h4><center><%= @supplier.business_name.try(:upcase) %></center></h4>
         <hr>
-        <% if @supplier.temporary_voucher_amounts.any? %>
+        <% if current_cart.voucher_amounts.any? %>
           <%= simple_form_for @voucher, url: :supplier_vouchers do |f| %>
             <%= f.input :reference_number %>
+            <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
+            <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+
             <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
             <%= f.input :description, as: :text %>
             <%= f.input :supplier_id, input_html: { value: @supplier.id }, as: :hidden %>

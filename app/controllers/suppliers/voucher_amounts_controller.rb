@@ -22,7 +22,8 @@ module Suppliers
         :amount,
         :account_id,
         :amount_type,
-        :supplier_id)
+        :supplier_id,
+        :cart_id)
     end
   end
 end

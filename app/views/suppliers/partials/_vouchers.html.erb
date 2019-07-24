@@ -22,10 +22,10 @@
             <td><%= voucher.preparer_name %></td>
             <td><%= number_to_currency voucher.payable_amount %></td>
             <td>
-              <% if !voucher.disbursed? %>
-                <%= link_to 'Disburse', new_voucher_disbursement_path(voucher), class: "btn btn-primary btm-sm" %>
-              <% else %>
-                <%= voucher.disburser_name %>
+              <% if voucher.disbursed? %>
+                <%#= link_to 'Disburse', new_voucher_disbursement_path(voucher), class: "btn btn-primary btm-sm" %>
+              <%# else %>
+                <span class="badge bg-success"> Disbursed </span>
               <% end %>
             </td>
           </tr>

@@ -36,7 +36,7 @@ module WorkOrders
       expect(sales_account_1.balance).to eql 100
       expect(sales_account_2.balance).to eql 0
 
-      described_class.new(work_order: work_order).migrate_sales_account_entries!
+      described_class.new(work_order: work_order).migrate_sales_account_entries
 
       expect(sales_account_1.balance).to eql 0
       expect(sales_account_2.balance).to eql 100

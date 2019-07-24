@@ -23,7 +23,7 @@ module StoreFrontModule
 
     def conversion_multiplier
       if base_measurement?
-        quantity
+        conversion_quantity
       else
         default_conversion_quantity
       end

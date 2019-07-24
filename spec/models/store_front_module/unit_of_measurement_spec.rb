@@ -8,8 +8,8 @@ module StoreFrontModule
     end
 
     describe 'validations' do
-      it {is_expected.to validate_presence_of      :unit_code }
-      it {is_expected.to validate_presence_of      :quantity }
+      it { is_expected.to validate_presence_of :unit_code }
+      it { is_expected.to validate_presence_of :quantity }
       it { is_expected.to validate_numericality_of :quantity }
     end
 
@@ -32,7 +32,7 @@ module StoreFrontModule
     end
 
     it "#conversion_multiplier" do
-      base_measurement   = create(:unit_of_measurement, base_measurement: true, quantity: 10)
+      base_measurement   = create(:unit_of_measurement, base_measurement: true, conversion_quantity: 10)
       not_base_measurement = create(:unit_of_measurement, base_measurement: false, conversion_quantity: 5)
 
       expect(base_measurement.conversion_multiplier).to eql 10

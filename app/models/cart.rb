@@ -1,4 +1,5 @@
 class Cart < ApplicationRecord
+  has_many :voucher_amounts, class_name: 'Vouchers::VoucherAmount', dependent: :destroy
 	has_many :line_items, dependent: :destroy
   has_many :purchase_order_line_items, class_name: "StoreFrontModule::LineItems::PurchaseOrderLineItem", dependent: :destroy
   has_many :stock_transfer_order_line_items, class_name: "StoreFrontModule::LineItems::StockTransferOrderLineItem", dependent: :destroy

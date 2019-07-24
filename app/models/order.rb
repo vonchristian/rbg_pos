@@ -1,7 +1,8 @@
 class Order < ApplicationRecord
-  include PgSearch
+  include PgSearch::Model
   pg_search_scope :text_search, against: [:reference_number, :search_term]
   multisearchable against: [:reference_number, :description]
+
   belongs_to :store_front
   belongs_to :commercial_document,     polymorphic: true, optional: true
   belongs_to :employee,                class_name: "User", foreign_key: 'employee_id'
@@ -19,9 +20,11 @@ class Order < ApplicationRecord
 
   validates :account_number,  presence: true, uniqueness: true
   validates :store_front_id, presence: true
+
   def self.total_cost_less_discount
     all.map{|a| a.total_cost_less_discount}.to_a.sum
   end
+
   def self.credit
     where(credit: true)
   end

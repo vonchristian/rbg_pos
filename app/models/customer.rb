@@ -4,9 +4,9 @@ class Customer < ApplicationRecord
   multisearchable against: [:first_name, :last_name]
 
   belongs_to :business
-  belongs_to :receivable_account, class_name: 'AccountingModule::Account', optional: true
-  belongs_to :sales_revenue_account, class_name: 'AccountingModule::Account', optional: true
-  belongs_to :sales_discount_account, class_name: 'AccountingModule::Account', optional: true
+  belongs_to :receivable_account,      class_name: 'AccountingModule::Account', optional: true
+  belongs_to :sales_revenue_account,   class_name: 'AccountingModule::Account', optional: true
+  belongs_to :sales_discount_account,  class_name: 'AccountingModule::Account', optional: true
   belongs_to :service_revenue_account, class_name: 'AccountingModule::Account', optional: true
 
 	has_many :orders, as: :commercial_document

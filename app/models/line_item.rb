@@ -8,7 +8,7 @@ class LineItem < ApplicationRecord
   belongs_to :order,    optional: true
   belongs_to :product,  optional: true
   belongs_to :registry, optional: true
-  belongs_to :referenced_line_item, class_name: "StoreFrontModule::LineItem", optional: true
+  belongs_to :referenced_line_item, class_name: "LineItem", optional: true
   belongs_to :unit_of_measurement, class_name: "StoreFrontModule::UnitOfMeasurement"
 
   delegate :unit_code, :conversion_multiplier, to: :unit_of_measurement, allow_nil: true
@@ -20,9 +20,9 @@ class LineItem < ApplicationRecord
     where('orders.supplier_type' => "StoreFront")
   end
 
-  def self.entered_on(args)
-    from_date  = args[:from_date]
-    to_date    = args[:to_date] || Date.current - 999.years
+  def self.entered_on(args={})
+    from_date  = args.fetch(:from_date)
+    to_date    = args.fetch(:to_date) || Date.current - 999.years
     date_range = DateRange.new(from_date: from_date, to_date: to_date)
     joins(:order).
     where('orders.date' => date_range.range)
@@ -38,34 +38,19 @@ class LineItem < ApplicationRecord
   end
 
   def self.processed
-    where.not(order_id: nil)
+    with_orders
   end
 
   def self.total_cost
     all.sum(&:unit_cost_and_quantity)
   end
 
-  def unit_cost_and_quantity
-  	unit_cost * quantity
-  end
-
   def self.total
-    processed.all.sum(&:converted_quantity)
+    total_converted_quantity
   end
+
   def self.total_converted_quantity
-    all.sum(&:converted_quantity)
-  end
-
-  def converted_quantity
-    quantity * default_conversion_multiplier
-  end
-
-  def default_conversion_multiplier
-    conversion_multiplier || 1
-  end
-
-  def processed?
-    order_id.present?
+    processed.all.sum(&:converted_quantity)
   end
 
   def self.balance(args={})
@@ -78,8 +63,22 @@ class LineItem < ApplicationRecord
     ("StoreFrontModule::BalanceFinders::" + klass).constantize
   end
 
+  def unit_cost_and_quantity
+  	unit_cost * quantity
+  end
+
+  def converted_quantity
+    quantity * default_conversion_multiplier
+  end
+
+
+  def processed?
+    order.present?
+  end
+
+
   private
-  def exceeds_available_stock?
-    errors[:base] << "Exceeded available stock" if quantity > stock.in_stock
+  def default_conversion_multiplier
+    conversion_multiplier || 1
   end
 end

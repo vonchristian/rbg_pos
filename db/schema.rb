@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_06_034120) do
+ActiveRecord::Schema.define(version: 2019_07_24_011608) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -440,6 +440,13 @@ ActiveRecord::Schema.define(version: 2019_06_06_034120) do
     t.index ["charge_type"], name: "index_service_charges_on_charge_type"
   end
 
+  create_table "stocks", force: :cascade do |t|
+    t.bigint "product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_stocks_on_product_id"
+  end
+
   create_table "store_front_accounts", force: :cascade do |t|
     t.bigint "store_front_id"
     t.bigint "account_id"
@@ -578,8 +585,10 @@ ActiveRecord::Schema.define(version: 2019_06_06_034120) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "recorder_id"
+    t.bigint "cart_id"
     t.index ["account_id"], name: "index_voucher_amounts_on_account_id"
     t.index ["amount_type"], name: "index_voucher_amounts_on_amount_type"
+    t.index ["cart_id"], name: "index_voucher_amounts_on_cart_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_voucher_amounts"
     t.index ["recorder_id"], name: "index_voucher_amounts_on_recorder_id"
     t.index ["voucher_id"], name: "index_voucher_amounts_on_voucher_id"
@@ -599,8 +608,10 @@ ActiveRecord::Schema.define(version: 2019_06_06_034120) do
     t.string "commercial_document_type"
     t.bigint "commercial_document_id"
     t.string "account_number"
+    t.bigint "entry_id"
     t.index ["account_number"], name: "index_vouchers_on_account_number", unique: true
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_vouchers"
+    t.index ["entry_id"], name: "index_vouchers_on_entry_id"
     t.index ["payee_type", "payee_id"], name: "index_vouchers_on_payee_type_and_payee_id"
     t.index ["preparer_id"], name: "index_vouchers_on_preparer_id"
     t.index ["reference_number"], name: "index_vouchers_on_reference_number", unique: true
@@ -719,6 +730,7 @@ ActiveRecord::Schema.define(version: 2019_06_06_034120) do
   add_foreign_key "purchase_prices", "unit_of_measurements"
   add_foreign_key "registries", "users", column: "employee_id"
   add_foreign_key "selling_prices", "store_fronts"
+  add_foreign_key "stocks", "products"
   add_foreign_key "store_front_accounts", "accounts"
   add_foreign_key "store_front_accounts", "store_fronts"
   add_foreign_key "store_front_configs", "accounts", column: "accounts_receivable_account_id"
@@ -745,8 +757,10 @@ ActiveRecord::Schema.define(version: 2019_06_06_034120) do
   add_foreign_key "users", "sections"
   add_foreign_key "users", "store_fronts"
   add_foreign_key "voucher_amounts", "accounts"
+  add_foreign_key "voucher_amounts", "carts"
   add_foreign_key "voucher_amounts", "users", column: "recorder_id"
   add_foreign_key "voucher_amounts", "vouchers"
+  add_foreign_key "vouchers", "entries"
   add_foreign_key "vouchers", "users", column: "preparer_id"
   add_foreign_key "work_order_service_charges", "service_charges"
   add_foreign_key "work_order_service_charges", "users"

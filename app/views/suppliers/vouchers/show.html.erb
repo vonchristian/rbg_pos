@@ -1,0 +1,5 @@
+<%= simple_form_for @confirmation, url: :supplier_voucher_confirmations do |f| %>
+  <%= f.input :supplier_id, input_html: { value: @supplier.id }, as: :hidden %>
+  <%= f.input :voucher_id, input_html: { value: @voucher.id }, as: :hidden %>
+  <%= f.submit 'Confirm Transaction', class: 'btn btn-primary' %>
+<% end %>

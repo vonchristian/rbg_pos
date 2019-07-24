@@ -70,7 +70,8 @@ Rails.application.routes.draw do
     resources :purchase_orders, only: [:index], module: :suppliers
     resources :account, only: [:index], module: :suppliers
     resources :voucher_amounts, only: [:new, :create], module: :suppliers
-    resources :vouchers, only: [:index, :create], module: :suppliers
+    resources :vouchers, only: [:index, :create, :show], module: :suppliers
+    resources :voucher_confirmations, only: [:create], module: :suppliers
     resources :payments, only: [:new, :create], module: :suppliers
   end
   resources :users, only: [:edit, :update]

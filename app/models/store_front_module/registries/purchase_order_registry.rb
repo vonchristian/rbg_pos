@@ -108,10 +108,10 @@ module StoreFrontModule
       end
 
       def find_or_create_selling_price(row)
-        lagawe  = StoreFront.find_by(name: "Lagawe")
-        alfonso_lista  = StoreFront.find_by(name: "Alfonso Lista")
-        lamut   = StoreFront.find_by(name: "Lamut")
-        bambang_new = StoreFront.find_by(name: "Bambang New")
+        lagawe          = StoreFront.find_by(name: "Lagawe")
+        alfonso_lista   = StoreFront.find_by(name: "Alfonso Lista")
+        lamut           = StoreFront.find_by(name: "Lamut")
+        bambang_new     = StoreFront.find_by(name: "Bambang New")
         bambang_primark = StoreFront.find_by(name: 'Bambang Primark')
 
 

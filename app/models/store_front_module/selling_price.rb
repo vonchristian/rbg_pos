@@ -8,7 +8,7 @@ module StoreFrontModule
     before_save :set_default_date
 
     def self.price_for_unit_of_measurement(unit_of_measurement:)
-      for_unit_of_measurement(unit_of_measurement: unit_of_measurement).current_price
+      for_unit_of_measurement(unit_of_measurement: unit_of_measurement).price
     end
 
     def self.for_unit_of_measurement(unit_of_measurement:)
@@ -21,7 +21,7 @@ module StoreFrontModule
     def self.for_store_front(store_front:)
       where(store_front: store_front).current
     end
-    
+
     def self.current
       order(date: :desc).first
     end
