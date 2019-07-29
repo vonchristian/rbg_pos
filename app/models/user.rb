@@ -40,6 +40,10 @@ class User < ApplicationRecord
     accounts.compact
   end
 
+  def name_and_store_front
+    "#{full_name} - #{store_front.name}"
+  end
+
   def self.employee_for(cash_on_hand_account)
     where(cash_on_hand_account: cash_on_hand_account).first
   end

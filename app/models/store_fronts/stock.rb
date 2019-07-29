@@ -16,11 +16,16 @@ module StoreFronts
 
     delegate :name, to: :product
     delegate :unit_code, to: :unit_of_measurement
+    def self.processed
+      joins(:purchase).where.not('line_items.order_id' => nil)
+    end
+    
     def purchase_quantity
       purchase.quantity
     end
+
     def customer
-      sales.map{|a| a.sales_order.customer.try(:name) }.join('')
+      sales.map{ |a| a.sales_order.customer.try(:name) }.join('')
     end
     def balance
       purchase_quantity      +

@@ -2,17 +2,17 @@ require 'will_paginate/array'
 module Products
   class StocksController < ApplicationController
     def index
-      @product = Product.find(params[:product_id])
-      @pagy, @stocks = pagy(@product.stocks)
+      @product       = Product.find(params[:product_id])
+      @pagy, @stocks = pagy(@product.stocks.processed.where(store_front: current_store_front))
     end
     def new
       @product = Product.find(params[:product_id])
       @stock = @product.stocks.build
     end
     def create
-      @product = Product.find(params[:product_id])
-      @stock = @product.stocks.create(stock_params)
-      @stock.branch = current_user.branch
+      @product        = Product.find(params[:product_id])
+      @stock          = @product.stocks.create(stock_params)
+      @stock.branch   = current_user.branch
       @stock.employee = current_user
       if @stock.save
         redirect_to new_product_stock_url(@product), notice: "Stock saved successfully."
@@ -24,6 +24,7 @@ module Products
       @product = Product.find(params[:product_id])
       @stock = StoreFrontModule::LineItems::PurchaseOrderLineItem.find(params[:id])
     end
+
     def update
       @product = Product.find(params[:product_id])
       @stock = StoreFrontModule::LineItems::PurchaseOrderLineItem.find(params[:id])
@@ -35,9 +36,10 @@ module Products
         render :edit
       end
     end
+
     def show
       @product = Product.find(params[:product_id])
-      @stock = Stock.find(params[:id])
+      @stock   = @product.stocks.find(params[:id])
     end
 
     def destroy

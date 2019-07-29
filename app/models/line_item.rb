@@ -80,6 +80,9 @@ class LineItem < ApplicationRecord
   def processed?
     order.present?
   end
+  def processed
+    order_id.present?
+  end
 
 
   private

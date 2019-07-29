@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :line_item do
     association :unit_of_measurement
+    association :product
 
     factory :purchase_order_line_item, class: 'StoreFrontModule::LineItems::PurchaseOrderLineItem' do
     end

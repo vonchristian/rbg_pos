@@ -1,0 +1,50 @@
+<br>
+<div class="row">
+  <div class="col-md-6">
+    <b><%= stock.name.try(:upcase) %></b>
+    <% if stock.balance > 0 %>
+      &nbsp; <span class="badge bg-gray"><%= stock.balance %> left</span>
+    <% else %>
+      <span class="label bg-red"> Out Of Stock </span>
+    <% end %><br>
+    <span class="text-muted">
+        <%= stock.barcode.try(:truncate, (30)) %>
+    </span>
+  </div>
+  <div class="col-md-6">
+    <b>
+       PURCHASE PRICE: <%= number_to_currency stock.last_purchase_cost %>
+    </b>
+  </div>
+</div>
+<br>
+<% if stock.balance > 0 %>
+<%= simple_form_for @internal_use_order_line_item, url: :store_front_module_internal_use_order_line_item_processings do |f| %>
+
+  <%= f.input :store_front_id, input_html: { value: current_store_front.id }, as: :hidden %>
+
+    <div class="row">
+    <div class="col-md-6">
+      <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, autofocus: true, label: false %>
+      <%= f.input :stock_id, input_html: { value: stock.id }, as: :hidden %>
+      <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
+      <%= f.input :bar_code, input_html: { value: params[:search] }, as: :hidden %>
+    </div>
+
+    <div class="col-md-3">
+      <%= f.input :unit_of_measurement_id, collection: stock.product.unit_of_measurements.map{|a| [a.unit_code, a.id] }, selected: stock.product.base_measurement, label: false %>
+    </div>
+    <div class="col-md-2">
+      <% if stock.balance > 0 %>
+      <%= button_tag type: 'submit', class: "btn btn-success btn-sm" do %>
+        <i class="fa fa-shopping-basket" aria-hidden="true"></i> Add to Cart
+      <% end %>
+      <% else %>
+      <span class="label bg-red"> Out Of Stock </span>
+      <% end %>
+      <% end %>
+
+    </div>
+  </div>
+  <% end %>
+<hr>

@@ -17,6 +17,16 @@ module StoreFronts
 
 
     end
+    it '.processed' do
+      stock_1  = create(:stock)
+      stock_2  = create(:stock)
+      order    = create(:order)
+      purchase = create(:purchase_order_line_item, stock: stock_1, order: order)
+
+      expect(described_class.processed).to include(stock_1)
+      expect(described_class.processed).to_not include(stock_2)
+
+    end
 
     it '#balance' do
       stock    = create(:stock)

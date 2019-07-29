@@ -41,8 +41,10 @@ module StoreFrontModule
             line_item.update_attributes!(date: date)
             line_item.cart_id = nil
             order.purchase_order_line_items << line_item
+            create_stock(line_item)
           end
-          find_cart.stock_transfer_order_line_items.each do |line_item|
+
+          find_cart.stock_transfer_order_line_items.where(order_id: nil).each do |line_item|
             line_item.update_attributes!(order_id: order.id)
           end
 
@@ -51,12 +53,17 @@ module StoreFrontModule
               line_item.update_attributes!(date: date)
               line_item.cart_id = nil
               order.purchase_order_line_items << line_item
-            
+
             end
           end
           create_voucher(order)
           create_entry(order)
       end
+
+      def create_stock(line_item)
+        StoreFronts::StockTransfers::StockCreation.new(line_item: line_item, destination_store_front: find_destination_store_front).create_stock!
+      end
+
 
       def find_destination_store_front
         StoreFront.find(destination_store_front_id)
