@@ -1,0 +1,17 @@
+<% cart.purchase_order_line_items.each do |line_item| %>
+  <%= line_item.quantity %>
+  <%= line_item.stock_name %><br>
+  <%= line_item.stock_barcode %>
+  <%= line_item.unit_cost %>
+  <%= number_to_currency line_item.total_cost %>
+<% end %>
+<%= simple_form_for @purchase_order, url: :supplier_purchase_order_processings do |f| %>
+  <%= f.input :date, as: :string, input_html: { class: 'datepicker' } %>
+  <%= f.input :voucher_id, collection: @supplier.vouchers.map{ |voucher| [voucher.reference_number, voucher.id] } %>
+  <%= f.input :supplier_id, input_html: { value: @supplier.id }, as: :hidden %>
+  <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
+  <%= f.input :employee_id, input_html:    { value: current_user.id }, as: :hidden %>
+  <%= f.input :store_front_id, input_html: { value: current_store_front.id }, as: :hidden %>
+  <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+  <%= f.submit 'Save Purchase' %>
+<% end %>

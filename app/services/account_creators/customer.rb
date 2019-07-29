@@ -1,8 +1,8 @@
 module AccountCreators
   class Customer
     attr_reader :customer, :business
-    def initialize(args={})
-      @customer   = args.fetch(:customer)
+    def initialize(customer:)
+      @customer   = customer
       @business   = @customer.business
     end
     def create_accounts!
@@ -50,7 +50,7 @@ module AccountCreators
         name:         service_revenue_account_name,
         account_code: SecureRandom.uuid)
         customer.update(service_revenue_account: account)
-      end 
+      end
     end
 
     def receivable_account_name

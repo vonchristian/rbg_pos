@@ -20,7 +20,7 @@
             <%= link_to "Info", customer_path(@customer) %>
           </li>
           <li class= <%= 'active' if current_page?(customer_orders_path(@customer)) %>>
-            <%= link_to "Sales", customer_orders_path(@customer) %>
+            <%= link_to "Sales", customer_orders_path(@customer), id: "sales-#{@customer.id}" %>
           </li>
           <li class= <%= 'active' if current_page?(customer_repair_services_path(@customer)) %>>
             <%= link_to "Services", customer_repair_services_path(@customer) %>
@@ -55,5 +55,3 @@
 </div>
 
 </div>
-
-

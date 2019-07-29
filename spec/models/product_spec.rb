@@ -18,6 +18,7 @@ describe Product do
     it { is_expected.to have_many :spoilages }
     it { is_expected.to have_many :selling_prices }
     it { is_expected.to have_many :purchase_prices }
+    it { is_expected.to have_many :stocks }
   end
   describe 'validations' do
     it { is_expected.to validate_presence_of :name }

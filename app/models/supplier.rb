@@ -1,5 +1,5 @@
 class Supplier < ApplicationRecord
-	include PgSearch
+	include PgSearch::Model
 	pg_search_scope :text_search, against: [:business_name, :owner_name, :contact_number]
   multisearchable against: [:business_name]
 	validates :business_name, presence: true
@@ -12,7 +12,7 @@ class Supplier < ApplicationRecord
   has_many :purchase_return_orders, class_name: "StoreFrontModule::Orders::PurchaseReturnOrder", as: :commercial_document
 
   has_many :vouchers, as: :payee
-  has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", as: :commercial_document
+  has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", through: :vouchers
   has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",

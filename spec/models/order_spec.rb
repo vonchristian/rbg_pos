@@ -14,7 +14,6 @@ describe Order do
   describe 'delegations' do
     it { is_expected.to delegate_method(:cash_tendered).to(:cash_payment).with_prefix }
     it { is_expected.to delegate_method(:full_name).to(:employee).with_prefix }
-    it { is_expected.to delegate_method(:discount_amount).to(:cash_payment) }
   end
 
   it ".credit" do

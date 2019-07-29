@@ -1,8 +1,9 @@
 class LineItem < ApplicationRecord
-  include PgSearch
+  include PgSearch::Model
   pg_search_scope :text_search, against: [:bar_code]
   multisearchable against: [:bar_code]
   belongs_to :store_front, optional: true
+  belongs_to :stock,    class_name: 'StoreFronts::Stock', optional: true
   belongs_to :commercial_document, polymorphic: true, optional: true
   belongs_to :cart,     optional: true
   belongs_to :order,    optional: true
@@ -12,8 +13,12 @@ class LineItem < ApplicationRecord
   belongs_to :unit_of_measurement, class_name: "StoreFrontModule::UnitOfMeasurement"
 
   delegate :unit_code, :conversion_multiplier, to: :unit_of_measurement, allow_nil: true
-  delegate :name, to: :product
-  delegate :name, to: :product, prefix: true
+  delegate :name, to: :product, allow_nil: true
+  delegate :name, to: :product, prefix: true, allow_nil: true
+  delegate :name, to: :stock, prefix: true
+  delegate :barcode, to: :stock, prefix: true, allow_nil: true
+
+
 
   def self.stock_transfers
     includes(:purchase_order).

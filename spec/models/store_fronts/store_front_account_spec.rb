@@ -4,7 +4,7 @@ module StoreFronts
   describe StoreFrontAccount do
     describe 'associations' do
       it { is_expected.to belong_to :store_front }
-      it { is_expected.to belong_to :employee }
+      it { is_expected.to belong_to :account }
     end
     describe 'validations' do
     end

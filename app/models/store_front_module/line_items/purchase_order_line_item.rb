@@ -2,11 +2,13 @@
   module LineItems
     class PurchaseOrderLineItem < LineItem
       pg_search_scope :text_search, against: [:bar_code], :associated_against => {:product => [:name] }
-      belongs_to :purchase_order, class_name: "StoreFrontModule::Orders::PurchaseOrder", foreign_key: 'order_id', optional: true
+      belongs_to :purchase_order,                     class_name: "StoreFrontModule::Orders::PurchaseOrder", foreign_key: 'order_id', optional: true
       has_many :referenced_purchase_order_line_items, class_name: "StoreFrontModule::LineItems::ReferencedPurchaseOrderLineItem", foreign_key: 'purchase_order_line_item_id', dependent: :destroy
-      has_many :purchase_return_order_line_items, class_name: "StoreFrontModule::LineItems::PurchaseReturnOrderLineItem", foreign_key: 'purchase_order_line_item_id'
-      has_many :internal_use_order_line_items, class_name: "StoreFrontModule::LineItems::InternalUseOrderLineItem", foreign_key: 'purchase_order_line_item_id'
-      has_many :stock_transfer_order_line_items, class_name: "StoreFrontModule::LineItems::StockTransferOrderLineItem", foreign_key: 'purchase_order_line_item_id',  dependent: :destroy
+      has_many :sales_order_line_items,               through: :referenced_purchase_order_line_items, class_name: 'StoreFrontModule::LineItems::SalesOrderLineItem', source: :sales_order_line_item
+      has_many :purchase_return_order_line_items,     class_name: "StoreFrontModule::LineItems::PurchaseReturnOrderLineItem", foreign_key: 'purchase_order_line_item_id'
+      has_many :internal_use_order_line_items,        class_name: "StoreFrontModule::LineItems::InternalUseOrderLineItem", foreign_key: 'purchase_order_line_item_id'
+      has_many :stock_transfer_order_line_items,      class_name: "StoreFrontModule::LineItems::StockTransferOrderLineItem", foreign_key: 'purchase_order_line_item_id',  dependent: :destroy
+
       has_many :sales_return_order_line_items, class_name: "StoreFrontModule::LineItems::SalesReturnOrderLineItem", foreign_key: 'purchase_order_line_item_id'
       delegate :supplier, :origin_store_front_name, :destination_store_front_name, :stock_transfer?,  to: :purchase_order, allow_nil: true
       delegate :business_name, to: :supplier, prefix: true, allow_nil: true
@@ -66,7 +68,7 @@
       end
 
       def sold_quantity(args={})
-        referenced_purchase_order_line_items.processed.sum(&:quantity)
+        sales_order_line_items.processed.total
       end
 
       def customer
@@ -74,7 +76,7 @@
       end
 
       def purchase_returns_quantity(args={})
-        purchase_return_order_line_items.total
+        purchase_return_order_line_items.processed.total
       end
 
       def available_quantity(args={})
@@ -87,22 +89,22 @@
       end
 
       def internal_uses_quantity(args={})
-        internal_use_order_line_items.total
+        internal_use_order_line_items.processed.total
       end
 
       def stock_transfers_quantity(args={})
         if args[:store_front].present?
-          stock_transfer_order_line_items.for_store_front(args[:store_front]).total
+          stock_transfer_order_line_items.processed.for_store_front(args[:store_front]).total
         else
-          stock_transfer_order_line_items.total
+          stock_transfer_order_line_items.processed.total
         end
       end
 
       def sales_returns_quantity(args={})
         if args[:store_front].present?
-          sales_return_order_line_items.for_store_front(args[:store_front]).total
+          sales_return_order_line_items.processed.for_store_front(args[:store_front]).total
         else
-          sales_return_order_line_items.total
+          sales_return_order_line_items.processed.total
         end
       end
 

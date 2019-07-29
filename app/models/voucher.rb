@@ -18,6 +18,9 @@ class Voucher < ApplicationRecord
   def self.unused
     where(entry_id: nil)
   end
+  def self.disbursed
+    where.not(entry_id: nil)
+  end
 
   def payable_amount
     voucher_amounts.debit.sum(&:amount)

@@ -67,7 +67,11 @@ Rails.application.routes.draw do
     resources :merge_accounts, only: [:new, :create]
   end
   resources :suppliers, only: [:index, :show, :edit, :update] do
+    resources :product_selections, only: [:new, :create], module: :suppliers
+    resources :purchase_line_items, only: [:new, :create], module: :suppliers
     resources :purchase_orders, only: [:index], module: :suppliers
+    resources :purchase_order_processings, only: [:create], module: :suppliers
+
     resources :account, only: [:index], module: :suppliers
     resources :voucher_amounts, only: [:new, :create], module: :suppliers
     resources :vouchers, only: [:index, :create, :show], module: :suppliers
@@ -143,6 +147,8 @@ Rails.application.routes.draw do
     end
     resources :customers, only: [:show] do
       resources :credit_sales_order_line_item_processings, only: [:new, :create, :destroy]
+      resources :cash_sales_order_line_item_processings, only: [:new, :create, :destroy]
+
       resources :credit_sales_order_processings, only: [:create], module: :order_processings
     end
     resources :credit_sales_orders, only: [:show] do

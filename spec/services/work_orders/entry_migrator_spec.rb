@@ -16,7 +16,7 @@ module WorkOrders
       expect(receivable_account_1.balance).to eql 100
       expect(receivable_account_2.balance).to eql 0
 
-      described_class.new(work_order: work_order).migrate_receivable_account_entries!
+      described_class.new(work_order: work_order).migrate_receivable_account_entries
 
       expect(receivable_account_1.balance).to eql 0
       expect(receivable_account_2.balance).to eql 100

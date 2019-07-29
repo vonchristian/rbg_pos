@@ -1,5 +1,5 @@
 class Customer < ApplicationRecord
-	include PgSearch
+	include PgSearch::Model
 	pg_search_scope :text_search, against: [:first_name, :last_name, :contact_number, :address]
   multisearchable against: [:first_name, :last_name]
 

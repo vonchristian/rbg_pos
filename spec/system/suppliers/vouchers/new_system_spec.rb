@@ -19,9 +19,7 @@ describe 'New supplier voucher' do
     fill_in 'Amount', with: 10_000
     select 'Debit'
     click_button 'Add'
-
-    expect(page).to have_content('added successfully')
-
+ 
     select 'Cash'
     fill_in 'Amount', with: 10_000
     select 'Credit'

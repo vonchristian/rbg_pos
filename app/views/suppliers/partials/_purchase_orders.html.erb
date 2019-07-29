@@ -1,4 +1,6 @@
 <div class="tab-pane <%= 'active' if current_page?(supplier_purchase_orders_path(@supplier)) %>">
+  <%=link_to 'New Purchase Order', new_supplier_product_selection_path(@supplier), class: 'btn btn-primary pull-right' %>
+  <hr />
       <div class="box-body">
         <% @orders.each do |order| %>
           <%= link_to store_front_module_purchase_order_path(order) do %>
@@ -42,4 +44,3 @@
     </div>
   </div>
 </div>
-

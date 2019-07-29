@@ -1,17 +1,17 @@
-<% @line_items.each do |line_item| %>
-  <%= line_item.available_quantity(store_front: current_store_front) %>pcs
+<% @stocks.each do |stock| %>
+  <%= stock.balance %>
   <div class="row">
     <div class="col-md-10">
-      <b><%= line_item.name.try(:upcase) %></b>
-      <% if line_item.available_quantity(store_front: current_store_front) > 0 %>
-        &nbsp; <span class="badge bg-gray"><%= line_item.available_quantity(store_front: current_store_front) %> left</span>
+      <b><%= stock.name.try(:upcase) %></b>
+      <% if stock.balance > 0 %>
+        &nbsp; <span class="badge bg-gray"><%= stock.balance %> left</span>
       <% else %>
         <span class="label bg-red"> Out Of Stock </span>
       <% end %><br>
       <span class="text-muted">
         <i class="fa fa-tags"></i>
-          <%= number_to_currency line_item.product.try(:base_measurement).try(:price) %>
-        <i class="fa fa-barcode"></i> <%= line_item.bar_code.try(:truncate, (30)) %>
+          <%= number_to_currency stock.product.try(:base_measurement).try(:price) %>
+        <i class="fa fa-barcode"></i> <%= stock.barcode.try(:truncate, (30)) %>
       </span>
     </div>
   </div>
@@ -22,19 +22,18 @@
       <div class="row">
       <div class="col-md-3">
         <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, autofocus: true, label: false %>
-        <%= f.input :product_id, input_html: { value: line_item.product_id }, as: :hidden %>
+        <%= f.input :stock_id, input_html: { value: stock.id }, as: :hidden %>
         <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
         <%= f.input :bar_code, input_html: { value: params[:search] }, as: :hidden %>
-        <%= f.input :purchase_order_line_item_id, input_html: { value: line_item.id }, as: :hidden %>
       </div>
       <div class="col-md-3">
-        <%= f.input :unit_cost, placeholder: "Selling Price", label: false %>
+        <%= f.input :unit_cost, placeholder: "Selling Price", label: false, input_html: { id: 'line_item_selling_price'} %>
       </div>
       <div class="col-md-3">
-        <%= f.input :unit_of_measurement_id, collection: line_item.product.unit_of_measurements.map{|a| [a.unit_code, a.id] }, selected: line_item.product.base_measurement, label: false %>
+        <%= f.input :unit_of_measurement_id, collection: stock.product.unit_of_measurements.map{|a| [a.unit_code, a.id] }, selected: stock.product.base_measurement, label: false %>
       </div>
       <div class="col-md-2">
-        <% if line_item.available_quantity(store_front: current_store_front) > 0 %>
+        <% if stock.balance > 0 %>
         <%= button_tag type: 'submit', class: "btn btn-success btn-sm" do %>
           <i class="fa fa-shopping-basket" aria-hidden="true"></i> Add to Cart
         <% end %>

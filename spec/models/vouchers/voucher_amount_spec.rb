@@ -6,8 +6,6 @@ module Vouchers
       it { is_expected.to belong_to :account }
       it { is_expected.to belong_to(:voucher).optional }
       it { is_expected.to belong_to(:cart).optional }
-
-      it { is_expected.to belong_to :commercial_document }
     end
     describe 'delegations' do
       it { is_expected.to delegate_method(:name).to(:account).with_prefix }

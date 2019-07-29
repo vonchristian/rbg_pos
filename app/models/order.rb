@@ -25,6 +25,8 @@ class Order < ApplicationRecord
     all.map{|a| a.total_cost_less_discount}.to_a.sum
   end
 
+  
+
   def self.credit
     where(credit: true)
   end

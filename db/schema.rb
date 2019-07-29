@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_24_011608) do
+ActiveRecord::Schema.define(version: 2019_07_27_055154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -248,6 +248,7 @@ ActiveRecord::Schema.define(version: 2019_07_24_011608) do
     t.bigint "registry_id"
     t.datetime "date"
     t.bigint "store_front_id"
+    t.bigint "stock_id"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_line_items"
     t.index ["order_id"], name: "index_line_items_on_order_id"
@@ -257,6 +258,7 @@ ActiveRecord::Schema.define(version: 2019_07_24_011608) do
     t.index ["referencer_type", "referencer_id"], name: "index_line_items_on_referencer_type_and_referencer_id"
     t.index ["registry_id"], name: "index_line_items_on_registry_id"
     t.index ["sales_order_line_item_id"], name: "index_line_items_on_sales_order_line_item_id"
+    t.index ["stock_id"], name: "index_line_items_on_stock_id"
     t.index ["store_front_id"], name: "index_line_items_on_store_front_id"
     t.index ["type"], name: "index_line_items_on_type"
     t.index ["unit_of_measurement_id"], name: "index_line_items_on_unit_of_measurement_id"
@@ -444,7 +446,12 @@ ActiveRecord::Schema.define(version: 2019_07_24_011608) do
     t.bigint "product_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "store_front_id"
+    t.string "barcode"
+    t.bigint "unit_of_measurement_id"
     t.index ["product_id"], name: "index_stocks_on_product_id"
+    t.index ["store_front_id"], name: "index_stocks_on_store_front_id"
+    t.index ["unit_of_measurement_id"], name: "index_stocks_on_unit_of_measurement_id"
   end
 
   create_table "store_front_accounts", force: :cascade do |t|
@@ -709,6 +716,7 @@ ActiveRecord::Schema.define(version: 2019_07_24_011608) do
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
   add_foreign_key "line_items", "registries"
+  add_foreign_key "line_items", "stocks"
   add_foreign_key "line_items", "store_fronts"
   add_foreign_key "line_items", "unit_of_measurements"
   add_foreign_key "line_items", "users"
@@ -731,6 +739,8 @@ ActiveRecord::Schema.define(version: 2019_07_24_011608) do
   add_foreign_key "registries", "users", column: "employee_id"
   add_foreign_key "selling_prices", "store_fronts"
   add_foreign_key "stocks", "products"
+  add_foreign_key "stocks", "store_fronts"
+  add_foreign_key "stocks", "unit_of_measurements"
   add_foreign_key "store_front_accounts", "accounts"
   add_foreign_key "store_front_accounts", "store_fronts"
   add_foreign_key "store_front_configs", "accounts", column: "accounts_receivable_account_id"

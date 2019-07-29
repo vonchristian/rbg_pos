@@ -5,11 +5,10 @@ module StoreFrontModule
       attr_accessor :unit_of_measurement_id,
                     :quantity,
                     :cart_id,
-                    :product_id,
+                    :stock_id,
                     :bar_code,
                     :unit_cost,
                     :bar_code,
-                    :purchase_order_line_item_id,
                     :store_front_id
       validates :quantity, numericality: { greater_than: 0.1 }
       validate :quantity_is_less_than_or_equal_to_available_quantity?
@@ -106,16 +105,12 @@ module StoreFrontModule
         Product.find(product_id)
       end
 
-      def find_purchase_order_line_item
-        StoreFrontModule::LineItems::PurchaseOrderLineItem.find(purchase_order_line_item_id)
+      def find_stock
+        StoreFronts::Stock.find(stock_id)
       end
 
       def available_quantity
-        if product_id.present? && bar_code.blank?
-          find_product.sales_balance
-        elsif purchase_order_line_item_id.present? && bar_code.present?
-          find_purchase_order_line_item.sold_quantity
-        end
+        find_stock.balance
       end
 
       def quantity_is_less_than_or_equal_to_available_quantity?

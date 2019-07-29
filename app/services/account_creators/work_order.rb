@@ -1,11 +1,13 @@
 module AccountCreators
   class WorkOrder
     attr_reader :work_order, :business, :customer
-    def initialize(args={})
-      @work_order = args.fetch(:work_order)
+
+    def initialize(work_order:)
+      @work_order = work_order
       @business   = @work_order.business
       @customer   = @work_order.customer
     end
+
     def create_accounts!
       create_receivable_account
       create_sales_revenue_account
@@ -14,7 +16,6 @@ module AccountCreators
     end
 
     private
-
     def create_receivable_account
       if work_order.receivable_account.blank?
         account = AccountingModule::Asset.create!(

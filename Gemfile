@@ -54,6 +54,7 @@ gem 'will_paginate', '~> 3.1.0'
 gem "chartkick"
 gem "groupdate"
 gem "roo", "~> 2.7.0"
+gem 'pagy'
 
 group :development do
   gem 'pry-rails'

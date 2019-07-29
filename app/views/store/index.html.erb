@@ -17,7 +17,7 @@
       <% if params[:search].present? %>
         <%=form_tag store_index_path, method: :get do %>
            <div class="input-group">
-             <%= text_field_tag :search, params[:search], id: 'store-search-form', class: "search-query form-control border-input", placeholder: "Search for items", type: "search" %>
+             <%= text_field_tag :search, params[:search], id: 'stock-search-form', class: "search-query form-control border-input", placeholder: "Search for items", type: "search" %>
              <span class="input-group-btn">
                <%= button_tag(type: 'submit', class: "btn btn-default", id: 'store-search-button') do %>
                  <i class="icon-magnifier"></i> Browse Products
@@ -28,9 +28,9 @@
       <% else %>
         <%=form_tag store_index_path, method: :get do %>
           <div class="input-group">
-            <%= text_field_tag :search, params[:search], id: "store-search-form", class: "search-query form-control border-input", autofocus: true, placeholder: "Search for items", type: "search" %>
+            <%= text_field_tag :search, params[:search], id: "stock-search-form", class: "search-query form-control border-input", autofocus: true, placeholder: "Search for items", type: "search" %>
             <span class="input-group-btn">
-              <%= button_tag(type: 'submit', class: "btn btn-default", id: 'store-search-button') do %>
+              <%= button_tag(type: 'submit', class: "btn btn-default", id: 'stock-search-btn') do %>
                 <i class="icon-magnifier"></i> Browse Products
               <% end %>
             </span>
@@ -39,10 +39,8 @@
       <% end %>
       <br>
 
-      <% if @line_items.present? %>
-        <%= render 'store/searched_line_item_results' %>
-      <% elsif @products.present? %>
-        <%= render 'store/searched_products' %>
+      <% if @stocks.present? %>
+        <%= render 'store/searched_stocks_results' %>
       <% end %>
       <% if @cart.sales_order_line_items.present? %>
         <% @cart.sales_order_line_items.each do |line_item| %>
@@ -117,15 +115,15 @@
                 </div>
               </div>
               <hr>
-                  <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-                    <span><label>Customer</label><span class="pull-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span></span>
+                  <%= f.input :date, as: :string, input_html: { id: 'sale-order-date', class: "datepicker" } %>
+                  <span><label>Customer</label><span class="pull-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span></span>
                   <%= f.input :customer_id, collection: Customer.all.map{ |a| [a.full_name, a.id] }, label: false %>
                   <%= f.input :cash_tendered, input_html: { id: 'cash_tendered', oninput: 'calculateOrderTotalCost()',  class: "input-lg" } %>
                   <%= f.input :discount_amount, label: "Discount", input_html: { id: 'discount_amount', oninput: 'calculateOrderTotalCost()', value: 0} %>
-                  <%= f.input :order_change, readonly: true, input_html: { id: 'change', class: "input-lg"} %>
+                  <%= f.input :order_change, readonly: true, input_html: { id: 'change', class: "input-lg", value: 0 } %>
                   <%= f.input :reference_number %>
                   <%= f.input :total_cost, input_html: { id: 'total_cost', value: @cart.total_cost }, as: :hidden %>
-                  <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+                  <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden  %>
                   <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
                   <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
 

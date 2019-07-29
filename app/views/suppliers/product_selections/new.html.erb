@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-md-8">
+    <div class="box box-default">
+      <div class="box-header">
+      </div>
+      <div class="box-body">
+        <%=form_tag new_supplier_product_selection_path(@supplier), method: :get, id: "search-form" do %>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search product...", type: "search" %>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', class: "btn btn-default") do %>
+                 Browse Products
+              <% end %>
+            </span>
+          </div>
+        <% end %>
+    <% @products.each do |product| %>
+      <div class="row">
+        <div class="col-md-8">
+          <%= product.name %>
+        </div>
+        <div class="col-md-4">
+          <%= link_to 'Select', new_supplier_purchase_line_item_path(supplier_id: @supplier.id, product_id: product.id), class: 'btn btn-primary' %>
+        </div>
+      </div>
+      <hr>
+    <% end %>
+  </div>
+  <div class="col-md-4">
+    <%= render 'suppliers/purchase_line_items/cart', cart: current_cart %>
+  </div>

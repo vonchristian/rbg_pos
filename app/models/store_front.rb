@@ -23,7 +23,7 @@ class StoreFront < ApplicationRecord
   has_many :employees,                       class_name: 'User'
   has_many :store_front_accounts,            class_name: 'StoreFronts::StoreFrontAccount'
   has_many :accounts,                        through: :store_front_accounts
-
+  has_many :stocks,                          class_name: 'StoreFronts::Stock'
   validates :name, presence: true
 
   delegate :name, to: :business, prefix: true

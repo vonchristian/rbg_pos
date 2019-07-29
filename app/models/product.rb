@@ -1,5 +1,5 @@
 class Product < ApplicationRecord
-	include PgSearch
+	include PgSearch::Model
   multisearchable against: [:name]
 	pg_search_scope :text_search, against: [:name], :associated_against => {:purchases => [:bar_code] }
   pg_search_scope :text_search_with_barcode, against: [:name],
@@ -22,6 +22,7 @@ class Product < ApplicationRecord
   has_many :spoilages,            class_name: "StoreFrontModule::LineItems::SpoilageOrderLineItem"
   has_many :selling_prices,       class_name: "StoreFrontModule::SellingPrice"
   has_many :purchase_prices,      class_name: 'StoreFrontModule::PurchasePrice'
+  has_many :stocks,               class_name: 'StoreFronts::Stock'
   has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",

@@ -375,6 +375,7 @@
     <div class="col-md-2">
     <% if work_update.user.present? %>
       <%= image_tag(work_update.user.avatar.url(:medium), class: "img-circle", height: 40, width: 40) %>
+      <%= work_update.user.try(:full_name) %>
     <% end %>
     </div>
     <div class="col-md-10">

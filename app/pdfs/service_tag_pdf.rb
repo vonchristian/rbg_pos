@@ -92,7 +92,7 @@ class ServiceTagPdf < Prawn::Document
         column(1).font_style = :bold
 
       end
-      table([["Please DO NOT FORGET to present this CLAIM FORM when claiming your unit."]], cell_style: { size: 9, font: "Helvetica"}, column_widths: [250]) do
+      table([["* Please DO NOT FORGET to present this CLAIM FORM when claiming your unit."]], cell_style: { size: 9, font: "Helvetica"}, column_widths: [250]) do
       end
 
       # text "RBG", style: :bold, size: 37
@@ -123,7 +123,9 @@ class ServiceTagPdf < Prawn::Document
                                 [["", "Contact Person:", "#{@work_order.contact_person}"]] +
                                 [["", "Department:", "#{@work_order.department.try(:customer_name_and_department)}"]] +
                                 [["", "Address:", "#{@work_order.customer_address}"]] +
-                                [["", "Contact #:",  "#{@work_order.customer_contact_number}"]]
+                                [["", "Contact #:",  "#{@work_order.customer_contact_number}"]] +
+                                [["", "DOWNPAYMENT:",  "<b>#{price(@work_order.payments_total.try(:abs))}</b>"]]
+
   end
   def product_details
     move_down 5

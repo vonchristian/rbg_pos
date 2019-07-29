@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col-md-4">
+    <div class="box box-default">
+      <div class="box-header">
+      </div>
+      <div class="box-body">
+        <%= simple_form_for @purchase, url: :supplier_purchase_line_items do |f| %>
+          <%= f.input :product_id, input_html: { value: @product.id }, as: :hidden %>
+          <%= f.input :quantity %>
+          <%= f.input :unit_cost %>
+          <%= f.input :total_cost %>
+          <%= f.input :selling_price %>
+          <%= f.input :barcode %>
+          <%= f.input :unit_of_measurement_id, collection: @product.unit_of_measurements.map{ |unit| [unit.unit_code, unit.id] } %>
+          <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
+          <%= f.input :store_front_id, input_html: { value: current_store_front.id }, as: :hidden %>
+          <%= f.submit "Add", class: 'btn btn-primary' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

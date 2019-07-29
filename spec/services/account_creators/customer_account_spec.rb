@@ -1,13 +1,12 @@
 require 'rails_helper'
 
 module AccountCreators
-  describe Customer do
+  describe Customer, type: :model do
     it 'create_accounts!' do
       account_number = "471b3d8b-fa56-40e6-8b84-cfc5259741ed"
-      customer   = build(:customer, receivable_account_id: nil, account_number: account_number)
+      customer       = build(:customer, receivable_account_id: nil, sales_revenue_account_id: nil, sales_discount_account_id: nil, service_revenue_account_id: nil, account_number: account_number)
 
-      expect(customer.receivable_account_id).to eql nil
-      described_class.new(customer: customer).create_accounts!
+      AccountCreators::Customer.new(customer: customer).create_accounts!
       customer.save!
 
       receivable_account = AccountingModule::Asset.find_by(

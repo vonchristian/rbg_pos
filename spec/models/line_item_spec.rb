@@ -3,6 +3,8 @@ require 'rails_helper'
 describe LineItem do
   describe 'associations' do
     it { is_expected.to belong_to(:store_front).optional }
+    it { is_expected.to belong_to(:stock).optional }
+
     it { is_expected.to belong_to(:commercial_document).optional }
     it { is_expected.to belong_to(:cart).optional }
     it { is_expected.to belong_to(:order).optional }
@@ -69,10 +71,6 @@ describe LineItem do
 
 
     expect(described_class.total).to eql 60
-  end
-
-  it '.balance_finder' do
-    pending
   end
 
   it '#unit_cost_and_quantity' do

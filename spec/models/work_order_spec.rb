@@ -2,7 +2,6 @@ require 'rails_helper'
 
 describe WorkOrder do
   describe 'associations' do
-    it { is_expected.to belong_to :work_order_category }
     it { is_expected.to belong_to :product_unit }
     it { is_expected.to belong_to(:supplier).optional }
     it { is_expected.to belong_to(:section).optional }
