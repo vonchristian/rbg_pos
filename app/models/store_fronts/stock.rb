@@ -5,7 +5,7 @@ module StoreFronts
     belongs_to :store_front
     belongs_to :product
     belongs_to :unit_of_measurement, class_name: 'StoreFrontModule::UnitOfMeasurement'
-    has_many   :purchases,        class_name: 'StoreFrontModule::LineItems::PurchaseOrderLineItem'
+    has_one    :purchase,        class_name: 'StoreFrontModule::LineItems::PurchaseOrderLineItem'
     has_many   :sales,            class_name: 'StoreFrontModule::LineItems::SalesOrderLineItem'
     has_many   :stock_transfers,  class_name: 'StoreFrontModule::LineItems::StockTransferOrderLineItem'
     has_many   :internal_uses,    class_name: 'StoreFrontModule::LineItems::InternalUseOrderLineItem'
@@ -15,11 +15,15 @@ module StoreFronts
     has_many   :sales_returns,    class_name: 'StoreFrontModule::LineItems::SalesReturnOrderLineItem'
 
     delegate :name, to: :product
+    delegate :unit_code, to: :unit_of_measurement
     def purchase_quantity
-      purchases.total
-    end 
+      purchase.quantity
+    end
+    def customer
+      sales.map{|a| a.sales_order.customer.try(:name) }.join('')
+    end
     def balance
-      purchases.total        +
+      purchase_quantity      +
       sales_returns.total    -
       purchase_returns.total -
       stock_transfers.total  -
@@ -30,6 +34,10 @@ module StoreFronts
     end
     def sold?
       balance.zero? && sales.present?
+    end
+
+    def last_purchase_cost
+      purchase.unit_cost
     end
   end
 end

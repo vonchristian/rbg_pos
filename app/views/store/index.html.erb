@@ -41,6 +41,8 @@
 
       <% if @stocks.present? %>
         <%= render 'store/searched_stocks_results' %>
+      <% elsif @products.present? %>
+        <%= render 'store/searched_products_results' %>
       <% end %>
       <% if @cart.sales_order_line_items.present? %>
         <% @cart.sales_order_line_items.each do |line_item| %>

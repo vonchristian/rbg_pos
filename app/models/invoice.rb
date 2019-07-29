@@ -1,5 +1,5 @@
 class Invoice < ApplicationRecord
-  include PgSearch
+  include PgSearch::Model
   pg_search_scope :text_search, against: [:number]
 
   belongs_to :invoiceable, polymorphic: true

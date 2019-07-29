@@ -3,7 +3,7 @@ module RepairServicesModule
     def new
       @work_order = WorkOrder.find(params[:work_order_id])
       if params[:search].present?
-        @line_items = StoreFrontModule::LineItems::PurchaseOrderLineItem.processed.for_store_front(current_store_front).text_search(params[:search])
+        @stocks = StoreFronts::Stock.text_search(params[:search])
         @products = Product.text_search(params[:search]).all
       end
       @repair_service_order_line_item = RepairServicesModule::RepairServiceOrderLineItemProcessing.new
@@ -33,7 +33,7 @@ module RepairServicesModule
     private
     def line_item_params
       params.require(:repair_services_module_repair_service_order_line_item_processing).permit(:quantity,
-        :unit_cost, :unit_of_measurement_id, :product_id, :cart_id, :work_order_id, :bar_code, :purchase_order_line_item_id)
+        :unit_cost, :unit_of_measurement_id, :product_id, :cart_id, :work_order_id, :bar_code, :stock_id)
     end
   end
 end

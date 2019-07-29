@@ -6,7 +6,7 @@ module StoreFronts
       it { is_expected.to belong_to :store_front }
       it { is_expected.to belong_to :product }
       it { is_expected.to belong_to :unit_of_measurement }
-      it { is_expected.to have_many :purchases }
+      it { is_expected.to have_one :purchase }
       it { is_expected.to have_many :sales }
       it { is_expected.to have_many :stock_transfers }
       it { is_expected.to have_many :internal_uses }

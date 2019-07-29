@@ -14,17 +14,17 @@
       <div class="box-body">
       <%=form_tag new_repair_services_module_work_order_repair_service_order_line_item_processing_path(@work_order), method: :get, id: "search-form" do %>
          <div class="input-group">
-           <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", autofocus: true, placeholder: "Search...", type: "search" %>
+           <%= text_field_tag :search, params[:search], id: 'spare-part-search-form', class: "search-query form-control border-input", autofocus: true, placeholder: "Search...", type: "search" %>
            <span class="input-group-btn">
-             <%= button_tag(type: 'submit', class: "btn btn-dedault") do %>
+             <%= button_tag(type: 'submit', id: 'spare-part-search-btn', class: "btn btn-dedault") do %>
                <i class="icon-magnifier"></i> Search
              <% end %>
            </span>
          </div>
        <% end %>
        <br>
-      <% if @line_items.present? %>
-        <%= render 'repair_services_module/repair_service_order_line_item_processings/searched_line_item_results' %>
+      <% if @stocks.present? %>
+        <%= render 'repair_services_module/repair_service_order_line_item_processings/searched_stocks_results' %>
       <% elsif @products.present? %>
         <%= render 'repair_services_module/repair_service_order_line_item_processings/searched_product_results' %>
       <% end %>
@@ -43,7 +43,11 @@
             <% @cart.sales_order_line_items.each do |line_item| %>
               <tr>
                 <td><%= line_item.quantity %></td>
-                <td><%=line_item.name %></td>
+                <td><%=line_item.stock_name %><br>
+                    <span class="text-muted">
+                      <%= line_item.stock.try(:barcode) %>
+                    </span>
+                </td>
                 <td><%= number_to_currency line_item.unit_cost %></td>
                 <td><%= number_to_currency line_item.total_cost %></td>
                 <td>
@@ -57,7 +61,7 @@
               <td><b>TOTAL</b></td>
               <td></td>
               <td></td>
-              <td><%= number_to_currency @cart.total_cost %></td>
+              <td><%= number_to_currency @cart.sales_order_line_items.total_cost %></td>
             </tr>
            </tbody>
           </table>
@@ -85,6 +89,7 @@
               <%= simple_form_for [@work_order, @repair_service_order], url: :repair_services_module_work_order_repair_service_order_processings do |f| %>
               <p class="text-muted"> Customer </p>
                 <h4><%= @work_order.customer_name %></h4>
+                Service #: <%= @work_order.service_number %>
                 <hr>
               <div class="row">
                 <div class="col-md-10 col-md-offset-1">

@@ -1,7 +1,7 @@
 class Product < ApplicationRecord
 	include PgSearch::Model
   multisearchable against: [:name]
-	pg_search_scope :text_search, against: [:name], :associated_against => {:purchases => [:bar_code] }
+	pg_search_scope :text_search, against: [:name], :associated_against => {:stocks => [:barcode] }
   pg_search_scope :text_search_with_barcode, against: [:name],
   :associated_against => {
     :purchases => [:bar_code]}
@@ -12,7 +12,7 @@ class Product < ApplicationRecord
 	has_many :orders,               through: :line_items
 	has_many :sales_returns,        class_name: "StoreFrontModule::LineItems::SalesReturnOrderLineItem"
 	has_many :unit_of_measurements, class_name: "StoreFrontModule::UnitOfMeasurement"
-  has_many :purchases,            class_name:'StoreFrontModule::LineItems::PurchaseOrderLineItem'
+  has_many :purchases,            class_name: 'StoreFrontModule::LineItems::PurchaseOrderLineItem'
   has_many :internal_uses,        class_name: 'StoreFrontModule::LineItems::InternalUseOrderLineItem'
   has_many :sales,                class_name: 'StoreFrontModule::LineItems::SalesOrderLineItem'
   has_many :sales_orders,         through: :sales, :source => :sales_order, :class_name => 'StoreFrontModule::Orders::SalesOrder'
@@ -72,7 +72,6 @@ class Product < ApplicationRecord
     end
   end
   def last_purchase_cost
-    purchase_prices.latest_price
     purchases.last.try(:unit_cost)
   end
 
@@ -115,14 +114,7 @@ class Product < ApplicationRecord
     balance(args)
   end
   def balance(args={})
-    sales_returns_balance(args) +
-    purchases_balance(args) +
-    received_stock_transfers_balance(args) -
-    sales_balance(args) -
-    spoilages_balance(args) -
-    delivered_stock_transfers_balance(args) -
-    internal_use_orders_balance(args) -
-    purchase_returns_balance(args)
+    stocks.map{|a| a.balance }.sum
   end
 
   def sales_balance(args={})

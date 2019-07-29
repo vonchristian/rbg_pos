@@ -3,7 +3,7 @@ module StoreFrontModule
     class StockTransferOrderLineItemProcessingsController < ApplicationController
       def new
         if params[:search].present?
-          @line_items = StoreFrontModule::LineItems::PurchaseOrderLineItem.processed.for_store_front(current_store_front).text_search(params[:search])
+          @stocks = StoreFronts::Stock.text_search(params[:search])
           @products   = Product.text_search(params[:search]).all
         end
         @cart = current_cart
@@ -15,7 +15,7 @@ module StoreFrontModule
       def create
         @line_item = StoreFrontModule::LineItems::StockTransferOrderLineItemProcessing.new(line_item_params)
         if @line_item.process!
-          redirect_to new_store_front_module_stock_transfer_order_line_item_processing_url, notice: "added successfully"
+          redirect_to new_store_front_module_stock_transfer_order_line_item_processing_url, notice: "added to cart"
         else
           render :new, alert: "Error"
         end
@@ -29,7 +29,7 @@ module StoreFrontModule
       private
       def line_item_params
         params.require(:store_front_module_line_items_stock_transfer_order_line_item_processing).
-        permit(:quantity, :unit_of_measurement_id, :product_id, :bar_code, :cart_id, :purchase_order_line_item_id)
+        permit(:quantity, :unit_of_measurement_id, :product_id, :bar_code, :cart_id, :stock_id, :selling_price)
       end
     end
   end

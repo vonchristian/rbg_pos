@@ -1,49 +1,5 @@
-
 <% @products.each do |product| %>
-<% StoreFront.all.each do |store_front| %>
-  <%= store_front.name %><%= product.available_quantity(store_front: store_front) %>
-<% end %>
- <div class="row">
-    <div class="col-md-12">
-      <b><%= product.name.try(:upcase) %></b>
-      <% if product.available_quantity(store_front: current_store_front) > 0 %>
-        &nbsp; <span class="badge bg-gray"><%= product.available_quantity(store_front: current_store_front) %> left</span>
-      <% else %>
-        <span class="label bg-red"> Out Of Stock </span>
-      <% end %><br>
-      <span class="text-muted">
-        <i class="fa fa-tags"></i>
-        <% product.unit_of_measurements.each do |unit_of_measurement| %>
-          <%= number_to_currency unit_of_measurement.price %>/<%= number_to_currency unit_of_measurement.unit_code,  unit: "", precision: 0 %>
-        <% end %>
-      </span>
-    </div>
-  </div>
-  <br>
-  <% if product.available_quantity(store_front: current_store_front) > 0 %>
-    <%= simple_form_for [@work_order, @repair_service_order_line_item], url: :repair_services_module_work_order_repair_service_order_line_item_processings do |f| %>
-      <div class="row">
-        <div class="col-md-3">
-          <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, autofocus: true %>
-        </div>
-        <div class="col-md-3">
-          <%= f.input :unit_of_measurement_id, label: 'Unit', collection: product.unit_of_measurements.all.map{|a| [a.unit_code, a.id] }, selected: product.base_measurement %>
-          <%= f.input :product_id, input_html: { value: product.id }, as: :hidden %>
-          <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
-          <%= f.input :work_order_id, input_html: { value: @work_order.id }, as: :hidden %>
-        </div>
-        <div class="col-md-3">
-          <%= f.input :unit_cost, placeholder: "Selling Price", label: "Selling Price" %>
-        </div>
-        <div class="col-md-2">
-          <br>
-          <%= button_tag type: 'submit', class: "btn btn-success btn-sm" do %>
-            <i class="fa fa-shopping-basket" aria-hidden="true"></i> Add to Cart
-          <% end %>
-        </div>
-      </div>
-    <% end %>
+  <% product.stocks.each do |stock| %>
+    <%= render 'repair_services_module/repair_service_order_line_item_processings/stock', stock: stock %>
   <% end %>
-<hr>
 <% end %>
-<hr>

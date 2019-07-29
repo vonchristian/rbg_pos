@@ -22,7 +22,7 @@ module Suppliers
       create_purchase(stock)
     end
     def create_purchase(stock)
-      stock.purchases.create!(
+      stock.create_purchase!(
       cart_id:                cart_id,
       stock:                  stock,
       quantity:               quantity,
@@ -33,8 +33,8 @@ module Suppliers
     end
     def create_selling_price
       find_product.selling_prices.create!(
-          price: selling_price,
-          store_front_id: store_front_id,
+          price:       selling_price,
+          store_front_id:         store_front_id,
           unit_of_measurement_id: unit_of_measurement_id
         )
     end

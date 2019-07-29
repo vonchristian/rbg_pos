@@ -9,6 +9,7 @@ FactoryBot.define do
     physical_condition { "Physical condition" }
     reported_problem { "Reported problem" }
     date_received { Date.current }
+    service_number { '32132' }
 
 
   end

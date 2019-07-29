@@ -1,0 +1,6 @@
+
+<% @products.each do |product| %>
+  <% product.stocks.each do |stock| %>
+    <%= render 'store/stock', stock: stock %>
+  <% end %>
+<% end %>

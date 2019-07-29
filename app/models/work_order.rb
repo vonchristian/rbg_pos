@@ -1,5 +1,5 @@
 class WorkOrder < ApplicationRecord
-  include PgSearch
+  include PgSearch::Model
   enum status: [:received, :work_in_progress, :done,  :released, :return_to_owner]
 
   pg_search_scope :text_search, against: [:service_number, :reported_problem, :physical_condition, :customer_name, :product_name],
