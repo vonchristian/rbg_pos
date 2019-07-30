@@ -197,6 +197,7 @@ Rails.application.routes.draw do
   resources :voucher_amounts, only: [:destroy]
   resources :vouchers, only: [:index, :show] do
     resources :disbursements, only: [:new, :create], module: :vouchers
+    resources :confirmations, only: [:create], module: :vouchers
   end
   namespace :repair_services_module do
       resources :repair_service_order_line_item_processings, only: [:destroy]

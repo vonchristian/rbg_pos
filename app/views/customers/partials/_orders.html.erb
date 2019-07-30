@@ -1,7 +1,5 @@
 <div class="tab-pane <%= 'active' if current_page? customer_orders_path(@customer)%>" id="customer-orders">
   <div class="content">
-    <%= link_to 'New Cash Sales', new_store_front_module_customer_cash_sales_order_line_item_processing_path(@customer), class: "btn btn-primary" %>
-
     <%= link_to 'New Credit Sales', new_store_front_module_customer_credit_sales_order_line_item_processing_path(@customer), class: "btn btn-primary" %>
     <%= link_to 'New Credit(Others)', new_customer_other_credit_path(@customer), class: "btn btn-warning" %>
     <br>

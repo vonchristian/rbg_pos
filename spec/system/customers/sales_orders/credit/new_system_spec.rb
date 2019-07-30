@@ -43,4 +43,25 @@ describe 'New customer credit sales order' do
 
     expect(page).to have_content('saved successfully')
   end
+
+  it 'with searched product' do
+    fill_in 'stock-search-form',        with: 'Test Product'
+    click_button 'stock-search-btn'
+    fill_in 'line_item_quantity',       with: 1
+    fill_in 'line_item_selling_price',  with: 100
+
+    click_button "Add to Cart"
+
+    expect(page).to have_content('added to cart')
+    save_and_open_page
+    fill_in 'credit-sale-order-date', with: Date.current
+    fill_in 'Charge Invoice No.', with: '120DFG'
+    fill_in 'Purchase Order No.', with: '120DFG'
+
+
+    click_button 'Save Credit Order'
+    save_and_open_page
+
+    expect(page).to have_content('saved successfully')
+  end
 end
