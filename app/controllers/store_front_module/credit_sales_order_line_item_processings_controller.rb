@@ -3,8 +3,8 @@ module StoreFrontModule
     def new
       @customer = Customer.find(params[:customer_id])
       if params[:search].present?
-        @products = Product.text_search(params[:search]).all.paginate(page: params[:page], per_page: 25)
-        @line_items = StoreFrontModule::LineItems::PurchaseOrderLineItem.processed.for_store_front(current_store_front).text_search(params[:search]).paginate(page: params[:page], per_page: 25)
+        @pagy, @stocks   = pagy(current_store_front.stocks.text_search(params[:search]))
+        @pagy, @products = pagy(Product.text_search(params[:search]))
       end
       @cart = current_cart
       @line_item = StoreFrontModule::LineItems::SalesOrderLineItemProcessing.new
@@ -30,7 +30,7 @@ module StoreFrontModule
     private
     def line_item_params
       params.require(:store_front_module_line_items_sales_order_line_item_processing).permit(:quantity,
-        :unit_of_measurement_id, :unit_cost, :product_id, :cart_id, :bar_code, :purchase_order_line_item_id, :store_front_id)
+        :unit_of_measurement_id, :unit_cost, :product_id, :cart_id, :bar_code, :stock_id, :store_front_id)
     end
   end
 end

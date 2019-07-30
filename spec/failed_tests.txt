@@ -247,6 +247,7 @@ example_id                                                               | statu
 ./spec/services/work_orders/entry_migrator_spec.rb[1:1]                  | passed  | 0.17443 seconds |
 ./spec/services/work_orders/entry_migrator_spec.rb[1:2]                  | passed  | 0.17158 seconds |
 ./spec/services/work_orders/service_charge_cancellation_spec.rb[1:1]     | passed  | 0.11767 seconds |
+./spec/system/customers/sales_orders/credit/new_system_spec.rb[1:1]      | passed  | 3.67 seconds    |
 ./spec/system/internal_use_orders/new_system_spec.rb[1:1]                | passed  | 3.71 seconds    |
 ./spec/system/internal_use_orders/new_system_spec.rb[1:2]                | passed  | 0.76674 seconds |
 ./spec/system/products/stocks/index_system_spec.rb[1:1]                  | passed  | 1.17 seconds    |

@@ -14,9 +14,9 @@
       <% if params[:search].present? %>
         <%=form_tag new_store_front_module_customer_credit_sales_order_line_item_processing_path(@customer), method: :get, id: "search-form" do %>
            <div class="input-group">
-             <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search for items", type: "search" %>
+             <%= text_field_tag :search, params[:search], id: 'stock-search-form', class: "search-query form-control border-input", placeholder: "Search for items", type: "search" %>
              <span class="input-group-btn">
-               <%= button_tag(type: 'submit', class: "btn btn-dedault") do %>
+               <%= button_tag(type: 'submit', id: 'stock-search-btn', class: "btn btn-dedault") do %>
                  <i class="icon-magnifier"></i>
                <% end %>
              </span>
@@ -25,9 +25,9 @@
       <% else %>
       <%=form_tag new_store_front_module_customer_credit_sales_order_line_item_processing_path(@customer), method: :get, id: "search-form" do %>
          <div class="input-group">
-           <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", autofocus: true, placeholder: "Search for items", type: "search" %>
+           <%= text_field_tag :search, params[:search], id: 'stock-search-form', class: "search-query form-control border-input", autofocus: true, placeholder: "Search for items", type: "search" %>
            <span class="input-group-btn">
-             <%= button_tag(type: 'submit', class: "btn btn-dedault") do %>
+             <%= button_tag(type: 'submit', id: 'stock-search-btn', class: "btn btn-dedault") do %>
                <i class="icon-magnifier"></i>
              <% end %>
            </span>
@@ -36,10 +36,10 @@
     <% end %>
 
        <br>
-      <% if @line_items.present? %>
-         <%= render 'store_front_module/credit_sales_order_line_item_processings/searched_line_item_results' %>
+      <% if @stocks.present? %>
+         <%= render 'store_front_module/credit_sales_order_line_item_processings/searched_stocks_results' %>
       <% elsif @products.present? %>
-           <%= render 'store_front_module/credit_sales_order_line_item_processings/searched_product_results' %>
+           <%= render 'store_front_module/credit_sales_order_line_item_processings/searched_products_results' %>
 
        <% end %>
       <% if @cart.sales_order_line_items.present? %>
@@ -114,11 +114,11 @@
               </div>
               <hr>
                   <%= f.input :customer_id, input_html: { value: @customer.id }, as: :hidden %>
-                  <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+                  <%= f.input :date, as: :string, input_html: { class: "datepicker", id: 'credit-sale-order-date' } %>
                   <%= f.input :store_front_id, input_html: { value: current_store_front.id }, as: :hidden %>
                   <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
 
-                  <%= f.input :reference_number, label: "Charge Invoce No."  %>
+                  <%= f.input :reference_number, label: "Charge Invoice No."  %>
                   <%= f.input :description, label: "Purchase Order No."  %>
                   <%= f.input :total_cost, input_html: { id: 'total_cost', value: @cart.total_cost }, as: :hidden %>
                   <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
