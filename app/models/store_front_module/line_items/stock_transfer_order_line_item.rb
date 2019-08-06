@@ -1,6 +1,7 @@
 module StoreFrontModule
   module LineItems
     class StockTransferOrderLineItem < LineItem
+      belongs_to :stock, class_name: 'StoreFronts::Stock'
       belongs_to :purchase_order_line_item, optional: true
       belongs_to :purchase_order, class_name: "StoreFrontModule::Orders::PurchaseOrder", foreign_key: 'order_id', optional: true
       delegate :date, to: :purchase_order, prefix: true
