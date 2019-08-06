@@ -25,9 +25,10 @@ module StoreFrontModule
       end
 
       def create_or_find_line_item(row)
-        stock = StoreFronts::Stock.create!(
+        stock = ::StoreFronts::Stock.create!(
           store_front:         employee.store_front,
           product:             find_product(row),
+          barcode:             bar_code(row),
           unit_of_measurement: unit_of_measurement(row)
         )
         StoreFrontModule::LineItems::PurchaseOrderLineItem.create!(
