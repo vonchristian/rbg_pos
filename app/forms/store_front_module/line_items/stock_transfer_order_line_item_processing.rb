@@ -73,7 +73,7 @@ module StoreFrontModule
         Cart.find(cart_id)
       end
       def find_stock
-        StoreFronts::Stock.find(stock_id)
+        ::StoreFronts::Stock.find(stock_id)
       end
 
       def quantity_is_less_than_or_equal_to_available_quantity?

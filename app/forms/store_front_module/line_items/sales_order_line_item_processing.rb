@@ -11,6 +11,7 @@ module StoreFrontModule
                     :store_front_id,
                     :stock_id
       validates :quantity, numericality: { greater_than: 0.1 }
+
       validate :quantity_is_less_than_or_equal_to_available_quantity?
       def process!
         ActiveRecord::Base.transaction do

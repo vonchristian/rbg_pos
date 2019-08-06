@@ -106,7 +106,7 @@ module StoreFrontModule
       end
 
       def find_stock
-        StoreFronts::Stock.find(stock_id)
+        ::StoreFronts::Stock.find(stock_id)
       end
 
       def available_quantity
