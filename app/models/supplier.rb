@@ -22,6 +22,7 @@ class Supplier < ApplicationRecord
   default_url: ":style/profile_default.jpg",
   :path => ":rails_root/public/system/:attachment/:id/:style/:filename",
   :url => "/system/:attachment/:id/:style/:filename"
+
   def name
     business_name
   end

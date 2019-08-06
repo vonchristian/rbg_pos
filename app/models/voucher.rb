@@ -18,6 +18,9 @@ class Voucher < ApplicationRecord
   def self.unused
     where(entry_id: nil)
   end
+  def self.for_suppliers
+    where(payee_type: 'Supplier')
+  end 
   def self.disbursed
     where.not(entry_id: nil)
   end
