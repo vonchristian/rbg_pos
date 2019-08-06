@@ -62,7 +62,7 @@ module StoreFrontModule
       end
 
       def find_unit_of_measurement
-        find_stock.unit_of_measurement
+        find_product.unit_of_measurements.find(unit_of_measurement_id)
       end
 
       def find_product

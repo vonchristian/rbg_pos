@@ -6,8 +6,8 @@ module StoreFrontModule
           @sales_order = StoreFrontModule::Orders::SalesOrder.find(params[:sales_order_id])
           @cart = current_cart
           if params[:search].present?
+            @stocks = current_store_front.stocks.text_search(params[:search])
       		  @products = Product.text_search(params[:search]).all.paginate(page: params[:page], per_page: 25)
-            @line_items = StoreFrontModule::LineItems::PurchaseOrderLineItem.processed.text_search(params[:search])
           end
       		@sales_order_line_item = StoreFrontModule::LineItems::SalesOrderLineItemProcessing.new
           @additional_line_item_processing = StoreFrontModule::LineItems::AdditionalSalesOrderLineItemProcessing.new(cart: @cart, sales_order: @sales_order, employee: current_user)
@@ -43,7 +43,7 @@ module StoreFrontModule
                         :unit_cost,
                         :store_front_id,
                         :bar_code,
-                        :purchase_order_line_item_id)
+                        :stock_id)
         end
       end
     end
