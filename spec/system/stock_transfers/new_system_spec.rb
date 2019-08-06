@@ -31,7 +31,7 @@ describe 'New stock transfer order' do
     fill_in 'stock-transfer-line-item-selling-price',  with: 100
 
     click_button "Add to Cart"
-    save_and_open_page
+
 
 
     expect(page).to have_content('added to cart')
@@ -41,7 +41,7 @@ describe 'New stock transfer order' do
     fill_in 'Reference number', with: '120DFG'
 
     click_button 'Save Stock Transfer'
-    save_and_open_page
+
 
     expect(page).to have_content('saved successfully')
 
@@ -55,7 +55,7 @@ describe 'New stock transfer order' do
     fill_in 'stock-transfer-line-item-selling-price',  with: 100
 
     click_button "Add to Cart"
-    save_and_open_page
+
 
     expect(page).to have_content('added to cart')
 
@@ -64,7 +64,7 @@ describe 'New stock transfer order' do
     fill_in 'Reference number', with: '120DFG'
 
     click_button 'Save Stock Transfer'
-    save_and_open_page
+
 
     expect(page).to have_content('saved successfully')
 

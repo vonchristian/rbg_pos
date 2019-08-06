@@ -39,7 +39,7 @@ describe 'New purchase order' do
     fill_in 'Date', with: Date.current
     select 'V001'
     click_button "Save Purchase"
-    save_and_open_page
+
 
     expect(page).to have_content('saved successfully')
   end

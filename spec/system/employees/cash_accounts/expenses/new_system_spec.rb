@@ -21,7 +21,7 @@ describe 'New cash account expense' do
     click_link 'Confirm Transaction'
 
     expect(page).to have_content('confirmed successfully')
-    save_and_open_page
+
 
   end
 

@@ -36,7 +36,7 @@ describe 'New spoilage order' do
     fill_in 'Reference number', with: '120DFG'
 
     click_button 'Save Spoilage Order'
-    save_and_open_page
+
 
     expect(page).to have_content('saved successfully')
 
@@ -56,7 +56,7 @@ describe 'New spoilage order' do
     fill_in 'Reference number', with: '120DFG'
 
     click_button 'Save Spoilage Order'
-    save_and_open_page
+
 
     expect(page).to have_content('saved successfully')
 

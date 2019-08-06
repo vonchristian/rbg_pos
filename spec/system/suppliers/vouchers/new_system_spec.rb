@@ -19,7 +19,7 @@ describe 'New supplier voucher' do
     fill_in 'Amount', with: 10_000
     select 'Debit'
     click_button 'Add'
- 
+
     select 'Cash'
     fill_in 'Amount', with: 10_000
     select 'Credit'
@@ -34,7 +34,7 @@ describe 'New supplier voucher' do
     click_button 'Create Voucher'
 
     expect(page).to have_content('created successfully.')
-    save_and_open_page
+
     click_button 'Confirm Transaction'
 
     expect(page).to have_content('confirmed successfully')

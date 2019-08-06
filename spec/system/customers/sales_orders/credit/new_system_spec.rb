@@ -32,14 +32,14 @@ describe 'New customer credit sales order' do
     click_button "Add to Cart"
 
     expect(page).to have_content('added to cart')
-    save_and_open_page
+
     fill_in 'credit-sale-order-date', with: Date.current
     fill_in 'Charge Invoice No.', with: '120DFG'
     fill_in 'Purchase Order No.', with: '120DFG'
 
 
     click_button 'Save Credit Order'
-    save_and_open_page
+
 
     expect(page).to have_content('saved successfully')
   end
@@ -53,14 +53,14 @@ describe 'New customer credit sales order' do
     click_button "Add to Cart"
 
     expect(page).to have_content('added to cart')
-    save_and_open_page
+
     fill_in 'credit-sale-order-date', with: Date.current
     fill_in 'Charge Invoice No.', with: '120DFG'
     fill_in 'Purchase Order No.', with: '120DFG'
 
 
     click_button 'Save Credit Order'
-    save_and_open_page
+
 
     expect(page).to have_content('saved successfully')
   end

@@ -30,7 +30,7 @@ describe 'New internal use order' do
     click_button "Add to Cart"
 
     expect(page).to have_content('added to cart')
-    save_and_open_page
+
 
     select 'Juan Cruz - Lagawe'
     fill_in 'internal-use-order-date', with: Date.current
@@ -46,7 +46,7 @@ describe 'New internal use order' do
   it 'with searched product' do
     fill_in 'internal-use-search-form', with: 'Test Product'
     click_button 'internal-use-search-btn'
-    save_and_open_page
+
     fill_in 'line_item_quantity',   with: 1
 
     click_button "Add to Cart"
@@ -58,7 +58,7 @@ describe 'New internal use order' do
     fill_in 'Description', with: '120DFG'
 
     click_button 'Save Internal Use Order'
-    save_and_open_page
+
 
     expect(page).to have_content('saved successfully')
 

@@ -37,7 +37,7 @@ describe 'New cash sales order' do
     fill_in 'Reference number', with: '120DFG'
 
     click_button 'Save Order'
-    save_and_open_page
+
 
     expect(page).to have_content('saved successfully')
 
@@ -59,7 +59,7 @@ describe 'New cash sales order' do
     fill_in 'Reference number', with: '120DFG'
 
     click_button 'Save Order'
-    save_and_open_page
+
 
     expect(page).to have_content('saved successfully')
 

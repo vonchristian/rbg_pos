@@ -10,17 +10,21 @@
 </div>
 <hr>
 <div class="row">
-  <div class="col-md-4">
+  <div class="col-md-3">
     <small> SALES </small>
     <h4 class="subtitle-up"> <%= @stock.sales.total %></h4>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-3">
     <small> TRANSFERS </small>
     <h4 class="subtitle-up"><%= @stock.stock_transfers.total %></h4>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-3">
     <small> INTERNAL USES </small>
     <h4 class="subtitle-up"><%= @stock.internal_uses.total %></h4>
+  </div>
+  <div class="col-md-3">
+    <small> SPOILAGES </small>
+    <h4 class="subtitle-up"><%= @stock.spoilages.total %></h4>
   </div>
 </div>
 <hr>
