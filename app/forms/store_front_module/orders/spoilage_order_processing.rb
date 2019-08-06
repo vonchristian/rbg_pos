@@ -45,7 +45,7 @@ module StoreFrontModule
 
       def create_entry(order)
         store_front = find_employee.store_front
-        spoilages = store_front.default_spoilages_account
+        spoilages = store_front.spoilage_account
         merchandise_inventory = store_front.merchandise_inventory_account
         find_employee.entries.create!(
           recorder: find_employee,

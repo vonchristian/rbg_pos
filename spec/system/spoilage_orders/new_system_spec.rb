@@ -31,13 +31,11 @@ describe 'New spoilage order' do
 
     expect(page).to have_content('added to cart')
 
-    fill_in 'sale-order-date', with: Date.current
-    select customer.full_name
-    fill_in 'Cash tendered',    with: 100
-    fill_in 'Discount',         with: 0
+    fill_in 'spoilage-order-date', with: Date.current
+    fill_in 'Description', with: 'spoilage'
     fill_in 'Reference number', with: '120DFG'
 
-    click_button 'Save Order'
+    click_button 'Save Spoilage Order'
     save_and_open_page
 
     expect(page).to have_content('saved successfully')
@@ -53,13 +51,11 @@ describe 'New spoilage order' do
 
     expect(page).to have_content('added to cart')
 
-    fill_in 'sale-order-date', with: Date.current
-    select customer.full_name
-    fill_in 'Cash tendered',    with: 100
-    fill_in 'Discount',         with: 0
+    fill_in 'spoilage-order-date', with: Date.current
+    fill_in 'Description', with: 'spoilage'
     fill_in 'Reference number', with: '120DFG'
 
-    click_button 'Save Order'
+    click_button 'Save Spoilage Order'
     save_and_open_page
 
     expect(page).to have_content('saved successfully')

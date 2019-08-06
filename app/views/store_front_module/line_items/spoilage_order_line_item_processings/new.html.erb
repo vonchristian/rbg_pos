@@ -94,12 +94,12 @@
         <% if @cart.spoilage_order_line_items.present? %>
           <%= simple_form_for @spoilage_order, url: :store_front_module_spoilage_order_processings do |f| %>
             <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-            <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+            <%= f.input :date, as: :string, input_html: { class: "datepicker", id: 'spoilage-order-date' } %>
             <%= f.input :description %>
             <%= f.input :reference_number %>
             <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
             <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-        <%=f.submit "Save Sales Return", class: "btn btn-danger btn-block btn-lg", :accesskey => "C" %>
+        <%=f.submit "Save Spoilage Order", class: "btn btn-danger btn-block btn-lg", :accesskey => "C" %>
         <% end %>
       <% end %>
       </div>
