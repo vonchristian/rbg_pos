@@ -93,6 +93,7 @@ Rails.application.routes.draw do
     end
   end
   resources :cash_accounts, only: [:show] do
+
     resources :expenses, only: [:new, :create], module: :cash_accounts
     resources :cash_transfers, only: [:new, :create], module: :cash_accounts
 

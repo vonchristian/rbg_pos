@@ -1,5 +1,66 @@
 <div class="content">
   <div class="box box-solid">
     <div class="box-body">
-<%= link_to 'New Expense', new_cash_account_expense_path(@cash_account) %>
-<%= link_to 'New Cash Transfer', new_cash_account_cash_transfer_path(@cash_account), class: "btn btn-danger btn-sm" %>
+      <%= @cash_account.name %>
+      <h4 class="title-up"><%= number_to_currency @cash_account.balance %></h4>
+<%= link_to 'New Expense', new_cash_account_expense_path(@cash_account), class: 'btn btn-danger' %>
+<%= link_to 'New Cash Transfer', new_cash_account_cash_transfer_path(@cash_account), class: "btn btn-danger" %>
+<hr>
+<h4 class="subtitle-up"> Transactions </h4>
+<div class="card">
+  <div class="card-body">
+    <%= form_tag({:action => "show",  controller: "cash_accounts",  to_date: params[:to_date]}, {:method => :get})  do %>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <%= text_field_tag :from_date, @date, :class => 'datepicker form-control border-input', :placeholder => "From Date" %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <%= text_field_tag :to_date, @date, :class => 'datepicker form-control border-input', :placeholder => "To Date" %>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <button type="submit" class="btn btn-default"> Search</button>
+        </div>
+      </div>
+    <% end %>
+    <div class="table table-responsive">
+      <table class="table table-hover table-striped">
+        <thead>
+          <tr>
+            <th>Entry Date </th>
+            <th> REF # </th>
+            <th> Employee </th>
+            <th> Description </th>
+            <th> Receipt </th>
+            <th> Disburse </th>
+            <th> Balance </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @entries.each do |entry| %>
+            <tr>
+              <td><%= link_to entry.entry_date.strftime('%B %e, %Y'), accounting_entry_path(entry) %></td>
+              <td><%= entry.reference_number %></td>
+              <td><%= entry.recorder_name %></td>
+              <td><%= entry.description %></td>
+              <td>
+                <% total_debits = entry.debit_amounts.where(account: @cash_account).total %>
+                <% if !total_debits.zero? %>
+                <%= number_to_currency total_debits %>
+                <% end %>
+              </td>
+              <td><% total_credits =  entry.credit_amounts.where(account: @cash_account).total %>
+              <% if !total_credits.zero? %>
+              <%= number_to_currency total_credits %>
+              <% end %>
+              </td>
+              <td><%= number_to_currency @cash_account.balance(to_date: entry.entry_date) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%==pagy_nav(@pagy) %>
