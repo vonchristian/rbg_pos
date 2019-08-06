@@ -7,7 +7,7 @@ describe 'New employee remittance' do
     proprietor  = create(:proprietor, cash_on_hand_account: cash_2)
     sales_clerk = create(:sales_clerk, cash_on_hand_account: cash)
     login_as(sales_clerk, scope: :user)
-    visit employee_cash_on_hand_account_path(id: cash.id, employee_id: sales_clerk.id)
+    visit cash_account_path(cash)
     click_link 'New Cash Transfer'
   end
   it 'with valid attributes' do
@@ -23,7 +23,7 @@ describe 'New employee remittance' do
 
     expect(page).to have_content('confirmed successfully')
     save_and_open_page
-    
+
   end
 
 end

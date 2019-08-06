@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :account, class: AccountingModule::Account do
     association :business
     sequence(:name) { |n| "#{n}" }
-    account_code { Faker::Number.number(12) }
+    account_code { Faker::Number.number(digits: 12) }
 
     factory :asset, class: AccountingModule::Asset do
 

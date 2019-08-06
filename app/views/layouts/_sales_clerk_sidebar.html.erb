@@ -18,7 +18,7 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <% if current_user.cash_on_hand_account.present? %>
-        <%= link_to cash_account_path(cash_on_hand_account)  do %>
+        <%= link_to cash_account_path(current_user.cash_on_hand_account)  do %>
         <h4><b>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<%= number_to_currency current_user.cash_on_hand_account.balance %></b></h4>
         &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<small>CASH BALANCE</small>
         <% end %>
