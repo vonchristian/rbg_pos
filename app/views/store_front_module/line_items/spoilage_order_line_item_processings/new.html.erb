@@ -9,9 +9,9 @@
        <% if params[:search].present? %>
         <%=form_tag new_store_front_module_spoilage_order_line_item_processing_path, method: :get do %>
           <div class="input-group">
-            <%= text_field_tag :search, params[:search], class: "form-control input-lg", placeholder: "Search Products..." %>
+            <%= text_field_tag :search, params[:search], id: 'spoilage-search-form', class: "form-control input-lg", placeholder: "Search Products..." %>
             <span class="input-group-btn">
-              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-danger btn-lg") do %>
+              <%= button_tag(type: 'submit', id: "spoilage-search-btn", class: "btn btn-danger btn-lg") do %>
                 <i class="fa fa-search"></i> Search
               <% end %>
             </span>
@@ -20,9 +20,9 @@
         <% else %>
          <%=form_tag new_store_front_module_spoilage_order_line_item_processing_path, method: :get do %>
           <div class="input-group">
-            <%= text_field_tag :search, params[:search], autofocus: true,  class: "form-control input-lg", placeholder: "Search Products..."  %>
+            <%= text_field_tag :search, params[:search], autofocus: true, id: 'spoilage-search-form', class: "form-control input-lg", placeholder: "Search Products..."  %>
             <span class="input-group-btn">
-              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-danger btn-lg") do %>
+              <%= button_tag(type: 'submit', id: "spoilage-search-btn", class: "btn btn-danger btn-lg") do %>
                 <i class="fa fa-search"></i> Search
               <% end %>
             </span>
@@ -32,12 +32,10 @@
         <br>
         <table class="table table-responsive">
           <tbody>
-            <% if @products.present? %>
-              <%= render 'store_front_module/line_items/spoilage_order_line_item_processings/searched_product_results' %>
-            <% elsif @line_items.present? %>
-              <%= render 'store_front_module/line_items/spoilage_order_line_item_processings/searched_line_item_results' %>
-
-
+            <% if @stocks.present? %>
+              <%= render 'store_front_module/line_items/spoilage_order_line_item_processings/searched_stocks_results' %>
+            <% elsif @products.present? %>
+              <%= render 'store_front_module/line_items/spoilage_order_line_item_processings/searched_products_results' %>
             <% end %>
           </tbody>
         </table>
@@ -108,4 +106,3 @@
 
     </div>
   </div>
-

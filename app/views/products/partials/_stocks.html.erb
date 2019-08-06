@@ -5,8 +5,9 @@
 
                                       <th>Product</th>
                                       <th>Date Purchased </th>
-                                      <th>Quantity</th>
                                       <th> In Stock </th>
+
+                                      <th>Quantity</th>
                                       <th>Unit Cost</th>
                                       <th>Total Cost</th>
                                       <th>Supplier</th>
@@ -35,13 +36,17 @@
                                         <% end %>
                                       </td>
 
-                                      <td><%= stock.try(:date).try(:strftime, ("%B %e, %Y")) %></td>
-
-                                      <td><%= stock.purchase_quantity %></td>
+                                      <td><%= stock.try(:purchase_order_date).try(:strftime, ("%B %e, %Y")) %></td>
                                       <td> <%= stock.balance %></td>
 
+                                      <td><%= stock.purchase_quantity %></td>
 
-                                      <td><%= stock.try(:supplier_business_name) %></td>
+                                      <td><%= number_to_currency stock.last_purchase_cost %></td>
+                                      <td><%= number_to_currency stock.total_cost %></td>
+
+
+
+                                      <td><%= stock.try(:supplier_name) %></td>
                                       <% if current_user.proprietor? %>
                                       <td><%= link_to "Edit", edit_product_stock_path(id: stock.id, product_id: @product.id), class: "btn btn-warning btn-sm" %>
                                       <% end %>

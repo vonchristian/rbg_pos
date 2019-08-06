@@ -3,8 +3,8 @@ module StoreFrontModule
     class SpoilageOrderLineItemProcessingsController < ApplicationController
       def new
         if params[:search].present?
-          @products = Product.text_search(params[:search]).all
-          @line_items = StoreFrontModule::LineItems::PurchaseOrderLineItem.processed.text_search(params[:search])
+          @pagy, @stocks   = pagy(current_store_front.stocks.text_search(params[:search]))
+          @pagy, @products = pagy(Product.text_search(params[:search]))
         end
         @cart = current_cart
         @spoilage_order_line_item = StoreFrontModule::LineItems::SpoilageOrderLineItemProcessing.new
@@ -30,7 +30,7 @@ module StoreFrontModule
       private
       def line_item_params
         params.require(:store_front_module_line_items_spoilage_order_line_item_processing).permit(:quantity,
-          :unit_of_measurement_id, :product_id, :cart_id, :adjustment)
+          :unit_of_measurement_id, :product_id, :cart_id, :adjustment, :stock_id)
       end
     end
   end

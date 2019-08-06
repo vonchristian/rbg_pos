@@ -49,6 +49,10 @@ module StoreFronts
     def last_purchase_cost
       purchase.unit_cost
     end
-    
+
+    def total_cost
+      purchase_quantity * last_purchase_cost
+    end
+
   end
 end
