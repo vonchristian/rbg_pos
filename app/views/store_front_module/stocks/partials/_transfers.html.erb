@@ -1,0 +1,23 @@
+<h4 class="title-up"> Stock Transfers </h4>
+<div  class="table table-responsive">
+  <table class="table table-responsive">
+    <thead>
+      <tr>
+        <th> Date </th>
+        <th> Destination </th>
+        <th> Quantity </th>
+        <th> REF # </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @stock_transfers.each do |stock_transfer| %>
+        <tr>
+          <td><%= link_to stock_transfer.purchase_order_date.strftime('%B %e, %Y'), store_front_module_stock_transfer_path(stock_transfer.purchase_order) %></td>
+          <td><%= stock_transfer.destination_store_front_name %></td>
+          <td><%= stock_transfer.quantity %></td>
+          <td># <%= stock_transfer.reference_number %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

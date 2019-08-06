@@ -1,7 +1,7 @@
 module StoreFronts
   class Stock < ApplicationRecord
     include PgSearch::Model
-    pg_search_scope :text_search, against: [:barcode]
+    pg_search_scope :text_search, against: [:barcode], associated_against: { product: [:name] }
     belongs_to :store_front
     belongs_to :product
     belongs_to :unit_of_measurement, class_name: 'StoreFrontModule::UnitOfMeasurement'
@@ -16,10 +16,15 @@ module StoreFronts
 
     delegate :name, to: :product
     delegate :unit_code, to: :unit_of_measurement
+    delegate :purchase_order, to: :purchase
+    delegate :supplier, to: :purchase_order
+    delegate :name, to: :supplier, prefix: true
+    delegate :date, to: :purchase_order, prefix: true, allow_nil: true
+
     def self.processed
       joins(:purchase).where.not('line_items.order_id' => nil)
     end
-    
+
     def purchase_quantity
       purchase.quantity
     end
@@ -44,5 +49,6 @@ module StoreFronts
     def last_purchase_cost
       purchase.unit_cost
     end
+    
   end
 end

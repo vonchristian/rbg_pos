@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-md-6">
+    <small> PURCHASE QTY </small>
+    <h4 class="title-up"> <%= @stock.purchase_quantity %></h4>
+  </div>
+  <div class="col-md-6">
+    <small> IN STOCK </small>
+    <h4 class="title-up"><%= @stock.balance%></h4>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-md-4">
+    <small> SALES </small>
+    <h4 class="subtitle-up"> <%= @stock.sales.total %></h4>
+  </div>
+  <div class="col-md-4">
+    <small> TRANSFERS </small>
+    <h4 class="subtitle-up"><%= @stock.stock_transfers.total %></h4>
+  </div>
+  <div class="col-md-4">
+    <small> INTERNAL USES </small>
+    <h4 class="subtitle-up"><%= @stock.internal_uses.total %></h4>
+  </div>
+</div>
+<hr>
+<p><b>barcode</b></p>
+<%= @stock.barcode %>
+<br>
+<p><b>Supplier</b></p>
+<%= @stock.supplier_name %>

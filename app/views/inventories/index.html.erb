@@ -1,9 +1,11 @@
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-default">
+    <div class="box box-solid">
       <div class="box-header with-border">
         <h3 class="box-title">Inventories</h3><br>
-        <span class="text-muted"> List of delivered inventories </span>
+      </div>
+
+      <div class="box-body">
         <%=form_tag inventories_path, method: :get, id: "search-form" do %>
           <div class="input-group">
             <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search product...", type: "search" %>
@@ -14,27 +16,32 @@
             </span>
           </div>
         <% end %>
-      </div>
-      <div class="box-body">
+        <br>
         <div class="table table-responsive">
           <table class="table table-hover table-striped">
             <thead>
               <tr>
                 <th>Date Delivered</th>
-                <th>Product</th>
+                <th>Stock</th>
                 <th> Barcode </th>
-                <th>Quantity</th>
-                <th>Available QTY</th>
+                <th>QTY</th>
+                <th> Sales </th>
+                <th> Transfers </th>
+                <th> Internal Uses </th>
+                <th>In Stock</th>
               </tr>
             </thead>
             <tbody>
-              <% @inventories.each do |inventory| %>
+              <% @stocks.each do |stock| %>
                 <tr>
-                  <td><%= inventory.created_at.strftime("%B %e, %Y") %></td>
-                  <td><%= link_to inventory.name, store_front_module_purchase_order_line_item_path(inventory) %></td>
-                  <td><%= inventory.barcode %></td>
-                  <td><%= inventory.purchases.total %></td>
-                  <td><%= inventory.balance %></td>
+                  <td><%= stock.purchase_order_date.try(:strftime, ("%B %e, %Y")) %></td>
+                  <td><%= link_to stock.name, store_front_module_stock_path(stock) %></td>
+                  <td><%= stock.barcode %></td>
+                  <td><%= stock.purchase_quantity %></td>
+                  <td><%= stock.sales.total %></td>
+                  <td><%= stock.stock_transfers.total %></td>
+                  <td><%= stock.internal_uses.total %></td>
+                  <td><%= stock.balance %></td>
                 </tr>
               <% end %>
             </tbody>

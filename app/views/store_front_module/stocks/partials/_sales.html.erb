@@ -1,0 +1,23 @@
+<h4 class="title-up"> Sales </h4>
+<div  class="table table-responsive">
+  <table class="table table-responsive">
+    <thead>
+      <tr>
+        <th> Date </th>
+        <th> Customer </th>
+        <th> Quantity </th>
+        <th> REF # </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @sales.each do |sale| %>
+        <tr>
+          <td><%= link_to sale.date.strftime('%B %e, %Y'), store_front_module_sales_order_path(sale.sales_order) %></td>
+          <td><%= sale.customer_name %></td>
+          <td><%= sale.quantity %></td>
+          <td># <%= sale.reference_number %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

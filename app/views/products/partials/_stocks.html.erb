@@ -15,7 +15,7 @@
                                     <tbody>
                                       <% @stocks.each do |stock| %>
                                       <tr>
-                                      <td><%=link_to stock.name, store_front_module_purchase_order_line_item_path(stock) %><br>
+                                      <td><%=link_to stock.name, store_front_module_stock_path(stock) %><br>
                                         <small><%= stock.barcode %></small><br>
 
                                         <% if stock.stock_transfers.present? %>
@@ -39,7 +39,7 @@
 
                                       <td><%= stock.purchase_quantity %></td>
                                       <td> <%= stock.balance %></td>
-                                      
+
 
                                       <td><%= stock.try(:supplier_business_name) %></td>
                                       <% if current_user.proprietor? %>
