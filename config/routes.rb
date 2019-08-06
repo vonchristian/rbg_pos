@@ -89,7 +89,13 @@ Rails.application.routes.draw do
     resources :entries, only: [:index], module: :employees
     resources :cash_counts, only: [:new, :create], module: :employees
     resources :bill_counts, only: [:create], module: :employees
-    resources :cash_on_hand_accounts, only: [:show], module: :employees
+    resources :cash_on_hand_accounts, only: [:show], module: :employees do
+    end
+  end
+  resources :cash_accounts, only: [:show] do
+    resources :expenses, only: [:new, :create], module: :cash_accounts
+    resources :cash_transfers, only: [:new, :create], module: :cash_accounts
+
   end
   resources :work_orders, only: [:index, :new, :create] do
     resources :payments, only: [:ew, :create], module: :work_orders

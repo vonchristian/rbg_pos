@@ -34,9 +34,7 @@
             <br>
           <% end %>
           <div class="box-footer">
-            <%= link_to 'Confirm Transaction', voucher_confirmations_path(voucher_id: @voucher.id), method: :create, class: 'btn btn-primary pull-right' %>
-            <%= link_to 'Disburse', new_voucher_disbursement_path(@voucher), class: "btn btn-primary pull-right" %>
-          </div>
+            <%= link_to 'Confirm Transaction', voucher_confirmations_path(voucher_id: @voucher.id), method: :post, class: 'btn btn-primary pull-right' %>
         </div>
       </div>
     </div>

@@ -4,7 +4,7 @@
 <%= @account.balance(to_date: @to_date) %>
 <small>BEGINNING BALANCE </small>
 
-<%= link_to 'New Cash Transfer', new_accounting_employee_cash_transfer_path(@employee), class: "btn btn-danger btn-sm" %>
+<%= link_to 'New Expense', new_employee_cash_on_hand_account_expense_path(@account), class: "btn btn-danger btn-sm" %>
 
 <p>Transactions for this Day</p>
 <div class="table table-responsive">

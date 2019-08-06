@@ -1,11 +1,11 @@
-module Accounting
+module CashAccounts
   class CashTransfersController < ApplicationController
     def new
-      @employee = User.find(params[:employee_id])
+      @cash_account = AccountingModule::Asset.find(params[:cash_account_id])
       @cash_transfer = AccountingModule::CashTransferVoucher.new
     end
     def create
-      @employee = User.find(params[:employee_id])
+      @cash_account = AccountingModule::Asset.find(params[:cash_account_id])
       @cash_transfer = AccountingModule::CashTransferVoucher.new(cash_transfer_voucher_params)
       if @cash_transfer.valid?
         @cash_transfer.process!
