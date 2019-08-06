@@ -9,7 +9,6 @@ module StoreFrontModule
         header = product_spreadsheet.row(1)
         (2..product_spreadsheet.last_row).each do |i|
           row = Hash[[header, product_spreadsheet.row(i)].transpose]
-
           create_or_find_product(row)
           create_or_find_line_item(row)
           find_or_create_selling_price(row)
@@ -26,15 +25,22 @@ module StoreFrontModule
       end
 
       def create_or_find_line_item(row)
+        stock = StoreFronts::Stock.create!(
+          store_front:         employee.store_front,
+          product:             find_product(row),
+          unit_of_measurement: unit_of_measurement(row)
+        )
         StoreFrontModule::LineItems::PurchaseOrderLineItem.create!(
-          store_front: employee.store_front,
-          quantity: quantity(row),
-          unit_cost: unit_cost(row),
-          total_cost: total_cost(row),
-          product: find_product(row),
+          store_front:         employee.store_front,
+          stock:               stock,
+          quantity:            quantity(row),
+          unit_cost:           unit_cost(row),
+          total_cost:          total_cost(row),
+          product:             find_product(row),
           unit_of_measurement: unit_of_measurement(row),
-          bar_code: bar_code(row),
-          registry_id: self.id)
+          bar_code:            bar_code(row),
+          registry_id:         self.id)
+
       end
 
       def quantity(row)
