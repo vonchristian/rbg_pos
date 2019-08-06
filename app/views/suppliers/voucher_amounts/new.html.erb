@@ -43,7 +43,7 @@
                   <td><%= number_to_currency amount.amount %></td>
                   <td><%= amount.amount_type %></td>
                   <td>
-                    <%= link_to voucher_amount_path(amount), method: :delete do %>
+                    <%= link_to supplier_voucher_amount_path(id: amount.id, supplier_id: @supplier.id), method: :delete do %>
                       <i class="fa fa-trash text-danger"></i>
                     <% end %>
                   </td>

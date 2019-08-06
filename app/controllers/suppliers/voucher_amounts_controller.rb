@@ -15,6 +15,12 @@ module Suppliers
         render :new
       end
     end
+    def destroy
+      @supplier = Supplier.find(params[:supplier_id])
+      @voucher_amount = current_cart.voucher_amounts.find(params[:id])
+      @voucher_amount.destroy
+      redirect_to new_supplier_voucher_amount_url(@supplier)
+    end 
 
     private
     def voucher_amount_params

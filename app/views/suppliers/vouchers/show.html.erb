@@ -1,5 +1,81 @@
-<%= simple_form_for @confirmation, url: :supplier_voucher_confirmations do |f| %>
-  <%= f.input :supplier_id, input_html: { value: @supplier.id }, as: :hidden %>
-  <%= f.input :voucher_id, input_html: { value: @voucher.id }, as: :hidden %>
-  <%= f.submit 'Confirm Transaction', class: 'btn btn-primary' %>
+<% if !@voucher.disbursed? %>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="box box-solid">
+        <div class="box-header">
+          <h4 class="box-title"> Voucher Details </h4>
+        </div>
+        <div class="box-body">
+          <%= @voucher.description %>
+          <%= @voucher.payee_name %>
+          <hr>
+          <p class="text-muted"> DEBITS </p>
+          <% @voucher.voucher_amounts.debit.each do |voucher_amount| %>
+            <div class="row">
+              <div class="col-md-6 col-md-offset-1">
+                <%= voucher_amount.account_name %>
+              </div>
+              <div class="col-md-3">
+                <span class="pull-right"> <%= number_to_currency voucher_amount.amount %></span>
+              </div>
+            </div>
+            <br>
+          <% end %>
+          <p class="text-muted"> CREDITS </p>
+          <% @voucher.voucher_amounts.credit.each do |voucher_amount| %>
+            <div class="row">
+              <div class="col-md-6 col-md-offset-1">
+                <%= voucher_amount.account_name %>
+              </div>
+              <div class="col-md-3">
+                <span class="pull-right"> <%= number_to_currency voucher_amount.amount %></span>
+              </div>
+            </div>
+            <br>
+          <% end %>
+          <div class="box-footer">
+            <%= link_to 'Confirm Transaction', voucher_confirmations_path(voucher_id: @voucher.id), method: :post, class: 'btn btn-primary pull-right' %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% else %>
+   <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="box box-solid">
+        <div class="box-header">
+          <h4 class="box-title"> Voucher Details </h4>
+        </div>
+        <div class="box-body">
+          <%= @voucher.description %>
+          <%= @voucher.payee_name %>
+          <hr>
+          <p class="text-muted"> DEBITS </p>
+          <% @voucher.entry.debit_amounts.each do |debit_amount| %>
+            <div class="row">
+              <div class="col-md-6 col-md-offset-1">
+                <%= debit_amount.account_name %>
+              </div>
+              <div class="col-md-3">
+                <span class="pull-right"> <%= number_to_currency debit_amount.amount %></span>
+              </div>
+            </div>
+            <br>
+          <% end %>
+          <p class="text-muted"> CREDITS </p>
+          <% @voucher.entry.credit_amounts.each do |credit_amount| %>
+            <div class="row">
+              <div class="col-md-6 col-md-offset-1">
+                <%= credit_amount.account_name %>
+              </div>
+              <div class="col-md-3">
+                <span class="pull-right"> <%= number_to_currency credit_amount.amount %></span>
+              </div>
+            </div>
+            <br>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
 <% end %>
