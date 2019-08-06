@@ -61,7 +61,7 @@ module StoreFrontModule
       end
 
       def create_stock(line_item)
-        StoreFronts::StockTransfers::StockCreation.new(line_item: line_item, destination_store_front: find_destination_store_front).create_stock!
+        ::StoreFronts::StockTransfers::StockCreation.new(line_item: line_item, destination_store_front: find_destination_store_front).create_stock!
       end
 
 

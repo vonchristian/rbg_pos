@@ -32,6 +32,7 @@ class StoreFront < ApplicationRecord
   def payable_account
     merchandise_inventory_account
   end
+
   def self.receivable_accounts
     ids = pluck(:receivable_account_id)
     AccountingModule::Account.where(id: ids)

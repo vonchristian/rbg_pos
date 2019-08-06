@@ -25,15 +25,14 @@ module StoreFrontModule
       end
 
       def decrease_stock_quantity
-        sales = find_cart.sales_order_line_items.create!(
-          stock:            find_stock,
-          quantity:            quantity,
-          unit_cost:           selling_cost,
-          total_cost:          set_total_cost,
-          product:          find_stock.product,
-          unit_of_measurement: find_unit_of_measurement,
-          bar_code: find_stock.barcode
-          )
+        find_cart.sales_order_line_items.create!(
+        stock:               find_stock,
+        quantity:            quantity,
+        unit_cost:           selling_cost,
+        total_cost:          set_total_cost,
+        product:             find_stock.product,
+        unit_of_measurement: find_unit_of_measurement,
+        bar_code:            find_stock.barcode)
       end
 
 
