@@ -113,8 +113,14 @@ class Product < ApplicationRecord
   def available_quantity(args={})
     balance(args)
   end
+
   def balance(args={})
-    stocks.map{|a| a.balance }.sum
+    store_front = args[:store_front]
+    if store_front.present?
+      store_front.stocks.processed.map{|a| a.balance }.sum
+    else
+      stocks.processed.map{|a| a.balance }.sum
+    end
   end
 
   def sales_balance(args={})
