@@ -3,7 +3,7 @@ module StoreFrontModule
     class InternalUseOrderLineItemProcessingsController < ApplicationController
       def new
         if params[:search].present?
-          @pagy, @stocks   = pagy(current_store_front.stocks.text_search(params[:search]))
+          @pagy, @stocks   = pagy(current_store_front.stocks.processed.text_search(params[:search]))
           @pagy, @products = pagy(Product.text_search(params[:search]))
         end
         @cart = current_cart
