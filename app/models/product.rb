@@ -117,7 +117,7 @@ class Product < ApplicationRecord
   def balance(args={})
     store_front = args[:store_front]
     if store_front.present?
-      store_front.stocks.processed.map{|a| a.balance }.sum
+      stocks.processed.where(store_front: store_front).map{ |a| a.balance }.sum
     else
       stocks.processed.map{|a| a.balance }.sum
     end
