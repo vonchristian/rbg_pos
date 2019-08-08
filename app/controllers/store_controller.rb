@@ -1,7 +1,7 @@
 class StoreController < ApplicationController
 	def index
     if params[:search].present?
-      @stocks          = current_store_front.stocks.processed.available.text_search(params[:search])
+      @stocks          = current_store_front.stocks.processed.text_search(params[:search])
       @pagy, @products = pagy(Product.text_search(params[:search]))
     end
 
