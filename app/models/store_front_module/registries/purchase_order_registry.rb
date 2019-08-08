@@ -26,6 +26,7 @@ module StoreFrontModule
 
       def create_or_find_line_item(row)
         stock = ::StoreFronts::Stock.create!(
+          available:           true,
           store_front:         employee.store_front,
           product:             find_product(row),
           barcode:             bar_code(row),
@@ -41,7 +42,6 @@ module StoreFrontModule
           unit_of_measurement: unit_of_measurement(row),
           bar_code:            bar_code(row),
           registry_id:         self.id)
-
       end
 
       def quantity(row)

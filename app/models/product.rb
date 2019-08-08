@@ -1,7 +1,7 @@
 class Product < ApplicationRecord
 	include PgSearch::Model
   multisearchable against: [:name]
-	pg_search_scope :text_search, against: [:name], :associated_against => {:stocks => [:barcode] }
+	pg_search_scope :text_search, against: [:name]
   pg_search_scope :text_search_with_barcode, against: [:name],
   :associated_against => {
     :purchases => [:bar_code]}
@@ -126,6 +126,7 @@ class Product < ApplicationRecord
   def sales_balance(args={})
       sales.balance(args)
   end
+
   def sales_returns_balance(args={})
     sales_returns.balance(args)
   end

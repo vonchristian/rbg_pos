@@ -22,6 +22,7 @@ module StoreFrontModule
       private
       def process_sales_order_line_item
         decrease_stock_quantity
+        update_stock_availability
       end
 
       def decrease_stock_quantity
@@ -80,6 +81,10 @@ module StoreFrontModule
       def available_quantity
         find_stock.balance
       end
+
+      def update_stock_availability
+        StoreFronts::StockAvailabilityUpdater.new(stock: find_stock).update_availability!
+      end 
 
       def quantity_is_less_than_or_equal_to_available_quantity?
         errors[:quantity] << "exceeded available quantity" if converted_quantity.to_f > available_quantity

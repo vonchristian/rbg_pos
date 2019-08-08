@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_27_055154) do
+ActiveRecord::Schema.define(version: 2019_08_08_054817) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -449,6 +449,7 @@ ActiveRecord::Schema.define(version: 2019_07_27_055154) do
     t.bigint "store_front_id"
     t.string "barcode"
     t.bigint "unit_of_measurement_id"
+    t.boolean "available", default: false
     t.index ["product_id"], name: "index_stocks_on_product_id"
     t.index ["store_front_id"], name: "index_stocks_on_store_front_id"
     t.index ["unit_of_measurement_id"], name: "index_stocks_on_unit_of_measurement_id"

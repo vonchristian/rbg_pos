@@ -24,6 +24,10 @@ module StoreFronts
     def self.processed
       joins(:purchase).where.not('line_items.order_id' => nil)
     end
+    
+    def self.available
+      where(available: true)
+    end
 
     def purchase_quantity
       purchase.quantity

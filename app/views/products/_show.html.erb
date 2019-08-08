@@ -12,36 +12,6 @@
               <h4><%= @product.available_quantity(store_front: current_store_front) %></h4> IN STOCK
 
               <p class="category"> <%= @product.description %> </p>
-              <div class="row">
-                <div class="col-md-3">
-                  <h4><%= @product.purchases_balance(store_front: current_store_front) %></h4>
-                  <small>PURCHASES</small>
-
-
-
-                </div>
-                <div class="col-md-3">
-                  <h4><%= @product.sales_balance(store_front: current_store_front) %></h4>
-                  <small>SALES</small><br><br>
-                  <br>
-                  <small class="text-danger"><%= @product.sales_returns_balance(store_front: current_store_front) %></small><br>
-                  <small>SALES RETURNS</small>
-                  <br>
-                  <small class="text-danger"><%= @product.spoilages_balance(store_front: current_store_front) %></small><br>
-                  <small>SPOILAGES</small>
-                  <br>
-                  <small class="text-danger"><%= @product.internal_use_orders_balance(store_front: current_store_front) %></small><br>
-                  <small>INTERNAL USE</small>
-                </div>
-                <h4><%= @product.delivered_stock_transfers_balance(store_front: current_user.store_front) %></h4>
-                <small>TRANSFERRED STOCKS</small><br><br>
-                <h4><%= @product.received_stock_transfers_balance(store_front: current_user.store_front) %></h4>
-                <small>RECEIVED STOCKS</small><br><br>
-                <div class="col-md-3">
-                  <h4><%= @product.balance(store_front: current_user.store_front) %></h4>
-                  <small>AVAILABLE QTY</small>
-                </div>
-              </div>
             </div>
           </div>
         </div>
