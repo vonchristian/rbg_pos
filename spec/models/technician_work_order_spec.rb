@@ -1,5 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe TechnicianWorkOrder, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe TechnicianWorkOrder, type: :model do
+  describe 'associations' do
+    it { is_expected.to belong_to :technician }
+    it { is_expected.to belong_to :work_order }
+  end
 end

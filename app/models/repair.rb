@@ -1,2 +1,0 @@
-class Repair < ApplicationRecord
-end

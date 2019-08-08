@@ -1,0 +1,2 @@
+class Diagnosis < Post
+end 

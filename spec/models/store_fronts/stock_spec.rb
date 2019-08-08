@@ -14,9 +14,21 @@ module StoreFronts
       it { is_expected.to have_many :sales_returns }
       it { is_expected.to have_many :purchase_returns }
       it { is_expected.to have_many :for_warranties }
+    end
+    describe 'delegations' do
+      it { is_expected.to delegate_method(:name).to(:product) }
+      it { is_expected.to delegate_method(:unit_code).to(:unit_of_measurement) }
+      it { is_expected.to delegate_method(:purchase_order).to(:purchase) }
+      it { is_expected.to delegate_method(:supplier).to(:purchase_order) }
+      it { is_expected.to delegate_method(:name).to(:supplier).with_prefix }
+      it { is_expected.to delegate_method(:date).to(:purchase_order).with_prefix }
+
+
+
 
 
     end
+
     it '.processed' do
       stock_1  = create(:stock)
       stock_2  = create(:stock)
@@ -28,6 +40,13 @@ module StoreFronts
 
     end
 
+    it '.available' do
+      stock   = create(:stock, available: true)
+      stock_2 = create(:stock, available: false)
+
+      expect(described_class.available).to include(stock)
+      expect(described_class.available).to_not include(stock_2)
+    end
     it '#balance' do
       stock    = create(:stock)
       entry    = create(:entry_with_credit_and_debit)
