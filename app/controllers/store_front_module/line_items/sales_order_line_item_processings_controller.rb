@@ -14,7 +14,7 @@ module StoreFrontModule
         @line_item = StoreFrontModule::LineItems::SalesOrderLineItem.find(params[:id])
         @line_item.destroy
         def update_stock_availability
-          StoreFronts::StockAvailabilityUpdater.new(stock: @line_item.stock).update_availability!
+          ::StoreFronts::StockAvailabilityUpdater.new(stock: @line_item.stock).update_availability!
         end
         redirect_to store_index_url, notice: "Removed successfully"
       end
