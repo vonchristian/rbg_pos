@@ -15,7 +15,10 @@
 
         <i class="icon-calendar"></i> <%= @order.date.strftime("%B %e, %Y") %><br>
         <p class="text-black"> Reference Number: <%= @order.reference_number %></p>
-        <p class="text-black"> Description: <%= @order.description %></p>
+        <p class="text-black"> Store Front: <%= @order.store_front.try(:name) %></p>
+        <p class="text-black"> Employee: <%= @order.employee.try(:name) %></p>
+
+
 
         <hr>
         <%= link_to 'Add Additional Items', new_store_front_module_sales_order_additional_line_item_path(@order), class: "btn btn-danger" %>
