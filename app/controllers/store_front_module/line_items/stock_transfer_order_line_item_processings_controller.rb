@@ -15,6 +15,7 @@ module StoreFrontModule
       def create
         @line_item = StoreFrontModule::LineItems::StockTransferOrderLineItemProcessing.new(line_item_params)
         if @line_item.process!
+          ::StoreFronts::StockAvailabilityUpdater.new(stock: @line_item.find_stock, cart: current_cart).update_availability!
           redirect_to new_store_front_module_stock_transfer_order_line_item_processing_url, notice: "added to cart"
         else
           render :new, alert: "Error"
@@ -23,6 +24,7 @@ module StoreFrontModule
       def destroy
         @line_item = StoreFrontModule::LineItems::PurchaseOrderLineItem.find(params[:id])
         @line_item.destroy
+        ::StoreFronts::StockAvailabilityUpdater.new(stock: @line_item.stock, cart: current_cart).update_availability!
         redirect_to new_store_front_module_stock_transfer_order_line_item_processing_url, notice: "Removed successfully"
       end
 

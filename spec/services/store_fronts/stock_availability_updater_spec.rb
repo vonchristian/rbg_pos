@@ -15,7 +15,7 @@ module StoreFronts
       purchase_order_line_item = create(:purchase_order_line_item, quantity: 10, stock: stock, purchase_order: purchase_order)
 
       expect(stock.available).to eql false
-      described_class.new(stock: stock).update_availability!
+      described_class.new(stock: stock, cart: cart).update_availability!
       expect(stock.available).to eql true
     end
   end

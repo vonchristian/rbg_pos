@@ -26,8 +26,8 @@ module StoreFrontModule
           quantity:   quantity,
           unit_cost:  purchase_cost,
           total_cost: set_total_cost,
-          product_id: find_stock.product,
-          stock:     find_stock,
+          product_id:          find_stock.product,
+          stock:               find_stock,
           unit_of_measurement: find_stock.unit_of_measurement)
       end
 
@@ -53,7 +53,7 @@ module StoreFrontModule
       end
 
       def available_quantity
-        find_stock.balance
+        find_stock.balance_for_cart(find_cart)
       end
       def find_cart
         Cart.find(cart_id)
@@ -63,7 +63,7 @@ module StoreFrontModule
       end
 
       def quantity_is_less_than_or_equal_to_available_quantity?
-        errors[:quantity] << "exceeded available quantity" if converted_quantity.to_f > available_quantity
+        errors[:quantity] << "exceeded available quantity" if quantity.to_f > available_quantity
       end
     end
   end

@@ -6,7 +6,7 @@ module StoreFrontModule
           @sales_order = StoreFrontModule::Orders::SalesOrder.find(params[:sales_order_id])
           @cart = current_cart
           if params[:search].present?
-            @stocks = current_store_front.stocks.text_search(params[:search])
+            @stocks = current_store_front.stocks.processed.text_search(params[:search])
       		  @products = Product.text_search(params[:search]).all.paginate(page: params[:page], per_page: 25)
           end
       		@sales_order_line_item = StoreFrontModule::LineItems::SalesOrderLineItemProcessing.new
@@ -19,16 +19,19 @@ module StoreFrontModule
           @sales_order_line_item = StoreFrontModule::LineItems::SalesOrderLineItemProcessing.new(additional_line_item_params)
           if @sales_order_line_item.valid?
             @sales_order_line_item.process!
+            ::StoreFronts::StockAvailabilityUpdater.new(stock: @sales_order_line_item.find_stock, cart: current_cart).update_availability!
             redirect_to new_store_front_module_sales_order_additional_line_item_url(@sales_order), notice: "added to cart"
           else
-            redirect_to store_index_url, notice: "Error"
+            redirect_to new_store_front_module_sales_order_additional_line_item_url(@sales_order), notice: "Error"
           end
         end
 
         def destroy
           @sales_order = StoreFrontModule::Orders::SalesOrder.find(params[:sales_order_id])
-          @line_item = StoreFrontModule::LineItems::SalesOrderLineItem.find(params[:id])
-          @line_item.destroy
+          @sales_order_line_item = StoreFrontModule::LineItems::SalesOrderLineItem.find(params[:id])
+          @sales_order_line_item.destroy
+          ::StoreFronts::StockAvailabilityUpdater.new(stock: @sales_order_line_item.stock, cart: current_cart).update_availability!
+
           redirect_to new_store_front_module_sales_order_additional_line_item_url(@sales_order), notice: "Removed successfully."
 
         end

@@ -11,6 +11,10 @@ module RepairServicesModule
                     :work_order_id
       validates :quantity, numericality: { greater_than: 0.1 }
       validate :quantity_is_less_than_or_equal_to_available_quantity?
+      def find_stock
+        StoreFronts::Stock.find(stock_id)
+      end
+
       def process!
         ActiveRecord::Base.transaction do
           process_sales_order_line_item
@@ -44,11 +48,6 @@ module RepairServicesModule
       end
 
 
-
-      def converted_quantity
-        find_unit_of_measurement.conversion_multiplier * quantity.to_f
-      end
-
       def find_cart
         Cart.find(cart_id)
       end
@@ -65,9 +64,6 @@ module RepairServicesModule
         (selling_cost * quantity.to_f)
       end
 
-      def total_cost_for(purchase)
-        purchase.purchase_cost * quantity
-      end
 
       def find_unit_of_measurement
         find_stock.unit_of_measurement
@@ -77,16 +73,12 @@ module RepairServicesModule
         Product.find(product_id)
       end
 
-      def find_stock
-        StoreFronts::Stock.find(stock_id)
-      end
-
       def available_quantity
-        find_stock.balance
+        find_stock.balance_for_cart(find_cart)
       end
 
       def quantity_is_less_than_or_equal_to_available_quantity?
-        errors[:quantity] << "exceeded available quantity" if converted_quantity.to_f > available_quantity
+        errors[:quantity] << "exceeded available quantity" if quantity.to_f > available_quantity
       end
     end
   end

@@ -13,6 +13,10 @@ module StoreFrontModule
       validates :quantity, numericality: { greater_than: 0.1 }
 
       validate :quantity_is_less_than_or_equal_to_available_quantity?
+      def find_stock
+        find_store_front.stocks.find(stock_id)
+      end
+
       def process!
         ActiveRecord::Base.transaction do
           process_sales_order_line_item
@@ -22,7 +26,6 @@ module StoreFrontModule
       private
       def process_sales_order_line_item
         decrease_stock_quantity
-        update_stock_availability
       end
 
       def decrease_stock_quantity
@@ -74,20 +77,14 @@ module StoreFrontModule
         StoreFront.find(store_front_id)
       end
 
-      def find_stock
-        find_store_front.stocks.find(stock_id)
-      end
+    
 
       def available_quantity
-        find_stock.balance
-      end
-
-      def update_stock_availability
-        ::StoreFronts::StockAvailabilityUpdater.new(stock: find_stock).update_availability!
+        find_stock.balance_for_cart(find_cart)
       end
 
       def quantity_is_less_than_or_equal_to_available_quantity?
-        errors[:quantity] << "exceeded available quantity" if converted_quantity.to_f > available_quantity
+        errors[:quantity] << "exceeded available quantity" if quantity.to_f > available_quantity
       end
     end
   end

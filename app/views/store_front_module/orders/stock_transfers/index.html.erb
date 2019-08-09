@@ -1,5 +1,23 @@
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-3">
+    <h3 class="title"> Filter per StoreFront </h3>
+    <div class="box box-solid">
+      <div class="box-body">
+        <% StoreFront.all.each do |store_front| %>
+          <div class="row">
+            <div class="col-md-6">
+              <%= store_front.name %>
+            </div>
+            <div class="col-md-4">
+              <%= link_to 'Select', store_front_module_stock_transfers_path(store_front_id: store_front.id), class: 'btn btn-default' %>
+            </div>
+          </div>
+          <br>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9">
     <div class="box box-default">
     <div class="box-header">
       <div class="row">

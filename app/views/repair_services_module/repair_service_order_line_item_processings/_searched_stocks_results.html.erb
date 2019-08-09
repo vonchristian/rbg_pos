@@ -1,5 +1,5 @@
 
-<% @stocks.uniq.each do |stock| %>
+<% @stocks.each do |stock| %>
   <%= render 'repair_services_module/repair_service_order_line_item_processings/stock', stock: stock %>
 <% end %>
 <hr>

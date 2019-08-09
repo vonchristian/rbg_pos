@@ -7,7 +7,7 @@
 
      </div>
      <div class="col-md-2">
-       <%=stock.balance %> <%= stock.unit_code %><br>
+       <%=stock.balance_for_cart_on_transfer(current_cart) %> <%= stock.unit_code %><br>
        <small class="text-danger">AVAILABLE QTY</small>
      </div>
      <div class="col-md-3">

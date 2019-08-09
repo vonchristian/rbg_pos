@@ -25,6 +25,15 @@ module StoreFronts
       joins(:purchase).where.not('line_items.order_id' => nil)
     end
 
+    def balance_for_cart(cart)
+      balance -
+      sales.where(cart: cart).sum(&:quantity)
+    end
+    def balance_for_cart_on_transfer(cart)
+      balance -
+      stock_transfers.processed.where(cart: cart).sum(&:quantity)
+    end
+
     def self.available
       where(available: true)
     end
