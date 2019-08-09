@@ -35,7 +35,7 @@
                     <small class="text-muted"><%= line_item.bar_code %></small>
                   </div>
                   <div class="col-md-2">
-                    <span class="pull-right"><%= number_to_currency line_item.total_cost %></span>
+                    <span class="pull-right"><%= number_to_currency StoreFronts::SellingPriceFinder.new(stock: line_item.stock, store_front: current_store_front).selling_price %></span>
                   </div>
                   <div class="col-md-3">
                     <% if current_user.proprietor? %>
