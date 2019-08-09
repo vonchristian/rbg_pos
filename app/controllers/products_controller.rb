@@ -2,7 +2,7 @@ require 'will_paginate/array'
 class ProductsController < ApplicationController
 	def index
     if params[:search].present?
-      @products = Product.text_search(params[:search]).paginate(page: params[:page], per_page: 65)
+      @products = Product.text_search_with_barcode(params[:search]).paginate(page: params[:page], per_page: 65)
     else
       @products = Product.includes(:selling_prices, :unit_of_measurements).order(:name).paginate(page: params[:page], per_page: 65)
     end

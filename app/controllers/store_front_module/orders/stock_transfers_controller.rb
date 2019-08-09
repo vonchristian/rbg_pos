@@ -4,11 +4,13 @@ module StoreFrontModule
       def index
         if params[:store_front_id].present?
           @stock_transfer_orders = StoreFront.find(params[:store_front_id]).received_stock_transfer_orders.paginate(page: params[:page], per_page: 35)
+        elsif params[:from_date] && params[:to_date]
+          @stock_transfer_orders = StoreFrontModule::Orders::PurchaseOrder.stock_transfers.entered_on(from_date: from_date, to_date: to_date).paginate(page: params[:page], per_page: 35)
         else
           @stock_transfer_orders = StoreFrontModule::Orders::PurchaseOrder.stock_transfers.order(date: :desc).paginate(page: params[:page], per_page: 35)
         end
       end
-      
+
       def show
         @order = StoreFrontModule::Orders::PurchaseOrder.find(params[:id])
         respond_to do |format|

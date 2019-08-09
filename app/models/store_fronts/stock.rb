@@ -57,7 +57,9 @@ module StoreFronts
     def sold?
       balance.zero? && sales.present?
     end
-
+    def latest_selling_price(store_front)
+      unit_of_measurement.selling_prices.where(store_front: store_front).current_price
+    end
     def last_purchase_cost
       purchase.unit_cost
     end
