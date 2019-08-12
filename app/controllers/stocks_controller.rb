@@ -22,14 +22,15 @@ class StocksController < ApplicationController
 	end
 	def edit
 		@stock = Stock.find(params[:id])
-    @update_stock = Stocks::PurchaseUpdate.new
 	end
   def update
 		@stock = Stock.find(params[:id])
-	@update_stock = Stocks::PurchaseUpdate.new(stock_params)
-  if @update_stock.valid?
-			@stock.update_stock!
-			redirect_to product_stocks_url(@stock.product), notice: 'Stock updated successfully.'
+		@stock.update(stock_params)
+    @stock.employee = current_user
+		if @stock.valid?
+			@stock.save
+			redirect_to product_url(@stock.product), notice: 'Stock updated successfully.'
+      @stock.set_name
     else
       render :edit
 		end
