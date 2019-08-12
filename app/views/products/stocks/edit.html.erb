@@ -8,7 +8,7 @@
           <p class="category">Edit stock details for this product</p>
         </div>
         <div class="content">
-<%= simple_form_for [@product, @stock], url: :product_stock do |f| %>
+<%= simple_form_for [@product, @purchase], url: :product_stock do |f| %>
   <%= f.error_notification %>
   <%= f.input :bar_code %>
   <%= f.input :quantity %>
