@@ -18,6 +18,24 @@
                                       <tr>
                                       <td><%=link_to stock.name, store_front_module_stock_path(stock) %><br>
                                         <small><%= stock.barcode %></small><br>
+                                            <% if stock.sales.present? %>
+                                              <b> Sales</b><br>
+                                              <% stock.sales.each do |sale| %>
+                                                Quantity: <span class="badge bg-green"><%= sale.quantity %></span><br>
+                                               Customer: <%= sale.customer_name %><br>
+                                               Date: <%= sale.date.strftime('%B %e, %Y') %><br>
+                                               REF #: <%= sale.reference_number %>
+                                              <% end %>
+                                            <% end %>
+                                            <% if stock.stock_transfers.present? %>
+                                              <b> Stock Transfers </b><br>
+                                              <% stock.stock_transfers.each do |transfer| %>
+                                               Quantity: <span class="badge bg-yellow"><%= transfer.quantity %></span><br>
+                                               Destination: <%= transfer.destination_store_front_name %><br>
+                                               Date: <%= transfer.purchase_order_date.strftime('%B %e, %Y') %><br>
+                                               REF #: <%= transfer.reference_number %>
+                                              <% end %>
+                                            <% end %>
 
                                       </td>
 
