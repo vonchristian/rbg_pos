@@ -35,7 +35,9 @@ module StoreFrontModule
       end
 
       def payment_entries
-        receivable_account.credit_entries
+        if receivable_account
+          receivable_account.credit_entries
+        end 
       end
 
 
