@@ -35,6 +35,7 @@ module WorkOrders
         product_name:       description,
         department_id:      department_id
       )
+      AccountCreators::WorkOrder.new(work_order: work_order).create_accounts!
       product_unit = ProductUnit.create!(
         description:   description,
         model_number:  model_number,

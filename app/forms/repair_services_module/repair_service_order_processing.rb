@@ -27,7 +27,7 @@ module RepairServicesModule
       create_entry(order)
     end
     def create_entry(order)
-        accounts_receivable = find_work_order.default_receivable_account
+        accounts_receivable = find_work_order.receivable_account
         cost_of_goods_sold = find_work_order.store_front.cost_of_goods_sold_account
         sales = find_work_order.store_front.sales_account
         merchandise_inventory = find_work_order.store_front.merchandise_inventory_account

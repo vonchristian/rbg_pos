@@ -216,7 +216,9 @@ Rails.application.routes.draw do
     resources :work_orders, only: [:show] do
       resources :service_charge_processings, only: [:new, :create]
       resources :payment_processings, only: [:new, :create, :show]
-      resources :repair_service_order_line_item_processings, only: [:new, :create]
+      resources :repair_service_order_line_item_processings, only: [:new, :create, :destroy]
+      resources :spare_part_cancellations, only: [:destroy]
+
       resources :repair_service_order_processings, only: [:new, :create]
     end
     resources :service_payments, only: [:index, :show]
