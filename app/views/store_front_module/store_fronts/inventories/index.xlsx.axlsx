@@ -1,33 +1,28 @@
 wb = xlsx_package.workbook
 wb.add_worksheet(name: "Products") do |sheet|
-  sheet.add_row ["#{@store_front.name.upcase} INVENTORY (Date covered: #{@from_date.strftime("%B %e, %Y")} -  #{@to_date.strftime("%B %e, %Y")})"]
+  sheet.add_row ["#{@store_front.name.upcase} INVENTORY"]
   sheet.add_row [
   "Product Name",
-  "Beginning Inventory(#{@from_date.strftime("%B %e, %Y")})",
+  "Barcode",
   "Purchases",
-  "Sales Returns",
-  "Received Stock Transfers",
   "Sales",
-  "Transferred Stocks",
+  "Stock Transfers",
   "Spoilages",
   "Internal Uses",
   "Purchase Returns",
   "In Stock"]
 
-@products.each do |product|
+@stocks.each do |stock|
 sheet.add_row [
-  product.name,
-  product.balance(to_date: @from_date, store_front: @store_front),
-  product.purchases_balance(store_front: @store_front, to_date: @to_date),
-  product.sales_returns_balance(store_front: @store_front, to_date: @to_date),
-  product.received_stock_transfers_balance(store_front: @store_front, to_date: @to_date),
-  product.sales_balance(store_front: @store_front, to_date: @to_date),
-  product.spoilages_balance(store_front: @store_front, to_date: @to_date),
-  product.delivered_stock_transfers_balance(store_front: @store_front, to_date: @to_date),
-  product.internal_use_orders_balance(store_front: @store_front, to_date: @to_date),
-  product.purchase_returns_balance(store_front: @store_front, to_date: @to_date),
-  product.balance(store_front: @store_front, to_date: @to_date)
-
+  stock.name,
+  stock.barcode.to_s,
+  stock.purchase_quantity,
+  stock.sales.total,
+  stock.stock_transfers.total,
+  stock.spoilages.total,
+  stock.internal_uses.total,
+  stock.purchase_returns.total,
+  stock.balance
 ]
 end
 end
