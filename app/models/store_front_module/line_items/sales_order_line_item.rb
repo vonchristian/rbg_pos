@@ -11,7 +11,7 @@ module StoreFrontModule
       end
 
       def cost_of_goods_sold
-        referenced_purchase_order_line_items.cost_of_goods_sold
+        quantity * unit_cost
       end
 
       def available_quantity
