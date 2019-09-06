@@ -31,7 +31,7 @@
       <%= f.input :bar_code, input_html: { value: params[:search] }, as: :hidden %>
     </div>
     <div class="col-md-3">
-      <%= f.input :unit_cost, placeholder: "Selling Price", label: false, input_html: { id: 'line_item_selling_price'} %>
+      <%= f.input :unit_cost, placeholder: "Selling Price", label: false, input_html: { id: 'line_item_selling_price', value: stock.product.try(:base_measurement).try(:price) } %>
     </div>
     <div class="col-md-3">
       <%= f.input :unit_of_measurement_id, collection: stock.product.unit_of_measurements.map{|a| [a.unit_code, a.id] }, selected: stock.product.base_measurement, label: false %>
