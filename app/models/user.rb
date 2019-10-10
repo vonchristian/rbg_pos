@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  has_one_attached :avatar
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -21,17 +22,9 @@ class User < ApplicationRecord
   has_many :cash_counts, foreign_key: 'employee_id'
 
   enum role: [:proprietor, :sales_clerk, :stock_custodian, :technician]
-  has_attached_file :avatar,
-  styles: { large: "120x120>",
-           medium: "70x70>",
-           thumb: "40x40>",
-           small: "30x30>",
-           x_small: "20x20>"},
-  default_url: ":style/profile_default.jpg",
-  :path => ":rails_root/public/system/:attachment/:id/:style/:filename",
-  :url => "/system/:attachment/:id/:style/:filename"
-  do_not_validate_attachment_file_type :avatar
+
   delegate :balance, to: :default_cash_on_hand_account, prefix: true, allow_nil: true
+  before_save :set_default_image
   def self.cash_on_hand_accounts
     accounts = []
     self.all.each do |user|
@@ -92,6 +85,12 @@ class User < ApplicationRecord
       AccountingModule::Asset.find_by(name: "Cash on Hand")
     elsif employee.sales_clerk?
       AccountingModule::Asset.find_by(name: "Cash on Hand (Cashier)")
+    end
+  end
+
+  def set_default_image
+    if !avatar.attached?
+      self.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default.png')), filename: 'default-image.png', content_type: 'image/png')
     end
   end
 end

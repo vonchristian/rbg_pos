@@ -1,15 +1,15 @@
 <div class="row">
   <div class="col-md-6">
-    <div class="box box-solid">
-      <div class="box-header">
-        <h3 class="box-title">Cash On Hand Accounts</h3>
+    <div class="card card-solid">
+      <div class="card-header">
+        <h3 class="subtitle-up">Cash On Hand Accounts</h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <% @accounts.each do |account| %>
         <div class="row">
           <div class="col-md-2">
             <% if User.employee_for(account).present? %>
-              <%= image_tag(User.employee_for(account).avatar.url(:medium), height: 45, width: 45, class: "img-circle") %>
+              <%= image_tag(User.employee_for(account).avatar, height: 45, width: 45, class: "img-circle") %>
             <% end %>
           </div>
           <div class="col-md-6">
@@ -26,20 +26,20 @@
     </div>
   </div>
   <div class="col-md-6">
-    <div class="box box-default">
-      <div class="box-header">
+    <div class="card card-default">
+      <div class="card-header">
         <div class="row">
           <div class="col-md-6">
-            <h3 class="box-title"> Bank Accounts </h3>
+            <h3 class="subtitle-up"> Bank Accounts </h3>
           </div>
           <div class="col-md-6">
-            <span class="pull-right">
+            <span class="float-right">
               <%= link_to 'New Bank Account', new_accounting_bank_account_path, class: "btn btn-primary" %>
             </span>
           </div>
         </div>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <% BankAccount.all.each do |bank_account| %>
           <%= link_to accounting_bank_account_path(bank_account) do %>
             <div class="row">
@@ -47,7 +47,7 @@
                 <b><%=bank_account.bank_name %></b>
               </div>
               <div class="col-md-4">
-                <span class="pull-right">
+                <span class="float-right">
                   <%= number_to_currency bank_account.balance %>
                 </span>
               </div>

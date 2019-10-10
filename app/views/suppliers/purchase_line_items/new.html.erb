@@ -1,9 +1,9 @@
 <div class="row">
   <div class="col-md-4">
-    <div class="box box-default">
-      <div class="box-header">
+    <div class="card card-default">
+      <div class="card-header">
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <%= simple_form_for @purchase, url: :supplier_purchase_line_items do |f| %>
           <%= f.input :product_id, input_html: { value: @product.id }, as: :hidden %>
           <%= f.input :quantity %>

@@ -1,29 +1,22 @@
 
-<div class="row">
-  <div class="col-md-12">
-    <div class="box box-solid">
-      <div class="box-header">
-        <div class="row">
-          <div class="col-md-1">
-          </div>
-          <div class="col-md-9">
-            <h4 class="title"><%= @supplier.business_name.try(:upcase) %></h4>
-          </div>
+    <div class="card">
+      <div class="card-header">
+
+            <h4 class="title-up"><%= @supplier.business_name.try(:upcase) %></h4>
         </div>
-      </div>
-      <div class="box-body">
-        <ul class="nav nav-tabs">
-          <li class= <%= 'active' if current_page?(supplier_path(@supplier)) %>>
-            <%= link_to "Info", supplier_path(@supplier) %>
+      <div class="card-body">
+        <ul class="nav nav-pills nav-pills-underline">
+          <li class= "nav-item">
+            <%= link_to "Info", supplier_path(@supplier), class: "nav-link #{ 'active' if current_page?(supplier_path(@supplier))}" %>
           </li>
-          <li class= <%= 'active' if current_page?(supplier_purchase_orders_path(@supplier)) %>>
-            <%= link_to "Purchase Orders", supplier_purchase_orders_path(@supplier) %>
+          <li class="nav-item">
+            <%= link_to "Purchase Orders", supplier_purchase_orders_path(@supplier), class: "nav-link #{ 'active' if current_page?(supplier_purchase_orders_path(@supplier))}" %>
           </li>
-          <li class= <%= 'active' if current_page?(supplier_account_index_path(@supplier)) %>>
-            <%= link_to "Account", supplier_account_index_path(@supplier) %>
+          <li class="nav-item">
+            <%= link_to "Account", supplier_account_index_path(@supplier), class: "nav-link #{ 'active' if current_page?(supplier_account_index_path(@supplier))}" %>
           </li>
-          <li class= <%= 'active' if current_page?(supplier_vouchers_path(@supplier)) %>>
-            <%= link_to "Vouchers", supplier_vouchers_path(@supplier) %>
+          <li class="nav-item">
+            <%= link_to "Vouchers", supplier_vouchers_path(@supplier), class: "nav-link #{ 'active' if current_page?(supplier_vouchers_path(@supplier)) }" %>
           </li>
         </ul>
         <div class="tab-content">
@@ -39,4 +32,3 @@
              <% if current_page? supplier_account_index_path(@supplier) %>
              <%= render 'suppliers/partials/account' %>
              <% end %>
-

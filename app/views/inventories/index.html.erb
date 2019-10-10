@@ -1,52 +1,89 @@
-<div class="row">
-  <div class="col-md-12">
-    <div class="box box-solid">
-      <div class="box-header with-border">
-        <h3 class="box-title">Inventories</h3><br>
-      </div>
 
-      <div class="box-body">
-        <%=form_tag inventories_path, method: :get, id: "search-form" do %>
-          <div class="input-group">
-            <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search product...", type: "search" %>
-            <span class="input-group-btn">
-              <%= button_tag(type: 'submit', class: "btn btn-default") do %>
-                 Browse Inventories
-              <% end %>
-            </span>
-          </div>
-        <% end %>
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+        <div class="col-md-4">
+          <h3 class="title-up">Inventories</h3>
+        </div>
+        <div class="col-md-8">
+          <%=form_tag inventories_path, method: :get, id: "search-form" do %>
+            <div class="input-group">
+              <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search product...", type: "search" %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', class: "btn btn-default") do %>
+                   Browse Inventories
+                <% end %>
+              </span>
+            </div>
+          <% end %>
+        </div>
+      </div>
         <br>
         <div class="table table-responsive">
           <table class="table table-hover table-striped">
             <thead>
               <tr>
-                <th>Date Delivered</th>
-                <th>Stock</th>
-                <th> Barcode </th>
-                <th>QTY</th>
-                <th> Sales </th>
-                <th> Transfers </th>
-                <th> Internal Uses </th>
-                <th>In Stock</th>
+
+
+
+                  <th>Product</th>
+                  <th>Date Purchased </th>
+                  <th> In Stock </th>
+
+                  <th>Quantity</th>
+                  <th>Unit Cost</th>
+                  <th>Total Cost</th>
+                  <th>Supplier</th>
+                  <th></th>
+
               </tr>
             </thead>
             <tbody>
               <% @stocks.each do |stock| %>
-                <tr>
-                  <td><%= stock.purchase_order_date.try(:strftime, ("%B %e, %Y")) %></td>
-                  <td><%= link_to stock.name, store_front_module_stock_path(stock) %></td>
-                  <td><%= stock.barcode %></td>
-                  <td><%= stock.purchase_quantity %></td>
-                  <td><%= stock.sales.total %></td>
-                  <td><%= stock.stock_transfers.total %></td>
-                  <td><%= stock.internal_uses.total %></td>
-                  <td><%= stock.balance %></td>
-                </tr>
+              <tr>
+              <td><%=link_to stock.name, store_front_module_stock_path(stock) %><br>
+                <small><%= stock.barcode %></small><br>
+                    <% if stock.sales.processed.present? %>
+                      <b> Sales</b><br>
+                      <% stock.sales.processed.each do |sale| %>
+                        Quantity: <span class="badge bg-green"><%= sale.quantity %></span><br>
+                       Customer: <%= sale.customer_name %><br>
+                       Date: <%= sale.date.strftime('%B %e, %Y') %><br>
+                       REF #: <%= sale.reference_number %>
+                      <% end %>
+                    <% end %>
+                    <% if stock.stock_transfers.processed.present? %>
+                      <b> Stock Transfers </b><br>
+                      <% stock.stock_transfers.processed.each do |transfer| %>
+                       Quantity: <span class="badge bg-yellow"><%= transfer.quantity %></span><br>
+                       Destination: <%= transfer.destination_store_front_name %><br>
+                       Date: <%= transfer.purchase_order_date.strftime('%B %e, %Y') %><br>
+                       REF #: <%= transfer.reference_number %>
+                      <% end %>
+                    <% end %>
+
+              </td>
+
+              <td><%= stock.try(:purchase_order_date).try(:strftime, ("%B %e, %Y")) %></td>
+              <td> <%= stock.balance %></td>
+
+              <td><%= stock.purchase_quantity %></td>
+
+              <td><%= number_to_currency stock.last_purchase_cost %></td>
+              <td><%= number_to_currency stock.total_cost %></td>
+
+
+
+              <td><%= stock.try(:supplier).try(:name) %></td>
+              <% if current_user.proprietor? %>
+              <td><%= link_to "Edit", edit_product_stock_path(id: stock.id, product_id: stock.product_id), class: "btn btn-warning btn-sm" %>
+              <% end %>
+
+              </tr>
               <% end %>
             </tbody>
           </table>
-          <center><%==pagy_nav(@pagy) %></center>
+          <center><%== pagy_bootstrap_nav(@pagy) %></center>
         </div>
       </div>
     </div>

@@ -2,13 +2,13 @@
 
 <div class="content">
   <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <div class="box box-solid">
-        <div class="box-header">
-          <h4 class="box-title">New Product</h4>
+    <div class="col-md-6 offset-md-3">
+      <div class="card card-solid">
+        <div class="card-header">
+          <h4 class="subtitle-up">New Product</h4>
           <p class="help-block">Details for this new product</p>
         </div>
-      <div class="box-body">
+      <div class="card-body">
 <%= simple_form_for @product do |f| %>
   <%if @product.avatar.blank? %>
             <center><%=image_tag("default_product_logo.jpg", height: 80, width: 80, :class=>"img-square") %></center>
@@ -18,7 +18,7 @@
           <center><%= f.input :avatar, as: :file, label: "Product photo" %></center>
   <%= f.input :name %>
   <%= f.input :description %>
-  <span><label>Category</label><span class="pull-right"><%= link_to 'New Category', new_category_path, remote: true %></span></span>
+  <span><label>Category</label><span class="float-right"><%= link_to 'New Category', new_category_path, remote: true %></span></span>
   <%= f.input :category_id, label: false, collection: Category.all.map{|a| [a.name, a.id] } %>
 
   <%= f.input :unit %>
@@ -30,7 +30,7 @@
       <%=link_to "Cancel", products_path, class: "btn btn-default pull-left" %>
     </div>
     <div class="col-md-6">
-      <%= f.submit "Create Product", class: "btn btn-primary pull-right" %>
+      <%= f.submit "Create Product", class: "btn btn-primary float-right" %>
     </div>
   </div>
 <% end %>

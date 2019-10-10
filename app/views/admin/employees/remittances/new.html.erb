@@ -1,15 +1,15 @@
 
   <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <div class="box box-default">
-        <div class="box-header">
-            <h4 class="box-title"> Remittance Details </h4>
+    <div class="col-md-6 offset-md-3">
+      <div class="card card-default">
+        <div class="card-header">
+            <h4 class="subtitle-up"> Remittance Details </h4>
           </div>
-        <div class="box-body">
+        <div class="card-body">
           <hr>
           <div class="row">
             <div class="col-md-3">
-              <%=image_tag(@employee.avatar.url(:medium), class: "img-circle", height: 50, width: 50) %>
+              <%=image_tag(@employee.avatar, class: "img-circle", height: 50, width: 50) %>
             </div>
             <div class="col-md-8">
               <h4 class="title"><%= @employee.full_name %></h4>
@@ -18,7 +18,7 @@
           </div>
           <br>
           <div class="row">
-            <div class="col-md-8 col-md-offset-3">
+            <div class="col-md-8 offset-md-3">
               <h4 class="title"> <b><%= number_to_currency @employee.default_cash_on_hand_account_balance %></b></h4>
               <small>CASH ON HAND OF EMPLOYEE </small>
             </div>
@@ -34,7 +34,7 @@
           <%= f.input :description, input_html: { value: "Collection Remittance from #{@employee.name}" } %>
           <%= f.input :amount, input_html: { value: @employee.default_cash_on_hand_account.balance } %>
 
-          <%= f.submit "Save Remittance", class: "btn btn-primary pull-right" %>
+          <%= f.submit "Save Remittance", class: "btn btn-primary float-right" %>
           <br>
           <br>
         <% end %>

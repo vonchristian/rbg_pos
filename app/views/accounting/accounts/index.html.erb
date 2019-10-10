@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-solid">
-      <div class="box-header with-border">
+    <div class="card card-solid">
+      <div class="card-header with-border">
         <div class="row">
           <div class="col-md-2">
             <p class="condensed-text">ACCOUNTS </p>
@@ -21,12 +21,12 @@
           <div class="col-md-4">
             <%= link_to 'New Ledger Account', new_business_ledger_account_path(current_business) %>
             <%= link_to new_accounting_account_path do %>
-              <span class="btn btn-primary btn-flat pull-right"><i class="fa fa-plus-circle"></i> New Account</span>
+              <span class="btn btn-primary btn-flat float-right"><i class="fa fa-plus-circle"></i> New Account</span>
             <% end %>
           </div>
         </div>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <div class="table table-responsive">
           <table class="table table-striped">
             <thead>

@@ -1,11 +1,11 @@
 <div class="content">
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-solid">
-      <div class="box-header">
+    <div class="card card-solid">
+      <div class="card-header">
         <div class="row">
           <div class="col-md-1">
-            <%=image_tag(@customer.avatar.url(:medium), class: "img-circle", height: 50, width: 50) %>
+            <%=image_tag(@customer.avatar, class: "img-circle", height: 50, width: 50) %>
           </div>
           <div class="col-md-9">
             <h4 class="title"><%= @customer.full_name.try(:upcase) %></h4>
@@ -14,7 +14,7 @@
         </div>
       </div>
       <br>
-<div class="box-body">
+<div class="card-body">
         <ul class="nav nav-tabs">
           <li class= <%= 'active' if current_page?(customer_path(@customer)) %>>
             <%= link_to "Info", customer_path(@customer) %>

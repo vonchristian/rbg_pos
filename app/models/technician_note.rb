@@ -1,0 +1,2 @@
+class TechnicianNote < Post
+end 

@@ -1,19 +1,19 @@
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-default">
-      <div class="box-header with-border">
+    <div class="card card-default">
+      <div class="card-header with-border">
         <div class="row">
           <div class="col-md-3">
-            <h3 class="box-title"> Purchase Orders </h3>
+            <h3 class="subtitle-up"> Purchase Orders </h3>
           </div>
           <div class="col-md-5">
           </div>
           <div class="col-md-4">
-            <%= link_to 'New Purchase', new_store_front_module_purchase_order_line_item_processing_path, class: "btn btn-primary pull-right" %>
+            <%= link_to 'New Purchase', new_store_front_module_purchase_order_line_item_processing_path, class: "btn btn-primary float-right" %>
           </div>
         </div>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <% @orders.each do |order| %>
           <%= link_to store_front_module_purchase_order_path(order) do %>
             <div class="row text-muted">

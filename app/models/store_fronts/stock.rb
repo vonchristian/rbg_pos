@@ -1,6 +1,7 @@
 module StoreFronts
   class Stock < ApplicationRecord
     include PgSearch::Model
+    pg_search_scope :barcode_search, against: [:barcode]
     pg_search_scope :text_search, against: [:barcode], associated_against: { product: [:name] }
     belongs_to :store_front
     belongs_to :product
@@ -17,7 +18,7 @@ module StoreFronts
     delegate :name,           to: :product
     delegate :unit_code,      to: :unit_of_measurement
     delegate :purchase_order, to: :purchase
-    delegate :supplier,       to: :purchase_order
+    delegate :supplier,       to: :purchase_order, allow_nil: true
     delegate :name,           to: :supplier,       prefix: true
     delegate :date,           to: :purchase_order, prefix: true, allow_nil: true
 
@@ -28,7 +29,7 @@ module StoreFronts
     def balance_for_cart(cart)
       balance - sales.where(cart: cart).sum(&:quantity)
     end
-    
+
     def balance_for_cart_on_transfer(cart)
       balance - stock_transfers.processed.where(cart: cart).sum(&:quantity)
     end

@@ -1,15 +1,15 @@
 
 <div class="row">
   <div class="col-md-7">
-    <div class="box box-default">
-      <div class="box-header with-border">
+    <div class="card card-default">
+      <div class="card-header with-border">
         <div class="row">
           <div class="col-md-6">
             <h4 class="title"> RBG Computers, Cellshop & Enterprises </h4>
           </div>
         </div>
       </div>
-      <div class="box-body">
+      <div class="card-body">
       <% if params[:search].present? %>
         <%=form_tag new_store_front_module_sales_order_additional_line_item_path(@sales_order), method: :get do %>
            <div class="input-group">
@@ -45,8 +45,8 @@
   </div>
 </div>
         <div class="col-md-5">
-          <div class="box box-default">
-            <div class="box-header">
+          <div class="card card-default">
+            <div class="card-header">
               <div class="row">
                 <div class="col-md-9">
                   <h4 class="title"><span class="icon-basket-loaded"></span> Sales Order Details</h4>
@@ -54,7 +54,7 @@
 
               </div>
             </div>
-            <div class="box-body">
+            <div class="card-body">
               <% @sales_order.line_items.each do |line_item| %>
                 <div class="row">
                   <div class="col-md-2">
@@ -65,7 +65,7 @@
                     <small class="text-muted"><%= line_item.bar_code %></small>
                   </div>
                   <div class="col-md-2">
-                    <span class="pull-right"><%= number_to_currency line_item.total_cost %></span>
+                    <span class="float-right"><%= number_to_currency line_item.total_cost %></span>
                   </div>
 
                 </div>
@@ -88,7 +88,7 @@
                         </span>
                       </div>
                       <div class="col-md-4">
-                        <span class="pull-right">
+                        <span class="float-right">
                           <%= number_to_currency line_item.total_cost %> &nbsp;
                           <% if !line_item.processed? %>
                             <%= link_to store_front_module_sales_order_additional_line_item_path(id: line_item.id), method: :delete do %>
@@ -107,7 +107,7 @@
                       <h4><b>TOTAL</b> </h4>
                     </div>
                     <div class="col-md-3">
-                      <span class="pull-right">
+                      <span class="float-right">
                         <h4><b><%= number_to_currency @cart.sales_order_line_items.sum(&:total_cost) %></b></h4>
                       </span>
                     </div>

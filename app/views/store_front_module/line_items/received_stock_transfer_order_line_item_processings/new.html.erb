@@ -1,10 +1,10 @@
 <div class="row">
   <div class="col-md-8">
-    <div class="box box-success">
-      <div class="box-header">
+    <div class="card card-success">
+      <div class="card-header">
         <div class="row">
           <div class="col-md-6">
-            <h3 class="box-title"> Stock Transfers Section </h3><br>
+            <h3 class="subtitle-up"> Stock Transfers Section </h3><br>
             <span class="text-muted"> Generate stock transfers on this section </span>
           </div>
           <div class="col-md-6">
@@ -12,7 +12,7 @@
           </div>
         </div>
       </div>
-      <div class="box-body">
+      <div class="card-body">
        <% if params[:search].present? %>
         <%=form_tag new_store_front_module_received_stock_transfer_order_line_item_processing_path, method: :get do %>
           <div class="input-group">
@@ -55,8 +55,8 @@
                 <tr>
                   <th><b>QTY</b></th>
                   <th><b>DESCRIPTION</b></th>
-                  <th><span class="pull-right"><b>UNIT COST</b></span></th>
-                  <th><span class="pull-right"><b>TOTAL COST</b></span></th>
+                  <th><span class="float-right"><b>UNIT COST</b></span></th>
+                  <th><span class="float-right"><b>TOTAL COST</b></span></th>
                 </tr>
               </thead>
               <tbody>
@@ -66,12 +66,12 @@
                     <td width="300px"><%= line_item.name.try(:titleize) %> <span class="text-muted"><%= line_item.bar_code %></span>
                     </td>
                     <td>
-                      <span class="pull-right">
+                      <span class="float-right">
                         <%= number_to_currency line_item.unit_cost %>
                       </span>
                     </td>
                     <td>
-                      <span class="pull-right"><%=number_to_currency line_item.total_cost %></span>
+                      <span class="float-right"><%=number_to_currency line_item.total_cost %></span>
                     </td>
                     <td>
                     <%= link_to store_front_module_stock_transfer_order_line_item_processing_path(line_item), method: :delete do %>
@@ -89,8 +89,8 @@
     </div>
   </div>
     <div class="col-md-4">
-      <div class="box box-success">
-        <div class="box-body">
+      <div class="card card-success">
+        <div class="card-body">
 <% if @cart.received_stock_transfer_order_line_items.present? %>
           <%= simple_form_for @received_stock_transfer_order, url: :store_front_module_received_stock_transfer_order_processings do |f| %>
             <%= f.input :destination_store_front_id, collection: StoreFront.all.map{|a| [ a.name, a.id] } %>

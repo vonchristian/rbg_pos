@@ -1,4 +1,4 @@
-<h3 class="box-title"><%= @business.name.upcase %></h3>
+<h3 class="subtitle-up"><%= @business.name.upcase %></h3>
 <ul class="nav nav-tabs">
   <li class= <%= 'active' if current_page?(store_front_module_store_fronts_path) %>>
     <%= link_to "Summary", store_front_module_store_fronts_path %>
@@ -7,8 +7,8 @@
 </ul>
 <%= @from_date.strftime("%B %e, %Y") %>
 <% @store_fronts.each do |store_front| %>
-<div class="box box-solid">
-  <div class="box-body">
+<div class="card card-solid">
+  <div class="card-body">
     <span class="title"><%= store_front.name.try(:upcase) %></span><br><br>
     <div class="row">
       <div class="col-md-3 border-right">

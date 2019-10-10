@@ -1,8 +1,8 @@
 <%= @pg_search_documents.count %>
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-default">
-      <div class="box-body">
+    <div class="card card-default">
+      <div class="card-body">
         <div class="row">
           <div class="col-md-12">
             <%=form_tag search_results_path, method: :get, class: "search-form" do %>
@@ -23,7 +23,7 @@
               <td>No results found!</td>
             </tr>
           <% else %>
-          <div class="box-header with-border">
+          <div class="card-header with-border">
           <h5> (<%=@pg_search_documents.count%>) Search Results: </h5>
           </div>
               <% @pg_search_documents.each do |pg_search_document| %>

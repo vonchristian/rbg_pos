@@ -1,12 +1,12 @@
 
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-solid">
-      <div class="box-header">
-        <h4 class="box-title"> Product Details </h4>
+    <div class="card card-solid">
+      <div class="card-header">
+        <h4 class="subtitle-up"> Product Details </h4>
         <p class="help-block">details </p>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <%= simple_form_for @work_order, url: :work_orders, html: { class: "form-horizontal" }, wrapper: :horizontal_form do |f| %>
           <%= f.error_notification %>
           <%= f.input :description %>

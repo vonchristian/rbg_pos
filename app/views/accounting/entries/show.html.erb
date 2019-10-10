@@ -1,12 +1,12 @@
 
   <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <div class="box box-solid">
-        <div class="box-header">
-          <h4 class="box-title">Entry Details</h4>
+    <div class="col-md-6 offset-md-3">
+      <div class="card card-solid">
+        <div class="card-header">
+          <h4 class="subtitle-up">Entry Details</h4>
           <p class="category"> Details for this accounting entry </p>
         </div>
-        <div class="box-body">
+        <div class="card-body">
         <div class="row">
           <div class="col-md-6">
             Customer/Supplier/Branch
@@ -37,7 +37,7 @@
         <p class="category"> Debit </p>
 				<% @entry.debit_amounts.each do |debit_amount| %>
 				  <div class="row">
-				    <div class="col-md-5 col-md-offset-1">
+				    <div class="col-md-5 offset-md-1">
 					    <%= debit_amount.account.try(:name) %>
 					  </div>
 					  <div class="col-md-5">
@@ -49,7 +49,7 @@
 				<p class="category"> Credit </p>
 				<% @entry.credit_amounts.each do |credit_amount| %>
 					<div class="row">
-				    <div class="col-md-5 col-md-offset-1">
+				    <div class="col-md-5 offset-md-1">
 					    <%= credit_amount.account.try(:name) %>
 					  </div>
 					  <div class="col-md-5">

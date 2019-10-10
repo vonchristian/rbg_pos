@@ -1,16 +1,16 @@
 <div id="customer-modal" class="modal fade"></div>
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <div class="box box-solid">
-      <div class="box-header">
-        <h3 class="box-title">Other Sales</h3>
+  <div class="col-md-6 offset-md-3">
+    <div class="card card-solid">
+      <div class="card-header">
+        <h3 class="subtitle-up">Other Sales</h3>
         <p class="hel-block">Details for this other sales</p>
       </div>
-    <div class="box-body">
+    <div class="card-body">
       <%= simple_form_for @other_sale, url: :other_sales do |f| %>
         <%= f.input :date, as: :string, input_html: {class: "datepicker"} %>
-        <span><label>Customer</label><span class="pull-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span></span>
-        <%= f.input :customer_id, collection: Customer.all.map{|a| [a.full_name, a.id] }, label: false %>
+        <span><label>Customer</label><span class="float-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span></span>
+        <%= f.input :customer_id, collection: Customer.all.map{|a| [a.full_name, a.id] }, label: false, input_html: { class: 'chosen-select' } %>
         <%= f.input :reference_number %>
         <%= f.input :description %>
         <%= f.input :amount %>

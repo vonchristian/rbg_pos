@@ -45,7 +45,7 @@
           <p class="condensed-text"> CURRENT CHARGES </p>
           <% @work_order.service_charges.each do |charge| %>
               <div class="row">
-                <div class="col-md-7 col-md-offset-1">
+                <div class="col-md-7 offset-md-1">
                   <%= charge.description %>
                 </div>
                 <div class="col-md-2">
@@ -61,7 +61,7 @@
             <% end %>
             <hr>
             <div class="row">
-              <div class="col-md-7 col-md-offset-1">
+              <div class="col-md-7 offset-md-1">
                 <p class="condensed-text"> TOTAL </p>
               </div>
               <div class="col-md-2">

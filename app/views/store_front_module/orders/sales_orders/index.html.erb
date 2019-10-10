@@ -3,42 +3,42 @@
 <p>Sales for Today (<%= Time.zone.now.strftime("%b %e, %Y") %>)</p>
 <div class="row">
   <div class="col-md-4">
-    <div class="info-box">
-      <span class="info-box-icon bg-green"><i class="icon-basket-loaded"></i></span>
+    <div class="info-card">
+      <span class="info-card-icon bg-green"><i class="icon-basket-loaded"></i></span>
 
-      <div class="info-box-content">
-        <span class="info-box-text">ORDER</span>
-        <span class="info-box-number"><%= @sales_for_today.count %></span>
+      <div class="info-card-content">
+        <span class="info-card-text">ORDER</span>
+        <span class="info-card-number"><%= @sales_for_today.count %></span>
       </div>
-      <!-- /.info-box-content -->
+      <!-- /.info-card-content -->
     </div>
   </div>
   <div class="col-md-4">
-    <div class="info-box">
-      <span class="info-box-icon bg-yellow"><i class="icon-basket-loaded"></i></span>
+    <div class="info-card">
+      <span class="info-card-icon bg-yellow"><i class="icon-basket-loaded"></i></span>
 
-      <div class="info-box-content">
-        <span class="info-box-text">LINE ITEMS</span>
-        <span class="info-box-number"><%= @sales_for_today.map{|a| a.line_items.count}.sum%></span>
+      <div class="info-card-content">
+        <span class="info-card-text">LINE ITEMS</span>
+        <span class="info-card-number"><%= @sales_for_today.map{|a| a.line_items.count}.sum%></span>
       </div>
-      <!-- /.info-box-content -->
+      <!-- /.info-card-content -->
     </div>
   </div>
   <div class="col-md-4">
-    <div class="info-box">
-      <span class="info-box-icon bg-blue"><i class="icon-people"></i></span>
+    <div class="info-card">
+      <span class="info-card-icon bg-blue"><i class="icon-people"></i></span>
 
-      <div class="info-box-content">
-        <span class="info-box-text">CUSTOMERS</span>
-        <span class="info-box-number"><%= @sales_for_today.count %></span>
+      <div class="info-card-content">
+        <span class="info-card-text">CUSTOMERS</span>
+        <span class="info-card-number"><%= @sales_for_today.count %></span>
       </div>
-      <!-- /.info-box-content -->
+      <!-- /.info-card-content -->
     </div>
   </div>
 </div>
-  <div class="box box-solid">
+  <div class="card card-solid">
 
-      <div class="box-body">
+      <div class="card-body">
         <%=form_tag store_front_module_sales_orders_path, method: :get, id: "search-form" do %>
           <div class="input-group stylish-input-group">
             <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search", type: "search" %>

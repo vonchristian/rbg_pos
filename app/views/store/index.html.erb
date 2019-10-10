@@ -2,18 +2,18 @@
 
 <div class="row">
   <div class="col-md-7">
-    <div class="box box-default">
-      <div class="box-header with-border">
+    <div class="card card-default">
+      <div class="card-header with-border">
         <div class="row">
           <div class="col-md-6">
-            <h4 class="title"> RBG Computers, Cellshop & Enterprises </h4>
+            <h4 class="title-up"> RBG Computers, Cellshop & Enterprises </h4>
           </div>
           <div class="col-md-6">
-            <%=link_to 'New Other Sales', new_other_sale_path, class: "btn btn-primary btn-sm pull-right" %>
+            <%=link_to 'New Other Sales', new_other_sale_path, class: "btn btn-primary float-right" %>
           </div>
         </div>
       </div>
-      <div class="box-body">
+      <div class="card-body">
       <% if params[:search].present? %>
         <%=form_tag store_index_path, method: :get do %>
            <div class="input-group">
@@ -60,7 +60,7 @@
               </span>
             </div>
             <div class="col-md-4">
-              <span class="pull-right">
+              <span class="float-right">
                 <%= number_to_currency line_item.total_cost %> &nbsp;
                 <%= link_to store_front_module_sales_order_line_item_processing_path(line_item), method: :delete do %>
                   <span class="fa fa-times text-danger" data-toggle="tooltip" title="Remove Item"></span>
@@ -74,11 +74,11 @@
           <div class="col-md-2">
           </div>
           <div class="col-md-6">
-            <h4><b>TOTAL</b> </h4>
+            <h4 class="title-up"><b>TOTAL</b> </h4>
           </div>
           <div class="col-md-3">
-            <span class="pull-right">
-              <h4><b><%= number_to_currency @cart.sales_order_line_items.sum(&:total_cost) %></b></h4>
+            <span class="float-right">
+              <h4 class="title-up"><b><%= number_to_currency @cart.sales_order_line_items.sum(&:total_cost) %></b></h4>
             </span>
           </div>
         </div>
@@ -88,40 +88,46 @@
 </div>
       <% if @cart.sales_order_line_items.present? %>
         <div class="col-md-5">
-          <div class="box box-default">
-            <div class="box-header">
+          <div class="card card-default">
+            <div class="card-header">
               <div class="row">
-                <div class="col-md-9">
-                  <h4 class="title"><span class="icon-basket-loaded"></span> Cart</h4>
+                <div class="col-md-7">
+                  <h4 class="title-up"><span class="fa fa-shopping-cart"></span> Order Summary</h4>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-5">
                   <%=link_to cart_path(@cart), method: :delete do %>
-                    <span class="btn btn-sm btn-danger" data-toggle="tooltip" title="Remove Cart"><i class="fa fa-trash"></i> Remove</span>
+                    <span class="btn btn-sm btn-outline-danger float-right" data-toggle="tooltip" title="Remove Cart"><i class="fa fa-times"></i> Cancel Order</span>
                   <% end %>
                 </div>
               </div>
             </div>
-            <div class="box-body">
+            <div class="card-body">
 
               <%= simple_form_for @sales_order, url: :store_front_module_sales_order_processings do |f| %>
               <div class="row">
-                <div class="col-md-10 col-md-offset-1">
+                <div class="col-md-10 offset-md-1">
                   <div class="row">
                 <div class="col-md-6">
-                  <h4><b> TOTAL </b> </h4>
+                  <h4 class="title-up"><b> TOTAL </b> </h4>
                 </div>
                 <div class="col-md-6">
-                  <h4>
-                    <b class="pull-right"><%= number_to_currency @cart.sales_order_line_items.total_cost %></b>
+                  <h4 class="title-up">
+                    <b class="float-right"><%= number_to_currency @cart.sales_order_line_items.total_cost %></b>
                   </h4>
                 </div>
               </div>
               <hr>
                   <%= f.input :date, as: :string, input_html: { id: 'sale-order-date', class: "datepicker" } %>
-                  <span><label>Customer</label><span class="pull-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span></span>
-                  <%= f.input :customer_id, collection: Customer.all.map{ |a| [a.full_name, a.id] }, label: false %>
-                  <%= f.input :cash_tendered, input_html: { id: 'cash_tendered', oninput: 'calculateOrderTotalCost()',  class: "input-lg" } %>
-                  <%= f.input :discount_amount, label: "Discount", input_html: { id: 'discount_amount', oninput: 'calculateOrderTotalCost()', value: 0} %>
+                  <span><label>Customer</label><span class="float-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span></span>
+                  <%= f.input :customer_id, collection: Customer.all.map{ |a| [a.full_name, a.id] }, label: false, input_html: { id: 'selectCustomer', class: 'chosen-select' } %>
+                  <div class="row">
+                    <div class="col-md-7">
+                      <%= f.input :cash_tendered, input_html: { id: 'cash_tendered', oninput: 'calculateOrderTotalCost()',  class: "input-lg" } %>
+                    </div>
+                    <div class="col-md-5">
+                      <%= f.input :discount_amount, label: "Discount", input_html: { id: 'discount_amount', oninput: 'calculateOrderTotalCost()', value: 0} %>
+                    </div>
+                  </div>
                   <%= f.input :order_change, readonly: true, input_html: { id: 'change', class: "input-lg", value: 0 } %>
                   <%= f.input :reference_number %>
                   <%= f.input :total_cost, input_html: { id: 'total_cost', value: @cart.total_cost }, as: :hidden %>
@@ -129,7 +135,7 @@
                   <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
                   <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
 
-                  <%= f.submit "Save Order", class: "btn btn-lg btn-success btn-block" %>
+                  <%= f.submit "Save Order", class: "btn btn-lg btn-primary btn-block" %>
                 </div>
               </div>
               <% end %>
@@ -141,9 +147,23 @@
 </div>
 
 <script type="text/javascript">
-  $(document).ready(function() {
-    $("#store_front_module_orders_sales_order_processing_customer_id").select2({
-      theme: "bootstrap"
-    });
-  });
+function calculateOrderTotalCost() {
+  var discountAmount = document.getElementById('discount_amount').value;
+  var totalCost = document.getElementById('total_cost').value;
+  var cashTendered = document.getElementById('cash_tendered').value;
+
+  var change = document.getElementById('change');
+  var result = totalCost - discountAmount;
+  var changeResult = cashTendered - result;
+  change.value = changeResult;
+}
+function calculateLineItemTotalCost() {
+  var quantity = document.getElementById('line_item_quantity').value;
+  var unitCost = document.getElementById('line_item_unit_cost').value;
+
+  var totalCost = document.getElementById('line_item_total_cost');
+  var result = quantity * unitCost;
+  totalCost.value = result;
+}
+
 </script>

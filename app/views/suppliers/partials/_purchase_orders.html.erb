@@ -1,12 +1,12 @@
 <div class="tab-pane <%= 'active' if current_page?(supplier_purchase_orders_path(@supplier)) %>">
-  <%=link_to 'New Purchase Order', new_supplier_product_selection_path(@supplier), class: 'btn btn-primary pull-right' %>
+  <%=link_to 'New Purchase Order', new_supplier_product_selection_path(@supplier), class: 'btn btn-primary float-right' %>
   <hr />
-      <div class="box-body">
+      <div class="card-body">
         <% @orders.each do |order| %>
           <%= link_to store_front_module_purchase_order_path(order) do %>
             <div class="row text-muted">
               <div class="col-md-1">
-                <%= image_tag(order.supplier.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %>
+                <%= image_tag(order.supplier.avatar, class: "img-circle", height: 45, width: 45) %>
               </div>
               <div class="col-md-3">
                 <b class="text-primary"><%= order.supplier_name %></b><br>

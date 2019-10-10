@@ -13,6 +13,7 @@ module ComputerRepairSection
       end
     end
     def show
+      @post = Post.new
       @work_order = WorkOrder.find(params[:id])
       @work_order_update = @work_order.work_order_updates.build
       respond_to do |format|

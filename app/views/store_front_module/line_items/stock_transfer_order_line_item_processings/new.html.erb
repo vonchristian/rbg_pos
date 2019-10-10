@@ -1,23 +1,20 @@
 
 <div class="row">
   <div class="col-md-8">
-    <div class="box box-success">
-      <div class="box-header">
-        <div class="row">
-          <div class="col-md-6">
-            <h3 class="box-title"> Stock Transfers Section </h3><br>
+    <div class="card">
+      <div class="card-body">
+
+            <h3 class="subtitle-up"> Stock Transfers Section </h3>
             <span class="text-muted"> Generate stock transfers on this section </span>
-          </div>
-        </div>
-      </div>
-      <div class="box-body">
+<br>
+<br>
        <% if params[:search].present? %>
         <%=form_tag new_store_front_module_stock_transfer_order_line_item_processing_path, method: :get do %>
           <div class="input-group">
             <%= text_field_tag :search, params[:search], class: "form-control input-lg", placeholder: "Search Products..." %>
             <span class="input-group-btn">
-              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-success btn-lg") do %>
-                <i class="fa fa-search"></i> Search
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-default") do %>
+                <i class="fa fa-search"></i> Search Products
               <% end %>
             </span>
           </div>
@@ -27,8 +24,8 @@
           <div class="input-group">
             <%= text_field_tag :search, params[:search], id: 'stock-transfer-search-form', autofocus: true,  class: "form-control input-lg", placeholder: "Search..."  %>
             <span class="input-group-btn">
-              <%= button_tag(type: 'submit', id: "stock-transfer-search-btn", class: "btn btn-success btn-lg") do %>
-                <i class="fa fa-search"></i> Search
+              <%= button_tag(type: 'submit', id: "stock-transfer-search-btn", class: "btn btn-default") do %>
+                <i class="fa fa-search"></i> Search Products
               <% end %>
             </span>
           </div>
@@ -45,8 +42,12 @@
           </tbody>
         </table>
         <hr>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
         <% if @purchase_order_line_items.present? %>
-          <p class="text-muted"> ORDER DETAILS </p>
+          <p class="title-up"> ITEMS SUMMARY </p>
           <div class="table table-responsive">
             <table class="table table-hover table-striped">
               <thead>
@@ -54,10 +55,10 @@
                   <th><b>QTY</b></th>
                   <th><b>DESCRIPTION</b></th>
                   <% if current_user.proprietor? %>
-                    <th><span class="pull-right"><b>UNIT COST</b></span></th>
-                    <th><span class="pull-right"><b>TOTAL COST</b></span></th>
+                    <th><span class="float-right"><b>UNIT COST</b></span></th>
+                    <th><span class="float-right"><b>TOTAL COST</b></span></th>
                   <% else %>
-                    <th><span class="pull-right"><b>SELLING PRICE </b></span></th>
+                    <th><span class="float-right"><b>SELLING PRICE </b></span></th>
                   <% end %>
                 </tr>
               </thead>
@@ -66,28 +67,27 @@
                 <% @purchase_order_line_items.each do |line_item| %>
                   <tr>
                     <td><%= line_item.quantity %> <%= line_item.unit_code %></td>
-                    <td width="300px"><%= line_item.name.try(:titleize) %> <span class="text-muted"><%= line_item.bar_code %></span>
+                    <td width="300px"><%= line_item.name.try(:titleize) %><br> <span class="text-muted"><%= line_item.bar_code %></span>
                     </td>
                     <% if current_user.proprietor? %>
                       <td>
-                        <span class="pull-right">
+                        <span class="float-right">
                           <%= number_to_currency line_item.unit_cost %>
                         </span>
                       </td>
                       <td>
-                        <span class="pull-right"><%=number_to_currency line_item.total_cost %></span>
+                        <span class="float-right"><%=number_to_currency line_item.total_cost %></span>
                       </td>
                     <% else %>
-                      <td><span class="pull-right"><%= number_to_currency line_item.product.try(:base_measurement).try(:price) %></span></td>
+                      <td><span class="float-right"><%= number_to_currency line_item.product.try(:base_measurement).try(:price) %></span></td>
                     <% end %>
                     <td>
                     <%= link_to store_front_module_stock_transfer_order_line_item_processing_path(line_item), method: :delete do %>
-                      <span class="fa fa-trash"></span>
+                      <span class="fa fa-times text-danger"></span>
                     <% end %>
                     </td>
                   </tr>
                 <% end %>
-                <hr>
               </tbody>
             </table>
           </div>
@@ -96,11 +96,13 @@
     </div>
   </div>
     <div class="col-md-4">
-      <div class="box box-success">
-        <div class="box-body">
+      <div class="card card-success">
+        <div class="card-body">
+          <h3 class="title-up"> Stock Transfer Details </h3>
+          <br>
           <% if @purchase_order_line_items.present? %>
             <%= simple_form_for @stock_transfer_order, url: :store_front_module_stock_transfer_order_processings do |f| %>
-              <%= f.input :destination_store_front_id, collection: StoreFront.all.map{|a| [ a.name, a.id] } %>
+              <%= f.input :destination_store_front_id, collection: StoreFront.all.map{|a| [ a.name, a.id] }, input_html: { class: 'chosen-select' } %>
               <%= f.input :origin_store_front_id, input_html: { value: current_user.store_front.id }, as: :hidden %>
               <%= f.input :date, as: :string, input_html: { id: 'stock-transfer-order-date', class: "datepicker" } %>
               <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
@@ -108,7 +110,7 @@
               <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
 
               <%= f.input :reference_number %>
-              <%=f.submit "Save Stock Transfer", class: "btn btn-success btn-block btn-lg", :accesskey => "C" %>
+              <%=f.submit "Save Stock Transfer", class: "btn btn-primary btn-block btn-lg", :accesskey => "C" %>
             <% end %>
           <% end %>
         </div>

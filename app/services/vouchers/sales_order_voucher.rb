@@ -54,7 +54,7 @@ module Vouchers
         commercial_document: order
       )
     voucher.save!
-    order.update_attributes!(voucher: voucher)
+    order.update!(voucher: voucher)
     end
   end
 end

@@ -2,26 +2,26 @@
  <div id="customer-modal" class="modal fade"></div>
 
   <div class="row">
-    <div class="col-md-8 col-md-offset-2">
-      <div class="box box-solid">
-        <div class="box-header">
-          <h4 class="box-title condensed-text"> WORK ORDER DETAILS </h4>
+    <div class="col-md-8 offset-md-2">
+      <div class="card card-solid">
+        <div class="card-header">
+          <h4 class="subtitle-up condensed-text"> WORK ORDER DETAILS </h4>
         </div>
-        <div class="box-body">
+        <div class="card-body">
 <%= simple_form_for @work_order, url: :computer_repair_section_work_orders do |f| %>
   <div class="row">
-    <div class="col-md-10 col-md-offset-1">
+    <div class="col-md-10 offset-md-1">
   <%= f.error_notification %>
   <%= f.input :technician_id, input_html: { value: current_user.id }, as: :hidden %>
   <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-  <%= f.input :work_order_category_id, label: 'Category', collection: WorkOrderCategory.all.map{ |a| [a.title, a.id] } %>
+  <%= f.input :work_order_category_id, label: 'Category', collection: WorkOrderCategory.all.map{ |a| [a.title, a.id] }, input_html: { class: 'chosen-select' } %>
   <%= f.input :date_received, as: :string, input_html: { class: "datepicker" } %>
   <%= f.input :store_front_id, input_html: { value: current_user.store_front_id }, as: :hidden %>
-  <span class="pull-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span>
+  <span class="float-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span>
 
-  <%= f.input :customer_id, collection: Customer.all.map{|a| [a.full_name, a.id] } %>
+  <%= f.input :customer_id, collection: Customer.all.map{|a| [a.full_name, a.id] }, input_html: { class: 'chosen-select' } %>
   <%= f.input :contact_person %>
-  <%= f.input :department_id, collection: Department.all.map{ |a| [a.customer_name_and_department, a.id] } %>
+  <%= f.input :department_id, collection: Department.all.map{ |a| [a.customer_name_and_department, a.id] }, input_html: { class: 'chosen-select' } %>
 
 
   <%= f.input :description, label: "Manufacturer/Description" %>
@@ -33,24 +33,25 @@
   <%= f.input :under_warranty, as: :boolean %>
   <%= f.input :section_id, input_html: { value: current_user.try(:section_id) }, as: :hidden %>
   <div id="warranty-details" display="none">
-    <%= f.input :supplier_id, collection: Supplier.all.map{|a| [a.business_name, a.id] } %>
+    <%= f.input :supplier_id, collection: Supplier.all.map{|a| [a.business_name, a.id] }, input_html: { class: 'chosen-select' } %>
     <%= f.input :purchase_date, as: :string, input_html: { class: "datepicker" } %>
 
     <%= f.input :expiry_date, as: :string, input_html: { class: "datepicker" } %>
   </div>
-  <div class="box-footer">
-    <%= f.submit "Save Work Order", class: "btn btn-primary pull-right" %>
-  </div>
+  <hr>
+    <%= f.submit "Save Work Order", class: "btn btn-primary float-right" %>
+
 <% end %>
 </div>
 </div>
 </div>
 </div>
 </div>
+</div>
 <script>
-  var under_warranty_checkbox = document.getElementById('work_order_under_warranty');
+  var under_warranty_checkcard = document.getElementById('work_order_under_warranty');
   var under_warranty_details_div = document.getElementById('warranty-details');
-  under_warranty_checkbox.onchange = function() {
+  under_warranty_checkcard.onchange = function() {
      if(this.checked) {
        under_warranty_details_div.style['display'] = 'block';
      } else {

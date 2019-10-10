@@ -1,5 +1,6 @@
 class Supplier < ApplicationRecord
 	include PgSearch::Model
+  has_one_attached :avatar
 	pg_search_scope :text_search, against: [:business_name, :owner_name, :contact_number]
   multisearchable against: [:business_name]
 	validates :business_name, presence: true
@@ -13,16 +14,7 @@ class Supplier < ApplicationRecord
 
   has_many :vouchers, as: :payee
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", through: :vouchers
-  has_attached_file :avatar,
-  styles: { large: "120x120>",
-           medium: "70x70>",
-           thumb: "40x40>",
-           small: "30x30>",
-           x_small: "20x20>"},
-  default_url: ":style/profile_default.jpg",
-  :path => ":rails_root/public/system/:attachment/:id/:style/:filename",
-  :url => "/system/:attachment/:id/:style/:filename"
-
+  before_save :set_default_image
   def name
     business_name
   end
@@ -51,5 +43,11 @@ class Supplier < ApplicationRecord
   def default_accounts_payable_account
     return payable_account if payable_account.present?
     AccountingModule::Liability.find_by(name: 'Accounts Payable-Trade')
+  end
+
+  def set_default_image
+    if !avatar.attached?
+      self.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default.png')), filename: 'default-image.png', content_type: 'image/png')
+    end
   end
 end

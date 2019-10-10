@@ -1,5 +1,6 @@
 class Customer < ApplicationRecord
 	include PgSearch::Model
+  has_one_attached :avatar
 	pg_search_scope :text_search, against: [:first_name, :last_name, :contact_number, :address]
   multisearchable against: [:first_name, :last_name]
 
@@ -16,19 +17,11 @@ class Customer < ApplicationRecord
   has_many :work_orders
   has_many :departments, dependent: :nullify
   has_many :sales_orders, class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document
-	has_attached_file :avatar,
-  styles: { large: "120x120>",
-           medium: "70x70>",
-           thumb: "40x40>",
-           small: "30x30>",
-           x_small: "20x20>"},
-  default_url: ":style/profile_default.jpg",
-  :path => ":rails_root/public/system/:attachment/:id/:style/:filename",
-  :url => "/system/:attachment/:id/:style/:filename"
-  validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
+
   validates :first_name, :last_name, :contact_number, presence: true
   scope :recent, ->(num) { order('created_at DESC').limit(num) }
   before_validation :set_account_number
+  before_save :set_default_image
   def work_order_payments
     #
   end
@@ -122,5 +115,11 @@ class Customer < ApplicationRecord
   private
   def set_account_number
     self.account_number||= SecureRandom.uuid
+  end
+
+  def set_default_image
+    if !avatar.attached?
+      self.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default.png')), filename: 'default-image.png', content_type: 'image/png')
+    end
   end
 end

@@ -25,6 +25,10 @@ module RepairServicesModule
         order.sales_order_line_items << sales_order_line_item
       end
       create_entry(order)
+      create_accounts(order)
+    end
+    def create_accounts(order)
+      AccountCreators::SalesOrder.new(sales_order: order).create_accounts!
     end
     def create_entry(order)
         accounts_receivable = find_work_order.receivable_account

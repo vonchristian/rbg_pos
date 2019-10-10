@@ -1,16 +1,16 @@
 <div class="row">
-  <div class="col-md-4 col-md-offset-4">
-    <div class="box box-danger">
-      <div class="box-header bg-red">
-        <h3 class="box-title"> Customer Account Merging </h3>
+  <div class="col-md-4 offset-md-4">
+    <div class="card card-danger">
+      <div class="card-header bg-red">
+        <h3 class="subtitle-up"> Customer Account Merging </h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <%= simple_form_for @merging, url: :customer_account_mergings do |f| %>
           <%= f.input :old_customer_id, collection: Customer.all.map{|a| [a.full_name, a.id] } %>
           <span class="help-block"> The old customer will be merged to the account of the new customer.</span>
           <%= f.input :new_customer_id, collection: Customer.all.map{|a| [a.full_name, a.id] } %>
-          <div class="box-footer">
-          <%= f.submit "Merge Account", class: "btn btn-danger pull-right" %>
+          <div class="card-footer">
+          <%= f.submit "Merge Account", class: "btn btn-danger float-right" %>
         <% end %>
       </div>
     </div>

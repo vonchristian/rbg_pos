@@ -8,9 +8,9 @@ module StoreFronts
 
     def update_availability!
       if stock.balance_for_cart(cart) <= 0
-        stock.update_attributes!(available: false)
+        stock.update!(available: false)
       elsif stock.balance_for_cart(cart) > 0
-        stock.update_attributes!(available: true)
+        stock.update!(available: true)
       end
     end
   end

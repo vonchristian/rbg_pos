@@ -1,19 +1,19 @@
 
 <div class="row">
   <div class="col-md-7">
-    <div class="box box-primary">
-      <div class="box-header with-border">
+    <div class="card card-primary">
+      <div class="card-header with-border">
         <div class="row">
           <div class="col-md-6">
             <h4 class="title"><span class="icon-basket-loaded"></span> Store</h4>
             <p class="category">Search for products to add to cart</p>
           </div>
           <div class="col-md-6">
-            <%=link_to 'New Other Sales', new_other_sale_path, class: "btn btn-primary btn-sm pull-right" %>
+            <%=link_to 'New Other Sales', new_other_sale_path, class: "btn btn-primary btn-sm float-right" %>
           </div>
         </div>
       </div>
-      <div class="box-body">
+      <div class="card-body">
       <%=form_tag store_index_path, method: :get, id: "search-form" do %>
          <div class="input-group">
            <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", autofocus: true, placeholder: "Search...", type: "search" %>
@@ -61,29 +61,29 @@
   </div>
         <% if @cart.line_items.any? %>
         <div class="col-md-5">
-          <div class="box box-primary">
-            <div class="box-header">
+          <div class="card card-primary">
+            <div class="card-header">
               <div class="row">
                 <div class="col-md-9">
                   <h4 class="title"><span class="icon-basket-loaded"></span> Cart</h4>
                 </div>
                 <div class="col-md-3">
-                  <span class="pull-right"><%= link_to 'Empty Cart', cart_path(@cart), method: :delete, class: "btn btn-danger btn-sm" %>
+                  <span class="float-right"><%= link_to 'Empty Cart', cart_path(@cart), method: :delete, class: "btn btn-danger btn-sm" %>
                   </span>
                 </div>
               </div>
             </div>
-            <div class="box-body">
+            <div class="card-body">
 
               <%= simple_form_for @sales_order, url: :store_front_module_sales_order_processings do |f| %>
               <div class="row">
-                <div class="col-md-10 col-md-offset-1">
+                <div class="col-md-10 offset-md-1">
                   <div class="row">
                 <div class="col-md-6">
                   <h4 class="title"> Total </h4>
                 </div>
                 <div class="col-md-6">
-                  <h4 class="title pull-right">
+                  <h4 class="title float-right">
                     <%= number_to_currency @cart.total_cost %>
                   </h4>
                 </div>

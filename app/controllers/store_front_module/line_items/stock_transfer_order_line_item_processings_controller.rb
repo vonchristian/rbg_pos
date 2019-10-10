@@ -3,8 +3,9 @@ module StoreFrontModule
     class StockTransferOrderLineItemProcessingsController < ApplicationController
       def new
         if params[:search].present?
-          @pagy, @stocks = pagy(current_store_front.stocks.processed.text_search(params[:search]))
           @pagy, @products   = pagy(Product.text_search(params[:search]))
+          @pagy, @stocks     = pagy(current_store_front.stocks.processed.barcode_search(params[:search]))
+
         end
         @cart = current_cart
         @stock_transfer_order_line_item = StoreFrontModule::LineItems::StockTransferOrderLineItemProcessing.new

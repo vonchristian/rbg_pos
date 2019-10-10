@@ -55,7 +55,7 @@ module StoreFrontModule
 
         def create_sales_line_items
           find_cart.sales_order_line_items.each do |sales_order_line_item|
-            sales_order_line_item.update_attributes(date: date)
+            sales_order_line_item.update(date: date)
             sales_order_line_item.cart_id = nil
             find_order.sales_order_line_items << sales_order_line_item
         end

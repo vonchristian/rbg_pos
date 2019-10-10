@@ -1,5 +1,6 @@
 class Product < ApplicationRecord
 	include PgSearch::Model
+  has_one_attached :avatar
   multisearchable against: [:name]
 	pg_search_scope :text_search, against: [:name]
   pg_search_scope :text_search_with_barcode, against: [:name],
@@ -23,22 +24,12 @@ class Product < ApplicationRecord
   has_many :selling_prices,       class_name: "StoreFrontModule::SellingPrice"
   has_many :purchase_prices,      class_name: 'StoreFrontModule::PurchasePrice'
   has_many :stocks,               class_name: 'StoreFronts::Stock'
-  has_attached_file :avatar,
-  styles: { large: "120x120>",
-           medium: "70x70>",
-           thumb: "40x40>",
-           small: "30x30>",
-           x_small: "20x20>"},
-  default_url: ":style/default_product_logo.jpg",
-  :path => ":rails_root/public/system/:attachment/:id/:style/:filename",
-  :url => "/system/:attachment/:id/:style/:filename"
-  validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
 
   validates :name, presence: true, uniqueness: { scope: :business_id }
 
   delegate :name, to: :category, prefix: true, allow_nil: true
   delegate :unit_code, to: :base_measurement, prefix: true, allow_nil: true
-
+  before_save :set_default_image
   def base_measurement
     unit_of_measurements.base_measurement
   end
@@ -160,6 +151,12 @@ class Product < ApplicationRecord
     balance(destination_store_front: args[:store_front])
     else
       0
+    end
+  end
+
+  def set_default_image
+    if !avatar.attached?
+      self.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default.png')), filename: 'default-image.png', content_type: 'image/png')
     end
   end
 end

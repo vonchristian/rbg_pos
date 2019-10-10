@@ -24,7 +24,7 @@ module StoreFrontModule
         @stock_transfer = StoreFrontModule::Orders::PurchaseOrder.find(params[:id])
       end
       def update
-        @stock_transfer = StoreFrontModule::Orders::StockTransferOrder.find(params[:id])
+        @stock_transfer = StoreFrontModule::Orders::PurchaseOrder.find(params[:id])
         @stock_transfer.update(stock_transfer_params)
         if @stock_transfer.valid?
           @stock_transfer.save
@@ -40,7 +40,7 @@ module StoreFrontModule
       end
       private
       def stock_transfer_params
-        params.require(:store_front_module_orders_stock_transfer_order).
+        params.require(:store_front_module_orders_purchase_order).
         permit(:destination_store_front_id)
       end
     end

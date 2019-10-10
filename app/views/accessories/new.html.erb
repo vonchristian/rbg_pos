@@ -1,11 +1,11 @@
 <div class="content">
   <div class="row">
-    <div class="col-md-4 col-md-offset-4">
-      <div class="box box-solid">
-        <div class="box-header">
+    <div class="col-md-4 offset-md-4">
+      <div class="card card-solid">
+        <div class="card-header">
           <h4 class="title condensed-text"> Add Accessory Details </h4>
         </div>
-        <div class="box-body">
+        <div class="card-body">
           <%= simple_form_for [@product_unit, @accessory] do |f| %>
             <%= f.error_notification %>
             <%= f.input :description %>

@@ -1,12 +1,12 @@
 
   <div class="row">
     <div class="col-md-12">
-      <div class="box box-default">
-        <div class="box-header">
-          <h3 class="box-title"> Reports </h3>
+      <div class="card card-default">
+        <div class="card-header">
+          <h3 class="subtitle-up"> Reports </h3>
           <p class="help-block"> Generate reports </p>
         </div>
-        <div class="box-body">
+        <div class="card-body">
           <h4 class="title"> Services </h4>
           <p class="category">Generate report for services</p><br>
           <%= form_tag({:action => "index", controller: "work_orders", format: 'pdf'}, {:method => :get})  do %>

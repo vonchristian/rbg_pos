@@ -1,5 +1,5 @@
 require 'rails_helper'
-
+include ChosenSelect
 describe 'New cash sales order' do
   let!(:customer)  { create(:customer) }
 
@@ -13,7 +13,7 @@ describe 'New cash sales order' do
     entry                    = create(:entry_with_credit_and_debit)
     voucher                  = create(:voucher, entry: entry, payee: supplier, reference_number: 'V001')
     purchase_order           = create(:purchase_order, supplier: supplier, voucher: voucher)
-    purchase_order_line_item = create(:purchase_order_line_item, quantity: 10, stock: stock, purchase_order: purchase_order)
+    purchase_order_line_item = create(:purchase_order_line_item, quantity: 10, stock: stock, purchase_order: purchase_order, unit_cost: 100)
     cash                     = create(:asset)
     sales_clerk              = create(:sales_clerk, store_front: store_front, cash_on_hand_account: cash)
     sales_clerk.cash_accounts << cash
@@ -30,8 +30,8 @@ describe 'New cash sales order' do
 
     expect(page).to have_content('added to cart')
 
-    fill_in 'sale-order-date', with: Date.current
-    select customer.full_name
+    fill_in 'sale-order-date', with: Date.current.strftime('%B %e, %Y')
+    select_from_chosen customer.full_name, from: 'selectCustomer'
     fill_in 'Cash tendered',    with: 100
     fill_in 'Discount',         with: 0
     fill_in 'Reference number', with: '120DFG'
@@ -53,7 +53,7 @@ describe 'New cash sales order' do
     expect(page).to have_content('added to cart')
 
     fill_in 'sale-order-date', with: Date.current
-    select customer.full_name
+    select_from_chosen customer.full_name, from: "selectCustomer"
     fill_in 'Cash tendered',    with: 100
     fill_in 'Discount',         with: 0
     fill_in 'Reference number', with: '120DFG'

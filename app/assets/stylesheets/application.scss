@@ -1,13 +1,7 @@
-@import "bootstrap-sprockets";
-@import "bootstrap-datepicker3";
-@import "bootstrap";
-@import 'bootstrap-datetimepicker';
-@import "admin_lte";
-@import "skin";
-@import "font-awesome";
-@import 'overrides';
-@import 'icheck/square/blue';
-@import 'select2';
-@import 'select2-bootstrap';
-@import 'simple-line-icons';
 
+@import 'actiontext';
+@import 'overrides';
+@import 'trix';
+@import 'adminlte';
+@import "font-awesome-sprockets";
+@import "font-awesome";

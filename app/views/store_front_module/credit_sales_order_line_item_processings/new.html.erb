@@ -1,8 +1,8 @@
 
 <div class="row">
   <div class="col-md-7">
-    <div class="box box-danger">
-      <div class="box-header with-border">
+    <div class="card card-danger">
+      <div class="card-header with-border">
         <div class="row">
           <div class="col-md-6">
             <h4 class="title"><span class="icon-basket-loaded"></span> Credit Sales</h4>
@@ -10,7 +10,7 @@
 
         </div>
       </div>
-      <div class="box-body">
+      <div class="card-body">
       <% if params[:search].present? %>
         <%=form_tag new_store_front_module_customer_credit_sales_order_line_item_processing_path(@customer), method: :get, id: "search-form" do %>
            <div class="input-group">
@@ -63,7 +63,7 @@
               </span>
             </div>
             <div class="col-md-4">
-              <span class="pull-right">
+              <span class="float-right">
                 <%= number_to_currency line_item.total_cost %> &nbsp;
                 <%= link_to store_front_module_customer_credit_sales_order_line_item_processing_path(id: line_item.id), method: :delete do %>
                       <span class="fa fa-times text-danger"></span>
@@ -80,7 +80,7 @@
             <h4>TOTAL </h4>
           </div>
           <div class="col-md-3">
-            <span class="pull-right">
+            <span class="float-right">
               <h4><%= number_to_currency @cart.sales_order_line_items.sum(&:total_cost) %></h4>
             </span>
           </div>
@@ -90,25 +90,25 @@
   </div>
 </div>
         <div class="col-md-5">
-          <div class="box box-danger">
-            <div class="box-header with-border">
+          <div class="card card-danger">
+            <div class="card-header with-border">
               <center>
-                <%= image_tag(@customer.avatar.url(:medium), class: "img-circle", height: 60, width: 60) %>
+                <%= image_tag(@customer.avatar, class: "img-circle", height: 60, width: 60) %>
                 <h4><%= @customer.name %></h4>
               </center>
             </div>
-            <div class="box-body">
+            <div class="card-body">
 
               <%= simple_form_for [@customer, @credit_sales_order], url: :store_front_module_customer_credit_sales_order_processings do |f| %>
               <div class="row">
-                <div class="col-md-10 col-md-offset-1">
+                <div class="col-md-10 offset-md-1">
                   <div class="row">
                 <div class="col-md-6">
                   <h4> TOTAL </h4>
                 </div>
                 <div class="col-md-6">
                   <h4>
-                    <span class="pull-right"><%= number_to_currency @cart.sales_order_line_items.sum(&:total_cost) %></span>
+                    <span class="float-right"><%= number_to_currency @cart.sales_order_line_items.sum(&:total_cost) %></span>
                   </h4>
                 </div>
               </div>

@@ -1,13 +1,13 @@
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <div class="box box-danger">
-      <div class="box-header with-border">
+  <div class="col-md-6 offset-md-3">
+    <div class="card card-danger">
+      <div class="card-header with-border">
         <center>
-          <h3 class="box-title"> <%= @bank_account.bank_name.try(:upcase) %></h3><br>
+          <h3 class="subtitle-up"> <%= @bank_account.bank_name.try(:upcase) %></h3><br>
           <span class="text-muted"><%= @bank_account.account_number %></span>
         </center>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <p class="text-muted"> Withdraw Details </p>
         <%= simple_form_for [@bank_account, @withdrawal], url: :accounting_bank_account_withdrawals do |f| %>
           <%= f.error_notification %>
@@ -18,8 +18,8 @@
           <%= f.input :description %>
           <%= f.input :bank_account_id, input_html: { value: @bank_account.id }, as: :hidden %>
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-          <div class="box-footer">
-            <%= f.submit "Save Withdraw", class: "btn btn-danger pull-right" %>
+          <div class="card-footer">
+            <%= f.submit "Save Withdraw", class: "btn btn-danger float-right" %>
           </div>
         <% end %>
       </div>

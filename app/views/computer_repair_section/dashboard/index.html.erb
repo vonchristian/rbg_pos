@@ -1,28 +1,48 @@
-<div class="row">
-  <div class="col-md-12">
-    <div class="box box-solid">
-      <div class="box-body">
+<div class="container">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4">
+            <h3 class="title-up"> Repairs Section </h3>
+          </div>
+          <div class="col-md-6">
+            <%=form_tag computer_repair_section_dashboard_index_path, method: :get, id: "search-form" do %>
+              <div class="input-group">
+                <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search Repairs...", type: "search" %>
+                <span class="input-group-btn">
+                  <%= button_tag(type: 'submit', class: "btn btn-default") do %>
+                    <i class="fa fa-search"></i> Search Repair
+                  <% end %>
+                </span>
+              </div>
+            <% end %>
+          </div>
+          <div class="col-md-2">
+            <%= link_to new_computer_repair_section_work_order_path, title: 'New Work Order' do %>
+              <span class="btn btn-primary float-right" data-toggle="tooltip" title="New Work Order" data-placement="top"><i class="fa fa-plus-circle"></i> New Repair</span>
+            <% end %>
+          </div>
+
+        </div>
+        <br>
+        <% User.technician.each do |technician| %>
+          <% if current_user.proprietor? %>
+            <%=link_to repair_services_per_employee_dashboards_path(user_id: technician.id) do %>
+              <span data-toggle="tooltip" title="<%=technician.first_name %>" data-placement="top">
+                <%= image_tag(technician.avatar, class: "img-circle", height: 45, width: 45) %> &nbsp;
+              </span>
+            <% end %>
+          <% else %>
+          <%=link_to employee_repairs_path(employee_id: technician.id) do %>
+            <span data-toggle="tooltip" title="<%=technician.first_name %>" data-placement="top">
+              <%= image_tag(technician.avatar, class: "img-circle", height: 45, width: 45) %> &nbsp;
+            </span>
+          <% end %>
+        <% end %>
+        <% end %>
+        <hr>
         <div class="row">
           <div class="col-md-6 border-right">
-
-              <p><small class="condensed-text">VIEW PER TECHNICIAN</small></p>
-              <% User.technician.each do |technician| %>
-                <% if current_user.proprietor? %>
-                  <%=link_to repair_services_per_employee_dashboards_path(user_id: technician.id) do %>
-                    <span data-toggle="tooltip" title="<%=technician.first_name %>" data-placement="top">
-                      <%= image_tag(technician.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %> &nbsp;
-                    </span>
-                  <% end %>
-                <% else %>
-                <%=link_to employee_repairs_path(employee_id: technician.id) do %>
-                  <span data-toggle="tooltip" title="<%=technician.first_name %>" data-placement="top">
-                    <%= image_tag(technician.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %> &nbsp;
-                  </span>
-                <% end %>
-              <% end %>
-              <% end %>
-              <br>
-              <br>
 
             <p><small class="condensed-text">VIEW PER SECTION</small></p>
              <% Section.all.each do |section| %>
@@ -42,18 +62,7 @@
 
 
           </div>
-          <div class="col-md-3">
-            <%=form_tag computer_repair_section_dashboard_index_path, method: :get, id: "search-form" do %>
-              <div class="input-group">
-                <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search Repairs...", type: "search" %>
-                <span class="input-group-btn">
-                  <%= button_tag(type: 'submit', class: "btn") do %>
-                    <i class="icon-magnifier"></i>
-                  <% end %>
-                </span>
-              </div>
-            <% end %>
-          </div>
+
         </div>
         <br>
       </div>
@@ -61,145 +70,78 @@
 
     <div class="row">
 
-      <div class="col-md-3 border-right">
-        <div class="box box-solid">
-          <div class="box-header">
-            <div class="row">
-              <div class="col-md-8">
-                <h4 class="title condensed-text"><span class="label label-default"><%= WorkOrder.received.count %></span> &nbsp; RECEIVED </h4>
-              </div>
-              <div class="col-md-4">
-                <%= link_to new_computer_repair_section_work_order_path, title: 'New Work Order' do %>
-                  <span class="btn btn-primary btn-flat pull-right" data-toggle="tooltip" title="New Work Order" data-placement="top"><i class="fa fa-plus-circle"></i> New</span>
-                <% end %>
-              </div>
-            </div>
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <small class="text-muted"> RECEIVED </small>
+            <h3 class="title-up"> <%= WorkOrder.received.size %></h3>
           </div>
         </div>
-        <hr>
+
           <% @work_orders.received.each do |work_order| %>
-            <%=link_to computer_repair_section_work_order_path(work_order) do %>
-              <div class="box box-solid">
-                <div class="box-body">
-                  <div class="row">
-                    <div class="col-md-2">
-                      <span data-toggle="tooltip" title="<%=work_order.technicians.first.first_name %>" data-placement="top">
-                        <%= image_tag(work_order.technicians.first.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %>
-                      </span>
-                    </div>
-                    <div class="col-md-7">
-                      <span class="text-black condensed-text"><b><%= work_order.product_unit.description.try(:upcase) %></b></span><br>
-                      <span class='text-danger'><%= work_order.reported_problem %></span><br>
-                      <span class="text-black"> <%= work_order.customer_full_name %></span><br>
-                      <span class='text-black'><small><%= work_order.created_at.strftime("%b %e, %l:%M %p") %></small></span><br>
-                      <small>CI #: <%= work_order.charge_invoice_number %></small>
-                    </div>
-                    <div class="col-md-2">
-                      <small class="text-black"><b>#<%=work_order.service_number %></b></small>
-                    </div>
-                  </div>
-                  <br>
-                </div>
-              </div>
-            <% end %>
+          <div class="card card-outline card-secondary">
+            <div class="card-body">
+              <%= render 'computer_repair_section/work_order', work_order: work_order %>
+            </div>
+          </div>
           <% end %>
-          <center><%=will_paginate @work_orders,  :params => {:controller => "computer_repair_section/dashboard", action: "index" } %></center>
+          <center><%==pagy_bootstrap_nav(@pagy) %></center>
         </div>
 
-      <div class="col-md-3 border-left">
-        <div class="box box-solid">
-        <div class="box-header">
-          <h4 class="title condensed-text"> <span class="label label-warning"><%= WorkOrder.work_in_progress.count %> </span> &nbsp; WORK IN PROGRESS </h4>
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <small class="text-muted"> WORK IN PROGRESS </small>
+            <h3 class="title-up"> <%= WorkOrder.work_in_progress.size %></h3>
+          </div>
         </div>
-        <hr>
-        <div class="box-body">
+
           <% @work_orders.work_in_progress.each do |work_order| %>
-          <%=link_to computer_repair_section_work_order_path(work_order) do %>
-           <div class="row">
-              <div class="col-md-9">
-                <span class="text-black condensed-text"><b><%= work_order.product_unit.description.try(:upcase) %></b></span><br>
-                <%= work_order.customer.full_name %><br>
-                <span class="text-black"><%= distance_of_time_in_words(work_order.created_at, Time.zone.now) %></span><br>
-                <small>CI #: <%= work_order.charge_invoice_number %></small><br><br>
-                <% work_order.technicians.each do |technician| %>
-                  <span data-toggle="tooltip" title="<%=technician.first_name %>" data-placement="top">
-                    <%= image_tag(technician.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %> &nbsp;
-                  </span>
-                <% end %>
+          <div class="card card-outline card-danger">
+          <div class="card-body">
+            <%= render 'computer_repair_section/work_order', work_order: work_order %>
+
+        </div>
+      </div>
+          <% end %>
+          <center><%==pagy_bootstrap_nav(@pagy)%></center>
+
+      </div>
+      <div class="col-md-3 ">
+        <div class="card">
+          <div class="card-body">
+            <small class="text-muted"> DONE / RTO </small>
+            <h3 class="title-up"> <%= WorkOrder.done_and_rto.size %></h3>
+          </div>
+        </div>
+          <% @work_orders.done_and_rto.each do |work_order| %>
+          <div class="card card-outline card-warning">
+           <div class="card-body">
+          <%= render 'computer_repair_section/work_order', work_order: work_order %>
+        </div>
+      </div>
+          <% end %>
+          <center><%==pagy_bootstrap_nav(@pagy) %></center>
+
+      </div>
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <small class="text-muted"> RELEASED </small>
+            <h3 class="title-up"> <%= WorkOrder.released.size %></h3>
+          </div>
+        </div>
+            <% @work_orders.released.each do |work_order| %>
+            <div class="card card-outline card-success">
+
+              <div class="card-body">
+                <%= render 'computer_repair_section/work_order', work_order: work_order %>
 
               </div>
-              <div class="col-md-2">
-                <small class="text-black"><b><%=work_order.service_number %></b></small>
-              </div>
             </div>
-            <hr>
-          <% end %>
-          <% end %>
-          <center><%=will_paginate @work_orders,  :params => {:controller => "computer_repair_section/dashboard", action: "index" } %></center>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 border-right">
-        <div class="box box-solid">
-        <div class="box-header">
-          <h4 class="box-title"> <span class="label label-success"><%= WorkOrder.done_and_rto.count %> </span> &nbsp; Done / Return to Owner </h4>
-        </div>
-         <div class="box-body">
-          <% @work_orders.done_and_rto.each do |work_order| %>
-          <%=link_to computer_repair_section_work_order_path(work_order) do %>
-           <div class="row">
-              <div class="col-md-9">
-                <span class="text-black condensed-text"><b><%= work_order.product_unit.description.try(:upcase) %></b></span><br>
-                <%= work_order.customer.full_name %><br>
-                <span class="text-black"><%= distance_of_time_in_words(work_order.created_at, Time.zone.now) %></span><br>
-                <small>CI #: <%= work_order.charge_invoice_number %></small><br><br>
-                <% work_order.technicians.each do |technician| %>
-                  <span data-toggle="tooltip" title="<%=technician.first_name %>" data-placement="top">
-                    <%= image_tag(technician.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %> &nbsp;
-                  </span>
-                <% end %>
-              </div>
-              <div class="col-md-2">
-                <small class="text-black"><b><%=work_order.service_number %></b></small>
-              </div>
-            </div>
-            <hr>
-          <% end %>
-          <% end %>
-          <center><%=will_paginate @work_orders,  :params => {:controller => "computer_repair_section/dashboard", action: "index" } %></center>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 border-right">
-        <div class="box box-solid">
-          <div class="box-header">
-            <h4 class="box-title"> Released </h4>
-          </div>
-          <div class="box-body">
-            <% @work_orders.released.each do |work_order| %>
-              <%=link_to computer_repair_section_work_order_path(work_order) do %>
-                  <div class="row">
-                    <div class="col-md-9">
-                    <p class="text-black condensed-text"><%= work_order.product_unit.description %></p>
-                    <%= work_order.customer.full_name %><br>
-                    <span class='text-black'><small><%= work_order.updated_at.strftime("%b %e, %l:%M %p") %></small></span><br><br>
-                     <small>CI #: <%= work_order.charge_invoice_number %></small><br><br>
-                    <% work_order.technicians.each do |technician| %>
-                      <span data-toggle="tooltip" title="<%=technician.first_name %>" data-placement="top">
-                        <%= image_tag(technician.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %> &nbsp;
-                      </span>
-                    <% end %>
-                    </div>
-                    <div class="col-md-2">
-                      <small class="text-black"><b><%=work_order.service_number %></b></small>
-                    </div>
-                  </div>
-                  <br>
-                <% end %>
               <% end %>
-              <center><%=will_paginate @work_orders,  renderer: WillPaginateHelper::RepairDashboardLinkRenderer, format: :html  %></center>
-            </div>
-          </div>
+              <center><%==pagy_bootstrap_nav(@pagy) %></center>
+
         </div>
       </div>
     </div>

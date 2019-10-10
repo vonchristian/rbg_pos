@@ -7,17 +7,17 @@
 
   <div class="row">
     <div class="col-md-6">
-      <div class="box box-success">
-        <div class="box-header">
-          <h3 class="box-title"> Latest Sales </h3>
+      <div class="card card-success">
+        <div class="card-header">
+          <h3 class="subtitle-up"> Latest Sales </h3>
         </div>
-        <div class="box-body">
+        <div class="card-body">
           <% @sales_for_today.limit(10).each do |order| %>
             <%= link_to store_front_module_sales_order_path(order) do  %>
             <div class="row">
               <div class="col-md-2">
                 <% if order.commercial_document.present? && order.commercial_document.avatar.present? %>
-                  <%= image_tag(order.commercial_document.avatar.url(:medium), class: "img-circle", height: 40, width: 40) %>
+                  <%= image_tag(order.commercial_document.avatar, class: "img-circle", height: 40, width: 40) %>
                 <% end %>
               </div>
               <div class="col-md-6">
@@ -40,16 +40,16 @@
 
   <div class="row">
     <div class="col-md-8">
-      <div class="box box-solid">
-        <div class="box-header">
-          <h3 class="box-title"> Employees </h3>
+      <div class="card card-solid">
+        <div class="card-header">
+          <h3 class="subtitle-up"> Employees </h3>
         </div>
-        <div class="box-body">
+        <div class="card-body">
           <% @employees.each do |employee| %>
             <%= link_to admin_employee_path(employee) do %>
               <div class="row">
                 <div class="col-md-1">
-                  <%= image_tag(employee.avatar.url(:medium), height: 50, width: 50, class: "img-circle") %>
+                  <%= image_tag(employee.avatar, height: 50, width: 50, class: "img-circle") %>
                 </div>
                 <div class="col-md-4">
                   <%= employee.full_name %><br>

@@ -1,26 +1,27 @@
 <div class="row">
   <div class="col-md-8">
-    <div class="box box-default">
-      <div class="box-header">
+    <div class="card card-default">
+      <div class="card-header">
         <h3 class="title"> Voucher Details </h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <%= simple_form_for @voucher_amount, url: :supplier_voucher_amounts do |f| %>
           <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
+          <%= f.input :supplier_id, input_html: { value: @supplier.id }, as: :hidden %>
+
           <div class="row">
             <div class="col-md-5">
-              <%= f.input :account_id, label: false, placeholder: "Select Accounte", collection: current_business.accounts.all.map{ |a| [ a.name, a.id] } %>
+              <%= f.input :account_id, label: false, placeholder: "Select Accounte", collection: current_business.accounts.all.map{ |a| [ a.name, a.id] }, input_html: { class: 'chosen-select' } %>
             </div>
             <div class="col-md-3">
               <%= f.input :amount, label: false, placeholder: "Amount" %>
             </div>
             <div class="col-md-2">
-              <%= f.input :amount_type, label: false, placeholder: "Type", collection: Vouchers::VoucherAmount.amount_types.keys.to_a.map{ |a| [ a.titleize, a] } %>
+              <%= f.input :amount_type, label: false, placeholder: "Type", collection: Vouchers::VoucherAmount.amount_types.keys.to_a.map{ |a| [ a.titleize, a] }, input_html: { class: 'chosen-select' } %>
             </div>
-            <div class="col-md-1">
-              <%= f.input :supplier_id, input_html: { value: @supplier.id }, as: :hidden %>
-              <%= button_tag type: 'submit', class: "btn btn-default", id: "register-button", title: 'Add' do %>
-        <i class="fa fa-plus" aria-hidden="true"></i>
+            <div class="col-md-2">
+              <%= button_tag type: 'submit', class: "btn btn-primary", id: "register-button", title: 'Add' do %>
+        <i class="fa fa-plus" aria-hidden="true"></i> Add
         <% end %>
             </div>
           </div>
@@ -56,11 +57,11 @@
     </div>
   </div>
   <div class="col-md-4">
-    <div class="box box-default">
-      <div class="box-header">
-        <h4 class="box-title"> Payee Details </h4>
+    <div class="card card-default">
+      <div class="card-header">
+        <h4 class="subtitle-up"> Payee Details </h4>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <h4><center><%= @supplier.business_name.try(:upcase) %></center></h4>
         <hr>
         <% if current_cart.voucher_amounts.any? %>
@@ -73,8 +74,8 @@
             <%= f.input :description, as: :text %>
             <%= f.input :supplier_id, input_html: { value: @supplier.id }, as: :hidden %>
             <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
-            <div class="box-footer">
-              <%= f.submit "Create Voucher", class: "btn btn-primary pull-right" %>
+            <div class="card-footer">
+              <%= f.submit "Create Voucher", class: "btn btn-primary float-right" %>
             </div>
           <% end %>
         <% end %>

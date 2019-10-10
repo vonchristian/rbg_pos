@@ -46,7 +46,7 @@ class WorkOrder < ApplicationRecord
   after_commit :set_customer_name, :set_product_name,  on: [:create, :update]
 
   def self.done_and_rto
-    done + return_to_owner
+    where(status: 'done').or(self.where(status: 'return_to_owner'))
   end
 
   def self.payment_entries #refactor

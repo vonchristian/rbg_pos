@@ -1,12 +1,12 @@
 <div class="content">
   <div class="row">
     <div class="col-md-12">
-      <div class="box box-solid">
-        <div class="box-header bg-gray">
-          <center><%= image_tag(@employee.avatar.url(:medium), height: 60, width: 60, class: "img-circle") %> </center>
+      <div class="card card-solid">
+        <div class="card-header bg-gray">
+          <center><%= image_tag(@employee.avatar, height: 60, width: 60, class: "img-circle") %> </center>
           <h4 class="title"><center><%= @employee.full_name.try(:upcase) %> </center></h4>
         </div>
-        <div class="box-body">
+        <div class="card-body">
         <ul class="nav nav-tabs">
           <li class= <%= 'active' if current_page?(admin_employee_path(@employee)) %>>
             <%= link_to "Info", admin_employee_path(@employee) %>
@@ -44,7 +44,3 @@
     </div>
   </div>
 </div>
-
-
-
-

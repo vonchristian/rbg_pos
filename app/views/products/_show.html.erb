@@ -1,31 +1,29 @@
 <div class="content">
   <div class="row">
     <div class="col-md-12">
-      <div class="box box-solid">
-        <div class="box-header">
+      <div class="card card-solid">
+        <div class="card-header">
           <div class="row">
-            <div class="col-md-1">
-              <%=image_tag(@product.avatar.url(:medium), class: "img-square", height: 50, width: 50) %>
-            </div>
+
             <div class="col-md-9">
-              <h4 class="title"><%= @product.name.try(:upcase) %></h4>
+              <h4 class="title-up"><%= @product.name.try(:upcase) %></h4>
               <h4><%= @product.available_quantity(store_front: current_store_front) %></h4> IN STOCK
 
               <p class="category"> <%= @product.description %> </p>
             </div>
           </div>
         </div>
-        <div class="box-body">
-          <ul class="nav nav-tabs">
-            <li class="<%= 'active' if current_page?(product_path(@product)) %>">
-             <%= link_to 'Info', product_path(@product) %>
+        <div class="card-body">
+          <ul class="nav nav-pills nav-pills-underline">
+            <li class="nav-item">
+             <%= link_to 'Info', product_path(@product), class: "nav-link #{ 'active' if current_page?(product_path(@product))}" %>
 
             </li>
-            <li class="<%= 'active' if current_page?(product_orders_path(@product)) %>">
-             <%= link_to 'Sales', product_orders_path(@product) %>
+            <li class="nav-item">
+             <%= link_to 'Sales', product_orders_path(@product), class: "nav-link #{'active' if current_page?(product_orders_path(@product))}" %>
             </li>
-            <li class="<%= 'active' if current_page?(product_stocks_path(@product))%>">
-              <%= link_to 'Stocks', product_stocks_path(@product), id: "#{@product.id}-stocks" %>
+            <li class="nav-item">
+              <%= link_to 'Stocks', product_stocks_path(@product), id: "#{@product.id}-stocks", class: "nav-link #{'active' if current_page?(product_stocks_path(@product))}" %>
             </li>
 
           </ul>
@@ -42,3 +40,12 @@
                <% if current_page? product_stocks_path(@product) %>
                  <%=render 'products/partials/stocks' %>
                <% end %>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+
+ </div>
+             

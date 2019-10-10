@@ -1,40 +1,58 @@
-<aside class="main-sidebar">
-    <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-      <!-- Sidebar user panel -->
-      <div class="user-panel">
-        <div class="pull-left image">
-          <%=link_to(image_tag(current_user.avatar.url(:medium), class: "img-circle", width: 40, height: 40), employee_path(current_user)) %>
-        </div>
-        <div class="pull-left info">
-          <p><%=link_to current_user.first_name, employee_path(current_user) %></p>
-          <a href="#"><i class="fa fa-circle text-success"></i> <small><%=current_user.role.titleize %></small></a>
-        </div>
-      </div>
-      <!-- search form -->
-      <%=form_tag search_results_path, method: :get, class: "sidebar-form" do %>
-      <div class="input-group">
-        <%= text_field_tag :search, params[:sidebar_search], class: "form-control", placeholder: "Search..." %>
-        <span class="input-group-btn">
-          <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-            <i class="fa fa-search"></i>
-          <% end %>
-        </span>
-      </div>
+<div class="sidebar">
+  <!-- Sidebar user (optional) -->
+  <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+    <div class="image">
+    </div>
+    <div class="info">
+      <a href="#" class="d-block"><%= current_user.first_name %></a>
+    </div>
+  </div>
+  <!-- Sidebar Menu -->
+  <nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+    <% if current_user.cash_on_hand_account.present? %>
+    <%= link_to cash_account_path(current_user.cash_on_hand_account)  do %>
+    <h4 class="subtitle-up"><b>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<%= number_to_currency current_user.cash_on_hand_account.balance %></b></h4>
+    &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<small>CASH BALANCE</small>
     <% end %>
-      <!-- /.search form -->
-      <!-- sidebar menu: : style can be found in sidebar.less -->
-      <ul class="sidebar-menu">
-          <li class="header"> REPAIR SECTION </li>
+    <% end %>
+    <hr>
+      <li class="nav-item active">
+        <a href="/computer_repair_section/dashboard" class="nav-link <%= 'active' if current_page? computer_repair_section_dashboard_index_path %>">
+          <i class="nav-icon fa fa-th"></i>
+          <p>Repairs</p>
+        </a>
+      </li>
 
-          <li><a href="/computer_repair_section/dashboard"><i class="fa fa-dashboard"></i> <span> Repairs</span></a></li>
-          <li><a href="/knowledge_center"><i class="fa fa-circle-o"></i> <span> Knowledge Center</span></a></li>
-          <li><a href="/customers"><i class="fa fa-users"></i> <span> Customers</span></a></li>
-           <li><a href="/products"><i class="fa fa-cubes"></i> <span> Products</span></a></li>
-           <li><a href="/stocks"><i class="fa fa-server"></i> <span> Stocks</span></a></li>
-           <li><a href="/repair_services/per_employee_dashboards"><i class="fa fa-tachometer"></i> <span> Dashboard</span></a></li>
+      <li class="nav-item active">
+        <a href="/knowledge_center" class="nav-link <%= 'active' if current_page? knowledge_center_index_path %>">
+          <i class="nav-icon fa fa-info-circle"></i>
+          <p>Knowledge Center</p>
+        </a>
+      </li>
+      <li class="nav-item active">
+        <a href="/customers" class="nav-link <%= 'active' if current_page? customers_path %>">
+          <i class="nav-icon fa fa-users"></i>
+          <p>Customer</p>
+        </a>
+      </li>
 
-        </ul>
-    </section>
-    <!-- /.sidebar -->
-  </aside>
+      <li class="nav-item active">
+        <a href="/products" class="nav-link <%= 'active' if current_page? products_path %>">
+          <i class="nav-icon fa fa-tags"></i>
+          <p>Products</p>
+        </a>
+      </li>
+
+      <li class="nav-item active">
+        <a href="/inventories" class="nav-link <%= 'active' if current_page? inventories_path %>">
+          <i class="nav-icon fa fa-cubes"></i>
+          <p>Inventories</p>
+        </a>
+      </li>
+
+
+
+              </ul>
+            </nav>
+            </div>

@@ -1,6 +1,6 @@
 <div class="content">
-  <div class="box box-solid">
-    <div class="box-body">
+  <div class="card card-solid">
+    <div class="card-body">
       <%= @cash_account.name %>
       <h4 class="title-up"><%= number_to_currency @cash_account.balance %></h4>
 <%= link_to 'New Expense', new_cash_account_expense_path(@cash_account), class: 'btn btn-danger' %>

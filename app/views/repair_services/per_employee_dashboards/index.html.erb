@@ -1,25 +1,25 @@
 <div class="row">
   <div class="col-md-3">
-    <div class='box box-solid'>
-      <div class='box-body'>
+    <div class='card card-solid'>
+      <div class='card-body'>
         <small>WORK ORDERS</small>
-        <h3 class="card-title"> <%= @work_orders.count %></h3>
+        <h3 class="subtitle-up"> <%= @work_orders.count %></h3>
       </div>
     </div>
   </div>
   <div class="col-md-3">
-    <div class='box box-solid'>
-      <div class='box-body'>
+    <div class='card card-solid'>
+      <div class='card-body'>
         <small>RELEASES <%= Date.current.strftime("%b. %Y").upcase %></small>
-        <h3 class="card-title"> <%= @work_orders.released_on(from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month).count %></h3>
+        <h3 class="subtitle-up"> <%= @work_orders.released_on(from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month).count %></h3>
       </div>
     </div>
   </div>
   <div class="col-md-3">
-    <div class='box box-solid'>
-      <div class='box-body'>
+    <div class='card card-solid'>
+      <div class='card-body'>
         <small>SERVICE CHARGE PAYMENTS <%= Date.current.strftime("%b. %Y").upcase %></small>
-        <h3 class="card-title"> <%= number_to_currency @work_orders.released_on(from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month).sum(&:service_charge_payments) %></h3>
+        <h3 class="subtitle-up"> <%= number_to_currency @work_orders.released_on(from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month).sum(&:service_charge_payments) %></h3>
       </div>
     </div>
   </div>
@@ -41,7 +41,7 @@
             <td><%= work_order.customer.full_name %></td>
             <td><% work_order.technicians.each do |technician| %>
                   <span data-toggle="tooltip" title="<%=technician.first_name %>" data-placement="top">
-                    <%= image_tag(technician.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %> &nbsp;
+                    <%= image_tag(technician.avatar, class: "img-circle", height: 35, width: 35) %> &nbsp;
                   </span>
                 <% end %>
             </td>
