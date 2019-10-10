@@ -1,59 +1,96 @@
-<aside class="main-sidebar">
-    <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-      <!-- Sidebar user panel -->
-      <div class="user-panel">
-        <div class="pull-left image">
-          <%=link_to(image_tag(current_user.avatar, class: "img-circle", width: 40, height: 40), employee_path(current_user)) %>
-        </div>
-        <div class="pull-left info">
-          <p><%=link_to current_user.first_name, employee_path(current_user) %></p>
-          <a href="#"><i class="fa fa-circle text-success"></i> <small><%=current_user.role.titleize %></small></a>
-        </div>
-        <%= current_user.cash_on_hand_account.balance %>
+
+
+  <div class="sidebar">
+    <!-- Sidebar user (optional) -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="image">
       </div>
-      <!-- search form -->
+      <div class="info">
+        <a href="#" class="d-block"><%= current_user.first_name %></a>
+      </div>
+    </div>
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+      <% if current_user.cash_on_hand_account.present? %>
+      <%= link_to cash_account_path(current_user.cash_on_hand_account)  do %>
+      <h4 class="subtitle-up"><b>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<%= number_to_currency current_user.cash_on_hand_account.balance %></b></h4>
+      &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<small>CASH BALANCE</small>
+      <% end %>
+      <% end %>
+      <hr>
+        <li class="nav-item active">
+          <a href="/store" class="nav-link <%= 'active' if current_page? store_index_path %>">
+            <i class="nav-icon fa fa-home"></i>
+            <p>Store</p>
+          </a>
+        </li>
+        <li class="nav-item active">
+          <a href="/customers" class="nav-link <%= 'active' if current_page? customers_path %>">
+            <i class="nav-icon fa fa-users"></i>
+            <p>Customers</p>
+          </a>
+        </li>
+        <li class="nav-item active">
+          <a href="/computer_repair_section/dashboard" class="nav-link <%= 'active' if current_page? computer_repair_section_dashboard_index_path %>">
+            <i class="nav-icon fa fa-th"></i>
+            <p>Repairs</p>
+          </a>
+        </li>
+        <li class="nav-item active">
+          <a href="/products" class="nav-link <%= 'active' if current_page? products_path %>">
+            <i class="nav-icon fa fa-tags"></i>
+            <p>Products</p>
+          </a>
+        </li>
 
-      <!-- /.search form -->
-      <!-- sidebar menu: : style can be found in sidebar.less -->
-      <ul class="sidebar-menu">
-        <% if current_user.cash_on_hand_account.present? %>
-        <%= link_to cash_account_path(current_user.cash_on_hand_account)  do %>
-        <h4><b>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<%= number_to_currency current_user.cash_on_hand_account.balance %></b></h4>
-        &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;<small>CASH BALANCE</small>
-        <% end %>
-        <% end %>
-        <hr>
-          <li class="header"> REPAIR SECTION </li>
+        <li class="nav-item">
+          <a href="/inventories" class="nav-link <%= 'active' if current_page? inventories_path %>">
+            <i class="nav-icon fa fa-cubes"></i>
+            <p>Inventories</p>
+          </a>
+        </li>
+        <li class="nav-item has-treeview">
 
-          <li><a href="/store"><i class="fa fa-dashboard"></i> <span> Store</span></a></li>
-          <li><a href="/customers"><i class="fa fa-users"></i> <span> Customers</span></a></li>
-          <li><a href="/computer_repair_section/dashboard"><i class="fa fa-users"></i> <span> Repairs</span></a></li>
+  <a href="#" class="nav-link">
+         <i class="nav-icon fa fa-shopping-cart"></i>
+         <p>
+           Orders
+           <i class="right fa fa-angle-left"></i>
+         </p>
+       </a>
 
-           <li><a href="/products"><i class="fa fa-cubes"></i> <span> Products</span></a></li>
-           <li><a href="/inventories"><i class="fa fa-server"></i> <span> Inventories</span></a></li>
-           <li class="treeview">
-            <a href="#">
-              <i class="fa fa-server"></i> <span>Orders</span>
-              <span class="float-right-container">
-                <i class="fa fa-angle-left float-right"></i>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-              <li><a href="/store_front_module/sales_orders"><i class="fa fa-circle-o"></i> Sales</a></li>
-              <li><a href="/store_front_module/repair_services_orders"><i class="fa fa-circle-o"></i>Service Repair Orders</a></li>
-              <li><a href="/store_front_module/purchase_orders"><i class="fa fa-circle-o"></i> Purchases</a></li>
-              <li><a href="/store_front_module/stock_transfers"><i class="fa fa-circle-o"></i> Stock Transfers</a></li>
-              <li><a href="/store_front_module/received_stock_transfers"><i class="fa fa-circle-o"></i> Received Stock Transfers</a></li>
-              <li><a href="/store_front_module/sales_returns"><i class="fa fa-circle-o"></i> Sales Returns</a></li>
-              <li><a href="/store_front_module/purchase_returns"><i class="fa fa-circle-o"></i> Purchase Returns</a></li>
-              <li><a href="/store_front_module/internal_use_orders"><i class="fa fa-circle-o"></i> Internal Use</a></li>
-              <li><a href="/store_front_module/spoilages"><i class="fa fa-circle-o"></i> Spoilages</a></li>
-            </ul>
-          </li>
-           <li><a href="/employees/<%=current_user.id%>"><i class="fa fa-circle-o"></i> <span> Account</span></a></li>
-           <li><a href="/reports"><i class="fa fa-circle-o"></i> <span> Reports</span></a></li>
-</ul>
-    </section>
-    <!-- /.sidebar -->
-  </aside>
+        <ul class="nav nav-treeview">
+
+          <li class="nav-item"><a href="/store_front_module/sales_orders" class="nav-link"><i class="nav-icon fa fa-circle"></i> Sales</a></li>
+          <li class="nav-item"><a href="/store_front_module/purchase_orders" class="nav-link"><i class="nav-icon fa fa-circle"></i> Purchases</a></li>
+          <li class="nav-item"><a href="/store_front_module/stock_transfers" class="nav-link"><i class="nav-icon fa fa-circle"></i> Stock Transfers</a></li>
+          <li class="nav-item"><a href="/store_front_module/received_stock_transfers" class="nav-link"><i class="nav-icon fa fa-circle"></i>Received Stock Transfers</a></li>
+          <li class="nav-item"><a href="/store_front_module/sales_returns" class="nav-link"><i class="nav-icon fa fa-circle"></i>Sales Returns</a></li>
+          <li class="nav-item"><a href="/store_front_module/purchase_returns" class="nav-link"><i class="nav-icon fa fa-circle"></i>Purchase Returns</a></li>
+          <li class="nav-item"><a href="/store_front_module/internal_use_orders" class="nav-link"><i class="nav-icon fa fa-circle"></i>Internal Use</a></li>
+          <li class="nav-item"><a href="/store_front_module/spoilages" class="nav-link"><i class="nav-icon fa fa-circle"></i>Spoilages</a></li>
+
+
+
+             </ul>
+           </li>
+
+           <li class="nav-item">
+             <a href="/employees/<%=current_user.id%>" class="nav-link <%= 'active' if current_page? employee_path(current_user) %>">
+               <i class="nav-icon fa fa-user"></i>
+               <p>Account</p>
+             </a>
+           </li>
+           <li class="nav-item">
+             <a href="/reports" class="nav-link <%= 'active' if current_page? reports_path %>">
+               <i class="nav-icon fa fa-folder"></i>
+               <p>Reports</p>
+             </a>
+           </li>
+
+
+
+                   </ul>
+                 </nav>
+                 </div>

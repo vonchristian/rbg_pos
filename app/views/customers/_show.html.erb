@@ -8,31 +8,31 @@
             <%=image_tag(@customer.avatar, class: "img-circle", height: 50, width: 50) %>
           </div>
           <div class="col-md-9">
-            <h4 class="title"><%= @customer.full_name.try(:upcase) %></h4>
+            <h4 class="title-up"><%= @customer.full_name.try(:upcase) %></h4>
             <p class="category"> Address </p>
           </div>
         </div>
       </div>
       <br>
 <div class="card-body">
-        <ul class="nav nav-tabs">
-          <li class= <%= 'active' if current_page?(customer_path(@customer)) %>>
-            <%= link_to "Info", customer_path(@customer) %>
+        <ul class="nav nav-pills nav-pills-underline">
+          <li class="nav-item">
+            <%= link_to "Info", customer_path(@customer), class: "nav-link #{'active' if current_page?(customer_path(@customer)) }" %>
           </li>
-          <li class= <%= 'active' if current_page?(customer_orders_path(@customer)) %>>
-            <%= link_to "Sales", customer_orders_path(@customer), id: "#{@customer.id}-orders" %>
+          <li class="nav-item">
+            <%= link_to "Sales", customer_orders_path(@customer), id: "#{@customer.id}-orders", class: "nav-link #{ 'active' if current_page?(customer_orders_path(@customer))}" %>
           </li>
-          <li class= <%= 'active' if current_page?(customer_repair_services_path(@customer)) %>>
-            <%= link_to "Services", customer_repair_services_path(@customer) %>
+          <li class="nav-item">
+            <%= link_to "Services", customer_repair_services_path(@customer), class: "nav-link #{ 'active' if current_page?(customer_repair_services_path(@customer)) }" %>
           </li>
-          <li class= <%= 'active' if current_page?(customer_account_index_path(@customer)) %>>
-            <%= link_to "Account", customer_account_index_path(@customer) %>
+          <li class="nav-item">
+            <%= link_to "Account", customer_account_index_path(@customer), class: "nav-link #{ 'active' if current_page?(customer_account_index_path(@customer)) }" %>
           </li>
-          <li class= <%= 'active' if current_page?(customer_settings_path(@customer)) %>>
-            <%= link_to "Settings", customer_settings_path(@customer) %>
+          <li class="nav-item">
+            <%= link_to "Settings", customer_settings_path(@customer), class: "nav-link #{ 'active' if current_page?(customer_settings_path(@customer)) }" %>
           </li>
         </ul>
-        <div class="tab-content">
+        <br>
             <% if current_page? customer_path(@customer) %>
               <%= render 'customers/partials/info' %>
             <% end %>

@@ -41,7 +41,7 @@
 
           </td>
 
-	            <td width="100px">
+	            <td width="50px">
                 <small class="text-success">
                   <%= order.employee.try(:full_name)%></small><br>
                 <% if order.line_items.present? %>
@@ -51,9 +51,9 @@
                 <% end %>
                 </td>
 	            <td><%= number_to_currency order.total_cost %></td>
-              <td><%= number_to_currency order.balance %><br>
+              <td width='100px'><%= number_to_currency order.balance %><br>
                 <% if order.has_balance? %>
-                  <%= link_to 'New Payment', new_store_front_module_credit_sales_order_payment_path(order), class: "btn btn-primary" %>
+                  <%= link_to 'New Payment', new_store_front_module_credit_sales_order_payment_path(order), class: "btn btn-primary btn-sm" %>
                 <% end %>
               </td>
               <td>

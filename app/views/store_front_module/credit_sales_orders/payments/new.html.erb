@@ -1,16 +1,14 @@
 <div class="row">
-  <div class="col-md-12">
       <div class="col-md-7">
-        <div class="card card-solid">
-          <div class="card card-solid">
-      <div class="card-header bg-gray">
+        <div class="card">
+
+      <div class="card-body">
         <center>
           <%= image_tag(@order.commercial_document.avatar, class: "img-circle", height: 60, width: 60) %><br><br>
         <h3 class="subtitle-up"><%= @order.commercial_document.try(:name).try(:upcase) %></h3>
         </center>
-      </div>
-      <hr>
-      <div class="card-body">
+
+
          <span class="float-right"><%= link_to 'Print(PDF)', order_path(@order, format: 'pdf'), class: "btn btn-default btn-sm" %></span>
         <i class="icon-calendar"></i> <%= @order.date.strftime("%B %e, %Y") %><br>
               <% @order.line_items.each do |line_item| %>
@@ -35,16 +33,16 @@
           </div>
 </div>
 </div>
-</div>
+
   <div class="col-md-5">
     <div class="card card-default">
       <div class="card-header with-border">
         <div class="row">
           <div class="col-md-6">
-            <h4>TOTAL</h4>
+            <h4 class="title-up">TOTAL</h4>
           </div>
           <div class="col-md-6">
-            <h4>
+            <h4 class="title-up">
               <span class="float-right">
                 <%= number_to_currency @order.total_cost %>
               </span>
@@ -54,10 +52,10 @@
         <hr>
         <div class="row">
           <div class="col-md-6">
-            <h4>Balance</h4>
+            <h4 class="title-up">Balance</h4>
           </div>
           <div class="col-md-6">
-            <h4>
+            <h4 class="title-up">
               <span class="float-right">
                 <%= number_to_currency @order.balance %>
               </span>
@@ -74,8 +72,8 @@
               <%= f.input :amount, as: :string %>
 
               <span class="help-block"> Input total amount of payment. </span>
-              <%= f.input :expense_amount, label: "Discount/Tax", as: :string, input_html: { value: 0 } %>
-              <%= f.input :expense_account_id, collection: current_business.accounts.all.map{ |a| [a.name, a.id] } %>
+              <%= f.input :expense_amount, label: "Discount/Tax", as: :string, input_html: { value: 0 }%>
+              <%= f.input :expense_account_id, collection: current_business.accounts.all.map{ |a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
               <%= f.input :order_id, input_html: { value: @order.id }, as: :hidden %>
               <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
               <%= f.input :reference_number, label: "Check No." %>
