@@ -1,6 +1,6 @@
 <h3><%= @store_front.name %> Inventory</h3>
 
-<%= link_to 'Excel', store_front_module_store_front_inventories_path(@store_front, format: 'xlsx') %>
+<%= link_to 'Excel', store_front_module_store_front_inventories_path(store_front_id: @store_front.id, format: 'xlsx') %>
 <div class="container">
   <div class="container-fluid">
     <div class="box box-solid">
