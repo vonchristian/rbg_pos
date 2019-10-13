@@ -2,7 +2,7 @@
 <div class="row">
   <div  class="col-md-6 offset-md-3">
     <div class="card card-solid">
-      <div class="card-header bg-gray">
+      <div class="card-header">
         <center>
           <%= image_tag(@order.commercial_document.avatar, class: "img-circle", height: 60, width: 60) %><br><br>
         <h3 class="subtitle-up"><%= @order.commercial_document.try(:name).try(:upcase) %></h3>
@@ -18,8 +18,8 @@
                     <%= line_item.quantity %> <%= line_item.unit_code %>
                   </div>
                   <div class="col-md-4">
-                    <%=line_item.product_name %><br>
-                    <small class="text-muted"><%= line_item.bar_code %></small>
+                    <%=line_item.stock.try(:name) %><br>
+                    <small class="text-muted"><%= line_item.stock.try(:barcode) %></small>
                   </div>
                   <div class="col-md-2">
                     <span class="float-right"><%= number_to_currency line_item.total_cost %></span>

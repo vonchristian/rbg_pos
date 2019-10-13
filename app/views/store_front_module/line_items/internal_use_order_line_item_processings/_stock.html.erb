@@ -32,9 +32,9 @@
     </div>
 
     <div class="col-md-3">
-      <%= f.input :unit_of_measurement_id, collection: stock.product.unit_of_measurements.map{|a| [a.unit_code, a.id] }, selected: stock.product.base_measurement, label: false %>
+      <%= f.input :unit_of_measurement_id, collection: stock.product.unit_of_measurements.map{|a| [a.unit_code, a.id] }, selected: stock.product.base_measurement, label: false, input_html: { class: 'chosen-select' } %>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-3">
       <% if stock.balance > 0 %>
       <%= button_tag type: 'submit', class: "btn btn-success btn-sm" do %>
         <i class="fa fa-shopping-basket" aria-hidden="true"></i> Add to Cart

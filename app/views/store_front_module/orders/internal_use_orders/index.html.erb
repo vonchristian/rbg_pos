@@ -33,8 +33,8 @@
                   <% order.internal_use_order_line_items.each do |line_item|  %>
                     <div class="row">
                       <div class="col-md-9">
-                        <%= line_item.product_name %><br>
-                        <small><i><%= line_item.bar_code %></i></small>
+                        <%= line_item.stock.try(:name) %><br>
+                        <small><i><%= line_item.stock.try(:barcode) %></i></small>
                       </div>
                       <div class="col-md-1">
                         <span><%= line_item.quantity %></span>
