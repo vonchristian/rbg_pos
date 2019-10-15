@@ -46,5 +46,13 @@
           ], thousands: ',', prefix: 'P' %>
           <hr>
           <h4 class="title-up"> Receive per Month </h4>
-          <%= line_chart WorkOrder.group_by_month(:date_received).count, height: 20, curve: false %>
           <hr>
+          <% receive_data = [] %>
+          <% months.uniq.each do |month| %>
+
+            <% receive_data << { month.strftime("%B %Y") => WorkOrder.from(from_date: month.beginning_of_month,to_date: month.end_of_month).count } %>
+
+          <% end %>
+          <%= line_chart [
+            { name: 'Receive', data: Hash[*receive_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?} }
+              ], thousands: ',', prefix: 'P' %>
