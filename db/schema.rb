@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_10_015446) do
+ActiveRecord::Schema.define(version: 2019_10_15_070502) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,18 @@ ActiveRecord::Schema.define(version: 2019_10_10_015446) do
     t.index ["work_order_id"], name: "index_accessories_on_work_order_id"
   end
 
+  create_table "account_categories", force: :cascade do |t|
+    t.string "title"
+    t.string "account_code"
+    t.string "type"
+    t.boolean "contra", default: false
+    t.bigint "business_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["business_id"], name: "index_account_categories_on_business_id"
+    t.index ["type"], name: "index_account_categories_on_type"
+  end
+
   create_table "accounts", force: :cascade do |t|
     t.string "name"
     t.string "account_code"
@@ -36,6 +48,8 @@ ActiveRecord::Schema.define(version: 2019_10_10_015446) do
     t.datetime "updated_at", null: false
     t.boolean "active", default: true
     t.bigint "business_id"
+    t.bigint "account_category_id"
+    t.index ["account_category_id"], name: "index_accounts_on_account_category_id"
     t.index ["account_code"], name: "index_accounts_on_account_code", unique: true
     t.index ["business_id"], name: "index_accounts_on_business_id"
     t.index ["name"], name: "index_accounts_on_name", unique: true
@@ -708,6 +722,8 @@ ActiveRecord::Schema.define(version: 2019_10_10_015446) do
 
   add_foreign_key "accessories", "product_units"
   add_foreign_key "accessories", "work_orders"
+  add_foreign_key "account_categories", "businesses"
+  add_foreign_key "accounts", "account_categories"
   add_foreign_key "accounts", "businesses"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "amounts", "accounts"

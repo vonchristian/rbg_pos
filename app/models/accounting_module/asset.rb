@@ -1,11 +1,12 @@
 module AccountingModule
   class Asset < Account
+    self.normal_credit_balance = false
 
-    def balance(options={})
+    def self.balance(options={})
       super(options)
     end
 
-    def self.balance(options={})
+    def balance(options={})
       super(options)
     end
   end

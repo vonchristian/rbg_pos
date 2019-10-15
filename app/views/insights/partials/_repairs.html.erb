@@ -34,8 +34,8 @@
       <% payments_data = [] %>
       <% months.uniq.each do |month| %>
 
-        <% balances_data << { month.strftime("%B %Y") => WorkOrder.receivable_accounts.debits_balance(from_date: month.beginning_of_month,to_date: month.end_of_month) } %>
-        <% payments_data << { month.strftime("%B %Y") => WorkOrder.receivable_accounts.credits_balance(from_date: month.beginning_of_month, to_date: month.end_of_month) } %>
+        <% balances_data << { month.strftime("%B %Y") => @receivable_account.debits_balance(from_date: month.beginning_of_month,to_date: month.end_of_month) } %>
+        <% payments_data << { month.strftime("%B %Y") => @receivable_account.credits_balance(from_date: month.beginning_of_month, to_date: month.end_of_month) } %>
 
 
       <% end %>
@@ -46,5 +46,5 @@
           ], thousands: ',', prefix: 'P' %>
           <hr>
           <h4 class="title-up"> Receive per Month </h4>
-          <%= line_chart WorkOrder.group_by_month(:date_received).count %>
+          <%= line_chart WorkOrder.group_by_month(:date_received).count, height: 20, curve: false %>
           <hr>
