@@ -24,7 +24,7 @@
   </div>
 </div>
 <hr>
-<h4 class="title-up">Receivables vs Payments </h4>
+<h4 class="title-up">Payments </h4>
 
 <% months = [] %>
       <% (DateTime.now.beginning_of_year..DateTime.now.end_of_month).each do |month| %>
@@ -39,11 +39,10 @@
 
 
       <% end %>
-      <%= column_chart [
-        { name: 'Receivables', data: Hash[*balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?} },
+      <%= line_chart [
         { name: 'Payments', data: Hash[*payments_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?} }
 
-          ], thousands: ',', prefix: 'P' %>
+          ], thousands: ',', prefix: 'P', curve: false %>
           <hr>
           <h4 class="title-up"> Receive per Month </h4>
           <hr>
@@ -55,4 +54,4 @@
           <% end %>
           <%= line_chart [
             { name: 'Receive', data: Hash[*receive_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?} }
-              ], thousands: ',', prefix: 'P' %>
+              ], thousands: ',', prefix: 'P', curve: false %>
