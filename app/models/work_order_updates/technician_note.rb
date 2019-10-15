@@ -1,2 +1,4 @@
-class TechnicianNote < Post
-end
+module WorkOrderUpdates
+  class TechnicianNote < Post
+  end
+end 

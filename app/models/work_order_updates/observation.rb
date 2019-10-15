@@ -1,2 +1,4 @@
-class Observation < Post
+module WorkOrderUpdates
+  class Observation < Post
+  end
 end 

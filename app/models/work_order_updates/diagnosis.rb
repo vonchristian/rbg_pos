@@ -1,2 +1,4 @@
-class Diagnosis < Post
-end
+module WorkOrderUpdates
+  class Diagnosis < Post
+  end
+end 

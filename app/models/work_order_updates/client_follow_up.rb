@@ -1,2 +1,4 @@
-class ClientFollowUp < Post
-end
+module WorkOrderUpdates
+  class ClientFollowUp < Post
+  end
+end 

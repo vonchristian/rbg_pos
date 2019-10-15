@@ -10,13 +10,14 @@ set :deploy_to, '/var/www/rbg'
 set :repository, 'https://github.com/vonchristian/rbg_pos.git'
 set :branch, 'master'
 set :user, 'deploy'
-
+set :force_asset_precompile, true
 set :term_mode, nil
 set :forward_agent, true
 set :app_path, lambda { "#{fetch(:deploy_to)}/#{fetch(:current_path)}" }
 set :stage, 'production'
 set :shared_paths,  ['config/database.yml', 'log', 'tmp/log', 'public/system', 'tmp/pids', 'tmp/sockets']
-set :shared_dirs,   fetch(:shared_dirs, []).push('public/packs', 'public/storage')
+set :shared_dirs, fetch(:shared_dirs, []).push('public/assets').push('public/packs').push('public/storage')
+
 
 # Optional settings:
 #   set :user, 'foobar'    # Username in the server to SSH to.
@@ -86,7 +87,10 @@ task :deploy => :remote_environment do
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
     invoke :'rails:db_migrate'
+
     invoke :'rails:assets_precompile'
+    command %{yarn install}
+    command %{NODE_ENV=production RAILS_ENV=production bundle exec rails webpacker:compile}
     invoke :'deploy:cleanup'
 
     on :launch do

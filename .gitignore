@@ -13,6 +13,7 @@
 !/log/.keep
 !/tmp/.keep
 
+/node_modules
 /yarn-error.log
 /public/system
 
@@ -20,13 +21,8 @@
 .DS_Store
 /app/models/.DS_Store
 
-/storage
-
-/node_modules
-/yarn-error.log
-yarn-debug.log*
-.yarn-integrity
-
+/public/packs
+/public/packs-test
 /node_modules
 /yarn-error.log
 yarn-debug.log*
