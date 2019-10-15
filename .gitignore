@@ -20,7 +20,6 @@
 .DS_Store
 /app/models/.DS_Store
 
-/public/packs
 /storage
 
 /public/packs-test
@@ -29,8 +28,6 @@
 yarn-debug.log*
 .yarn-integrity
 
-/public/packs
-/public/packs-test
 /node_modules
 /yarn-error.log
 yarn-debug.log*

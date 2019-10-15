@@ -8,7 +8,7 @@ gem "audited", "~> 4.7"
 gem 'autonumeric-rails'
 gem 'spreadsheet'
 gem 'rqrcode'
-gem 'webpacker', '~> 4.0'
+gem 'webpacker', '~> 4.x'
 # gem 'activerecord-postgis-adapter'
 gem 'pg_search'
 gem 'paperclip'
