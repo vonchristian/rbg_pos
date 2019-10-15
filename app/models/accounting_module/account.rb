@@ -49,47 +49,44 @@ module AccountingModule
        "AccountingModule::Revenue"]
      end
 
-    def self.balance(options={})
-      accounts_balance = BigDecimal('0')
-      accounts = self.all
-      accounts.each do |account|
-        if account.contra
-          accounts_balance -= account.balance(options)
-        else
-          accounts_balance += account.balance(options)
-        end
-      end
-      accounts_balance
-    end
+     def self.balance(options={})
+       accounts_balance ||= BigDecimal('0')
+       accounts = self.all
+       accounts.each do |account|
+         if account.contra?
+           accounts_balance -= account.balance(options)
+         else
+           accounts_balance += account.balance(options)
+         end
+       end
+       accounts_balance
+     end
 
-    def self.debits_balance(options={})
+     def self.debits_balance(options={})
+       accounts_balance = BigDecimal('0')
+       accounts = self.all
+       accounts.each do |account|
+         if account.contra
+           accounts_balance -= account.debits_balance(options)
+         else
+           accounts_balance += account.debits_balance(options)
+         end
+       end
+       accounts_balance
+     end
 
-        accounts_balance = BigDecimal('0')
-        accounts = self.all
-        accounts.each do |account|
-          if account.contra
-            accounts_balance -= account.debits_balance(options)
-          else
-            accounts_balance += account.debits_balance(options)
-          end
-        end
-        accounts_balance
+     def self.credits_balance(options={})
+       accounts_balance = BigDecimal('0')
+       self.all.each do |account|
+         if account.contra
+           accounts_balance -= account.credits_balance(options)
+         else
+           accounts_balance += account.credits_balance(options)
+         end
+       end
+       accounts_balance
+     end
 
-    end
-    def self.credits_balance(options={})
-
-        accounts_balance = BigDecimal('0')
-        accounts = self.all
-        accounts.each do |account|
-          if account.contra
-            accounts_balance -= account.credits_balance(options)
-          else
-            accounts_balance += account.credits_balance(options)
-          end
-        end
-        accounts_balance
-
-    end
     def self.trial_balance
       if self.new.class == AccountingModule::Account
         AccountingModule::Asset.balance - (AccountingModule::Liability.balance + AccountingModule::Equity.balance + AccountingModule::Revenue.balance - AccountingModule::Expense.balance)
@@ -99,16 +96,14 @@ module AccountingModule
     end
 
     def balance(options={})
-      if self.class == AccountingModule::Account
-        raise(NoMethodError, "undefined method 'balance'")
+      return raise(NoMethodError, "undefined method 'balance'") if self.class == AccountingModule::Account
+      if self.normal_credit_balance ^ contra
+        credits_balance(options) - debits_balance(options)
       else
-        if self.normal_credit_balance ^ contra
-          credits_balance(options) - debits_balance(options)
-        else
-          debits_balance(options) - credits_balance(options)
-        end
+        debits_balance(options) - credits_balance(options)
       end
     end
+
     def credits_balance(options={})
       credit_amounts.balance(options)
     end
