@@ -1,30 +1,51 @@
-<div class="card card-solid">
-  <div class="card-header">
-  </div>
+<div class="card">
   <div class="card-body">
     <div class="row">
-      <div class="col-md-3">
-        <b><%= order.try(:customer_name) %></b><br>
-        <i class="fa fa-clock-o"></i> <%= order.date.strftime("%B %e, %Y") %>
-        <i class="fa fa-user-circle"></i> <%= order.employee_full_name %>
-      </div>
-      <div class="col-md-6 text-muted">
+      <div class="col-md-10">
+        <h4 class="title-up text-dark"><%= order.try(:customer_name) %></h4>
+    <span class="badge bg-warning"><%= order.store_front_name %></span> &nbsp;
+
+        <span class="text-muted">
+        <i class="fa fa-calendar"></i> <%= order.date.strftime("%B %e, %Y") %>
+        &nbsp; <i class="fa fa-user-circle"></i> <%= order.employee_full_name %>
+      </span>
+    </div>
+    <div class="col-md-2">
+      <span class="badge bg-dark float-right"># <%= order.reference_number %></span>
+    </div>
+  </div>
+
+      <hr>
+
         <% if order.line_items.present? %>
           <% order.line_items.each do |line_item| %>
-            <div class="row">
+            <div class="row min-margin">
+              <div class="col-md-1">
+              </div>
               <div class="col-md-1">
                 <%= line_item.quantity %>
               </div>
-              <div class="col-md-8">
+              <div class="col-md-5">
                 <%= line_item.name %><br>
                 <small class="text-muted"><i><%= line_item.bar_code %></i></small>
               </div>
               <div class="col-md-3">
-                <%= number_to_currency line_item.total_cost %>
+                <span class='float-right'><%= number_to_currency line_item.total_cost %></span>
               </div>
             </div>
-            <br>
           <% end %>
+          <hr>
+          <div class="row">
+            <div class="col-md-4 offset-md-1">
+              <p class="title-up"> TOTAL </p>
+            </div>
+            <div class="col-md-5">
+              <p class="title-up float-right">
+                <%= number_to_currency order.total_cost %>
+              </p>
+            </div>
+          </div>
+
         <% else %>
            <div class="row">
             <div class="col-md-1">
@@ -36,11 +57,12 @@
               <%= number_to_currency order.cash_payment_cash_tendered %>
             </div>
           </div>
+          <div class="col-md-3 text-muted">
+        <b class="float-right"><%= number_to_currency order.total_cost %></b>
+      </div>
         <% end %>
+
       </div>
-      <div class="col-md-3 text-muted">
-        <b><%= number_to_currency order.total_cost %></b>
-      </div>
+
     </div>
-  </div>
-</div>
+

@@ -3,10 +3,9 @@ module StoreFrontModule
     class SalesOrdersController < ApplicationController
       def index
         if params[:search].present?
-          @orders = StoreFrontModule::Orders::SalesOrder.for_store_front(current_store_front).text_search(params[:search]).paginate(page: params[:page], per_page: 30)
+          @pagy, @orders = pagy(StoreFrontModule::Orders::SalesOrder.for_store_front(current_store_front).text_search(params[:search]))
         else
-          @orders = StoreFrontModule::Orders::SalesOrder.for_store_front(current_store_front).order(date: :desc).
-          paginate(page: params[:page], per_page: 30)
+          @pagy, @orders = pagy(StoreFrontModule::Orders::SalesOrder.for_store_front(current_store_front).order(date: :desc))
         end
         @sales_for_today = StoreFrontModule::Orders::SalesOrder.ordered_on(from_date: Date.today, to_date: Date.today)
       end

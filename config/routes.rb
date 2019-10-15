@@ -27,6 +27,7 @@ Rails.application.routes.draw do
     match "/low_on_stock" => "products#low_on_stock",  via: [:get], on: :collection
 
   	resources :stocks, only: [:index, :new, :create, :edit, :update], module: :products
+    resources :stock_transfers, only: [:index], module: :products
     resources :orders, only: [:index], module: :products
   end
   resources :line_items, only: [:new, :create, :edit, :update]
@@ -268,5 +269,9 @@ Rails.application.routes.draw do
   namespace :insights do
     resources :repairs, only: [:index]
     resources :sales, only: [:index]
+    resources :customers, only: [:index]
+    resources :receivables, only: [:index]
+
+
   end
 end

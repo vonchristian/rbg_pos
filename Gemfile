@@ -24,7 +24,6 @@ gem 'sassc-rails'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.2'
 gem "select2-rails"
-gem 'bootstrap-datepicker-rails'
 gem 'chartkick'
 gem 'groupdate'
 gem 'chosen-rails'

@@ -14,7 +14,7 @@ class Order < ApplicationRecord
   delegate :full_name, to: :technician, prefix: true, allow_nil: true #WTF
   delegate :cash_tendered, :discount_amount, to: :cash_payment, prefix: true, allow_nil: true
   delegate :full_name, to: :employee, prefix: true, allow_nil: true
-
+  delegate :name, to: :store_front, prefix: true
 
   before_validation :set_date
 
@@ -25,7 +25,7 @@ class Order < ApplicationRecord
     all.map{|a| a.total_cost_less_discount}.to_a.sum
   end
 
-  
+
 
   def self.credit
     where(credit: true)

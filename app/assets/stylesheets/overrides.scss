@@ -20,6 +20,9 @@
 .font-montserrat-light-webfont {
   font-family: "montserrat-light-webfont"
 }
+.condensed-text {
+    font-family: 'roboto-condensed-webfont';
+}
 
 $nav-pills-underline-link-active-color: #cccccc !default;
 $nav-pills-underline-link-hover-color: #343a40 !default;
@@ -47,8 +50,9 @@ $nav-pills-underline-border-width:    3px !default;
 
 
       border-bottom-width: $nav-pills-underline-border-width;
-      border-bottom-style: solid;
+      border-bottom: 0.5rem solid;
       border-bottom-color: transparent;
+      border-radius: 0px;
     }
 
     > a.nav-link.active,
@@ -59,13 +63,13 @@ $nav-pills-underline-border-width:    3px !default;
 
       border-bottom-width: $nav-pills-underline-border-width;
       border-bottom-style: solid;
-      border-bottom-color: #343a40;
+      border-bottom-color: #007bff;
     }
 
     // bg
     > a.nav-link.active{
       background-color: $nav-pills-underline-active-bg !important;
-      color: #343a40;
+      color: #007bff;
     }
 
 

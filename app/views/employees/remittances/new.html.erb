@@ -6,21 +6,21 @@
             <h4 class="subtitle-up"> Remittance Details </h4>
           </div>
         <div class="card-body">
-          <hr>
+
           <div class="row">
             <div class="col-md-3">
               <%=image_tag(@employee.avatar, class: "img-circle", height: 50, width: 50) %>
             </div>
             <div class="col-md-8">
-              <h4 class="title"><%= @employee.full_name %></h4>
-              <p class="category"><%= @employee.role.try(:titleize) %></p>
+              <h4 class="title-up"><%= @employee.full_name %></h4>
+              <small class="text-muted"><%= @employee.role.try(:titleize) %></small>
             </div>
           </div>
           <br>
           <div class="row">
             <div class="col-md-8 offset-md-3">
-              <h4 class="title"> <b><%= number_to_currency @employee.default_cash_on_hand_account_balance %></b></h4>
-              <small>CASH ON HAND OF EMPLOYEE </small>
+              <h4 class="title-up"> <b><%= number_to_currency @employee.default_cash_on_hand_account_balance %></b></h4>
+              <small class="text-muted">CASH ON HAND OF EMPLOYEE </small>
             </div>
           </div>
           <hr>
@@ -34,8 +34,8 @@
           <%= f.input :description, input_html: { value: "Collection Remittance" } %>
           <%= f.input :amount %>
           <%= f.input :credit_account_id, input_html: { value: @cash_account.id }, as: :hidden %>
-          <%= f.input :debit_account_id, label: "Transfer To:", collection: Employees::EmployeeCashAccount.cash_accounts.map{|a| [a.name, a.id] } %>
-          <%= f.submit "Save Remittance", class: "btn btn-primary float-right" %>
+          <%= f.input :debit_account_id, label: "Transfer To:", collection: Employees::EmployeeCashAccount.cash_accounts.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
+          <%= f.submit "Save Remittance", class: "btn btn-primary float-right", data: { disable_with: 'Processing...' } %>
           <br>
           <br>
         <% end %>

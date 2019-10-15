@@ -1,0 +1,6 @@
+</div>
+</div>
+<h4 class="title-up"> Stock Transfers </h4>
+<% @stock_transfer_orders.each do |stock_transfer_order| %>
+ <%= render 'store_front_module/orders/stock_transfers/order', order: stock_transfer_order %>
+<% end %>

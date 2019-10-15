@@ -7,23 +7,41 @@
         <h3 class="subtitle-up"> Stock Transfer Summary</h3>
         </center>
       </div>
-      <hr>
+
       <div class="card-body">
         <div class="row min-margin">
           <div class="col-md-5">
             <b> Origin </b>
           </div>
           <div class="col-md-7">
-            <%= @order.origin_store_front.name %>
+            <%= @order.origin_store_front_name %>
           </div>
         </div>
 
         <div class="row min-margin">
           <div class="col-md-5">
-            <b> Origin </b>
+            <b> Destination </b>
           </div>
           <div class="col-md-7">
-            <%= @order.origin_store_front.name %>
+            <%= @order.destination_store_front_name %>
+          </div>
+        </div>
+
+        <div class="row min-margin">
+          <div class="col-md-5">
+            <b> Date </b>
+          </div>
+          <div class="col-md-7">
+            <%= @order.date.strftime('%B %e, %Y') %>
+          </div>
+        </div>
+
+        <div class="row min-margin">
+          <div class="col-md-5">
+            <b> Ref # </b>
+          </div>
+          <div class="col-md-7">
+            <%= @order.reference_number %>
           </div>
         </div>
 
@@ -32,11 +50,6 @@
           <span class="float-right"><%= link_to 'Print(Excel)', store_front_module_stock_transfer_path(@order, format: 'xlsx'), class: "btn btn-default btn-sm" %></span>
           <span class="float-right"><%= link_to 'Print(PDF)', order_path(@order, format: 'pdf'), class: "btn btn-default btn-sm" %></span>
         <% end %>
-        <i class="icon-calendar"></i> <%= @order.date.strftime("%B %e, %Y") %><br>
-        <p class="text-black"> Reference Number: <%= @order.reference_number %></p>
-
-        <hr>
-        <p>Detination Store Front: <%= @order.destination_store_front.try(:name) %></p>
         <% if current_user.proprietor? %>
           <%= link_to "Edit Destination", edit_store_front_module_stock_transfer_path(@order), class: "btn btn-danger" %>
         <% end %>

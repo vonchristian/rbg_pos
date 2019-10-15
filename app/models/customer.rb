@@ -22,6 +22,12 @@ class Customer < ApplicationRecord
   scope :recent, ->(num) { order('created_at DESC').limit(num) }
   before_validation :set_account_number
   before_save :set_default_image
+
+  def self.receivable_accounts
+    ids = pluck(:receivable_account_id)
+    AccountingModule::Account.where(id: ids.uniq.compact.flatten)
+  end
+
   def work_order_payments
     #
   end

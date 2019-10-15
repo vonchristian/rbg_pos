@@ -18,11 +18,11 @@
           <%= link_to store_front_module_purchase_order_path(order) do %>
             <div class="row text-muted">
               <div class="col-md-1">
-                
+
               </div>
               <div class="col-md-3">
                 <b class="text-primary"><%= order.supplier_name %></b><br>
-                <small class="text-muted"><i class="fa fa-clock-o"></i> <%= order.date.strftime("%b %e, %Y %I:%M %p") %></small><br>
+                <small class="text-muted"><i class="fa fa-clock-o"></i> <%= order.date.strftime("%b %e, %Y") %></small><br>
                 <small><b>#<%= order.reference_number %></b></small>
               </div>
               <div class="col-md-6">

@@ -8,7 +8,7 @@
       </div>
     <div class="card-body">
       <%= simple_form_for @other_sale, url: :other_sales do |f| %>
-        <%= f.input :date, as: :string, input_html: {class: "datepicker"} %>
+        <%= f.input :date, input_html: { class: "datepicker"} %>
         <span><label>Customer</label><span class="float-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span></span>
         <%= f.input :customer_id, collection: Customer.all.map{|a| [a.full_name, a.id] }, label: false, input_html: { class: 'chosen-select' } %>
         <%= f.input :reference_number %>

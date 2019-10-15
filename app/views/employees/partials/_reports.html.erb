@@ -1,8 +1,8 @@
-<div class="tab-pane <%= 'active' if current_page? employee_reports_path(@employee) %>">
-  <div class="content">
+
+
     <%=link_to reports_sales_path(user_id: @employee.id, format: 'pdf', from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day) do %>
-            <p class="category"> Daily Sales </p>
-            <small>Generate report of sales for this day <%=Time.zone.now.strftime("%B %e, %Y") %></small>
+            <h4 class="subtitle-up text-dark"> Daily Sales </h4>
+            <small class="text-muted">Generate report of sales for this day <%=Time.zone.now.strftime("%B %e, %Y") %></small>
           <% end %>
           <br>
           <br>
@@ -20,14 +20,14 @@
                   </div>
                 </div>
                 <div class="col-md-1">
-                  <button type="submit" class="btn btn-success"> Generate</button>
+                  <button type="submit" class="btn btn-primary"> Generate</button>
                 </div>
               </div>
             <% end %>
     <hr>
     <%=link_to reports_cash_receipts_path(user_id: @employee.id, format: 'pdf', from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day) do %>
-            <p class="category"> Cash Receipts</p>
-            <small>Generate report of cash receipts for this day <%=Time.zone.now.strftime("%B %e, %Y") %></small>
+            <h4 class="subtitle-up text-dark"> Cash Receipts</h4>
+            <small class="text-muted">Generate report of cash receipts for this day <%=Time.zone.now.strftime("%B %e, %Y") %></small>
           <% end %>
           <br>
           <br>
@@ -45,13 +45,15 @@
                   </div>
                 </div>
                 <div class="col-md-1">
-                  <button type="submit" class="btn btn-success"> Generate</button>
+                  <button type="submit" class="btn btn-primary"> Generate</button>
                 </div>
               </div>
             <% end %>
             <hr>
             <% if @employee.technician? %>
-              <h4> Released Repairs </h4>
+              <h4 class="subtitle-up">Repairs </h4>
+              <small class="text-muted">Generate report of repairs </small>
+
               <%= form_tag({:action => "index", controller: "/reports/repairs", format: 'xlsx', user_id: @employee.id}, {:method => :get})  do %>
                   <div class="row">
                     <div class="col-md-3">
@@ -71,7 +73,7 @@
                   </div>
                 <% end %>
             <% end %>
-            <h4> Cash Count Reports </h4>
+            <h4 class="subtitle-up"> Cash Count Reports </h4>
+            <small class="text-muted">Generate report of cash count for this day <%=Time.zone.now.strftime("%B %e, %Y") %></small>
+<br>
             <%= link_to 'New Cash Count Report', new_employee_cash_count_path(@employee) %>
-  </div>
-</div>

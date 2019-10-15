@@ -1,4 +1,9 @@
 <div class="tab-pane active" id="product-info">
+  <h4 class="subtitle-up"> Product Info </h4>
+  <small class="text-muted"><%= @product.description %></small>
+              <h4 class="title-up"><%= @product.available_quantity(store_front: current_store_front) %></h4> IN STOCK
+
+              <p class="category"> <%= @product.description %> </p>
   <div class="content">
     Product Info
     <div class="row">
@@ -18,7 +23,7 @@
       <%= link_to 'Edit', edit_product_path(@product), class: "btn btn-warning btn-sm" %>
     <% end %>
     <hr>
-    <h4>Unit of Measurements</h4>
+    <h4 class="subtitle-up">Unit of Measurements</h4>
       <% if current_user.proprietor? %>
       <%= link_to 'Add Unit Of Measurement', new_product_unit_of_measurement_path(@product) %>
       <% end %>
@@ -43,7 +48,7 @@
       <br>
     <% end %>
     <hr>
-    <h4>Selling Prices</h4>
+    <h4 class="subtitle-up">Selling Prices</h4>
     <% current_business.store_fronts.each do |store_front| %>
       <% if @product.selling_prices.for_store_front(store_front: store_front).present? %>
         <%= store_front.name %>
@@ -62,7 +67,7 @@
     <% end %>
       <hr>
       <% if current_user.proprietor? %>
-      <h4>Purchase Price History</h4>
+      <h4 class="subtitle-up">Purchase Price History</h4>
         <% @product.purchase_prices.each do |price| %>
           <div class="row">
             <div class="col-md-3">

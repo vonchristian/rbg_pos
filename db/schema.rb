@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_15_070502) do
+ActiveRecord::Schema.define(version: 2019_10_15_114035) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -195,9 +195,11 @@ ActiveRecord::Schema.define(version: 2019_10_15_070502) do
     t.bigint "service_revenue_account_id"
     t.bigint "sales_revenue_account_id"
     t.bigint "sales_discount_account_id"
+    t.decimal "receivable_balance", default: "0.0"
     t.index ["account_number"], name: "index_customers_on_account_number", unique: true
     t.index ["business_id"], name: "index_customers_on_business_id"
     t.index ["receivable_account_id"], name: "index_customers_on_receivable_account_id"
+    t.index ["receivable_balance"], name: "index_customers_on_receivable_balance"
     t.index ["sales_discount_account_id"], name: "index_customers_on_sales_discount_account_id"
     t.index ["sales_revenue_account_id"], name: "index_customers_on_sales_revenue_account_id"
     t.index ["service_revenue_account_id"], name: "index_customers_on_service_revenue_account_id"

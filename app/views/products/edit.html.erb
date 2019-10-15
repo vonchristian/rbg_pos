@@ -12,7 +12,7 @@
             <%if @product.avatar.blank? %>
               <%=image_tag("default_product_logo.jpg", height: 80, width: 80, :class=>"img-square") %>
             <% else %>
-              <%= image_tag @product.avatar.url(:large), class: 'center-block img-responsive img-rounded'%>
+              <%= image_tag @product.avatar, class: 'center-block img-responsive img-rounded'%>
             <% end %>
             <%= f.input :avatar, as: :file, label: "Product photo" %>
           </center>

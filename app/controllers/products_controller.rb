@@ -2,9 +2,9 @@ require 'will_paginate/array'
 class ProductsController < ApplicationController
 	def index
     if params[:search].present?
-      @products = Product.text_search_with_barcode(params[:search]).paginate(page: params[:page], per_page: 65)
+      @pagy, @products = pagy(Product.text_search_with_barcode(params[:search]))
     else
-      @products = Product.includes(:selling_prices, :unit_of_measurements).order(:name).paginate(page: params[:page], per_page: 65)
+      @pagy, @products = pagy(Product.includes(:selling_prices, :unit_of_measurements).order(:name))
     end
     @categories = Category.all
     @registry = Registry.new
@@ -56,7 +56,7 @@ class ProductsController < ApplicationController
 			@product.save
 			redirect_to "/products?search=#{@product.name}", notice: "Product updated successfully"
 		else
-			render :new
+			render :edit
 		end
 	end
   def destroy

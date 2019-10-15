@@ -3,7 +3,6 @@ module AccountingModule
     class_attribute :normal_credit_balance
 
     belongs_to :business
-
     has_many :accounts,       class_name: "AccountingModule::Account"
     has_many :amounts,        through: :accounts
     has_many :credit_amounts, through: :accounts
@@ -49,7 +48,7 @@ module AccountingModule
           else
             accounts_balance += account.credits_balance(options)
           end
-        end 
+        end
       end
       accounts_balance
     end

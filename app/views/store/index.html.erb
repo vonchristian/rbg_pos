@@ -54,13 +54,13 @@
       <br>
         <div class="row">
           <div class="col-md-2">
-            <b> QTY </b>
+            <b class="condensed-text"> QTY </b>
           </div>
           <div class="col-md-5">
-            <b> DESCRIPTION</b>
+            <b class="condensed-text"> DESCRIPTION</b>
           </div>
           <div class="col-md-4">
-            <b class="float-right"> TOTAL COST </b>
+            <b class="float-right condensed-text"> TOTAL COST </b>
           </div>
         </div>
         <hr>
@@ -93,11 +93,11 @@
           <div class="col-md-2">
           </div>
           <div class="col-md-6">
-            <h4 class="title-up"><b>TOTAL</b> </h4>
+            <h4 class="subtitle-up"><b>TOTAL</b> </h4>
           </div>
           <div class="col-md-3">
             <span class="float-right">
-              <h4 class="title-up"><b><%= number_to_currency @cart.sales_order_line_items.sum(&:total_cost) %></b></h4>
+              <h4 class="subtitle-up"><b><%= number_to_currency @cart.sales_order_line_items.sum(&:total_cost) %></b></h4>
             </span>
           </div>
         </div>
