@@ -1,6 +1,6 @@
 module AccountingModule
   module BalanceFinders
-    class CommercialDocumentFromDateTodate
+    class CommercialDocumentFromDateToDate
       attr_reader :commercial_document, :amounts, :from_date, :to_date
 
       def initialize(args={})

@@ -46,7 +46,7 @@ class WorkOrder < ApplicationRecord
   after_commit :set_customer_name, :set_product_name,  on: [:create, :update]
 
   def self.receivable_accounts
-    ids = pluck(:receivable_account_id)
+    ids ||= pluck(:receivable_account_id)
     AccountingModule::Account.where(id: ids.uniq.compact.flatten)
   end
 

@@ -78,7 +78,7 @@
           </div>
         </div>
 
-          <% @work_orders.received.each do |work_order| %>
+          <% @work_orders.received.order(date_received: :desc).each do |work_order| %>
           <div class="card card-outline card-secondary">
             <div class="card-body">
               <%= render 'computer_repair_section/work_order', work_order: work_order %>
@@ -96,7 +96,7 @@
           </div>
         </div>
 
-          <% @work_orders.work_in_progress.each do |work_order| %>
+          <% @work_orders.work_in_progress.order(date_received: :desc).each do |work_order| %>
           <div class="card card-outline card-danger">
           <div class="card-body">
             <%= render 'computer_repair_section/work_order', work_order: work_order %>
@@ -114,7 +114,7 @@
             <h3 class="title-up"> <%= WorkOrder.done_and_rto.size %></h3>
           </div>
         </div>
-          <% @work_orders.done_and_rto.each do |work_order| %>
+          <% @work_orders.done_and_rto.order(date_received: :desc).each do |work_order| %>
           <div class="card card-outline card-warning">
            <div class="card-body">
           <%= render 'computer_repair_section/work_order', work_order: work_order %>
@@ -131,7 +131,7 @@
             <h3 class="title-up"> <%= WorkOrder.released.size %></h3>
           </div>
         </div>
-            <% @work_orders.released.each do |work_order| %>
+            <% @work_orders.released.order(date_received: :desc).each do |work_order| %>
             <div class="card card-outline card-success">
 
               <div class="card-body">

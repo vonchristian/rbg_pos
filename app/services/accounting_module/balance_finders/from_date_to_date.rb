@@ -9,7 +9,7 @@ module AccountingModule
         @to_date             = args.fetch(:to_date)
       end
       def compute
-        amounts.entered_on(from_date: from_date, to_date: to_date).
+        amounts.left_joins(:entries).entered_on(from_date: from_date, to_date: to_date).
         total
       end
     end
