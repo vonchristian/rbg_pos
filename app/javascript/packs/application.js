@@ -17,7 +17,7 @@ require("chart.js")
 import "bootstrap"
 import "bootstrap-datepicker"
 import 'chosen-js'
-import "../stylesheets/application"
+import "../stylesheets/application.scss"
 
 document.addEventListener("turbolinks:load", () => {
   $('[data-toggle="tooltip"]').tooltip()
