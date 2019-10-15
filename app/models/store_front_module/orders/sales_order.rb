@@ -2,8 +2,8 @@ module StoreFrontModule
   module Orders
     class SalesOrder < Order
 
-      belongs_to :receivable_account,    class_name: 'AccountingModule::Account', optional: true
-      belongs_to :sales_revenue_account, class_name: 'AccountingModule::Account', optional: true
+      belongs_to :receivable_account,    class_name: 'AccountingModule::Account',  optional: true
+      belongs_to :sales_revenue_account, class_name: 'AccountingModule::Account',  optional: true
       belongs_to :sales_discount_account, class_name: 'AccountingModule::Account', optional: true
 
       has_one :cash_payment, as: :cash_paymentable, class_name: "StoreFrontModule::CashPayment", dependent: :destroy
@@ -37,7 +37,7 @@ module StoreFrontModule
       def payment_entries
         if receivable_account
           receivable_account.credit_entries
-        end 
+        end
       end
 
 
