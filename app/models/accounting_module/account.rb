@@ -3,17 +3,15 @@ module AccountingModule
     include PgSearch::Model
     pg_search_scope :text_search, :against => [:name, :account_code]
 
-
-
     class_attribute :normal_credit_balance
     belongs_to :business
-    has_many :sub_accounts, class_name: "AccountingModule::SubAccount", foreign_key: 'main_account_id'
-    has_many :amounts, class_name: "AccountingModule::Amount"
+    has_many :sub_accounts,   class_name: "AccountingModule::SubAccount", foreign_key: 'main_account_id'
+    has_many :amounts,        class_name: "AccountingModule::Amount"
     has_many :credit_amounts, :class_name => 'AccountingModule::CreditAmount'
-    has_many :debit_amounts, :class_name => 'AccountingModule::DebitAmount'
-    has_many :entries, through: :amounts, source: :entry
+    has_many :debit_amounts,  :class_name => 'AccountingModule::DebitAmount'
+    has_many :entries,        through: :amounts, source: :entry
     has_many :credit_entries, :through => :credit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
-    has_many :debit_entries, :through => :debit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
+    has_many :debit_entries,  :through => :debit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
 
     validates :type, presence: true
     validates :name, :account_code, presence: true, uniqueness: true

@@ -54,4 +54,4 @@
           <% end %>
           <%= line_chart [
             { name: 'Receive', data: Hash[*receive_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?} }
-              ], thousands: ',', prefix: 'P', curve: false %>
+              ], thousands: ',', curve: false %>

@@ -131,8 +131,7 @@ class WorkOrder < ApplicationRecord
   #   spare_parts + service_charges
   # end
   def accounts_receivable_total
-    service_charges_receivable +
-    spare_parts_receivable
+    receivable_account.debits_balance
   end
 
   def refunds_total
@@ -145,7 +144,7 @@ class WorkOrder < ApplicationRecord
   def service_charges_receivable
     balance = []
     work_order_service_charges.each do |service_charge|
-      balance << default_service_revenue_account.credit_amounts.where(commercial_document: service_charge).sum(&:amount)
+      balance << service_revenue_account.credit_amounts.where(commercial_document: service_charge).sum(&:amount)
     end
     balance.sum
   end

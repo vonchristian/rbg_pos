@@ -20,9 +20,6 @@
               <% end %><br>
               <small class="text-muted">TECHNICIANS</small>
             </div>
-          </div>
-          <hr>
-          <div class="row">
             <div class="col-md-5">
               <% if current_user.technician? || current_user.proprietor? %>
                 <%= simple_form_for @work_order, url: :computer_repair_section_work_order do |f| %>
@@ -38,6 +35,8 @@
               <% end %>
             </div>
           </div>
+          <hr>
+
           <div class="row">
             <div class="col-md-6">
               <h4 class="subtitle-up">WORK ORDER DETAILS </h4>
