@@ -1,5 +1,5 @@
 
-  
+
   <div class="sidebar">
     <!-- Sidebar user (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -19,6 +19,12 @@
       <% end %>
       <% end %>
       <hr>
+      <li class="nav-item active">
+        <a href="/insights" class="nav-link <%= 'active' if current_page? insights_path %>">
+          <i class="nav-icon far fa-chart-bar"></i>
+          <p>Insights</p>
+        </a>
+      </li>
         <li class="nav-item active">
           <a href="/store" class="nav-link <%= 'active' if current_page? store_index_path %>">
             <i class="nav-icon fa fa-home"></i>

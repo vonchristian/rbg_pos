@@ -23,10 +23,7 @@
     <small class="text-muted"> RELEASED </small>
   </div>
 </div>
-
-<%= line_chart WorkOrder.group_by_month(:date_received).count %>
 <hr>
-
 <h4 class="title-up">Receivables vs Payments </h4>
 
 <% months = [] %>
@@ -47,3 +44,7 @@
         { name: 'Payments', data: Hash[*payments_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?} }
 
           ], thousands: ',', prefix: 'P' %>
+          <hr>
+          <h4 class="title-up"> Receive per Month </h4>
+          <%= line_chart WorkOrder.group_by_month(:date_received).count %>
+          <hr>
