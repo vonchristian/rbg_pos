@@ -1,6 +1,6 @@
 module AccountingModule
   module AccountCategories
-    class Liability < AccountingCategory
+    class Liability < AccountCategory
 
       self.normal_credit_balance = true
 
