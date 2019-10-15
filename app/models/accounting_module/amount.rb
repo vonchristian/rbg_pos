@@ -19,16 +19,17 @@ module AccountingModule
       sum(&:amount)
     end
     def self.balance(args={})
-      balance_finder.new(args.merge(amounts: self)).compute
+      balance_finder(args).new(args.merge(amounts: self)).compute
     end
 
-    def self.balance_finder(args={})
-      if args.present?
-        klass = args.compact.keys.sort.map{ |key| key.to_s.titleize }.join.gsub(" ", "")
-      else
-        klass = "DefaultBalanceFinder"
+    def self.balance_for_new_record
+      balance = BigDecimal('0')
+      self.all.each do |amount_record|
+        if amount_record.amount && !amount_record.marked_for_destruction?
+          balance += amount_record.amount # unless amount_record.marked_for_destruction?
+        end
       end
-      ("AccountingModule::BalanceFinders::" + klass).constantize
+      return balance
     end
 
     def self.entered_on(options={})
@@ -36,6 +37,16 @@ module AccountingModule
         date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
         joins(:entry).where('entries.entry_date' => (date_range.start_date..date_range.end_date))
       end
+    end
+
+    private
+    def self.balance_finder(args={})
+      if args.present?
+        klass = args.compact.keys.sort.map{ |key| key.to_s.titleize }.join.gsub(" ", "")
+      else
+        klass = "DefaultBalanceFinder"
+      end
+      ("AccountingModule::BalanceFinders::" + klass).constantize
     end
   end
 end

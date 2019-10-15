@@ -1,16 +1,18 @@
 module AccountingModule
   module BalanceFinders
     class FromDateToDate
-      attr_reader :from_date, :to_date, :amounts
+      attr_reader  :from_date, :to_date, :amounts
 
-      def initialize(args={})
-        @commercial_document = args.fetch(:commercial_document)
-        @from_date           = args.fetch(:from_date)
-        @to_date             = args.fetch(:to_date)
+      def initialize(from_date:, to_date:, amounts:)
+        @amounts   ||= amounts.includes(:entry, :account)
+        @from_date = from_date
+        @to_date   = to_date
       end
+
       def compute
-        amounts.left_joins(:entries).entered_on(from_date: from_date, to_date: to_date).
-        total
+        date_range = DateRange.new(from_date: from_date, to_date: to_date)
+        amounts.where('entries.entry_date' => date_range.range).total
+
       end
     end
   end

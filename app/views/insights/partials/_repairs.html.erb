@@ -3,23 +3,23 @@
   <div class="col-md-1">
   </div>
   <div class="col-md-2">
-    <h3 class="title-up"><%= WorkOrder.count %></h3>
+    <h3 class="title-up"><%= WorkOrder.all.size %></h3>
     <small class="text-muted"> TOTAL </small>
   </div>
   <div class="col-md-2">
-    <h3 class="title-up"><%= WorkOrder.received.count %></h3>
+    <h3 class="title-up"><%= WorkOrder.received.size %></h3>
     <small class="text-muted"> RECEIVED </small>
   </div>
   <div class="col-md-2">
-    <h3 class="title-up"><%= WorkOrder.work_in_progress.count %></h3>
+    <h3 class="title-up"><%= WorkOrder.work_in_progress.size%></h3>
     <small class="text-muted"> WORK IN PROGRESS </small>
   </div>
   <div class="col-md-2">
-    <h3 class="title-up"><%= WorkOrder.done_and_rto.count %></h2>
+    <h3 class="title-up"><%= WorkOrder.done_and_rto.size %></h2>
     <small class="text-muted"> DONE / RTO </small>
   </div>
   <div class="col-md-2">
-    <h3 class="title-up"><%= WorkOrder.released.count %></h3>
+    <h3 class="title-up"><%= WorkOrder.released.size %></h3>
     <small class="text-muted"> RELEASED </small>
   </div>
 </div>

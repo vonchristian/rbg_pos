@@ -1,14 +1,14 @@
 module AccountingModule
   module BalanceFinders
     class DefaultBalanceFinder
-      attr_reader :from_date, :to_date, :amounts
+      attr_reader :amounts
 
-      def initialize(args={})
-        @amounts = args.fetch(:amounts)
+      def initialize(amounts:)
+        @amounts ||= amounts
       end
+
       def compute
-        amounts.entered_on(from_date: from_date, to_date: to_date).
-        total
+        amounts.total
       end
     end
   end

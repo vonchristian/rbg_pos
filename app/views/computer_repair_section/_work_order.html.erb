@@ -1,8 +1,8 @@
 <%=link_to computer_repair_section_work_order_path(work_order) do %>
  <div class="row">
     <div class="col-md-10">
-      <span class="text-muted"><b><%= work_order.product_unit.description.try(:upcase) %></b></span><br>
-      <%= work_order.customer.full_name %><br>
+      <b><%= work_order.product_unit.description.try(:upcase) %></b><br>
+      <span class="text-muted"><%= work_order.customer.full_name %></span><br>
       <span class="text-muted"><%= distance_of_time_in_words(work_order.created_at, Time.zone.now) %></span><br>
       <small>CI #: <%= work_order.charge_invoice_number %></small><br><br>
       <% work_order.technicians.each do |technician| %>
@@ -15,4 +15,5 @@
       <p class="badge bg-dark float-right"><b>#<%=work_order.service_number %></b></p>
     </div>
   </div>
+  <span class="badge bg-warning float-right"><%= work_order.store_front.try(:name) %></span>
 <% end %>
