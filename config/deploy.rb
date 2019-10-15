@@ -10,6 +10,7 @@ set :deploy_to, '/var/www/rbg'
 set :repository, 'https://github.com/vonchristian/rbg_pos.git'
 set :branch, 'master'
 set :user, 'deploy'
+
 set :term_mode, nil
 set :forward_agent, true
 set :app_path, lambda { "#{fetch(:deploy_to)}/#{fetch(:current_path)}" }
@@ -85,7 +86,7 @@ task :deploy => :remote_environment do
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
     invoke :'rails:db_migrate'
-    # invoke :'rails:assets_precompile'
+    invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
 
     on :launch do
