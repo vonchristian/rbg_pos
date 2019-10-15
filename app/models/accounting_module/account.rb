@@ -50,20 +50,16 @@ module AccountingModule
      end
 
     def self.balance(options={})
-      if self.new.class == AccountingModule::Account
-        raise(NoMethodError, "undefined method 'balance'")
-      else
-        accounts_balance = BigDecimal('0')
-        accounts = self.all
-        accounts.each do |account|
-          if account.contra
-            accounts_balance -= account.balance(options)
-          else
-            accounts_balance += account.balance(options)
-          end
+      accounts_balance = BigDecimal('0')
+      accounts = self.all
+      accounts.each do |account|
+        if account.contra
+          accounts_balance -= account.balance(options)
+        else
+          accounts_balance += account.balance(options)
         end
-        accounts_balance
       end
+      accounts_balance
     end
 
     def self.debits_balance(options={})

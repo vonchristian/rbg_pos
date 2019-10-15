@@ -1,6 +1,6 @@
 module AccountingModule
   module BalanceFinders
-    class FromDateTodate
+    class FromDateToDate
       attr_reader :from_date, :to_date, :amounts
 
       def initialize(args={})

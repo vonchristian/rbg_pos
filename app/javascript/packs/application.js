@@ -25,8 +25,12 @@ document.addEventListener("turbolinks:load", () => {
   $('.datepicker').datepicker(
     {
       format: 'dd/mm/yyyy',
+      defaultDate: new Date(),
+      immediateUpdates: true,
+      todayBtn: true,
+      todayHighlight: true,
       autoclose: true
-    });
+    }).datepicker("setDate", "0");;
   $('.chosen-select').chosen({width: "95%"});
 })
 

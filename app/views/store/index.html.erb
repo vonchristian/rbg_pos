@@ -44,19 +44,38 @@
       <% elsif @products.present? %>
         <%= render 'store/searched_products_results' %>
       <% end %>
+    </div>
+  </div>
+
       <% if @cart.sales_order_line_items.present? %>
+        <div class="card">
+    <div class="card-body">
+      <h4 class="subtitle-up">Order Details </h4>
+      <br>
+        <div class="row">
+          <div class="col-md-2">
+            <b> QTY </b>
+          </div>
+          <div class="col-md-5">
+            <b> DESCRIPTION</b>
+          </div>
+          <div class="col-md-4">
+            <b class="float-right"> TOTAL COST </b>
+          </div>
+        </div>
+        <hr>
         <% @cart.sales_order_line_items.each do |line_item| %>
           <div class="row">
             <div class="col-md-2">
-              <center><%= line_item.quantity %></center>
+              <%= line_item.quantity %>
             </div>
             <div class="col-md-5">
-              <b><%= line_item.name.try(:upcase) %></b><br>
+
+              <b><%= line_item.name.try(:upcase) %></b>  <span class="badge badge-warning"><%= number_to_currency line_item.unit_cost %></span> <br>
               <span class="text-muted">
                 <% if line_item.bar_code.present? %>
-                  <i class="fa fa-barcode"></i> <%= line_item.bar_code.truncate(30) %> &nbsp;
+                  <small><i class="fa fa-barcode"></i> <%= line_item.bar_code.truncate(30) %></small>
                 <% end %>
-                <i class="fa fa-tags"></i> <%= number_to_currency line_item.unit_cost %>
               </span>
             </div>
             <div class="col-md-4">

@@ -18,8 +18,11 @@
                     <%= image_tag(technician.avatar, class: "img-circle", height: 45, width: 45) %>
                 </span>
               <% end %><br>
-              <small class="condensed-text">TECHNICIANS</small>
+              <small class="text-muted">TECHNICIANS</small>
             </div>
+          </div>
+          <hr>
+          <div class="row">
             <div class="col-md-5">
               <% if current_user.technician? || current_user.proprietor? %>
                 <%= simple_form_for @work_order, url: :computer_repair_section_work_order do |f| %>
@@ -64,7 +67,7 @@
               </div>
               <div class="row min-margin">
                 <div class="col-md-6">
-                  Department
+                  <b>Department</b>
                 </div>
                 <div class="col-md-6">
                   <%= @work_order.department.try(:customer_name_and_department) %>
@@ -72,7 +75,7 @@
               </div>
               <div class="row min-margin">
                 <div class="col-md-6">
-                  Contact Number
+                  <b>Contact Number</b>
                 </div>
                 <div class="col-md-6">
                   <%= @work_order.customer_contact_number %>
@@ -80,15 +83,7 @@
               </div>
               <div class="row min-margin">
                 <div class="col-md-6">
-                  Date Received
-                </div>
-                <div class="col-md-6">
-                  <%= @work_order.created_at.strftime("%B %e, %Y") %>
-                </div>
-              </div>
-              <div class="row min-margin">
-                <div class="col-md-6">
-                  Reported Problem
+                  <b>Reported Problem</b>
                 </div>
                 <div class="col-md-6">
                   <%= @work_order.reported_problem %>
@@ -96,7 +91,7 @@
               </div>
               <div class="row min-margin">
                 <div class="col-md-6">
-                  Elapsed Time
+                  <b>Elapsed Time</b>
                 </div>
                 <div class="col-md-6">
                   <%= distance_of_time_in_words(@work_order.created_at, Time.zone.now) %>
@@ -104,69 +99,55 @@
               </div>
               <div class="row min-margin">
               <div class="col-md-6">
-                  Release Date
+                  <b>Release Date</b>
                 </div>
                 <div class="col-md-6">
                     <%= @work_order.release_date.try(:strftime, ("%B %e, %Y")) %>
 
                 </div>
               </div>
-              <hr>
               <% if @work_order.under_warranty? %>
                 <p> Warranty Details </p>
-                <div class="row">
+                <div class="row min-margin">
                 <div class="col-md-6">
-                  Supplier
+                  <b>Supplier</b>
                 </div>
                 <div class="col-md-6">
                   <%= @work_order.supplier.try(:business_name) %>
                 </div>
               </div>
-              <br>
-              <div class="row">
+              <div class="row min-margin">
                 <div class="col-md-6">
-                  Purchase Date
+                  <b>Purchase Date</b>
                 </div>
                 <div class="col-md-6">
                   <%= @work_order.purchase_date.strftime("%B %e, %Y") %>
                 </div>
               </div>
-              <br><div class="row">
-              <div class="col-md-6">
-                  Release Date
-                </div>
-                <div class="col-md-6">
-                    <%= @work_order.release_date.try(:strftime, ("%B %e, %Y")) %>
-
-                </div>
-              </div>
-              <br>
               <% end %>
-
-              <h4 class="subtitle-up">Charge Invoice</h4>
-                <% if @work_order.charge_invoice.blank? %>
-                <%= link_to 'Add Charge Invoice Number', new_computer_repair_section_work_order_charge_invoice_path(@work_order), class: "btn btn-primary" %>
-                <% else %>
-                <%= @work_order.charge_invoice.try(:number) %>
-                <%= link_to 'Edit', edit_charge_invoice_path(@work_order.charge_invoice) %>
-                <% end%>
-
-                <hr>
             </div>
             <div class="col-md-5 offset-md-1">
-              <h4 class="subtitle-up">REPORTS </h4>
-              <%= link_to 'CLAIM TAG', computer_repair_section_work_order_service_claim_tag_path(@work_order, format: 'pdf'), class: "btn btn-outline-secondary"  %><br><br>
-              <small class="condensed-text">RELEASE FORM</small><br>
+              <h4 class="subtitle-up">CLAIM FORM </h4>
+              <%= link_to 'CLAIM TAG', computer_repair_section_work_order_service_claim_tag_path(@work_order, format: 'pdf'), class: "btn btn-secondary"  %><br><br>
+              <h4 class="subtitle-up">RELEASE FORM</h4>
               <% if @work_order.released?%>
                 <%= link_to 'RELEASE FORM', computer_repair_section_work_order_path(@work_order, format: 'pdf'), class: "btn btn-outline-secondary"  %>
               <% else %>
-              <small class="text-danger"> Work Order status is <span class="label label-danger"><%= @work_order.status%></span> and cannot be released yet </small>
+              <small class="alert alert-secondary"> status is <b><%= @work_order.status.try(:titleize) %></b> and cannot be released yet </small>
               <% end %>
 
               <%#= link_to 'CHARGE INVOICE', computer_repair_section_work_order_path(@work_order, format: 'pdf'), class: "label label-default" %>
 
             </div>
           </div>
+          <hr>
+          <h4 class="subtitle-up">CHARGE INVOICE</h4>
+                <% if @work_order.charge_invoice.blank? %>
+                <%= link_to 'Add Charge Invoice Number', new_computer_repair_section_work_order_charge_invoice_path(@work_order), class: "btn btn-primary" %>
+                <% else %>
+                <%= @work_order.charge_invoice.try(:number) %>
+                <%= link_to 'Edit', edit_charge_invoice_path(@work_order.charge_invoice), class: 'btn btn-warning' %>
+                <% end%>
         </div>
       </div>
       <div class="row">

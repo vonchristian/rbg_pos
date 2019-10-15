@@ -1,6 +1,6 @@
-    <span>Total: </span><input type="text" id="billTotal" value=''/>
+    <h3 class="title-up">TOTAL: <input type="text" readonly="true" id="billTotal" value=''/></h3>
 
-<% Bill.all.each do |bill| %>
+<% CashCounts::Bill.all.each do |bill| %>
     <%= simple_form_for @bill_count, url: :employee_bill_counts do |f| %>
       <div class="row">
         <div class="col-md-2">
@@ -8,12 +8,12 @@
 
         </div>
         <div class="col-md-2">
-          <%= f.input :bill_count, input_html: { id: "bill_#{bill.amount}", oninput: 'calculateBillSubTotal()'} %>
-          <%= f.input :bill_amount, input_html: { value: bill.amount, id: "#{bill.amount}" }, as: :hidden %>
+          <%= f.input :bill_count, label: false, input_html: { id: "bill_#{bill.amount}", oninput: 'calculateBillSubTotal()'} %>
+          <%= f.input :bill_amount,  label: false, input_html: { value: bill.amount, id: "#{bill.amount}" }, as: :hidden %>
           <%= f.input :bill_id, input_html: { value: bill.id }, as: :hidden %>
         </div>
         <div class="col-md-3">
-          <%= f.input :bill_subtotal, readonly: true, input_html: { id: "bill_subtotal_#{bill.amount}" } %>
+          <%= f.input :bill_subtotal, label: false, readonly: true, input_html: { id: "bill_subtotal_#{bill.amount}" } %>
         </div>
       </div>
 
@@ -85,7 +85,22 @@
 
   var billTotal   = document.getElementById('billTotal');
 
-  var result_bill_total       = parseFloat(document.getElementById('bill_subtotal_1000').value) + parseFloat(document.getElementById('bill_subtotal_500').value);
+  var result_bill_total =
+  parseFloat(document.getElementById('bill_subtotal_1000').value) +
+  parseFloat(document.getElementById('bill_subtotal_500').value) +
+  parseFloat(document.getElementById('bill_subtotal_200').value) +
+  parseFloat(document.getElementById('bill_subtotal_100').value) +
+  parseFloat(document.getElementById('bill_subtotal_50').value) +
+  parseFloat(document.getElementById('bill_subtotal_20').value) +
+  parseFloat(document.getElementById('bill_subtotal_10').value) +
+  parseFloat(document.getElementById('bill_subtotal_5').value) +
+  parseFloat(document.getElementById('bill_subtotal_1').value) +
+  parseFloat(document.getElementById('bill_subtotal_0.25').value);
+
+
+
+
+
   billTotal.value = result_bill_total;
 
 

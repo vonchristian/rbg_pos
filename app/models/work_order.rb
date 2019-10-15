@@ -45,6 +45,11 @@ class WorkOrder < ApplicationRecord
 
   after_commit :set_customer_name, :set_product_name,  on: [:create, :update]
 
+  def self.receivable_accounts
+    ids = pluck(:receivable_account_id)
+    AccountingModule::Account.where(id: ids.uniq.compact.flatten)
+  end
+
   def self.done_and_rto
     where(status: 'done').or(self.where(status: 'return_to_owner'))
   end
@@ -72,6 +77,7 @@ class WorkOrder < ApplicationRecord
       all.sum(&:total_charges_cost)
     end
   end
+
   def self.total_spare_parts_cost(hash ={} ) #refactor
     if hash[:from_date] && hash[:to_date]
        from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date])
@@ -128,12 +134,14 @@ class WorkOrder < ApplicationRecord
     service_charges_receivable +
     spare_parts_receivable
   end
+
   def refunds_total
   end
 
   def spare_parts_receivable
     default_receivable_account.debits_balance(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
   end
+
   def service_charges_receivable
     balance = []
     work_order_service_charges.each do |service_charge|
