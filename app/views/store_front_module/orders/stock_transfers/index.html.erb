@@ -1,81 +1,38 @@
-<div class="row">
-  <div class="col-md-3">
-    <div class="card">
-      <div class="card-body">
-    <p class="title-up"> FILTER BY DESTINATION </p>
+<div class="container">
 
-        <% StoreFront.all.each do |store_front| %>
-          <div class="row">
-            <div class="col-md-6">
-              <%= store_front.name %>
-            </div>
-            <div class="col-md-4">
-              <%= link_to 'Select', store_front_module_stock_transfers_path(store_front_id: store_front.id), class: 'btn btn-default' %>
-            </div>
-          </div>
-          <br>
-        <% end %>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-9">
     <div class="card">
     <div class="card-header">
       <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-9">
           <h3 class="title-up"> Stock Transfer Orders </h3>
+
+
         </div>
-        <div class="col-md-4">
-        </div>
+
         <div class="col-md-3">
           <%= link_to 'New Stock Transfer', new_store_front_module_stock_transfer_order_line_item_processing_path, class: "btn btn-primary float-right" %>
         </div>
       </div>
-    </div>
-    <div class="card-body">
-      <div class="table table-responsive">
-        <table class="table table-striped table-hover">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Ref #</th>
-              <th>Origin</th>
-              <th>Destination</th>
-              <th>Items</th>
-              <th>Total</th>
-              <th>Employee</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @stock_transfer_orders.order(date: :desc).each do |stock_transfer| %>
-              <tr>
-                <td><%= link_to stock_transfer.date.strftime("%B %e, %Y"), store_front_module_stock_transfer_path(stock_transfer) %></td>
-                <td><%= stock_transfer.reference_number %></td>
-                <td><%= link_to stock_transfer.origin_store_front_name, store_front_module_stock_transfer_path(stock_transfer) %></td>
-                <td><%= link_to stock_transfer.destination_store_front_name, store_front_module_stock_transfer_path(stock_transfer) %></td>
+      <br>
+      <small class="title-up"> FILTER BY DESTINATION </small>
 
-                <td>
-                  <% stock_transfer.purchase_order_line_items.each do |line_item|  %>
-                    <div class="row">
-                      <div class="col-md-9">
-                        <%= line_item.product_name %><br>
-                        <small><i><%= line_item.bar_code %></i></small>
-                      </div>
-                      <div class="col-md-1">
-                        <span><%= line_item.quantity %></span>
-                      </div>
-                    </div>
-                    <br>
-                  <% end %>
-                </td>
-                <td><%= number_to_currency stock_transfer.total_cost %></td>
-                <td><%= stock_transfer.employee.try(:full_name) %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-      <center><%= will_paginate @stock_transfer_orders %></center>
+        <% StoreFront.all.each do |store_front| %>
+
+              <%= link_to store_front.name, store_front_module_stock_transfers_path(store_front_id: store_front.id), class: 'btn btn-default' %>
+
+        <% end %>
     </div>
+  </div>
+
+
+
+            <% @stock_transfer_orders.order(date: :desc).each do |stock_transfer| %>
+
+              <%= render 'store_front_module/orders/stock_transfers/order', order: stock_transfer %>
+
+            <% end %>
+
+      <center><%==pagy_bootstrap_nav(@pagy) %></center>
+
   </div>
 </div>
