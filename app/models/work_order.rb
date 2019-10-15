@@ -139,7 +139,7 @@ class WorkOrder < ApplicationRecord
   end
 
   def spare_parts_receivable
-    default_receivable_account.debits_balance(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
+    receivable_account.debits_balance
   end
 
   def service_charges_receivable
@@ -151,13 +151,13 @@ class WorkOrder < ApplicationRecord
   end
 
   def payment_entries
-    default_receivable_account.amounts.where(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
+    receivable_account.amounts.where(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
   end
 
 
 
   def payments_total
-    default_receivable_account.credits_balance(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
+    receivable_account.credits_balance
   end
 
   def service_charge_payments

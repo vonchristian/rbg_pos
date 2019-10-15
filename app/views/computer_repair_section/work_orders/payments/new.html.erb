@@ -15,7 +15,7 @@
           <%= f.input :description, input_html: { value: "Payment of Work Order" } %>
           <%= f.input :amount, input_html: { value: @work_order.balance_total }, as: :string %>
           <%= f.input :expense_amount, label: "Tax / Discount",  as: :string, input_html: {value: 0 } %>
-          <%= f.input :expense_account_id, collection: AccountingModule::Expense.all.map{|a| [a.name, a.id] } %>
+          <%= f.input :expense_account_id, collection: AccountingModule::Expense.all.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
           <%= f.input :work_order_id, input_html: { value: @work_order.id }, as: :hidden %>
           <%= f.input :user_id, input_html: { value: current_user.id }, as: :hidden %>
           <% if current_user.proprietor? %>
