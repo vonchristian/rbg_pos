@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_15_114035) do
+ActiveRecord::Schema.define(version: 2019_10_16_054052) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -526,6 +526,7 @@ ActiveRecord::Schema.define(version: 2019_10_15_114035) do
     t.bigint "purchase_return_account_id"
     t.bigint "spoilage_account_id"
     t.bigint "service_revenue_account_id"
+    t.bigint "service_receivable_account_category_id"
     t.index ["business_id"], name: "index_store_fronts_on_business_id"
     t.index ["cost_of_goods_sold_account_id"], name: "index_store_fronts_on_cost_of_goods_sold_account_id"
     t.index ["internal_use_account_id"], name: "index_store_fronts_on_internal_use_account_id"
@@ -536,6 +537,7 @@ ActiveRecord::Schema.define(version: 2019_10_15_114035) do
     t.index ["sales_account_id"], name: "index_store_fronts_on_sales_account_id"
     t.index ["sales_discount_account_id"], name: "index_store_fronts_on_sales_discount_account_id"
     t.index ["sales_return_account_id"], name: "index_store_fronts_on_sales_return_account_id"
+    t.index ["service_receivable_account_category_id"], name: "index_store_fronts_on_service_receivable_account_category_id"
     t.index ["service_revenue_account_id"], name: "index_store_fronts_on_service_revenue_account_id"
     t.index ["spoilage_account_id"], name: "index_store_fronts_on_spoilage_account_id"
   end
@@ -786,6 +788,7 @@ ActiveRecord::Schema.define(version: 2019_10_15_114035) do
   add_foreign_key "store_front_accounts", "store_fronts"
   add_foreign_key "store_front_configs", "accounts", column: "accounts_receivable_account_id"
   add_foreign_key "store_front_configs", "store_fronts"
+  add_foreign_key "store_fronts", "account_categories", column: "service_receivable_account_category_id"
   add_foreign_key "store_fronts", "accounts", column: "cost_of_goods_sold_account_id"
   add_foreign_key "store_fronts", "accounts", column: "internal_use_account_id"
   add_foreign_key "store_fronts", "accounts", column: "merchandise_inventory_account_id"

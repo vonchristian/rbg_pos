@@ -1,5 +1,6 @@
 class StoreFront < ApplicationRecord
   belongs_to :business
+  belongs_to :service_receivable_account_category, class_name: 'AccountingModule::AccountCategory', optional: true
   belongs_to :merchandise_inventory_account, class_name: "AccountingModule::Account", foreign_key: 'merchandise_inventory_account_id'
   belongs_to :sales_account,                 class_name: "AccountingModule::Account", foreign_key: 'sales_account_id'
   belongs_to :sales_discount_account,        class_name: "AccountingModule::Account", foreign_key: 'sales_discount_account_id'

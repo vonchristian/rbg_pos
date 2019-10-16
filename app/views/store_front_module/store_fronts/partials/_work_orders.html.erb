@@ -58,8 +58,8 @@
       <% payments_data = [] %>
       <% months.uniq.each do |month| %>
 
-        <% balances_data << { month.strftime("%B %Y") => @all_work_orders.receivable_accounts.debits_balance(from_date: month.beginning_of_month,to_date: month.end_of_month) } %>
-        <% payments_data << { month.strftime("%B %Y") => @all_work_orders.receivable_accounts.credits_balance(from_date: month.beginning_of_month, to_date: month.end_of_month) } %>
+        <% balances_data << { month.strftime("%B %Y") => @service_receiveable_account_category.debits_balance(from_date: month.beginning_of_month,to_date: month.end_of_month) } %>
+        <% payments_data << { month.strftime("%B %Y") =>  @service_receiveable_account_category.credits_balance(from_date: month.beginning_of_month, to_date: month.end_of_month) } %>
 
 
       <% end %>
