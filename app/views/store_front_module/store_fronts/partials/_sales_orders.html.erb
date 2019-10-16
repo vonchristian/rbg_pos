@@ -1,48 +1,63 @@
+<div class="card">
+  <div class="card-body">
 <div class="row">
-  <div class="col-md-3">
+  <div class="col-md-6">
     <h3 class="title-up">Sales Orders </h3>
     <span class="text-muted"><%= @from_date.strftime('%B %e, %Y') %>-
-    <%= @to_date.strftime('%B %e, %Y') %>
+    <%= @to_date.strftime('%B %e, %Y') %></span>
 
   </div>
-  <div class="col-md-3">
-  </div>
+
   <div class="col-md-6">
     <div class="btn-group float-right" role="group" aria-label="Basic example">
       <%= link_to 'All', store_front_module_store_front_sales_orders_path, class: "btn btn-outline-secondary #{'active' if current_page?( store_front_module_store_front_sales_orders_path(from_date: nil, to_date: nil)) }" %>
-      <%= link_to 'This Day', store_front_module_store_front_sales_orders_path(from_date: Date.current, to_date: Date.current), class: "btn btn-outline-secondary #{'active' if current_page?( store_front_module_store_front_sales_orders_path(from_date: Date.current, to_date: Date.current))}" %>
+      <%= link_to 'This Day', store_front_module_store_front_sales_orders_path(from_date: Date.current.beginning_of_day, to_date: Date.current.end_of_day), class: "btn btn-outline-secondary #{'active' if current_page?( store_front_module_store_front_sales_orders_path(from_date: Date.current, to_date: Date.current))}" %>
       <%= link_to 'This Week', store_front_module_store_front_sales_orders_path(from_date: Date.current.beginning_of_week, to_date: Date.current.end_of_week), class: "btn btn-outline-secondary #{'active' if current_page?( store_front_module_store_front_sales_orders_path(from_date: Date.current.beginning_of_week, to_date: Date.current.end_of_week)) }" %>
       <%= link_to 'This Month', store_front_module_store_front_sales_orders_path(from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month), class: "btn btn-outline-secondary #{'active' if current_page?( store_front_module_store_front_sales_orders_path(from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month)) }" %>
        <%= link_to 'This Year', store_front_module_store_front_sales_orders_path(from_date: Date.current.beginning_of_year, to_date: Date.current.end_of_year), class: "btn btn-outline-secondary #{'active' if current_page?( store_front_module_store_front_sales_orders_path(from_date: Date.current.beginning_of_year, to_date: Date.current.end_of_year)) }" %>
     </div>
   </div>
 </div>
-<br>
+</div>
+</div>
 <div class="row">
-  <div class="col-md-3">
-    <div class="card">
-      <div class="card-body">
-        <small class="text-muted">TOTAL SALES</small>
-        <h3 class="title-up"><%= number_to_currency @all_sales_orders.sum(&:total_cost) %></h3>
-      </div>
-    </div>
-  </div>
- <div class="col-md-3">
-    <div class="card">
-      <div class="card-body">
-        <small class="text-muted">SALES COUNT</small>
-        <h3 class="title-up"><%= number_to_currency @all_sales_orders.size, precision: 0, unit: "" %></h3>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="card">
-      <div class="card-body">
-        <small class="text-muted">COGS</small>
-        <h3 class="title-up"><%= number_to_currency @all_sales_orders.sum(&:cost_of_goods_sold) %></h3>
-      </div>
-    </div>
-  </div>
+  <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-chart-bar"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Total Sales  </span>
+                <h4  class="title-up"><%= number_to_currency @all_sales_orders.sum(&:total_cost) %> </h4>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+ <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-secondary elevation-1"><i class="fas fa-list"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Sales Count </span>
+                <h4  class="title-up"><%= @all_sales_orders.size %> </h4>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+  <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-cubes"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">COGS </span>
+                <h4  class="title-up"><%= number_to_currency @all_sales_orders.sum(&:cost_of_goods_sold) %> </h4>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+
    <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box mb-3">
               <span class="info-box-icon bg-success elevation-1"><i class="fas fa-tag"></i></span>
@@ -57,8 +72,13 @@
           </div>
   </div>
 </div>
+<div class="container">
 <div class="card">
   <div class="card-body">
+    <h4 class="subtitle-up"> Total Sales vs Sales Income </h4>
+    <% if current_page?( store_front_module_store_front_sales_orders_path(from_date: Date.current.beginning_of_day, to_date: Date.current.end_of_day)) %>
+  <%= render 'store_front_module/store_fronts/sales_orders/charts/day' %>
+  <% end %>
 <% if current_page?( store_front_module_store_front_sales_orders_path(from_date: Date.current.beginning_of_week, to_date: Date.current.end_of_week)) %>
   <%= render 'store_front_module/store_fronts/sales_orders/charts/week' %>
   <% end %>
@@ -78,3 +98,4 @@
   <% end %>
 <% end %>
 <%==pagy_bootstrap_nav(@pagy) %>
+</div>

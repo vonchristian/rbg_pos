@@ -46,6 +46,10 @@ class LineItem < ApplicationRecord
     with_orders
   end
 
+  def self.unprocessed
+    where(order_id: nil)
+  end
+
   def self.total_cost
     all.sum(&:unit_cost_and_quantity)
   end

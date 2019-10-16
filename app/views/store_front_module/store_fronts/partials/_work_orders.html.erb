@@ -1,0 +1,88 @@
+<h3 class="title-up"> Work Orders </h3>
+<div class="row">
+  <div class="col-12 col-sm-6 col-md-3">
+    <div class="info-box mb-3">
+      <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-arrow-right"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">Received  </span>
+        <h4  class="title-up"><%= @all_work_orders.received.size %> </h4>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+  <div class="col-12 col-sm-6 col-md-3">
+    <div class="info-box mb-3">
+      <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-cog"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">Work In Progress  </span>
+        <h4  class="title-up"><%= @all_work_orders.work_in_progress.size %> </h4>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+  <div class="col-12 col-sm-6 col-md-3">
+    <div class="info-box mb-3">
+      <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-cubes"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">Done / RTO </span>
+        <h4  class="title-up"><%= @all_work_orders.done_and_rto.size %> </h4>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+  <div class="col-12 col-sm-6 col-md-3">
+    <div class="info-box mb-3">
+      <span class="info-box-icon bg-success elevation-1"><i class="fas fa-arrow-left"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">Released </span>
+        <h4  class="title-up"><%= @all_work_orders.released.size %> </h4>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+<h4 class="title-up">Payments </h4>
+
+<% months = [] %>
+      <% (DateTime.now.beginning_of_year..DateTime.now.end_of_month).each do |month| %>
+       <% months << month.beginning_of_month %>
+      <% end %>
+      <% balances_data = [] %>
+      <% payments_data = [] %>
+      <% months.uniq.each do |month| %>
+
+        <% balances_data << { month.strftime("%B %Y") => @all_work_orders.receivable_accounts.debits_balance(from_date: month.beginning_of_month,to_date: month.end_of_month) } %>
+        <% payments_data << { month.strftime("%B %Y") => @all_work_orders.receivable_accounts.credits_balance(from_date: month.beginning_of_month, to_date: month.end_of_month) } %>
+
+
+      <% end %>
+      <%= line_chart [
+        { name: 'Payments', data: Hash[*payments_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?} }
+
+          ], thousands: ',', prefix: 'P', curve: false %>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+
+          <h4 class="title-up"> Receive per Month </h4>
+          <hr>
+          <% receive_data = [] %>
+          <% months.uniq.each do |month| %>
+
+            <% receive_data << { month.strftime("%B %Y") => @all_work_orders.received_at(from_date: month.beginning_of_month,to_date: month.end_of_month).count } %>
+
+          <% end %>
+          <%= line_chart [
+            { name: 'Receive', data: Hash[*receive_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?} }
+              ], thousands: ',', curve: false %>
+            </div>
+          </div>
+

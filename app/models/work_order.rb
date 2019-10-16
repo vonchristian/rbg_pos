@@ -106,6 +106,16 @@ class WorkOrder < ApplicationRecord
     end
   end
 
+  def self.received_at(hash={}) #refactor
+    if hash[:from_date] && hash[:to_date]
+     from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date])
+      to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date])
+      where('date_received' => (from_date.beginning_of_day)..(to_date.end_of_day))
+    else
+      all
+    end
+  end
+
   def self.released_on(args={})
     if args[:from_date] && args[:to_date]
       date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])

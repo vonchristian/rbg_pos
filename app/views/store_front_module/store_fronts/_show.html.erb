@@ -4,10 +4,10 @@
       <h2 class="title-up"> <%= @store_front.name %></h2>
       <ul class="nav nav-pills nav-pills-underline">
         <li class="nav-item">
-          <%= link_to "Sales", store_front_module_store_front_sales_orders_path(@store_front, from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month), class: "nav-link #{ 'active' if current_page?(store_front_module_store_front_sales_orders_path(@store_front)) }" %>
+          <%= link_to "Sales", store_front_module_store_front_sales_orders_path(@store_front, from_date: Date.current.beginning_of_day, to_date: Date.current.end_of_day), class: "nav-link #{ 'active' if current_page?(store_front_module_store_front_sales_orders_path(@store_front, from_date: Date.current.beginning_of_day, to_date: Date.current.end_of_day)) }" %>
         </li>
         <li class="nav-item">
-          <%= link_to "Repairs", store_front_module_store_front_accounts_path(@store_front), class: "nav-link #{ 'active' if current_page?(store_front_module_store_front_accounts_path(@store_front)) }" %>
+          <%= link_to "Repairs", store_front_module_store_front_work_orders_path(@store_front), class: "nav-link #{ 'active' if current_page?(store_front_module_store_front_work_orders_path(@store_front)) }" %>
         </li>
         <li class="nav-item">
           <%= link_to "Reports", store_front_module_store_front_reports_path(@store_front), class: "nav-link #{ 'active' if current_page?(store_front_module_store_front_reports_path(@store_front))}" %>
@@ -29,6 +29,10 @@
   <%= render 'store_front_module/store_fronts/partials/accounts', store_front: store_front, accounts: @accounts %>
 <% end %>
 
+<% if current_page? store_front_module_store_front_work_orders_path(store_front) %>
+  <%= render 'store_front_module/store_fronts/partials/work_orders', store_front: store_front, accounts: @accounts %>
+<% end %>
+
 <% if current_page? store_front_module_store_front_sales_orders_path(store_front) || current_page?(store_front_module_store_front_path(store_front))  %>
-  <%= render 'store_front_module/store_fronts/partials/sales_orders', store_front: store_front, from_date: Date.current, to_date: Date.current %>
+  <%= render 'store_front_module/store_fronts/partials/sales_orders', store_front: store_front, from_date: Date.current.beginning_of_day, to_date: Date.current.end_of_day %>
 <% end %>
