@@ -22,7 +22,7 @@ class Order < ApplicationRecord
   validates :store_front_id, presence: true
 
   def self.total_cost_less_discount
-    all.map{|a| a.total_cost_less_discount}.to_a.sum
+    all.map{|a| a.total_cost_less_discount }.to_a.sum
   end
 
 

@@ -1,0 +1,19 @@
+<% weeks = [] %>
+      <% (DateTime.now.beginning_of_month..DateTime.now.end_of_month).each do |month| %>
+       <% weeks << month.beginning_of_week %>
+      <% end %>
+      <% sales_income_data = [] %>
+      <% total_sales_data = [] %>
+      <% weeks.uniq.each do |week| %>
+
+      <% sales_income_data << { week.strftime("%B %e") => @sales_orders.ordered_on(from_date: week.beginning_of_week,to_date: week.end_of_week).sum(&:income) } %>
+          <% total_sales_data << { week.strftime("%B %e") => @sales_orders.ordered_on(from_date: week.beginning_of_week,to_date: week.end_of_week).sum(&:total_cost) } %>
+
+
+
+      <% end %>
+      <%= column_chart [
+        { name: 'Sales Income', data: Hash[*sales_income_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?} },
+        { name: 'Total Sales', data: Hash[*total_sales_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?} }
+
+          ], thousands: ',', prefix: 'P', curve: false %>

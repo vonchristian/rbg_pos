@@ -21,6 +21,7 @@ Rails.application.configure do
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
+
   # Compress CSS using a preprocessor.
   # config.assets.css_compressor = :sass
 
@@ -57,7 +58,7 @@ Rails.application.configure do
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter     = :resque
-  # config.active_job.queue_name_prefix = "rbg_pos_production"
+  # config.active_job.queue_name_prefix = "store_aide_production"
 
   config.action_mailer.perform_caching = false
 

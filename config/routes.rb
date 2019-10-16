@@ -146,6 +146,7 @@ Rails.application.routes.draw do
     resources :purchase_order_line_items, only: [:show]
 
     resources :store_fronts, only: [:index, :show] do
+      resources :sales_orders, only: [:index],               module: :store_fronts
       resources :accounts,    only: [:index, :new, :create], module: :store_fronts
       resources :reports,     only: [:index],                module: :store_fronts
       resources :inventories, only: [:index],                module: :store_fronts

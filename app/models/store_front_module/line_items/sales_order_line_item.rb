@@ -13,7 +13,11 @@ module StoreFrontModule
       end
 
       def cost_of_goods_sold
-        quantity * purchase_unit_cost
+        if stock.present?
+          quantity * purchase_unit_cost
+        else
+          0
+        end
       end
 
       def available_quantity
