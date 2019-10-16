@@ -1,6 +1,8 @@
 class LineItem < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :text_search, against: [:bar_code]
+  pg_search_scope :text_search_with_stock, against: [:bar_code], associated_against: { stock: [:barcode] }
+
   multisearchable against: [:bar_code]
   belongs_to :store_front, optional: true
   belongs_to :stock,    class_name: 'StoreFronts::Stock', optional: true

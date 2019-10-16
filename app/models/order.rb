@@ -1,6 +1,8 @@
 class Order < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :text_search, against: [:reference_number, :search_term]
+  pg_search_scope :text_search_with_stocks, against: [:reference_number, :search_term], associated_against: { line_items: [:bar_code] }, associated_against: { stocks: [:barcode] }
+
   multisearchable against: [:reference_number, :description]
 
   belongs_to :store_front
@@ -10,6 +12,7 @@ class Order < ApplicationRecord
   has_one :entry,                      as: :commercial_document, class_name: "AccountingModule::Entry", dependent: :destroy
   belongs_to :voucher,                 optional: true
   has_many :line_items,                dependent: :destroy
+  has_many :stocks,                    through: :line_items
 
   delegate :full_name, to: :technician, prefix: true, allow_nil: true #WTF
   delegate :cash_tendered, :discount_amount, to: :cash_payment, prefix: true, allow_nil: true

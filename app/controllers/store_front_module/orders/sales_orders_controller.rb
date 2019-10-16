@@ -3,7 +3,7 @@ module StoreFrontModule
     class SalesOrdersController < ApplicationController
       def index
         if params[:search].present?
-          @pagy, @orders = pagy(StoreFrontModule::Orders::SalesOrder.for_store_front(current_store_front).text_search(params[:search]))
+          @pagy, @orders = pagy(StoreFrontModule::Orders::SalesOrder.for_store_front(current_store_front).text_search_with_stocks(params[:search]))
         else
           @pagy, @orders = pagy(StoreFrontModule::Orders::SalesOrder.for_store_front(current_store_front).order(date: :desc))
         end

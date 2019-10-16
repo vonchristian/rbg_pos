@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_16_054052) do
+ActiveRecord::Schema.define(version: 2019_10_16_065941) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,7 +35,9 @@ ActiveRecord::Schema.define(version: 2019_10_16_054052) do
     t.bigint "business_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "parent_account_category_id"
     t.index ["business_id"], name: "index_account_categories_on_business_id"
+    t.index ["parent_account_category_id"], name: "index_account_categories_on_parent_account_category_id"
     t.index ["type"], name: "index_account_categories_on_type"
   end
 
@@ -131,6 +133,12 @@ ActiveRecord::Schema.define(version: 2019_10_16_054052) do
     t.string "contact_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "service_revenue_parent_account_category_id"
+    t.bigint "sales_revenue_parent_account_category_id"
+    t.bigint "service_receivable_parent_account_category_id"
+    t.index ["sales_revenue_parent_account_category_id"], name: "index_businesses_on_sales_revenue_parent_account_category_id"
+    t.index ["service_receivable_parent_account_category_id"], name: "index_service_receivable_parent_account_category_on_businesses"
+    t.index ["service_revenue_parent_account_category_id"], name: "index_businesses_on_service_revenue_parent_account_category_id"
   end
 
   create_table "carts", force: :cascade do |t|
@@ -350,6 +358,18 @@ ActiveRecord::Schema.define(version: 2019_10_16_054052) do
     t.index ["order_id"], name: "index_other_sales_line_items_on_order_id"
   end
 
+  create_table "parent_account_categories", force: :cascade do |t|
+    t.string "title"
+    t.string "account_code"
+    t.string "type"
+    t.bigint "business_id", null: false
+    t.boolean "contra", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["business_id"], name: "index_parent_account_categories_on_business_id"
+    t.index ["type"], name: "index_parent_account_categories_on_type"
+  end
+
   create_table "payments", force: :cascade do |t|
     t.bigint "order_id"
     t.integer "mode_of_payment"
@@ -527,6 +547,7 @@ ActiveRecord::Schema.define(version: 2019_10_16_054052) do
     t.bigint "spoilage_account_id"
     t.bigint "service_revenue_account_id"
     t.bigint "service_receivable_account_category_id"
+    t.bigint "sales_revenue_account_category_id"
     t.index ["business_id"], name: "index_store_fronts_on_business_id"
     t.index ["cost_of_goods_sold_account_id"], name: "index_store_fronts_on_cost_of_goods_sold_account_id"
     t.index ["internal_use_account_id"], name: "index_store_fronts_on_internal_use_account_id"
@@ -537,6 +558,7 @@ ActiveRecord::Schema.define(version: 2019_10_16_054052) do
     t.index ["sales_account_id"], name: "index_store_fronts_on_sales_account_id"
     t.index ["sales_discount_account_id"], name: "index_store_fronts_on_sales_discount_account_id"
     t.index ["sales_return_account_id"], name: "index_store_fronts_on_sales_return_account_id"
+    t.index ["sales_revenue_account_category_id"], name: "index_store_fronts_on_sales_revenue_account_category_id"
     t.index ["service_receivable_account_category_id"], name: "index_store_fronts_on_service_receivable_account_category_id"
     t.index ["service_revenue_account_id"], name: "index_store_fronts_on_service_revenue_account_id"
     t.index ["spoilage_account_id"], name: "index_store_fronts_on_spoilage_account_id"
@@ -727,6 +749,7 @@ ActiveRecord::Schema.define(version: 2019_10_16_054052) do
   add_foreign_key "accessories", "product_units"
   add_foreign_key "accessories", "work_orders"
   add_foreign_key "account_categories", "businesses"
+  add_foreign_key "account_categories", "parent_account_categories"
   add_foreign_key "accounts", "account_categories"
   add_foreign_key "accounts", "businesses"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -736,6 +759,9 @@ ActiveRecord::Schema.define(version: 2019_10_16_054052) do
   add_foreign_key "bank_accounts", "businesses"
   add_foreign_key "bill_counts", "bills"
   add_foreign_key "bill_counts", "cash_counts"
+  add_foreign_key "businesses", "parent_account_categories", column: "sales_revenue_parent_account_category_id"
+  add_foreign_key "businesses", "parent_account_categories", column: "service_receivable_parent_account_category_id"
+  add_foreign_key "businesses", "parent_account_categories", column: "service_revenue_parent_account_category_id"
   add_foreign_key "cash_counts", "users", column: "employee_id"
   add_foreign_key "customer_accounts", "accounts", column: "customer_id"
   add_foreign_key "customer_accounts", "accounts", column: "receivable_account_id"
@@ -772,6 +798,7 @@ ActiveRecord::Schema.define(version: 2019_10_16_054052) do
   add_foreign_key "orders", "vouchers"
   add_foreign_key "other_sales_line_items", "carts"
   add_foreign_key "other_sales_line_items", "orders"
+  add_foreign_key "parent_account_categories", "businesses"
   add_foreign_key "payments", "orders"
   add_foreign_key "posts", "users"
   add_foreign_key "products", "businesses"
@@ -788,6 +815,7 @@ ActiveRecord::Schema.define(version: 2019_10_16_054052) do
   add_foreign_key "store_front_accounts", "store_fronts"
   add_foreign_key "store_front_configs", "accounts", column: "accounts_receivable_account_id"
   add_foreign_key "store_front_configs", "store_fronts"
+  add_foreign_key "store_fronts", "account_categories", column: "sales_revenue_account_category_id"
   add_foreign_key "store_fronts", "account_categories", column: "service_receivable_account_category_id"
   add_foreign_key "store_fronts", "accounts", column: "cost_of_goods_sold_account_id"
   add_foreign_key "store_fronts", "accounts", column: "internal_use_account_id"

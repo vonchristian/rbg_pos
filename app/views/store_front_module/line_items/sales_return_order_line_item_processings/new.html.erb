@@ -30,72 +30,10 @@
         <% end %>
       <% end %>
         <br>
-        <table class="table table-responsive">
-          <tbody>
-            <% if @line_items.present? %>
-              <%= render 'store_front_module/line_items/sales_return_order_line_item_processings/searched_line_item_results' %>
-            <% elsif @products.present? %>
-              <%= render 'store_front_module/line_items/sales_return_order_line_item_processings/searched_product_results' %>
-            <% end %>
-          </tbody>
-        </table>
-        <hr>
-        <% if @sales_return_order_line_items.present? %>
-          <p class="text-muted"> ORDER DETAILS </p>
-          <div class="table table-responsive">
-            <table class="table table-hover table-striped">
-              <thead>
-                <tr>
-                  <th><b>QTY</b></th>
-                  <th><b>DESCRIPTION</b></th>
-                  <th><span class="float-right"><b>UNIT COST</b></span></th>
-                  <th><span class="float-right"><b>TOTAL COST</b></span></th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @cart.sales_return_order_line_items.each do |line_item| %>
-                  <tr>
-                    <td><%= line_item.quantity %> <%= line_item.unit_code %></td>
-                    <td width="300px"><%= line_item.name.try(:titleize) %> <span class="text-muted"><%= line_item.bar_code %></span>
-                    </td>
-                    <td>
-                      <span class="float-right">
-                        <%= number_to_currency line_item.unit_cost %>
-                      </span>
-                    </td>
-                    <td>
-                      <span class="float-right"><%=number_to_currency line_item.total_cost %></span>
-                    </td>
-                    <td>
-                    <%= link_to store_front_module_sales_return_order_line_item_processing_path(line_item), method: :delete do %>
-                      <span class="fa fa-trash"></span>
-                    <% end %>
-                    </td>
-                  </tr>
-                <% end %>
-                <hr>
-              </tbody>
-            </table>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  </div>
-    <div class="col-md-4">
-      <div class="card card-success">
-        <div class="card-body">
-        <% if @sales_return_order_line_items.present? %>
-          <%= simple_form_for @sales_return_order, url: :store_front_module_sales_return_order_processings do |f| %>
-            <%= f.input :customer_id, collection: Customer.all.map{|a| [ a.name, a.id] } %>
-            <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-            <%= f.input :description %>
-            <%= f.input :reference_number %>
-            <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
-            <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-        <%=f.submit "Save Sales Return", class: "btn btn-danger btn-block btn-lg", :accesskey => "C" %>
-        <% end %>
-      <% end %>
-      </div>
-    </div>
-  </div>
+        <% @sales_orders.each do |order| %>
+    <%= link_to store_front_module_sales_order_path(order) do %>
+      <%= render 'store_front_module/orders/partials/header', order: order %>
+    <% end %>
+    <% end %>
 
+        <center><%==pagy_bootstrap_nav(@pagy) %></center>
