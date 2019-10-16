@@ -6,8 +6,8 @@
       <% total_sales_data = [] %>
       <% months.uniq.each do |month| %>
 
-      <% sales_income_data << { month.strftime("%B %Y") => @sales_orders.ordered_on(from_date: month.beginning_of_month,to_date: month.end_of_month).sum(&:income) } %>
-          <% total_sales_data << { month.strftime("%B %Y") => @sales_orders.ordered_on(from_date: month.beginning_of_month,to_date: month.end_of_month).sum(&:total_cost) } %>
+      <% sales_income_data << { month.strftime("%B %Y") => @all_sales_orders.ordered_on(from_date: month.beginning_of_month,to_date: month.end_of_month).sum(&:income) } %>
+          <% total_sales_data << { month.strftime("%B %Y") => @all_sales_orders.ordered_on(from_date: month.beginning_of_month,to_date: month.end_of_month).sum(&:total_cost) } %>
 
 
 

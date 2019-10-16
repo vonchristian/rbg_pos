@@ -45,6 +45,26 @@
         <li class="nav-item has-treeview">
 
   <a href="#" class="nav-link">
+         <i class="nav-icon fa fa-users"></i>
+         <p>
+           Sales Clerks
+           <i class="right fa fa-angle-left"></i>
+         </p>
+       </a>
+  <ul class="nav nav-treeview">
+    <% current_business.employees.sales_clerk.each do |employee| %>
+      <li class="nav-item">
+        <a href="/sales_clerks/<%=employee.id %>" class="nav-link">
+          <i class="nav-icon fa fa-user-circle"></i>
+          <p><%= employee.full_name %></p>
+        </a>
+      </li>
+    <% end %>
+       </ul>
+       </li>
+       <li class="nav-item has-treeview">
+
+  <a href="#" class="nav-link">
          <i class="nav-icon fa fa-building"></i>
          <p>
            Store Fronts

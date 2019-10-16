@@ -20,7 +20,7 @@
     <div class="card">
       <div class="card-body">
         <small class="text-muted">TOTAL SALES</small>
-        <h3 class="title-up"><%= number_to_currency @sales_orders.sum(&:total_cost) %></h3>
+        <h3 class="title-up"><%= number_to_currency @all_sales_orders.sum(&:total_cost) %></h3>
       </div>
     </div>
   </div>
@@ -28,7 +28,7 @@
     <div class="card">
       <div class="card-body">
         <small class="text-muted">SALES COUNT</small>
-        <h3 class="title-up"><%= number_to_currency @sales_orders.size, precision: 0, unit: "" %></h3>
+        <h3 class="title-up"><%= number_to_currency @all_sales_orders.size, precision: 0, unit: "" %></h3>
       </div>
     </div>
   </div>
@@ -36,7 +36,7 @@
     <div class="card">
       <div class="card-body">
         <small class="text-muted">COGS</small>
-        <h3 class="title-up"><%= number_to_currency @sales_orders.sum(&:cost_of_goods_sold) %></h3>
+        <h3 class="title-up"><%= number_to_currency @all_sales_orders.sum(&:cost_of_goods_sold) %></h3>
       </div>
     </div>
   </div>
@@ -46,7 +46,7 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Sales Income </span>
-                <h4  class="title-up"><%= number_to_currency @sales_orders.sum(&:income) %> </h4>
+                <h4  class="title-up"><%= number_to_currency @all_sales_orders.sum(&:income) %> </h4>
               </div>
               <!-- /.info-box-content -->
             </div>

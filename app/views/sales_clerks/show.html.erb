@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="card">
+    <div class="card-body">
+      <h3 class="title-up"><%= @employee.full_name.upcase %></h3>
+      <ul class="nav nav-pills nav-pills-underline">
+        <li class="nav-item">
+          <%= link_to "Summary", sales_clerk_path(@employee), class: "nav-link #{ 'active' if current_page?(sales_clerk_path(@employee)) }" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "Sales", sales_clerk_path(@employee), class: "nav-link #{ 'active' if current_page?(sales_clerk_path(@employee)) }" %>
+        </li>
+      </ul>
+      <%= @employee.cash_on_hand_account.balance %>
+        <%= @employee.cash_on_hand_account.debits_balance %>
+          <%= @employee.cash_on_hand_account.credits_balance %>
+    </div>
+  </div>
+</div>
+

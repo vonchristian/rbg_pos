@@ -6,8 +6,8 @@
       <% total_sales_data = [] %>
       <% weeks.uniq.each do |week| %>
 
-      <% sales_income_data << { week.strftime("%B %e") => @sales_orders.ordered_on(from_date: week.beginning_of_week,to_date: week.end_of_week).sum(&:income) } %>
-          <% total_sales_data << { week.strftime("%B %e") => @sales_orders.ordered_on(from_date: week.beginning_of_week,to_date: week.end_of_week).sum(&:total_cost) } %>
+      <% sales_income_data << { week.strftime("%B %e") => @all_sales_orders.ordered_on(from_date: week.beginning_of_week,to_date: week.end_of_week).sum(&:income) } %>
+          <% total_sales_data << { week.strftime("%B %e") => @all_sales_orders.ordered_on(from_date: week.beginning_of_week,to_date: week.end_of_week).sum(&:total_cost) } %>
 
 
 

@@ -6,9 +6,11 @@ module StoreFrontModule
         if params[:from_date] && params[:to_date]
           from_date = Date.parse(params[:from_date])
           to_date   = Date.parse(params[:to_date])
+          @all_sales_orders = @store_front.sales_orders.ordered_on(from_date: from_date, to_date: to_date)
           @pagy, @sales_orders = pagy(@store_front.sales_orders.ordered_on(from_date: from_date, to_date: to_date))
         else
           @pagy, @sales_orders = pagy(@store_front.sales_orders)
+          @all_sales_orders = @store_front.sales_orders
         end
       end
     end
