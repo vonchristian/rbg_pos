@@ -52,9 +52,15 @@
          </p>
        </a>
   <ul class="nav nav-treeview">
+     <li class="nav-item">
+        <a href="/sales_clerks" class="nav-link">
+          <i class="nav-icon fa fa-user-circle"></i>
+          <p>All Sales Clerks</p>
+        </a>
+      </li>
     <% current_business.employees.sales_clerk.each do |employee| %>
       <li class="nav-item">
-        <a href="/sales_clerks/<%=employee.id %>" class="nav-link">
+        <a href="/admin/employees/<%=employee.id %>" class="nav-link">
           <i class="nav-icon fa fa-user-circle"></i>
           <p><%= employee.full_name %></p>
         </a>

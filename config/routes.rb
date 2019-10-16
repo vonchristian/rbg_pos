@@ -273,5 +273,5 @@ Rails.application.routes.draw do
     resources :customers, only: [:index]
     resources :receivables, only: [:index]
   end
-  resources :sales_clerks, only: [:show]
+  resources :sales_clerks, only: [:index, :show]
 end

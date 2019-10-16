@@ -1,26 +1,76 @@
-<div class="tab-pane <%= 'active' if current_page? admin_employee_path(@employee) %>" id="employee-info">
-  <div class="content">
-    <% if current_user.proprietor? %>
-      <%= link_to 'Update Info', edit_user_path(@employee), class: "btn btn-warning btn-sm" %>
-      <%= link_to 'Withdraw Capital', new_capital_withdrawal_path, class: "btn btn-warning btn-sm" %>
-    <% end %>
-    <hr>
-    <%if @employee.cash_on_hand_account.present? %>
 
-        <div class="row">
-          <div class="col-md-5">
-                <h4><%= number_to_currency @employee.cash_on_hand_account.balance %></h4>
-                <small> CASH ON HAND</small><br>
-                <% if current_user.proprietor? %>
+ <%if @cash_account.present? %>
+ <div class="row">
+  <div class="col-md-9">
+    <h3 class="title-up"><%= @to_date.strftime("%B %e, %Y") %></h3>
+    <% if current_user.proprietor? %>
                   <%=link_to "New Remittance", new_employee_remittance_path(employee_id: @employee.id, cash_account_id: @employee.cash_on_hand_account.id), class: "btn btn-success btn-sm" %>
                 <% end %>
+  </div>
+  <div class="col-md-3">
+      <%=form_tag admin_employee_path(@employee), method: :get, id: "search-form" do %>
+        <div class="input-group stylish-input-group">
+          <%= text_field_tag :to_date, params[:to_date], class: "search-query form-control datepicker border-input", placeholder: "Search customer", type: "search" %>
+        <span class="input-group-btn">
+          <%= button_tag(type: 'submit', class: "btn btn-outline-secondary") do %>
+            <i class="fa fa-search"></i> Change
+          <% end %>
+        </span>
+         </button>
+          </span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <br>
+   <div class="row">
+     <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-secondary elevation-1"><i class="fas fa-tag"></i></span>
+              <div class="info-box-content">
+                <span class="info-box-text">Beginning Balance</span>
+                <h4  class="title-up"><%= number_to_currency @cash_account.balance(to_date: @to_date.yesterday.end_of_day) %> </h4>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
           </div>
-
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-arrow-down"></i></span>
+              <div class="info-box-content">
+                <span class="info-box-text">Cash Receipts</span>
+                <h4  class="title-up"><%= number_to_currency @cash_account.debits_balance(from_date: @to_date.beginning_of_day, to_date: @to_date.end_of_day) %> </h4>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
           </div>
-
-      <div class="col-md-7">
-        <h4>Cash Transfers (<%= Time.zone.now.strftime("%B %e, %Y") %>)</h4>
-        <% @employee.received_cash_transfers(from_date: Date.today, to_date: Date.today).each do |transfer| %>
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-arrow-up"></i></span>
+              <div class="info-box-content">
+                <span class="info-box-text">Cash Disbursements</span>
+                <h4  class="title-up"><%= number_to_currency @cash_account.credits_balance(from_date: @to_date.beginning_of_day, to_date: @to_date.end_of_day) %> </h4>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-credit-card"></i></span>
+              <div class="info-box-content">
+                <span class="info-box-text">Ending Balance</span>
+                <h4  class="title-up"><%= number_to_currency @cash_account.balance(to_date: @to_date.end_of_day) %> </h4>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+</div>
+  <h4 class="subtitle-up"> Cash Transfers </h4>
+  <% @employee.received_cash_transfers(from_date: @to_date, to_date: @to_date).each do |transfer| %>
             <div class="row">
               <div class="col-md-6">
                 <b class="text-success"><%= transfer.description %></b><br>
@@ -35,8 +85,8 @@
             <br>
         <% end %>
         <hr>
-        <h4>Remittances (<%= Time.zone.now.strftime("%B %e, %Y") %>) </h4>
-        <% @employee.remittances(from_date: Date.today, to_date: Date.today).each do |remittance| %>
+        <h4 class="subtitle-up">Cash Remittances </h4>
+        <% @employee.remittances(from_date: @to_date, to_date: @to_date).each do |remittance| %>
             <div class="row">
               <div class="col-md-6">
                 <b><%= remittance.description %></b><br>
@@ -50,8 +100,4 @@
             </div>
             <br>
         <% end %>
-      </div>
-    </div>
-      <% end %>
-  </div>
-</div>
+ <% end %>

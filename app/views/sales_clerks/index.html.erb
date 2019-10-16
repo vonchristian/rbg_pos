@@ -1,0 +1,37 @@
+<div class="container">
+  <div class="card">
+    <div class="card-body">
+      <h3 class="title-up"> Sales Clerks </h3>
+      <% @employees.each do |employee| %>
+        <%= link_to admin_employee_path(employee) do %>
+          <div class="row">
+            <div class="col-md-1">
+              <%= image_tag(employee.avatar, height: 50, width: 50, class: "img-circle") %>
+            </div>
+            <div class="col-md-4">
+              <%= employee.full_name %><br>
+              <small><%= employee.role.titleize %></small>
+            </div>
+            <div class="col-md-3">
+              <% if employee.cash_on_hand_account.present? %>
+                <span class="text-primary"><%= number_to_currency employee.default_cash_on_hand_account_balance  %> </span><br>
+              <small>CASH ON HAND</small>
+
+              <% end %>
+            </div>
+            <div class="col-md-3">
+              <% if employee.sales_clerk? %>
+                <%= number_to_currency employee.sales_orders.ordered_on(from_date: Date.today, to_date: Date.today).map{|a| a.total_cost}.compact.sum %><br>
+                <small>TOTAL SALES</small>
+              <% elsif employee.technician? %>
+              <%= number_to_currency employee.work_orders.released_on(from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month).sum(&:incentivized_charges) %><br>
+              <small>TOTAL SERVICE CHARGES</small>
+              <% end %>
+            </div>
+          </div>
+          <br>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

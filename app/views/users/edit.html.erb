@@ -23,7 +23,7 @@
   <% if current_user.proprietor? %>
     <%= f.input :role, collection: User.roles.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
     <%= f.input :section_id, collection: Section.all.map{|a| [a.name, a.id] }, as: :radio_buttons %>
-    <%= f.input :cash_on_hand_account_id, collection: AccountingModule::Asset.all.map{|a| [a.name, a.id] } %>
+    <%= f.input :cash_on_hand_account_id, collection: AccountingModule::Asset.all.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
   <% end %>
-  <%= f.submit "Save", class: "btn btn-danger" %>
+  <%= f.submit "Update Employee", class: "btn btn-danger float-right" %>
 <% end %>

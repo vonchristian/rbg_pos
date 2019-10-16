@@ -1,31 +1,31 @@
 <div class="content">
   <div class="row">
     <div class="col-md-12">
-      <div class="card card-solid">
-        <div class="card-header bg-gray">
+      <div class="card">
+        <div class="card-header">
           <center><%= image_tag(@employee.avatar, height: 60, width: 60, class: "img-circle") %> </center>
           <h4 class="title"><center><%= @employee.full_name.try(:upcase) %> </center></h4>
         </div>
         <div class="card-body">
-        <ul class="nav nav-tabs">
-          <li class= <%= 'active' if current_page?(admin_employee_path(@employee)) %>>
-            <%= link_to "Info", admin_employee_path(@employee) %>
+        <ul class="nav nav-pills nav-pills-underline">
+          <li class="nav-item">
+            <%= link_to "Info", admin_employee_path(@employee), class: "nav-link #{ 'active' if current_page?(admin_employee_path(@employee)) }" %>
           </li>
-          <li class= <%= 'active' if current_page?(admin_employee_sales_path(@employee)) %>>
-            <%= link_to "Sales", admin_employee_sales_path(@employee) %>
+          <li class="nav-item">
+            <%= link_to "Sales", admin_employee_sales_path(@employee), class: "nav-link #{ 'active' if current_page?(admin_employee_sales_path(@employee))}" %>
           </li>
-           <li class= <%= 'active' if current_page?(admin_employee_reports_path(@employee)) %>>
-            <%= link_to "Reports", admin_employee_reports_path(@employee) %>
+           <li class="nav-item">
+            <%= link_to "Reports", admin_employee_reports_path(@employee), class: "nav-link #{ 'active' if current_page?(admin_employee_reports_path(@employee)) }" %>
           </li>
-          <li class= <%= 'active' if current_page?(admin_employee_entries_path(@employee)) %>>
-            <%= link_to "Journal Entries", admin_employee_entries_path(@employee) %>
+          <li class="nav-item">
+            <%= link_to "Journal Entries", admin_employee_entries_path(@employee), class: "nav-link #{ 'active' if current_page?(admin_employee_entries_path(@employee)) }" %>
           </li>
 
-          <li class= <%= 'active' if current_page?(admin_employee_settings_path(@employee)) %>>
-            <%= link_to "Settings", admin_employee_settings_path(@employee) %>
+          <li class="nav-item">
+            <%= link_to "Settings", admin_employee_settings_path(@employee), class: "nav-link #{ 'active' if current_page?(admin_employee_settings_path(@employee)) }" %>
           </li>
         </ul>
-        <div class="tab-content">
+        <br />
             <% if current_page? admin_employee_path(@employee) %>
               <%= render 'admin/employees/partials/info' %>
             <% end %>
