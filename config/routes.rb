@@ -137,8 +137,10 @@ Rails.application.routes.draw do
       resources :internal_uses, only: [:index], module: :stocks
       resources :stock_transfers, only: [:index], module: :stocks
     end
-    resources :sales_order_line_items, only: [:show] do
+    resources :sales_order_line_items, only: [:show, :edit, :update] do
       resources :cancellations, only: [:create], module: :sales_order_line_items
+      resources :sales_returns, only: [:new, :create], module: :sales_order_line_items
+
     end
     resources :stock_transfer_order_line_items, only: [:show] do
       resources :cancellations, only: [:create], module: :stock_transfer_order_line_items
