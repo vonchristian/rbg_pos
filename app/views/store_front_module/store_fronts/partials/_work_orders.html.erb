@@ -69,20 +69,4 @@
           ], thousands: ',', prefix: 'P', curve: false %>
     </div>
   </div>
-  <div class="card">
-    <div class="card-body">
-
-          <h4 class="title-up"> Receive per Month </h4>
-          <hr>
-          <% receive_data = [] %>
-          <% months.uniq.each do |month| %>
-
-            <% receive_data << { month.strftime("%B %Y") => @all_work_orders.received_at(from_date: month.beginning_of_month,to_date: month.end_of_month).count } %>
-
-          <% end %>
-          <%= line_chart [
-            { name: 'Receive', data: Hash[*receive_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?} }
-              ], thousands: ',', curve: false %>
-            </div>
-          </div>
 
