@@ -2,7 +2,7 @@
   <%= f.input :unit_of_measurement_id, input_html: { value: stock.unit_of_measurement_id }, as: :hidden %>
   <%= f.input :product_id, input_html: { value: stock.product_id }, as: :hidden %>
   <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
-  <%= f.input :stock_id, input_html: { value: stock.id }, as: :hidden %>
+  <%= f.input :stock_id, input_html: { value: stock.id } %>
 
    <div class="row">
      <div class="col-md-6">

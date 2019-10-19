@@ -14,7 +14,7 @@ module StoreFronts
     has_many   :purchase_returns,    class_name: 'StoreFrontModule::LineItems::PurchaseReturnOrderLineItem'
     has_many   :for_warranties,      class_name: 'StoreFrontModule::LineItems::ForWarrantyOrderLineItem'
     has_many   :sales_returns,       class_name: 'StoreFrontModule::LineItems::SalesReturnOrderLineItem'
-
+    has_many   :line_items,          dependent: :nullify
     delegate :name,           to: :product
     delegate :unit_code,      to: :unit_of_measurement
     delegate :purchase_order, to: :purchase
@@ -47,7 +47,7 @@ module StoreFronts
       purchase_quantity      +
       sales_returns.total    -
       purchase_returns.total -
-      stock_transfers.total  -
+      stock_transfers.processed.total  -
       sales.total            -
       internal_uses.total    -
       spoilages.total        -

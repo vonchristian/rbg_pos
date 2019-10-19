@@ -2,25 +2,30 @@
   module LineItems
     module StockTransferOrderLineItems
       class Cancellation
-        attr_reader :line_item, :employee
+        attr_reader :line_item, :stock, :order,  :employee
 
         def initialize(args)
           @line_item = args.fetch(:line_item)
+          @order     = StoreFrontModule::Orders::PurchaseOrder.find(@line_item.order_id)
+          @stock     = @line_item.stock
         end
 
         def cancel!
-          delete_stock_transfers
-          delete_line_item
+          ActiveRecord::Base.transaction do
+            delete_stock_transfers
+            delete_line_item
+          end
         end
 
         def delete_stock_transfers
-          line_item.stock_transfer_order_line_items.destroy_all
-          po = LineItem.find(line_item.purchase_order_line_item_id)
-          po.stock_transfer_order_line_items.destroy_all
+          ids = order.stock_transfer_order_line_items.pluck(:stock_id)
+          order.store_front.stocks.where(id: ids.uniq.compact.flatten).each do |stock|
+          stock.stock_transfers.where(order: order).destroy_all
         end
         def delete_line_item
           line_item.destroy
         end
       end
     end
+  end
 end

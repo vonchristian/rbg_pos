@@ -25,6 +25,7 @@ module StoreFrontModule
       def destroy
         @line_item = StoreFrontModule::LineItems::PurchaseOrderLineItem.find(params[:id])
         @line_item.destroy
+        ::StockTransferCancellation.new(line_item: @line_item, cart: current_cart).cancel_transfer!
         ::StoreFronts::StockAvailabilityUpdater.new(stock: @line_item.stock, cart: current_cart).update_availability!
         redirect_to new_store_front_module_stock_transfer_order_line_item_processing_url, notice: "Removed successfully"
       end

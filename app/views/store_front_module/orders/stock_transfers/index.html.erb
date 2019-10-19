@@ -3,10 +3,22 @@
     <div class="card">
     <div class="card-header">
       <div class="row">
-        <div class="col-md-9">
-          <h3 class="title-up"> Stock Transfer Orders </h3>
+        <div class="col-md-3">
+          <h3 class="title-up"> Stock Transfers </h3>
 
 
+        </div>
+        <div class="col-md-5">
+          <%=form_tag store_front_module_stock_transfers_path, method: :get, id: "search-form" do %>
+              <div class="input-group stylish-input-group">
+                <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search", type: "search" %>
+                <span class="input-group-btn">
+                  <%= button_tag(type: 'submit', class: "btn btn-outline-secondary") do %>
+                    <i class="icon-magnifier"></i> Search Orders
+                  <% end %>
+                </span>
+              </div>
+            <% end %>
         </div>
 
         <div class="col-md-3">
@@ -16,9 +28,9 @@
       <br>
       <small class="title-up"> FILTER BY DESTINATION </small>
 
-        <% StoreFront.all.each do |store_front| %>
+        <% current_business.store_fronts.each do |store_front| %>
 
-              <%= link_to store_front.name, store_front_module_stock_transfers_path(store_front_id: store_front.id), class: 'btn btn-default' %>
+              <%= link_to store_front.name, store_front_module_stock_transfers_path(store_front_id: store_front.id), class: "btn btn-#{'primary' if current_page?(store_front_module_stock_transfers_path(store_front_id: store_front.id))}" %>
 
         <% end %>
     </div>
@@ -27,8 +39,11 @@
 
 
             <% @stock_transfer_orders.order(date: :desc).each do |stock_transfer| %>
+            <%= link_to store_front_module_stock_transfer_path(stock_transfer) do %>
+
 
               <%= render 'store_front_module/orders/stock_transfers/order', order: stock_transfer %>
+              <% end %>
 
             <% end %>
 

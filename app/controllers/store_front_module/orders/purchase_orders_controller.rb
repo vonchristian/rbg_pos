@@ -2,12 +2,17 @@ module StoreFrontModule
   module Orders
     class PurchaseOrdersController < ApplicationController
       def index
-        @orders = StoreFrontModule::Orders::PurchaseOrder.not_stock_transfers.order(date: :desc).all.paginate(page: params[:page], per_page: 30)
+         if params[:search].present?
+          @pagy, @orders = pagy(current_store_front.purchase_orders.not_stock_transfers.text_search_with_stocks(params[:search]).order(created_at: :desc))
+        else
+          @pagy, @orders = pagy(current_store_front.purchase_orders.not_stock_transfers.order(created_at: :desc))
+        end
       end
+
       def show
-        @order = StoreFrontModule::Orders::PurchaseOrder.find(params[:id])
+        @order = current_store_front.purchase_orders.not_stock_transfers.find(params[:id])
         @pagy, @line_items = pagy(@order.purchase_order_line_items.order(created_at: :asc))
-      end 
+      end
     end
   end
 end

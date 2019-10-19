@@ -7,14 +7,26 @@
             <h3 class="subtitle-up"> Purchase Orders </h3>
           </div>
           <div class="col-md-5">
+            <%=form_tag store_front_module_purchase_orders_path, method: :get, id: "search-form" do %>
+              <div class="input-group stylish-input-group">
+                <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search", type: "search" %>
+                <span class="input-group-btn">
+                  <%= button_tag(type: 'submit', class: "btn btn-outline-secondary") do %>
+                    <i class="icon-magnifier"></i> Search Orders
+                  <% end %>
+                </span>
+              </div>
+            <% end %>
           </div>
           <div class="col-md-4">
             <%= link_to 'New Purchase', new_store_front_module_purchase_order_line_item_processing_path, class: "btn btn-primary float-right" %>
           </div>
         </div>
       </div>
-      <div class="card-body">
+    </div>
         <% @orders.each do |order| %>
+          <div class="card">
+            <div class="card-body">
           <%= link_to store_front_module_purchase_order_path(order) do %>
             <div class="row text-muted">
               <div class="col-md-1">
@@ -23,7 +35,6 @@
               <div class="col-md-3">
                 <b class="text-primary"><%= order.supplier_name %></b><br>
                 <small class="text-muted"><i class="fa fa-clock-o"></i> <%= order.date.strftime("%b %e, %Y") %></small><br>
-                <small><b>#<%= order.reference_number %></b></small>
               </div>
               <div class="col-md-6">
                 <% order.purchase_order_line_items.limit(35).each do |line_item| %>
@@ -46,11 +57,26 @@
                   <br>
                 <% end %>
               </div>
+              <div class="col-md-2">
+                <small class="badge bg-dark float-right"><b>#<%= order.reference_number %></b></small>
+
+              </div>
 
             </div>
             <hr>
           <% end %>
+          <div class="row">
+            <div class="col-md-7 offset-md-1">
+              <p class="title-up"> TOTAL </p>
+            </div>
+            <div class="col-md-4">
+              <p class="title-up"><%= number_to_currency order.total_cost %></p>
+            </div>
+          </div>
+        </div>
+      </div>
         <% end %>
+        <%==pagy_bootstrap_nav(@pagy) %>
       </div>
         </div>
       </div>

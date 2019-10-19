@@ -3,17 +3,17 @@ module StoreFrontModule
     class SalesOrdersController < ApplicationController
       def index
         if params[:search].present?
-          @pagy, @orders = pagy(StoreFrontModule::Orders::SalesOrder.for_store_front(current_store_front).text_search_with_stocks(params[:search]))
+          @pagy, @orders = pagy(current_store_front.sales_orders.text_search_with_stocks(params[:search]))
         else
-          @pagy, @orders = pagy(StoreFrontModule::Orders::SalesOrder.for_store_front(current_store_front).order(date: :desc))
+          @pagy, @orders = pagy(current_store_front.sales_orders.order(date: :desc))
         end
-        @sales_for_today = StoreFrontModule::Orders::SalesOrder.ordered_on(from_date: Date.today, to_date: Date.today)
       end
+
       def show
-        @order = StoreFrontModule::Orders::SalesOrder.find(params[:id])
+        @order = current_store_front.sales_orders.find(params[:id])
       end
       def destroy
-        @order = StoreFrontModule::Orders::SalesOrder.find(params[:id])
+        @order = current_store_front.sales_orders.find(params[:id])
         if params[:work_order_id].present?
           @work_order = WorkOrder.find(params[:work_order_id])
         end

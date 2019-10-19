@@ -41,7 +41,9 @@ module StoreFrontModule
           bar_code: find_stock.barcode
           )
         purchase.stock_transfers.create!(
+            stock:                    find_stock,
             cart:                     find_cart,
+            bar_code:                 find_stock.barcode,
             quantity:                 quantity,
             unit_cost:                purchase.last_purchase_cost,
             total_cost:               total_cost_for(purchase),
@@ -55,17 +57,19 @@ module StoreFrontModule
         purchase_cost * quantity.to_f
       end
 
-
       def find_unit_of_measurement
         find_stock.unit_of_measurement
       end
+
       def find_product
         find_stock.product
       end
+
       def purchase_cost
         find_stock.last_purchase_cost
       end
-       def set_total_cost
+
+      def set_total_cost
         purchase_cost * quantity.to_f
       end
 
