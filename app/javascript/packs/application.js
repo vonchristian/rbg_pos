@@ -8,7 +8,6 @@ require("@rails/ujs").start()
 require('jquery')
 require("turbolinks").start()
 require("@rails/activestorage").start()
-require("channels")
 require('adminlte')
 require('jquery')
 require("chartkick")
@@ -16,7 +15,6 @@ require("chart.js")
 import "bootstrap"
 import "bootstrap-datepicker"
 import 'chosen-js'
-import "../stylesheets/application.scss"
 
 document.addEventListener("turbolinks:load", () => {
   $('[data-toggle="tooltip"]').tooltip()
@@ -40,9 +38,6 @@ document.addEventListener("turbolinks:load", () => {
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
 
-import "controllers"
-
-require("@rails/actiontext")
 
 document.addEventListener('turbolinks:load', ready);
 var ready = function () {
