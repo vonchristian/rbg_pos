@@ -4,7 +4,7 @@ module Reports
 			@from_date = Chronic.parse(params[:from_date].to_date)
       @to_date = Chronic.parse(params[:to_date].to_date)
       @store_front = StoreFront.find_by(id: params[:store_front_id])
-      @employee = current_user
+      @employee = params[:user_id] ? User.find(params[:user_id]) : current_user
       if !current_user.proprietor?
         @orders = current_user.sales_orders.ordered_on(from_date: @from_date, to_date: @to_date)
       elsif @store_front.present?

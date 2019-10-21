@@ -10,7 +10,6 @@ require("turbolinks").start()
 require("@rails/activestorage").start()
 require("channels")
 require('adminlte')
-require('trix')
 require('jquery')
 require("chartkick")
 require("chart.js")
@@ -43,7 +42,6 @@ document.addEventListener("turbolinks:load", () => {
 
 import "controllers"
 
-require("trix")
 require("@rails/actiontext")
 
 document.addEventListener('turbolinks:load', ready);

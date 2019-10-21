@@ -4,7 +4,9 @@
 
 @import "~bootstrap-datepicker/dist/css/bootstrap-datepicker3";
 
-
+$fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/solid';
 
 .title-up {
   font-weight: 200 !important;
