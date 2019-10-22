@@ -99,10 +99,19 @@
 
           <% end %>
           <hr>
-          <h4 class="title"> Inventories </h3>
+        </div>
+      </div>
+      <dic class='card'>
+        <div class="card-body">
+          <h4 class="title-up"> Inventories Report</h3>
           <% current_business.store_fronts.each do |store_front| %>
-            <%= link_to "#{store_front.name} Inventory", store_front_module_store_front_inventories_path(store_front_id: store_front.id) %>
+            <div class="row">
+              <div class="col-md-6">
+            <%= "#{store_front.name} Inventory" %>
+          </div>
+          <div class="col-md-6">
+          <%= link_to 'Excel', store_front_module_store_front_inventories_path(store_front_id: store_front.id, format: 'xlsx'), class: 'btn btn-outline-primary' %>
+        </div>
+      </div>
             <hr>
           <% end %>
-           <%= link_to 'Inventory (Excel)', reports_products_path(Product.all, format: 'xlsx'), class: "btn btn-primary" %>
-          <%= link_to "Work Orders", reports_work_orders_path(WorkOrder.all, format: 'xlsx'), class: "btn btn-primary" %>
