@@ -14,9 +14,7 @@
 !/tmp/.keep
 
 /node_modules
-/yarn-error.log
 /public/system
-/node_modules
 
 .byebug_history
 .DS_Store
@@ -24,7 +22,6 @@
 
 /public/packs
 /public/packs-test
-/node_modules
 /storage
 /yarn-error.log
 yarn-debug.log*

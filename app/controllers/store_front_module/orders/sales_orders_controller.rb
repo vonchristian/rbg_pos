@@ -5,7 +5,7 @@ module StoreFrontModule
         if params[:search].present?
           @pagy, @orders = pagy(current_store_front.sales_orders.text_search_with_stocks(params[:search]))
         else
-          @pagy, @orders = pagy(current_store_front.sales_orders.order(date: :desc))
+          @pagy, @orders = pagy(current_store_front.sales_orders.order(created_at: :desc))
         end
       end
 

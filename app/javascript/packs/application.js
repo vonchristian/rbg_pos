@@ -27,6 +27,7 @@ document.addEventListener("turbolinks:load", () => {
       todayBtn: true,
       todayHighlight: true,
       autoclose: true
+
     }).datepicker("setDate", "0");;
   $('.chosen-select').chosen({width: "95%"});
 })

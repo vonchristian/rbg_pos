@@ -38,6 +38,7 @@ gem 'mini_magick'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'prawn'
 gem 'prawn-table'
+gem 'chartkick'
 # gem 'paymaya'
 gem 'precise_distance_of_time_in_words'
 gem 'image_processing', '~> 1.2'
@@ -50,6 +51,7 @@ gem "pdf-reader"
 gem 'pagy'
 
 group :development do
+  gem 'bullet'
   gem "letter_opener"
   gem 'guard-rspec', require: false
   gem 'web-console', '>= 3.3.0'

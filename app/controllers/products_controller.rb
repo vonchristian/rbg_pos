@@ -4,7 +4,7 @@ class ProductsController < ApplicationController
     if params[:search].present?
       @pagy, @products = pagy(Product.text_search_with_barcode(params[:search]))
     else
-      @pagy, @products = pagy(Product.includes(:selling_prices, :unit_of_measurements).order(:name))
+      @pagy, @products = pagy(Product.includes(:unit_of_measurements, :category).order(:name))
     end
     @categories = Category.all
     @registry = Registry.new
