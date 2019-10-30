@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_16_065941) do
+ActiveRecord::Schema.define(version: 2019_10_23_065832) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -123,6 +123,21 @@ ActiveRecord::Schema.define(version: 2019_10_16_065941) do
     t.string "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "business_account_configs", force: :cascade do |t|
+    t.bigint "business_id", null: false
+    t.bigint "service_receivable_category_id", null: false
+    t.bigint "service_revenue_category_id", null: false
+    t.bigint "sales_receivable_category_id", null: false
+    t.bigint "sales_revenue_category_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["business_id"], name: "index_business_account_configs_on_business_id"
+    t.index ["sales_receivable_category_id"], name: "index_sales_rec_categories_on_business_configs"
+    t.index ["sales_revenue_category_id"], name: "index_sales_rev_categories_on_business_configs"
+    t.index ["service_receivable_category_id"], name: "index_service_rec_categories_on_business_configs"
+    t.index ["service_revenue_category_id"], name: "index_service_rev_categories_on_business_configs"
   end
 
   create_table "businesses", force: :cascade do |t|
@@ -759,6 +774,11 @@ ActiveRecord::Schema.define(version: 2019_10_16_065941) do
   add_foreign_key "bank_accounts", "businesses"
   add_foreign_key "bill_counts", "bills"
   add_foreign_key "bill_counts", "cash_counts"
+  add_foreign_key "business_account_configs", "businesses"
+  add_foreign_key "business_account_configs", "parent_account_categories", column: "sales_receivable_category_id"
+  add_foreign_key "business_account_configs", "parent_account_categories", column: "sales_revenue_category_id"
+  add_foreign_key "business_account_configs", "parent_account_categories", column: "service_receivable_category_id"
+  add_foreign_key "business_account_configs", "parent_account_categories", column: "service_revenue_category_id"
   add_foreign_key "businesses", "parent_account_categories", column: "sales_revenue_parent_account_category_id"
   add_foreign_key "businesses", "parent_account_categories", column: "service_receivable_parent_account_category_id"
   add_foreign_key "businesses", "parent_account_categories", column: "service_revenue_parent_account_category_id"

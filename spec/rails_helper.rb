@@ -28,6 +28,13 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!
 
+  config.before(:each, type: :system) do
+    driven_by :rack_test, using: :firefox
+  end
+
+  config.before(:each, type: :system, js: true) do
+    driven_by :selenium, using: :firefox
+  end
   config.before(:suite) do
     DatabaseRewinder.clean_all
   end

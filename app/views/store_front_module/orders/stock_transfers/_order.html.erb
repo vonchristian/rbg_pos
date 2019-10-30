@@ -14,17 +14,16 @@
     <br>
 
     <% order.purchase_order_line_items.each do |line_item| %>
-
-    <div class="row">
-                  <div class="col-md-2 offset-md-1">
-                    <%= line_item.quantity %> <%= line_item.try(:unit_code) %>
-                  </div>
-                  <div class="col-md-4">
-                    <b><%=line_item.product_name %></b><br>
-                    <small class="text-muted"><%= line_item.bar_code %></small>
-                  </div>
+      <div class="row">
+        <div class="col-md-2 offset-md-1">
+          <%= line_item.quantity %> <%= line_item.try(:unit_code) %>
+        </div>
+          <div class="col-md-4">
+            <b><%=line_item.product_name %></b><br>
+          <small class="text-muted"><%= line_item.bar_code %></small>
+        </div>
                   <div class="col-md-2">
-                    <span class="text-muted"><%= number_to_currency line_item.total_cost %></span>
+                    <span class="text-muted"><%= number_to_currency line_item.unit_cost %></span>
                   </div>
                   <div class="col-md-3">
                     <span class="text-muted"><%= number_to_currency line_item.total_cost %></span>

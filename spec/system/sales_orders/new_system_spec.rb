@@ -20,7 +20,7 @@ describe 'New cash sales order' do
     login_as(sales_clerk, scope: :user)
     visit store_index_path
   end
-  it 'with valid attributes' do
+  it 'with valid attributes', js: true do
     fill_in 'stock-search-form', with: '11111111'
     click_button 'stock-search-btn'
     fill_in 'line_item_quantity',   with: 1
@@ -42,7 +42,7 @@ describe 'New cash sales order' do
     expect(page).to have_content('saved successfully')
 
   end
-  it 'with searched product' do
+  it 'with searched product', js: true do
     fill_in 'stock-search-form', with: 'Test Product'
     click_button 'stock-search-btn'
     fill_in 'line_item_quantity',   with: 1

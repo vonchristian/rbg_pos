@@ -272,7 +272,7 @@
               <h4 class="subtitle-up"> TRANSACTIONS HISTORY </h4>
               <p class="text-muted"> List of payments, credit orders and charges </p>
               <hr>
-              <% @work_order.payment_entries.each do |payment| %>
+              <% @work_order.payment_entries.includes(:entry =>[:recorder]).each do |payment| %>
                 <div class="row">
 
                   <div class="col-md-10">

@@ -71,7 +71,7 @@
     <div class="row">
 
       <div class="col-md-3">
-        <div class="card">
+        <div class="card min-margin">
           <div class="card-body">
             <small class="text-muted"> RECEIVED </small>
             <h3 class="title-up"> <%= WorkOrder.received.size %></h3>
@@ -89,7 +89,7 @@
         </div>
 
       <div class="col-md-3">
-        <div class="card">
+        <div class="card min-margin">
           <div class="card-body">
             <small class="text-muted"> WORK IN PROGRESS </small>
             <h3 class="title-up"> <%= WorkOrder.work_in_progress.size %></h3>
@@ -108,7 +108,7 @@
 
       </div>
       <div class="col-md-3 ">
-        <div class="card">
+        <div class="card min-margin">
           <div class="card-body">
             <small class="text-muted"> DONE / RTO </small>
             <h3 class="title-up"> <%= WorkOrder.done_and_rto.size %></h3>
@@ -125,7 +125,7 @@
 
       </div>
       <div class="col-md-3">
-        <div class="card">
+        <div class="card min-margin">
           <div class="card-body">
             <small class="text-muted"> RELEASED </small>
             <h3 class="title-up"> <%= WorkOrder.released.size %></h3>

@@ -2,6 +2,9 @@ FactoryBot.define do
   factory :line_item do
     association :unit_of_measurement
     association :product
+    quantity { 1 }
+     unit_cost { 10 }
+    total_cost { 100 }
 
     factory :purchase_order_line_item, class: 'StoreFrontModule::LineItems::PurchaseOrderLineItem' do
     end

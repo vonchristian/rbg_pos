@@ -5,13 +5,13 @@ module ComputerRepairSection
       @to_date   = params[:to_date] || DateTime.now.end_of_month
       if params[:technician].present?
         @technician = User.find(params[:technician])
-        @work_orders = @technician.work_orders.paginate(page: params[:page], per_page: 20)
+       @pagy, @work_orders = pagy(@technician.work_orders.includes(:product_unit, :customer, :charge_invoice, :technician_work_orders, :store_front, :technicians =>[:avatar_attachment =>[:blob]]))
       elsif params[:search].present?
-        @pagy, @work_orders = pagy(WorkOrder.text_search(params[:search]))
+        @pagy, @work_orders = pagy(WorkOrder.includes(:product_unit, :customer, :charge_invoice, :technician_work_orders, :store_front, :technicians =>[:avatar_attachment =>[:blob]]).text_search(params[:search]))
       elsif params[:section_id].present?
-        @work_orders = Section.find(params[:section_id]).work_orders.paginate(page: params[:page], per_page: 20)
+        @pagy, @work_orders = pagy(Section.find(params[:section_id]).work_orders.includes(:product_unit, :customer, :charge_invoice, :technician_work_orders, :store_front, :technicians =>[:avatar_attachment =>[:blob]]))
       else
-        @pagy, @work_orders = pagy(WorkOrder.all)
+        @pagy, @work_orders = pagy(WorkOrder.all.includes(:product_unit, :customer, :charge_invoice, :technician_work_orders, :store_front, :technicians =>[:avatar_attachment =>[:blob]]))
       end
       @pagy, @received_work_orders = pagy(WorkOrder.all.received)
       @pagy, @work_in_progress_work_orders = pagy(WorkOrder.all.work_in_progress)

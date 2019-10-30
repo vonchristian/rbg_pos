@@ -19,7 +19,7 @@ describe 'Product stock index' do
 
     login_as(user, scope: :user)
     visit product_path(product)
-    click_link "#{product.id}-stocks"
+    click_link "#{product.id}-stocks", match: :first
 
     expect(page).to have_content('123')
     expect(page).to_not have_content('456')

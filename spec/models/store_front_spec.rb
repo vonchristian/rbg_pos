@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe StoreFront do
   describe 'associations' do
-    it { is_expected.to belong_to :service_receiveable_account_category }
+    it { is_expected.to belong_to :service_receivable_account_category }
     it { is_expected.to belong_to :sales_revenue_account_category }
     it { is_expected.to belong_to :business }
     it { is_expected.to belong_to :merchandise_inventory_account }

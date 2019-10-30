@@ -2,6 +2,9 @@ FactoryBot.define do
   factory :store_front do
     sequence(:name) { |n| "#{n}" }
     association :business
+    association :service_receivable_account_category, factory: :asset_account_category
+    association :sales_revenue_account_category, factory: :revenue_account_category
+
     association :merchandise_inventory_account, factory: :asset
     association :sales_account, factory: :revenue
     association :sales_return_account, factory: :revenue
