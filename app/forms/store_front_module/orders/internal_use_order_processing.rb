@@ -33,6 +33,7 @@ module StoreFrontModule
           order.internal_use_order_line_items << line_item
         end
         create_entry(order)
+        update_stock_available_quantity(order)
       end
 
       def find_commercial_document
@@ -45,6 +46,12 @@ module StoreFrontModule
 
       def find_employee
         User.find_by_id(employee_id)
+      end
+
+      def update_stock_available_quantity(order)
+        order.stocks.each do |stock|
+          ::StoreFronts::StockQuantityUpdater.new(stock: stock).update_available_quantity!
+        end
       end
 
       def create_entry(order)

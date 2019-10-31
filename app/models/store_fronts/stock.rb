@@ -7,27 +7,28 @@ module StoreFronts
     belongs_to :product
     belongs_to :unit_of_measurement, class_name: 'StoreFrontModule::UnitOfMeasurement'
     has_one    :purchase,            class_name: 'StoreFrontModule::LineItems::PurchaseOrderLineItem'
-    has_many   :sales,               class_name: 'StoreFrontModule::LineItems::SalesOrderLineItem'
-    has_many   :stock_transfers,     class_name: 'StoreFrontModule::LineItems::StockTransferOrderLineItem'
-    has_many   :internal_uses,       class_name: 'StoreFrontModule::LineItems::InternalUseOrderLineItem'
-    has_many   :spoilages,           class_name: 'StoreFrontModule::LineItems::SpoilageOrderLineItem'
-    has_many   :purchase_returns,    class_name: 'StoreFrontModule::LineItems::PurchaseReturnOrderLineItem'
-    has_many   :for_warranties,      class_name: 'StoreFrontModule::LineItems::ForWarrantyOrderLineItem'
-    has_many   :sales_returns,       class_name: 'StoreFrontModule::LineItems::SalesReturnOrderLineItem'
-    has_many   :line_items,          dependent: :nullify
+    has_many   :sales,               class_name: 'StoreFrontModule::LineItems::SalesOrderLineItem',          extend: StockBalanceFinder
+    has_many   :stock_transfers,     class_name: 'StoreFrontModule::LineItems::StockTransferOrderLineItem',  extend: StockBalanceFinder
+    has_many   :internal_uses,       class_name: 'StoreFrontModule::LineItems::InternalUseOrderLineItem',    extend: StockBalanceFinder
+    has_many   :spoilages,           class_name: 'StoreFrontModule::LineItems::SpoilageOrderLineItem',       extend: StockBalanceFinder
+    has_many   :purchase_returns,    class_name: 'StoreFrontModule::LineItems::PurchaseReturnOrderLineItem', extend: StockBalanceFinder
+    has_many   :for_warranties,      class_name: 'StoreFrontModule::LineItems::ForWarrantyOrderLineItem',    extend: StockBalanceFinder
+    has_many   :sales_returns,       class_name: 'StoreFrontModule::LineItems::SalesReturnOrderLineItem',    extend: StockBalanceFinder
+    has_many   :line_items,          dependent: :nullify,                                                    extend: StockBalanceFinder
+
     delegate :name,           to: :product
     delegate :unit_code,      to: :unit_of_measurement
     delegate :purchase_order, to: :purchase
     delegate :supplier,       to: :purchase_order, allow_nil: true
     delegate :name,           to: :supplier,       prefix: true
     delegate :date,           to: :purchase_order, prefix: true, allow_nil: true
-
+    delegate :quantity,       to: :purchase, prefix: true
     def self.processed
       joins(:purchase).where.not('line_items.order_id' => nil)
     end
 
     def balance_for_cart(cart)
-      balance - sales.where(cart: cart).sum(&:quantity)
+      balance - sales.unprocessed.where(cart: cart).sum(:quantity)
     end
 
     def balance_for_cart_on_transfer(cart)
@@ -38,20 +39,15 @@ module StoreFronts
       where(available: true)
     end
 
-    def purchase_quantity
-      purchase.quantity
-    end
-
-
     def balance
-      purchase_quantity      +
-      sales_returns.total    -
-      purchase_returns.total -
-      stock_transfers.processed.total  -
-      sales.total            -
-      internal_uses.total    -
-      spoilages.total        -
-      for_warranties.total
+      purchase_quantity        +
+      sales_returns.processed.balance    -
+      purchase_returns.processed.balance -
+      stock_transfers.processed.balance  -
+      sales.processed.processed.balance  -
+      internal_uses.processed.balance    -
+      spoilages.processed.balance        -
+      for_warranties.processed.balance
     end
 
     def sold?
@@ -66,6 +62,10 @@ module StoreFronts
 
     def total_cost
       purchase_quantity * last_purchase_cost
+    end
+
+    def update_available_quantity
+      ::StoreFronts::StockQuantityUpdater.new(stock: self).update_available_quantity!
     end
 
   end

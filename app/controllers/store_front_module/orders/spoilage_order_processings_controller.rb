@@ -5,7 +5,7 @@ module StoreFrontModule
         @order = StoreFrontModule::Orders::SpoilageOrderProcessing.new(order_params)
         if @order.valid?
           @order.process!
-          redirect_to store_front_module_spoilages_url, notice: " Sales return saved successfully."
+          redirect_to store_front_module_spoilages_url, notice: " Spoilage order saved successfully."
         else
           redirect_to new_store_front_module_spoilage_order_line_item_processing_path, alert: "Error"
         end

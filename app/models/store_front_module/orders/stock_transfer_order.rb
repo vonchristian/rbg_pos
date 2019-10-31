@@ -3,4 +3,4 @@ module StoreFrontModule
     class StockTransferOrder < Order
     end
   end
-end 
+end

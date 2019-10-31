@@ -77,7 +77,7 @@ module StoreFrontModule
         StoreFront.find(store_front_id)
       end
 
-    
+
 
       def available_quantity
         find_stock.balance_for_cart(find_cart)

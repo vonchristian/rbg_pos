@@ -17,7 +17,6 @@ module ComputerRepairSection
       @pagy, @work_in_progress_work_orders = pagy(WorkOrder.all.work_in_progress)
       @pagy, @released_work_orders = pagy(WorkOrder.all.released)
       @pagy, @done_and_rto_work_orders = pagy(WorkOrder.all.done_and_rto)
-
     end
   end
 end

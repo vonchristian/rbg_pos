@@ -22,11 +22,7 @@ module StoreFronts
       it { is_expected.to delegate_method(:supplier).to(:purchase_order) }
       it { is_expected.to delegate_method(:name).to(:supplier).with_prefix }
       it { is_expected.to delegate_method(:date).to(:purchase_order).with_prefix }
-
-
-
-
-
+      it { is_expected.to delegate_method(:quantity).to(:purchase).with_prefix }
     end
 
     it '.processed' do

@@ -24,23 +24,33 @@ module StoreFrontModule
       end
       private
       def create_order
-          order = StoreFrontModule::Orders::SpoilageOrder.create(
+          order = StoreFrontModule::Orders::SpoilageOrder.create!(
+          store_front: find_employee.store_front,
+          account_number: SecureRandom.uuid,
           date: date,
           description: description,
           employee: find_employee,
           commercial_document: find_employee,
           search_term: find_employee.name,
           reference_number: reference_number)
+
           find_cart.spoilage_order_line_items.each do |line_item|
             line_item.update_attributes!(date: date)
             line_item.cart_id = nil
             order.spoilage_order_line_items << line_item
-          create_entry(order)
         end
+        create_entry(order)
+        update_stock_available_quantity(order)
       end
 
       def find_employee
         User.find_by_id(employee_id)
+      end
+
+      def update_stock_available_quantity(order)
+        order.stocks.each do |stock|
+          ::StoreFronts::StockQuantityUpdater.new(stock: stock).update_available_quantity!
+        end
       end
 
       def create_entry(order)

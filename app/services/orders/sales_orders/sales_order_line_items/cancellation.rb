@@ -9,9 +9,13 @@ module Orders
           @line_item = args.fetch(:line_item)
           @order     = @line_item.sales_order
         end
+
         def cancel!
-          create_entry
-          delete_item
+          ActiveRecord::Base.transaction do
+            create_entry
+            delete_item
+            update_stock_available_quantity
+          end
         end
 
         def create_entry
@@ -42,6 +46,10 @@ module Orders
         def delete_item
           line_item.referenced_purchase_order_line_items.destroy_all
           line_item.destroy
+        end
+
+        def update_stock_available_quantity
+          ::StoreFronts::StockQuantityUpdater.new(stock: line_item.stock).update_available_quantity!
         end
 
         def credit_account

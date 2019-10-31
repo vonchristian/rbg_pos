@@ -45,7 +45,7 @@ class LineItem < ApplicationRecord
   end
 
   def self.processed
-    with_orders
+    where.not(order_id: nil)
   end
 
   def self.unprocessed
@@ -57,7 +57,7 @@ class LineItem < ApplicationRecord
   end
 
   def self.total
-    total_converted_quantity
+    sum(&:quantity)
   end
 
   def self.total_converted_quantity
@@ -73,13 +73,20 @@ class LineItem < ApplicationRecord
     klass = args.select{ |key, value| !value.nil?}.keys.sort.map{ |key| key.to_s.titleize }.join.gsub(" ", "")
     ("StoreFrontModule::BalanceFinders::" + klass).constantize
   end
+  def self.balance_for_stock(stock:)
+    joins(:stock, :order).where(stock: stock).pluck(:quantity).sum
+  end
+
+  def balance_for_stock(stock:)
+    where(stock: stock).total
+  end
 
   def unit_cost_and_quantity
   	unit_cost * quantity
   end
 
   def converted_quantity
-    quantity * default_conversion_multiplier
+    quantity
   end
 
 

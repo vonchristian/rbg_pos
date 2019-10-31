@@ -17,12 +17,12 @@ sheet.add_row [
   stock.name,
   stock.barcode.to_s,
   stock.purchase_quantity,
-  stock.sales.total,
-  stock.stock_transfers.total,
-  stock.spoilages.total,
-  stock.internal_uses.total,
-  stock.purchase_returns.total,
-  stock.balance
+  stock.sales.balance,
+  stock.stock_transfers.balance,
+  stock.spoilages.balance,
+  stock.internal_uses.balance,
+  stock.purchase_returns.balance,
+  stock.available_quantity
 ]
 end
 end

@@ -9,6 +9,7 @@ module StoreFrontModule
       has_one :cash_payment, as: :cash_paymentable, class_name: "StoreFrontModule::CashPayment", dependent: :destroy
       has_many :sales_order_line_items, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem", foreign_key: 'order_id', dependent: :destroy
       has_many :other_sales_line_items, foreign_key: 'order_id'
+      has_many :stocks, through: :sales_order_line_items, class_name: 'StoreFronts::Stock'
       delegate :name, to: :customer, prefix: true, allow_nil: true
       delegate :full_name, to: :customer, prefix: true, allow_nil: true
       delegate :balance, to: :receivable_account
@@ -37,6 +38,11 @@ module StoreFrontModule
       def payment_entries
         if receivable_account
           receivable_account.credit_entries
+        end
+      end
+      def revenue_entries
+        if sales_revenue_account
+          sales_revenue_account.entries
         end
       end
 
@@ -114,6 +120,9 @@ module StoreFrontModule
       def delete_entry
         if payment_entries.present?
           payment_entries.destroy_all
+        end
+        if revenue_entries.present?
+          revenue_entries.destroy_all
         end
       end
     end

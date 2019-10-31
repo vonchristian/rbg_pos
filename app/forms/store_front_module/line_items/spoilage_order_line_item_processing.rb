@@ -23,11 +23,11 @@ module StoreFrontModule
 
       def decrease_purchase_line_item_quantity
         find_cart.spoilage_order_line_items.create!(
-          stock: find_stock,
-          quantity: quantity,
-          unit_cost: purchase_cost,
-          total_cost: set_total_cost,
-          product_id: product_id,
+          stock:               find_stock,
+          quantity:            quantity,
+          unit_cost:           purchase_cost,
+          total_cost:          set_total_cost,
+          product_id:          product_id,
           unit_of_measurement: find_unit_of_measurement
           )
       end
