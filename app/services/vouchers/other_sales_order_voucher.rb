@@ -8,7 +8,7 @@ module Vouchers
       @amount                = args.fetch(:amount)
       @store_front           = @employee.store_front
       @cash_on_hand          = @employee.cash_on_hand_account
-      @sales                 = @order.default_sales_revenue_account
+      @sales                 = @order.sales_revenue_account
     end
     def create_voucher!
       voucher = Voucher.new(
