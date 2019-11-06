@@ -46,23 +46,23 @@ class User < ApplicationRecord
     full_name
   end
   def received_cash_transfers(options={})
-    transfers = []
-    cash_on_hand_account.debit_amounts.entered_on(options).each do |transfer|
-      if User.cash_on_hand_accounts.ids.include?(transfer.account_id)
-        transfers << transfer
+    amounts = []
+    cash_on_hand_account.debit_amounts.entered_on(options).each do |amount|
+      unless (User.cash_on_hand_accounts.ids & amount.entry.amounts.pluck(:account_id)).empty?
+        amounts << amount
       end
     end
-    transfers
+    amounts
   end
 
   def remittances(options={})
-    remittances = []
-    cash_on_hand_account.credit_amounts.entered_on(options).each do |remittance|
-      if User.cash_on_hand_accounts.ids.include?(remittance.account_id)
-        remittances << remittance
+    amounts = []
+    cash_on_hand_account.credit_amounts.entered_on(options).each do |amount|
+      unless (User.cash_on_hand_accounts.ids & amount.entry.amounts.pluck(:account_id)).empty?
+        amounts << amount
       end
     end
-    remittances
+    amounts
   end
 
   def cash_on_hand_account_balance

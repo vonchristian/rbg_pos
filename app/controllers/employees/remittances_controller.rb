@@ -10,7 +10,7 @@ module Employees
       @entry = AccountingModule::RemittanceForm.new(entry_params)
       if @entry.valid?
         @entry.save
-        redirect_to employee_url(@employee), notice: "Collection remittance saved successfully."
+        redirect_to admin_employee_url(@employee), notice: "Collection remittance saved successfully."
       else
         render :new
       end
