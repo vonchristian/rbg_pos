@@ -12,6 +12,7 @@ module StoreFrontModule
       def show
         @order = current_store_front.sales_orders.find(params[:id])
       end
+      
       def destroy
         @order = current_store_front.sales_orders.find(params[:id])
         if params[:work_order_id].present?
@@ -21,14 +22,19 @@ module StoreFrontModule
         if @work_order.present?
           @work_order.destroy_entry_for(order: order)
         end
-        ::StoreFronts::Orders::SalesOrders::Cancellation.new(@order).cancel!
-        @order.destroy
+        cancel_sales_order
         if @work_order.present?
           redirect_to repair_services_section_work_order_url(@work_order), notice: "deleted successfully"
         else
           redirect_to store_front_module_sales_orders_url, alert: "Deleted successfully"
         end
       end
+
+      private
+      def cancel_sales_order
+        ::StoreFronts::Orders::SalesOrders::Cancellation.new(sales_order: @order).cancel!
+      end
+
     end
   end
 end

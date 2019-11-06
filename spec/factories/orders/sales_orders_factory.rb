@@ -4,5 +4,7 @@ FactoryBot.define do
     association :employee, factory: :user
     association :commercial_document, factory: :customer
     account_number { SecureRandom.uuid }
+    association :sales_revenue_account, factory: :revenue
+    association :receivable_account, factory: :asset
   end
 end

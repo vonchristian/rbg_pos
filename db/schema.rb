@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_31_061335) do
+ActiveRecord::Schema.define(version: 2019_11_06_022027) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -453,6 +453,24 @@ ActiveRecord::Schema.define(version: 2019_10_31_061335) do
     t.index ["name"], name: "index_products_on_name", unique: true
   end
 
+  create_table "purchase_orders", force: :cascade do |t|
+    t.string "supplier_type", null: false
+    t.bigint "supplier_id", null: false
+    t.bigint "voucher_id", null: false
+    t.string "account_number"
+    t.bigint "employee_id", null: false
+    t.bigint "store_front_id", null: false
+    t.bigint "receivable_account_id", null: false
+    t.datetime "date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["employee_id"], name: "index_purchase_orders_on_employee_id"
+    t.index ["receivable_account_id"], name: "index_purchase_orders_on_receivable_account_id"
+    t.index ["store_front_id"], name: "index_purchase_orders_on_store_front_id"
+    t.index ["supplier_type", "supplier_id"], name: "index_purchase_orders_on_supplier_type_and_supplier_id"
+    t.index ["voucher_id"], name: "index_purchase_orders_on_voucher_id"
+  end
+
   create_table "purchase_prices", force: :cascade do |t|
     t.bigint "product_id"
     t.bigint "unit_of_measurement_id"
@@ -824,6 +842,10 @@ ActiveRecord::Schema.define(version: 2019_10_31_061335) do
   add_foreign_key "posts", "users"
   add_foreign_key "products", "businesses"
   add_foreign_key "products", "categories"
+  add_foreign_key "purchase_orders", "accounts", column: "receivable_account_id"
+  add_foreign_key "purchase_orders", "store_fronts"
+  add_foreign_key "purchase_orders", "users", column: "employee_id"
+  add_foreign_key "purchase_orders", "vouchers"
   add_foreign_key "purchase_prices", "products"
   add_foreign_key "purchase_prices", "store_fronts"
   add_foreign_key "purchase_prices", "unit_of_measurements"
