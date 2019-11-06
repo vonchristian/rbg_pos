@@ -38,17 +38,13 @@ module StoreFrontModule
           entry_date: date,
           description: "Credit sales",
           debit_amounts_attributes: [{ amount: cart.sales_order_line_items.total_cost,
-                                        account: accounts_receivable,
-                                        commercial_document: sales_order},
+                                        account: accounts_receivable},
                                       { amount: cart.cost_of_goods_sold,
-                                        account: cost_of_goods_sold,
-                                        commercial_document: sales_order } ],
+                                        account: cost_of_goods_sold } ],
             credit_amounts_attributes:[{amount: cart.sales_order_line_items.total_cost,
-                                        account: sales,
-                                        commercial_document: sales_order},
+                                        account: sales},
                                        { amount: cart.cost_of_goods_sold,
-                                        account: merchandise_inventory,
-                                        commercial_document: sales_order}])
+                                        account: merchandise_inventory}])
       end
       def remove_cart_reference
         cart.sales_order_line_items.each do |line_item|

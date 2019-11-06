@@ -41,17 +41,13 @@ module RepairServicesModule
           entry_date: order.date,
           description: "Spare parts for work order ##{find_work_order.service_number}",
           debit_amounts_attributes: [{  amount: order.total_cost,
-                                        account: accounts_receivable,
-                                        commercial_document: find_work_order},
+                                        account: accounts_receivable},
                                       { amount: order.cost_of_goods_sold,
-                                        account: cost_of_goods_sold,
-                                        commercial_document: find_work_order } ],
+                                        account: cost_of_goods_sold } ],
             credit_amounts_attributes:[{amount: order.total_cost,
-                                        account: sales,
-                                        commercial_document: find_work_order},
+                                        account: sales},
                                        {amount: order.cost_of_goods_sold,
-                                        account: merchandise_inventory,
-                                        commercial_document: find_work_order}])
+                                        account: merchandise_inventory}])
       end
       def find_customer
         Customer.find(customer_id)

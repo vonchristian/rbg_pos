@@ -25,18 +25,15 @@ module StoreFrontModule
             debit_amounts_attributes:
             [
              {amount: amount,
-              account: cash_on_hand_account,
-              commercial_document: find_order},
+              account: cash_on_hand_account},
               { amount: expense_amount,
-                account_id: expense_account_id,
-              commercial_document: find_order
+                account_id: expense_account_id
               }
             ],
             credit_amounts_attributes:
             [
               amount: amount.to_f + expense_amount.to_f,
-              account: accounts_receivable,
-              commercial_document: find_order
+              account: accounts_receivable
 
             ]
           )
@@ -51,14 +48,12 @@ module StoreFrontModule
             debit_amounts_attributes:
             [
               amount: amount,
-              account: cash_on_hand_account,
-              commercial_document: find_order
+              account: cash_on_hand_account
             ],
             credit_amounts_attributes:
             [
               amount: amount,
-              account: accounts_receivable,
-              commercial_document: find_order
+              account: accounts_receivable
             ]
           )
         end

@@ -47,11 +47,9 @@ module Customers
         entry_date: date,
         debit_amounts_attributes:
         [ amount: amount,
-          account: order.receivable_account,
-          commercial_document: order],
+          account: order.receivable_account],
         credit_amounts_attributes: [ amount: amount,
-          account: order.sales_revenue_account,
-          commercial_document: order])
+          account: order.sales_revenue_account])
     end
     def find_customer
       Customer.find_by_id(customer_id)

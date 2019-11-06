@@ -54,12 +54,10 @@ module StoreFrontModule
           entry_date: order.date,
           description: "Credit sales return",
           debit_amounts_attributes: [   amount: cost_for_return,
-                                        account: order.sales_revenue_account,
-                                        commercial_document: order
+                                        account: order.sales_revenue_account
                                       ],
             credit_amounts_attributes:[ amount: cost_for_return,
-                                        account: order.receivable_account,
-                                        commercial_document: order
+                                        account: order.receivable_account
                                        ])
       end
     end

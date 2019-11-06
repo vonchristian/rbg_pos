@@ -28,13 +28,11 @@ module StoreFrontModule
           entry_date: date,
           description: "Other items added to sales order #{find_sales_order.reference_number}",
           debit_amounts_attributes: [ amount: find_cart.other_sales_line_items.total_cost,
-                                      account: accounts_receivable,
-                                      commercial_document: find_sales_order],
+                                      account: accounts_receivable],
 
 
             credit_amounts_attributes:[ amount: find_cart.other_sales_line_items.total_cost,
-                                        account: sales,
-                                        commercial_document: find_sales_order])
+                                        account: sales])
       end
       def find_employee
         User.find(recorder_id)

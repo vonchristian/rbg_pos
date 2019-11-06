@@ -63,12 +63,10 @@ module StoreFrontModule
           entry_date: order.date,
           description: description,
           credit_amounts_attributes: [amount: order.total_cost,
-                                        account: merchandise_inventory,
-                                        commercial_document: order
+                                        account: merchandise_inventory
                                        ],
             debit_amounts_attributes:[amount: order.total_cost,
-                                        account: spoilages,
-                                        commercial_document: order
+                                        account: spoilages
                                       ])
       end
     end

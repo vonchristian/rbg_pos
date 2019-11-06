@@ -52,12 +52,10 @@ module StoreFrontModule
           entry_date: date,
           description: description,
           debit_amounts_attributes: [amount: order.total_cost,
-                                        account: accounts_payable,
-                                        commercial_document: order
+                                        account: accounts_payable
                                       ],
             credit_amounts_attributes:[ amount: order.total_cost,
-                                        account: merchandise_inventory,
-                                        commercial_document: order
+                                        account: merchandise_inventory
                                      ])
       end
     end

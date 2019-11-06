@@ -73,17 +73,13 @@ module StoreFrontModule
           entry_date: order.date,
           description: "Credit sales",
           debit_amounts_attributes: [{ amount: order.total_cost,
-                                        account: accounts_receivable,
-                                        commercial_document: order},
+                                        account: accounts_receivable},
                                       { amount: order.cost_of_goods_sold,
-                                        account: cost_of_goods_sold,
-                                        commercial_document: order } ],
+                                        account: cost_of_goods_sold} ],
             credit_amounts_attributes:[{amount: order.total_cost,
-                                        account: sales,
-                                        commercial_document: order},
+                                        account: sales},
                                        { amount: order.cost_of_goods_sold,
-                                        account: merchandise_inventory,
-                                        commercial_document: order}])
+                                        account: merchandise_inventory}])
       end
     end
   end

@@ -29,16 +29,13 @@ module AccountingModule
             credit_amounts_attributes:  [
               {
               amount: amount.to_f + expense_amount.to_f,
-              account: accounts_receivable_account,
-              commercial_document: find_work_order}
+              account: accounts_receivable_account}
               ],
             debit_amounts_attributes: [
               {amount: amount,
-               account: cash_on_hand_account,
-               commercial_document: find_work_order },
+               account: cash_on_hand_account },
               { amount: expense_amount,
-                account_id: expense_account_id,
-                commercial_document: find_work_order}
+                account_id: expense_account_id}
              ])
         else
           AccountingModule::Entry.create!(
@@ -49,8 +46,7 @@ module AccountingModule
             description: description,
             credit_amounts_attributes:  [{
               amount: amount,
-              account: accounts_receivable_account,
-              commercial_document: find_work_order}],
+              account: accounts_receivable_account}],
             debit_amounts_attributes: [
               amount: amount,
               account: cash_on_hand_account,

@@ -19,8 +19,8 @@ module Accounting
           entry_date: date,
           reference_number: reference_number,
           description: description,
-          debit_amounts_attributes: [amount: amount, account: find_bank_account.cash_in_bank_account, commercial_document: find_bank_account],
-          credit_amounts_attributes: [amount: amount, account_id: source_account_id, commercial_document: find_bank_account]
+          debit_amounts_attributes: [amount: amount, account: find_bank_account.cash_in_bank_account],
+          credit_amounts_attributes: [amount: amount, account_id: source_account_id]
           )
       end
 

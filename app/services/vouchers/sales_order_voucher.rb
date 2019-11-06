@@ -30,27 +30,23 @@ module Vouchers
 
       voucher.voucher_amounts.debit.build(
         amount: order.discount_amount,
-        account: sales_discount,
-        commercial_document: order
+        account: sales_discount
       )
        voucher.voucher_amounts.debit.build(
         amount: order.cost_of_goods_sold,
-        account: cost_of_goods_sold,
-        commercial_document: order
+        account: cost_of_goods_sold
       )
 
       #credit_amounts
 
       voucher.voucher_amounts.credit.build(
         amount: order.total_cost,
-        account: sales,
-        commercial_document: order
+        account: sales
       )
 
       voucher.voucher_amounts.credit.build(
         amount: order.cost_of_goods_sold,
-        account: merchandise_inventory,
-        commercial_document: order
+        account: merchandise_inventory
       )
     voucher.save!
     order.update!(voucher: voucher)

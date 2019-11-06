@@ -26,17 +26,13 @@ module WorkOrders
           entry_date: Date.current,
           description: "Sales Return - #{work_order.service_number}",
           credit_amounts_attributes: [{ amount: line_item.total_cost,
-                                        account: credit_account,
-                                        commercial_document: work_order},
+                                        account: credit_account},
                                       { amount: line_item.cost_of_goods_sold,
-                                        account: cost_of_goods_sold,
-                                        commercial_document: work_order} ],
+                                        account: cost_of_goods_sold} ],
             debit_amounts_attributes:[{amount: line_item.total_cost,
-                                        account: sales,
-                                        commercial_document: work_order},
+                                        account: sales},
                                        { amount: line_item.cost_of_goods_sold,
-                                        account: merchandise_inventory,
-                                        commercial_document: work_order}])
+                                        account: merchandise_inventory}])
       end
 
       def delete_item

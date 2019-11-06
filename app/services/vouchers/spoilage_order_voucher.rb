@@ -19,13 +19,11 @@ module Vouchers
       )
       voucher.voucher_amounts.debit.build(
         amount: order.total_cost,
-        account: store_front.spoilage_account,
-        commercial_document: order
+        account: store_front.spoilage_account
       )
       voucher.voucher_amounts.credit.build(
         amount: order.total_cost,
-        account: store_front.merchandise_inventory_account,
-        commercial_document: order
+        account: store_front.merchandise_inventory_account
       )
       voucher.save!
       order.update_attributes!(voucher: voucher)

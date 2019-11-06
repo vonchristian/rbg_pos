@@ -25,12 +25,10 @@ module RepairServicesModule
           entry_date: date,
           description: description,
           debit_amounts_attributes: [amount: service_charge.amount,
-                                     account: accounts_receivable,
-                                     commercial_document: service_charge
+                                     account: accounts_receivable
                                      ],
             credit_amounts_attributes:[ amount: service_charge.amount,
-                                        account: services_revenue,
-                                        commercial_document: service_charge
+                                        account: services_revenue
                                       ])
     end
 

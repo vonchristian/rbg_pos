@@ -10,11 +10,11 @@ module Vouchers
     def disburse!
       entry = AccountingModule::Entry.new(commercial_document: find_voucher, :description => description, recorder_id: disburser_id, entry_date: date)
       find_voucher.voucher_amounts.debit.each do |amount|
-        debit_amount = AccountingModule::DebitAmount.new(account_id: amount.account_id, amount: amount.amount, commercial_document: amount.commercial_document)
+        debit_amount = AccountingModule::DebitAmount.new(account_id: amount.account_id, amount: amount.amount)
         entry.debit_amounts << debit_amount
       end
       find_voucher.voucher_amounts.credit.each do |amount|
-        credit_amount = AccountingModule::CreditAmount.new(account_id: amount.account_id , amount: amount.amount, commercial_document: amount.commercial_document)
+        credit_amount = AccountingModule::CreditAmount.new(account_id: amount.account_id , amount: amount.amount)
         entry.credit_amounts << credit_amount
       end
       entry.save!

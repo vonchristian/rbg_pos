@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :purchase_order, class: StoreFronts::Orders::PurchaseOrder do
+  factory :purchase_order, class: StoreFrontModule::Orders::PurchaseOrder do
     association :store_front
     association :voucher
     association :employee, factory: :user

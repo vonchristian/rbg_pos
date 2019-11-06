@@ -67,12 +67,10 @@ module StoreFrontModule
           entry_date: date,
           description: "stock transfer to #{find_destination_store_front.name}",
           debit_amounts_attributes: [amount: order.total_cost,
-                                        account: destination_store_front_inventory,
-                                        commercial_document: order
+                                        account: destination_store_front_inventory
                                       ],
             credit_amounts_attributes:[ amount: order.total_cost,
-                                        account: origin_store_front_inventory,
-                                        commercial_document: order
+                                        account: origin_store_front_inventory
                                      ])
       end
     end

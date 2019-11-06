@@ -25,8 +25,8 @@ module AccountingModule
         entry_date: entry_date,
         reference_number: reference_number,
         description: description,
-        credit_amounts_attributes: [amount: amount, account_id: credit_account_id, commercial_document: find_supplier],
-        debit_amounts_attributes: [amount: amount, account: debit_account, commercial_document: find_supplier])
+        credit_amounts_attributes: [amount: amount, account_id: credit_account_id],
+        debit_amounts_attributes: [amount: amount, account: debit_account])
     end
     def find_supplier
       Supplier.find_by_id(supplier_id)

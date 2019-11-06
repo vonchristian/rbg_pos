@@ -23,13 +23,13 @@ module AccountingModule
         description: description,
         debit_amounts_attributes: [
           amount: amount,
-          account: accounts_receivable,
-          commercial_document: find_work_order
+          account: accounts_receivable
+
         ],
         credit_amounts_attributes: [
           amount: amount,
-          account: cash_on_hand_account,
-          commercial_document: find_work_order
+          account: cash_on_hand_account
+
         ]
       )
     end
