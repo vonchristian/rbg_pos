@@ -4,7 +4,7 @@ module AccountCreators
   describe SalesOrder do
     it 'create_accounts!' do
       customer   = create(:customer)
-      sales_order = create(:sales_order, commercial_document: customer, receivable_account_id: nil)
+      sales_order = create(:sales_order, commercial_document: customer, sales_revenue_account_id: nil, sales_discount_account_id: nil, receivable_account_id: nil)
 
       expect(sales_order.receivable_account_id).to eql nil
       expect(sales_order.sales_revenue_account_id).to eql nil
