@@ -3,7 +3,7 @@ class OtherSalesForm
   attr_accessor :description, :reference_number, :recorder_id, :amount, :date, :customer_id, :sales_order_id
   validates :amount, :description, :customer_id, :date, presence: true
 
-  def save
+  def process!
     ActiveRecord::Base.transaction do
       create_order
     end
@@ -14,14 +14,15 @@ class OtherSalesForm
     order = StoreFrontModule::Orders::SalesOrder.new(
       description: description,
       commercial_document: find_customer,
-      date: date, employee_id: recorder_id,
+      date: date,
+      employee_id: recorder_id,
       reference_number: reference_number,
       store_front: find_employee.store_front,
       account_number: SecureRandom.uuid)
-    create_accounts(order)
+      create_accounts(order)
     order.save!
     order.create_cash_payment(cash_tendered: amount)
-    
+
     create_voucher(order)
     create_entry(order)
   end

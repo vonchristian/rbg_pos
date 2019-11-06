@@ -5,7 +5,7 @@ class OtherSalesController < ApplicationController
   def create
     @other_sale = OtherSalesForm.new(other_sale_params)
     if @other_sale.valid?
-      @other_sale.save
+      @other_sale.process!
       redirect_to store_index_url, notice: "Other Sales saved successfully"
     else
       render :new
