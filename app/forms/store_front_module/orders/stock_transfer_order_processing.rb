@@ -24,7 +24,7 @@ module StoreFrontModule
 
       private
       def create_stock_transfer_order
-        order = StoreFrontModule::Orders::PurchaseOrder.create!(
+        order = StoreFrontModule::Orders::PurchaseOrder.new(
           credit: true,
           date:                    date,
           description:             reference_number,
@@ -36,6 +36,8 @@ module StoreFrontModule
           search_term:             find_destination_store_front.name,
           destination_store_front_id: destination_store_front_id,
           reference_number:        reference_number)
+          create_accounts(order)
+          order.save!
 
           find_cart.purchase_order_line_items.each do |line_item|
             line_item.update_attributes!(date: date)
@@ -63,6 +65,10 @@ module StoreFrontModule
 
       def create_stock(line_item)
         ::StoreFronts::StockTransfers::StockCreation.new(line_item: line_item, destination_store_front: find_destination_store_front).create_stock!
+      end
+      
+      def create_accounts(order)
+        ::AccountCreators::PurchaseOrder.new(purchase_order: order).create_accounts!
       end
 
       def update_stock_available_quantity

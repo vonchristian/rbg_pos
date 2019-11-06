@@ -34,7 +34,7 @@ module StoreFrontModule
             total_cost:               set_total_cost,
             unit_of_measurement:      find_unit_of_measurement,
             product_id:               product_id)
-        requested_quantity = converted_quantity
+        requested_quantity = quantity.to_f
 
         find_product.purchases.order(created_at: :asc).each do |purchase|
           temp_sales_return = sale_return.referenced_sales_order_line_items.create!(
@@ -70,9 +70,6 @@ module StoreFrontModule
         end
       end
 
-      def converted_quantity
-        find_unit_of_measurement.conversion_multiplier * quantity.to_f
-      end
       def find_cart
         Cart.find(cart_id)
       end
@@ -114,7 +111,7 @@ module StoreFrontModule
       end
 
       def quantity_is_less_than_or_equal_to_available_quantity?
-        errors[:quantity] << "exceeded available quantity" if converted_quantity.to_f > available_quantity
+        errors[:quantity] << "exceeded available quantity" if quantity.to_f > available_quantity
       end
     end
   end

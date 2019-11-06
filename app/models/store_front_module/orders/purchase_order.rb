@@ -4,6 +4,7 @@ module StoreFrontModule
       belongs_to :supplier, polymorphic: true
 
       belongs_to :destination_store_front, optional: true, class_name: "StoreFront", foreign_key: 'destination_store_front_id'
+      belongs_to :payable_account, class_name: 'AccountingModule::Account', foreign_key: 'payable_account_id'
       has_many :purchase_order_line_items, class_name: "StoreFrontModule::LineItems::PurchaseOrderLineItem", foreign_key: 'order_id', dependent: :destroy
       has_many :stock_transfer_order_line_items, class_name: 'StoreFrontModule::LineItems::StockTransferOrderLineItem', foreign_key: 'order_id', dependent: :destroy
       delegate :name, to: :supplier, prefix: true, allow_nil: true

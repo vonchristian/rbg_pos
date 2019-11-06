@@ -11,19 +11,24 @@ module Suppliers
     end
     private
     def create_purchase_order
-      order = find_supplier.purchase_orders.create!(
+      order = find_supplier.purchase_orders.build(
         date: date,
         voucher_id: voucher_id,
         account_number: account_number,
         store_front_id: store_front_id,
         employee_id: employee_id
       )
+      create_accounts(order)
+      order.save!
       find_cart.purchase_order_line_items.each do |line_item|
         order.purchase_order_line_items << line_item
         line_item.cart_id = nil
         line_item.save!
       end
     end
+    def create_accounts(order)
+      AccountCreators::PurchaseOrder.new(purchase_order: order).create_accounts!
+    end 
     def find_cart
       Cart.find(cart_id)
     end

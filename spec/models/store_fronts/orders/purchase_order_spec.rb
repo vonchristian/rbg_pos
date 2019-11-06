@@ -8,7 +8,7 @@ module StoreFronts
         it { is_expected.to belong_to :store_front }
         it { is_expected.to belong_to :employee }
         it { is_expected.to belong_to :voucher }
-        it { is_expected.to belong_to :receivable_account }
+        it { is_expected.to belong_to :payable_account }
 
       end
 

@@ -4,7 +4,7 @@ FactoryBot.define do
     association :voucher
     association :employee, factory: :user
     association :supplier, factory: :supplier
-    association :receivable_account, factory: :asset
+    association :payable_account, factory: :liability
     date { Date.current }
     account_number { SecureRandom.uuid }
   end

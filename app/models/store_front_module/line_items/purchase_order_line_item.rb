@@ -81,7 +81,7 @@
 
       def available_quantity(args={})
         sales_returns_quantity(args) +
-        converted_quantity -
+        quantity -
         sold_quantity(args) -
         purchase_returns_quantity(args) -
         internal_uses_quantity(args) -

@@ -31,11 +31,11 @@ module StoreFrontModule
       end
       def decrease_product_available_quantity
 
-        requested_quantity = converted_quantity
+        requested_quantity = quantity.to_f
 
         find_product.purchases.order(created_at: :asc).available.each do |purchase|
           temp_purchase_return = find_cart.purchase_return_order_line_items.create!(
-              quantity:                 converted_quantity,
+              quantity:                 quantity.to_f,
               unit_cost:                purchase_cost,
               total_cost:               total_cost_for(purchase, quantity),
               unit_of_measurement:      find_product.base_measurement,
@@ -106,12 +106,10 @@ module StoreFrontModule
           find_purchase_order_line_item.available_quantity
         end
       end
-      def converted_quantity
-        find_unit_of_measurement.conversion_multiplier * quantity.to_f
-      end
+
 
       def quantity_is_less_than_or_equal_to_available_quantity?
-        errors[:quantity] << "exceeded available quantity" if converted_quantity.to_f > available_quantity
+        errors[:quantity] << "exceeded available quantity" if uantity.to_f > available_quantity
       end
 
     end

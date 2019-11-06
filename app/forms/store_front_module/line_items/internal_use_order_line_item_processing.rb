@@ -37,14 +37,12 @@ module StoreFrontModule
 
 
       def set_total_cost
-        find_stock.last_purchase_cost * converted_quantity.to_f
+        find_stock.last_purchase_cost * quantity.to_f
       end
 
 
 
-      def converted_quantity
-        find_unit_of_measurement.conversion_multiplier * quantity.to_f
-      end
+
       def find_unit_of_measurement
         find_stock.unit_of_measurement
       end

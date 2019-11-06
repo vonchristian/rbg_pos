@@ -48,7 +48,7 @@ class User < ApplicationRecord
   def received_cash_transfers(options={})
     amounts = []
     cash_on_hand_account.debit_amounts.entered_on(options).each do |amount|
-      unless (User.cash_on_hand_accounts.ids & amount.entry.amounts.pluck(:account_id)).empty?
+      unless (User.cash_on_hand_accounts.ids & amount.entry.credit_amounts.pluck(:account_id)).empty?
         amounts << amount
       end
     end
@@ -58,7 +58,7 @@ class User < ApplicationRecord
   def remittances(options={})
     amounts = []
     cash_on_hand_account.credit_amounts.entered_on(options).each do |amount|
-      unless (User.cash_on_hand_accounts.ids & amount.entry.amounts.pluck(:account_id)).empty?
+      unless (User.cash_on_hand_accounts.ids & amount.entry.debit_amounts.pluck(:account_id)).empty?
         amounts << amount
       end
     end

@@ -41,9 +41,7 @@ module StoreFrontModule
 
 
 
-      def converted_quantity
-        find_unit_of_measurement.conversion_multiplier * quantity.to_f
-      end
+
 
       def find_cart
         Cart.find(cart_id)

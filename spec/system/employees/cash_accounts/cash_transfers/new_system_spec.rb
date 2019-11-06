@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'New employee remittance' do
+describe 'New employee cash transfer' do
   before(:each) do
     cash        = create(:asset, name: 'Cash on Hand')
     cash_2      = create(:asset, name: 'Cash in Bank')
@@ -13,7 +13,6 @@ describe 'New employee remittance' do
   it 'with valid attributes' do
     fill_in 'Amount', with: 1_000
     select 'Cash in Bank'
-    fill_in 'Reference number', with: '232'
     fill_in 'Description', with: 'Cash transfer 10/12/19'
     fill_in 'Date', with: Date.current
 

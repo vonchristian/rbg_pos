@@ -32,7 +32,7 @@ module StoreFrontModule
             total_cost:               set_total_cost,
             unit_of_measurement:      find_unit_of_measurement,
             product_id:               product_id)
-        requested_quantity = converted_quantity
+        requested_quantity = quantity.to_f
         find_product.purchases.order(created_at: :asc).available.each do |purchase|
           temp_transfer = transfer.referenced_purchase_order_line_items.create!(
             quantity:                 quantity_for(purchase, requested_quantity),
@@ -57,7 +57,7 @@ module StoreFrontModule
           )
         purchase = find_purchase_order_line_item
         transfer.referenced_purchase_order_line_items.create!(
-            quantity:                 converted_quantity,
+            quantity:                 quantity.to_f,
             unit_cost:                purchase.purchase_cost,
             total_cost:               total_cost_for(purchase, quantity),
             unit_of_measurement:      find_product.base_measurement,
@@ -77,9 +77,7 @@ module StoreFrontModule
         purchase.purchase_cost * quantity_for(purchase, requested_quantity)
       end
 
-      def converted_quantity
-        find_unit_of_measurement.conversion_multiplier * quantity.to_f
-      end
+
       def find_unit_of_measurement
         find_product.unit_of_measurements.find_by_id(unit_of_measurement_id)
       end
@@ -90,7 +88,7 @@ module StoreFrontModule
         find_product.last_purchase_cost
       end
        def set_total_cost
-        find_product.last_purchase_cost * converted_quantity.to_f
+        find_product.last_purchase_cost * quantity.to_f
       end
 
       def available_quantity
@@ -108,7 +106,7 @@ module StoreFrontModule
       end
 
       def quantity_is_less_than_or_equal_to_available_quantity?
-        errors[:quantity] << "exceeded available quantity" if converted_quantity.to_f > available_quantity
+        errors[:quantity] << "exceeded available quantity" if quantity.to_f > available_quantity
       end
     end
   end

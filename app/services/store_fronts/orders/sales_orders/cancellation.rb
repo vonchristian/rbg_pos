@@ -48,10 +48,10 @@ module StoreFronts
         end
 
         def delete_voucher!
-          if voucher.present? && voucher.voucher_amounts.present?
+          if voucher.present?
             voucher.voucher_amounts.destroy_all
             voucher.destroy
-          end 
+          end
         end
       end
     end

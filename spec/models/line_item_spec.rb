@@ -63,14 +63,14 @@ describe LineItem do
   end
 
   it '.total' do
-    base_unit_of_measurement = create(:unit_of_measurement, conversion_quantity: 1, base_measurement: true)
-    not_base_measurement     = create(:unit_of_measurement, conversion_quantity: 5, base_measurement: false)
+    base_unit_of_measurement = create(:unit_of_measurement)
+    not_base_measurement     = create(:unit_of_measurement)
     order                    = create(:sales_order)
-    line_item_1 = create(:line_item, quantity: 10, order: order, unit_of_measurement: base_unit_of_measurement)
-    line_item_2 = create(:line_item, quantity: 10, order: order, unit_of_measurement: not_base_measurement)
+    line_item_1 = create(:line_item, quantity: 10)
+    line_item_2 = create(:line_item, quantity: 10)
 
 
-    expect(described_class.total).to eql 60
+    expect(described_class.total).to eql 20
   end
 
   it '#unit_cost_and_quantity' do
@@ -79,15 +79,6 @@ describe LineItem do
     expect(line_item.unit_cost_and_quantity).to eql 10
   end
 
-  it '#converted_quantity' do
-    base_unit_of_measurement = create(:unit_of_measurement, conversion_quantity: 1, base_measurement: true)
-    not_base_measurement     = create(:unit_of_measurement, conversion_quantity: 5, base_measurement: false)
-    line_item_1              = create(:line_item, quantity: 10, unit_of_measurement: base_unit_of_measurement)
-    line_item_2              = create(:line_item, quantity: 10, unit_of_measurement: not_base_measurement)
-
-    expect(line_item_1.converted_quantity).to eql 10
-    expect(line_item_2.converted_quantity).to eql 50
-  end
 
   it '#processed?' do
     order_1       = create(:sales_order)

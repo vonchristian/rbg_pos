@@ -61,7 +61,7 @@ class LineItem < ApplicationRecord
   end
 
   def self.total_converted_quantity
-    processed.all.sum(&:converted_quantity)
+    processed.all.sum(&:quantity)
   end
 
   def self.balance(args={})

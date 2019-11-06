@@ -6,7 +6,7 @@ module Suppliers
     end
     def create
       @supplier = Supplier.find(params[:supplier_id])
-      @voucher = Suppliers::VoucherProcessing.new(voucher_params)
+      @voucher  = Suppliers::VoucherProcessing.new(voucher_params)
       if @voucher.valid?
         @voucher.process!
         redirect_to supplier_voucher_url(supplier_id: @supplier.id, id: @voucher.find_voucher.id), notice: "Voucher created successfully."
@@ -15,8 +15,8 @@ module Suppliers
       end
     end
     def show
-      @supplier = Supplier.find(params[:supplier_id])
-      @voucher  = @supplier.vouchers.find(params[:id])
+      @supplier     = Supplier.find(params[:supplier_id])
+      @voucher      = @supplier.vouchers.find(params[:id])
       @confirmation = Suppliers::VoucherConfirmation.new
     end
 
