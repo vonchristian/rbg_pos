@@ -15,18 +15,17 @@ class VoucherEntryCreation
     voucher.voucher_amounts.debit.each do |amount|
       entry.debit_amounts.build(
       amount: amount.amount,
-      account: amount.account,
-      commercial_document: amount.commercial_document
+      account: amount.account
       )
     end
 
     voucher.voucher_amounts.credit.each do |amount|
       entry.credit_amounts.build(
       amount: amount.amount,
-      account: amount.account,
-      commercial_document: amount.commercial_document
+      account: amount.account
       )
     end
     entry.save!
+    voucher.update!(entry: entry)
   end
 end

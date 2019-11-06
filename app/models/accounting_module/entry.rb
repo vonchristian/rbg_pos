@@ -7,7 +7,7 @@ module AccountingModule
     belongs_to :commercial_document, :polymorphic => true, optional: true
     belongs_to :user, optional: true
     belongs_to :recorder, class_name: "User", optional: true
-    has_many :amounts, class_name: "AccountingModule::Amount"
+    has_many :amounts, class_name: "AccountingModule::Amount", dependent: :destroy
     has_many :credit_amounts, :class_name => 'AccountingModule::CreditAmount', :inverse_of => :entry, dependent: :destroy
     has_many :debit_amounts, :class_name => 'AccountingModule::DebitAmount', :inverse_of => :entry, dependent: :destroy
     has_many :credit_accounts, :through => :credit_amounts, :source => :account, :class_name => 'AccountingModule::Account'

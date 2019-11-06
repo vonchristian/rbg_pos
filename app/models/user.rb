@@ -50,7 +50,7 @@ class User < ApplicationRecord
   def received_cash_transfers(options={})
     transfers = []
     cash_on_hand_account.debit_amounts.entered_on(options).each do |transfer|
-      if User.cash_on_hand_accounts.include?(transfer.account) && transfer.commercial_document.is_a?(User)
+      if User.cash_on_hand_accounts.include?(transfer.account)
         transfers << transfer
       end
     end
@@ -60,7 +60,7 @@ class User < ApplicationRecord
   def remittances(options={})
     remittances = []
     cash_on_hand_account.credit_amounts.entered_on(options).each do |remittance|
-      if User.cash_on_hand_accounts.include?(remittance.account) && remittance.commercial_document.is_a?(User)
+      if User.cash_on_hand_accounts.include?(remittance.account)
         remittances << remittance
       end
     end

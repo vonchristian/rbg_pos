@@ -12,7 +12,7 @@ module StoreFrontModule
       def show
         @order = current_store_front.sales_orders.find(params[:id])
       end
-      
+
       def destroy
         @order = current_store_front.sales_orders.find(params[:id])
         if params[:work_order_id].present?
@@ -31,6 +31,7 @@ module StoreFrontModule
       end
 
       private
+      
       def cancel_sales_order
         ::StoreFronts::Orders::SalesOrders::Cancellation.new(sales_order: @order).cancel!
       end
