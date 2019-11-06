@@ -5,7 +5,7 @@ module StoreFrontModule
         if params[:search].present?
           @pagy, @orders = pagy(current_store_front.sales_orders.text_search_with_stocks(params[:search]))
         else
-          @pagy, @orders = pagy(current_store_front.sales_orders.order(created_at: :desc))
+          @pagy, @orders = pagy(current_store_front.sales_orders.includes(:commercial_document, :store_front, :employee, :line_items, :cash_payment, :other_sales_line_items, :sales_order_line_items).order(created_at: :desc))
         end
       end
 
@@ -31,7 +31,7 @@ module StoreFrontModule
       end
 
       private
-      
+
       def cancel_sales_order
         ::StoreFronts::Orders::SalesOrders::Cancellation.new(sales_order: @order).cancel!
       end

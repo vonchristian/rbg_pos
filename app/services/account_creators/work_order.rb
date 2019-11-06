@@ -23,7 +23,7 @@ module AccountCreators
         name:         receivable_account_name,
         account_code: SecureRandom.uuid)
         work_order.update(receivable_account: account)
-        customer.receivable_account.sub_accounts.create(sub_account: account)
+
       end
     end
 
@@ -34,7 +34,7 @@ module AccountCreators
         name:         sales_revenue_account_name,
         account_code: SecureRandom.uuid)
         work_order.update(sales_revenue_account: account)
-        customer.sales_revenue_account.sub_accounts.create(sub_account: account)
+
       end
     end
 
@@ -46,7 +46,7 @@ module AccountCreators
         name:         sales_discount_account_name,
         account_code: SecureRandom.uuid)
         work_order.update(sales_discount_account: account)
-        customer.sales_discount_account.sub_accounts.create(sub_account: account)
+
       end
     end
 
@@ -57,7 +57,7 @@ module AccountCreators
         name:         service_revenue_account_name,
         account_code: SecureRandom.uuid)
         work_order.update(service_revenue_account: account)
-        customer.service_revenue_account.sub_accounts.create(sub_account: account)
+        
       end
     end
 
