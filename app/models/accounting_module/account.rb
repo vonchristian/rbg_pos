@@ -2,21 +2,20 @@ module AccountingModule
   class Account < ApplicationRecord
     include PgSearch::Model
     pg_search_scope :text_search, :against => [:name, :account_code]
-
     class_attribute :normal_credit_balance
     belongs_to :business
-    has_many :sub_accounts,   class_name: "AccountingModule::SubAccount", foreign_key: 'main_account_id'
-    has_many :amounts,        class_name: "AccountingModule::Amount"
-    has_many :credit_amounts, :class_name => 'AccountingModule::CreditAmount'
-    has_many :debit_amounts,  :class_name => 'AccountingModule::DebitAmount'
+
+    has_many :amounts,        class_name: 'AccountingModule::Amount'
+    has_many :credit_amounts, class_name: 'AccountingModule::CreditAmount'
+    has_many :debit_amounts,  class_name: 'AccountingModule::DebitAmount'
     has_many :entries,        through: :amounts, source: :entry
-    has_many :credit_entries, :through => :credit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
-    has_many :debit_entries,  :through => :debit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
+    has_many :credit_entries, through: :credit_amounts, source: :entry, class_name: 'AccountingModule::Entry'
+    has_many :debit_entries,  through: :debit_amounts, source: :entry, class_name: 'AccountingModule::Entry'
 
     validates :type, presence: true
-    validates :name, :account_code, presence: true, uniqueness: true
+    validates :name, :account_code, presence: true, uniqueness: { scope: :business_id }
 
-    scope :assets,     -> { where(type: 'AccountingModule::Asset') }
+    scope :assets,      -> { where(type: 'AccountingModule::Asset') }
     scope :liabilities, -> { where(type: 'AccountingModule::Liability') }
     scope :equities,    -> { where(type: 'AccountingModule::Equity') }
     scope :revenues,    -> { where(type: 'AccountingModule::Revenue') }
@@ -49,8 +48,7 @@ module AccountingModule
 
      def self.balance(options={})
        accounts_balance ||= BigDecimal('0')
-       accounts = self.all
-       accounts.each do |account|
+       self.all.each do |account|
          if account.contra?
            accounts_balance -= account.balance(options)
          else
@@ -62,8 +60,7 @@ module AccountingModule
 
      def self.debits_balance(options={})
        accounts_balance = BigDecimal('0')
-       accounts = self.all
-       accounts.each do |account|
+       self.all.each do |account|
          if account.contra
            accounts_balance -= account.debits_balance(options)
          else
@@ -86,11 +83,8 @@ module AccountingModule
      end
 
     def self.trial_balance
-      if self.new.class == AccountingModule::Account
-        AccountingModule::Asset.balance - (AccountingModule::Liability.balance + AccountingModule::Equity.balance + AccountingModule::Revenue.balance - AccountingModule::Expense.balance)
-      else
-        raise(NoMethodError, "undefined method 'trial_balance'")
-      end
+     return raise(NoMethodError, "undefined method 'trial_balance'") unless self.new.class == AccountingModule::Account
+     assets.balance - (liabilities.balance + equities.balance + revenues.balance - expenses.balance)
     end
 
     def balance(options={})
@@ -105,12 +99,9 @@ module AccountingModule
     def credits_balance(options={})
       credit_amounts.balance(options)
     end
+
     def debits_balance(options={})
       debit_amounts.balance(options)
-    end
-    def deactivate!
-      self.active = false
-      self.save
     end
   end
 end

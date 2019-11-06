@@ -8,6 +8,14 @@ FactoryBot.define do
 
     end
 
+    factory :liability, class: AccountingModule::Liability do
+
+    end
+
+    factory :equity, class: AccountingModule::Equity do
+
+    end
+
     factory :revenue, class: AccountingModule::Revenue do
 
     end

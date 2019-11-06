@@ -21,6 +21,7 @@ module StoreFrontModule
         if @work_order.present?
           @work_order.destroy_entry_for(order: order)
         end
+        ::StoreFronts::Orders::SalesOrders::Cancellation.new(@order).cancel!
         @order.destroy
         if @work_order.present?
           redirect_to repair_services_section_work_order_url(@work_order), notice: "deleted successfully"
