@@ -15,7 +15,7 @@ class OtherSalesForm
 
   private
   def create_order
-    order = StoreFrontModule::Orders::SalesOrder.new(
+    order = StoreFrontModule::Orders::SalesOrder.create!(
       description: description,
       commercial_document: find_customer,
       date: date,
@@ -24,7 +24,7 @@ class OtherSalesForm
       store_front: find_employee.store_front,
       account_number: account_number)
       create_accounts(order)
-    order.save!
+      order.save!
     order.create_cash_payment(cash_tendered: amount)
   end
 

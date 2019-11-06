@@ -21,8 +21,8 @@ module AccountingModule
 	  private
 	  def create_entry
 	  	AccountingModule::Entry.create!(recorder_id: recorder_id, commercial_document_id: cashier_id, commercial_document_type: "User", entry_date: entry_date, reference_number: reference_number, description: description,
-	  		credit_amounts_attributes: [amount: amount, account: credit_account, commercial_document: find_cashier],
-	  		debit_amounts_attributes: [amount: amount, account: debit_account, commercial_document: find_cashier])
+	  		credit_amounts_attributes: [amount: amount, account: credit_account],
+	  		debit_amounts_attributes: [amount: amount, account: debit_account])
 	  end
 	  def find_proprietor
 	  	User.find_by_id(recorder_id)
