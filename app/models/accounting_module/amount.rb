@@ -35,6 +35,8 @@ module AccountingModule
       if options[:from_date] && options[:to_date]
         date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
         joins(:entry).where('entries.entry_date' => (date_range.start_date..date_range.end_date))
+      else
+        self.all
       end
     end
 

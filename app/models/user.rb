@@ -25,12 +25,10 @@ class User < ApplicationRecord
 
   delegate :balance, to: :default_cash_on_hand_account, prefix: true, allow_nil: true
   before_save :set_default_image
+
   def self.cash_on_hand_accounts
-    accounts = []
-    self.all.each do |user|
-      accounts << user.cash_on_hand_account
-    end
-    accounts.compact
+    ids = pluck(:cash_on_hand_account_id)
+    AccountingModule::Account.where(id: ids.uniq.compact.flatten)
   end
 
   def name_and_store_front
@@ -50,7 +48,7 @@ class User < ApplicationRecord
   def received_cash_transfers(options={})
     transfers = []
     cash_on_hand_account.debit_amounts.entered_on(options).each do |transfer|
-      if User.cash_on_hand_accounts.include?(transfer.account)
+      if User.cash_on_hand_accounts.ids.include?(transfer.account_id)
         transfers << transfer
       end
     end
@@ -60,7 +58,7 @@ class User < ApplicationRecord
   def remittances(options={})
     remittances = []
     cash_on_hand_account.credit_amounts.entered_on(options).each do |remittance|
-      if User.cash_on_hand_accounts.include?(remittance.account)
+      if User.cash_on_hand_accounts.ids.include?(remittance.account_id)
         remittances << remittance
       end
     end
