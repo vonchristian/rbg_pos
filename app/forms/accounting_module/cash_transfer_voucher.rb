@@ -18,6 +18,7 @@ module AccountingModule
     private
     def create_voucher
       voucher = Voucher.create!(
+        preparer: find_employee,
         account_number: account_number,
         payee: find_employee,
         reference_number: reference_number,

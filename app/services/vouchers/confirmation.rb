@@ -6,6 +6,7 @@ module Vouchers
     end
     def confirm!
       entry = AccountingModule::Entry.new(
+        recorder: voucher.preparer,
         entry_date: voucher.date,
         reference_number: voucher.reference_number,
         description: voucher.description
