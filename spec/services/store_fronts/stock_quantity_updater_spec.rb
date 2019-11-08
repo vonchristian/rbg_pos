@@ -6,7 +6,7 @@ module StoreFronts
       stock = create(:stock)
 
       entry    = create(:entry_with_credit_and_debit)
-      voucher  = create(:voucher, accounting_entry: entry)
+      voucher  = create(:voucher, entry: entry)
       order    = create(:purchase_order, voucher: voucher)
       purchase = create(:purchase_order_line_item, quantity: 100, stock: stock)
       order.line_items << purchase
@@ -18,7 +18,7 @@ module StoreFronts
       expect(stock.available_quantity).to eql 100
 
       sale_entry   = create(:entry_with_credit_and_debit)
-      sale_voucher = create(:voucher, accounting_entry: sale_entry)
+      sale_voucher = create(:voucher, entry: sale_entry)
       sales_order  = create(:sales_order, voucher: sale_voucher)
       sale         = create(:sales_order_line_item, stock: stock, quantity: 10)
       sales_order.line_items << sale

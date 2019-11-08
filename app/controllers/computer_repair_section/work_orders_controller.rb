@@ -32,7 +32,7 @@ module ComputerRepairSection
       @work_order.update(update_params)
       if @work_order.save
         if @work_order.released?
-          @work_order.update_attributes!(release_date: @work_order.updated_at)
+          @work_order.update!(release_date: @work_order.updated_at)
         end
         redirect_to computer_repair_section_work_order_url(@work_order), notice: "Updated successfully"
       else

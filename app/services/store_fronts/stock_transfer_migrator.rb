@@ -8,7 +8,7 @@ module StoreFronts
     def migrate!
       purchase_order_line_item.stock_transfer_order_line_items.each do |line_item|
         if line_item.stock.blank?
-          line_item.update_attributes!(stock: purchase_order_line_item.stock)
+          line_item.update!(stock: purchase_order_line_item.stock)
         end
       end
     end

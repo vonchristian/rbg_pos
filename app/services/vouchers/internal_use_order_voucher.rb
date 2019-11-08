@@ -25,7 +25,7 @@ module Vouchers
         account: store_front.internal_use_account
       )
       voucher.save!
-      order.update_attributes!(voucher: voucher)
+      order.update!(voucher: voucher)
     end
   end
 end

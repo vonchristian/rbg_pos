@@ -5,7 +5,8 @@ module Orders
     it 'cancel!' do
       voucher = create(:voucher)
       order   = create(:purchase_order, voucher: voucher)
-      entry   = create(:entry_with_credit_and_debit, commercial_document: voucher)
+      entry   = create(:entry_with_credit_and_debit)
+      voucher.update(entry: entry)
 
       Orders::Cancellation.new(order: order).cancel!
 

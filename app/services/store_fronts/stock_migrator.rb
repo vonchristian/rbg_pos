@@ -15,7 +15,7 @@ module StoreFronts
         store_front:         order.store_front,
         unit_of_measurement: purchase_order_line_item.unit_of_measurement,
         barcode:             purchase_order_line_item.bar_code)
-        purchase_order_line_item.update_attributes!(stock: stock)
+        purchase_order_line_item.update!(stock: stock)
       end
     end
   end

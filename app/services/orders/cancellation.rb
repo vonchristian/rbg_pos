@@ -2,23 +2,24 @@ module Orders
   class Cancellation
     attr_reader :order, :entry, :voucher
 
-    def initialize(args)
-      @order   = args.fetch(:order)
+    def initialize(order:)
+      @order   = order
       @voucher = @order.voucher
       @entry   = @voucher.entry
     end
 
     def cancel!
-      delete_entry
-      delete_order
-      delete_voucher
+      ActiveRecord::Base.transaction do
+        delete_order
+        delete_voucher
+        delete_entry
+      end
 
     end
 
+    private 
     def delete_entry
-      if entry.present?
-        entry.destroy
-      end
+      entry.destroy
     end
 
     def delete_voucher

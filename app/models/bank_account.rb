@@ -13,13 +13,15 @@ class BankAccount < ApplicationRecord
       "Withdrawal"
     end
   end
+
   def entry_color(entry)
-    if entry_type_for(entry) == "Deposit"
+    if entry_type_for(entry)    == "Deposit"
       "green"
     elsif entry_type_for(entry) == "Withdrawal"
       "red"
     end
   end
+  
   def deposits_balance
     cash_in_bank_account.debits_balance
   end

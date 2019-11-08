@@ -39,7 +39,7 @@ module StoreFrontModule
           reference_number: reference_number)
 
           find_cart.sales_order_line_items.each do |sales_order_line_item|
-            sales_order_line_item.update_attributes!(date: date)
+            sales_order_line_item.update!(date: date)
             sales_order_line_item.cart_id = nil
             order.sales_order_line_items << sales_order_line_item
 

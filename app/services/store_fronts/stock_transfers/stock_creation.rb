@@ -15,7 +15,7 @@ module StoreFronts
         unit_of_measurement: line_item.unit_of_measurement,
         barcode:              stock.barcode)
 
-        line_item.update_attributes!(stock: new_stock)
+        line_item.update!(stock: new_stock)
       end
     end
   end

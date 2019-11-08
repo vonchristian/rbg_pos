@@ -8,8 +8,13 @@ module Vouchers
     belongs_to :commercial_document, polymorphic: true, optional: true
     belongs_to :recorder, class_name: "User", optional: true
     delegate :name, to: :account, prefix: true
+
     def self.without_voucher
       where(voucher_id: nil)
+    end
+
+    def self.total
+      sum(:amount)
     end
   end
 end

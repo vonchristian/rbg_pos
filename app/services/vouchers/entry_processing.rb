@@ -25,7 +25,7 @@ module Vouchers
       end
       entry.save!
 
-      voucher.update_attributes!(entry_id: entry.id)
+      voucher.update!(entry_id: entry.id)
     end
   end
 end

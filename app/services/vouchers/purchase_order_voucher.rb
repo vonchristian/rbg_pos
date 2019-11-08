@@ -27,7 +27,7 @@ module Vouchers
         account: applicable_account
       )
       voucher.save!
-      order.update_attributes!(voucher: voucher)
+      order.update!(voucher: voucher)
     end
 
     def applicable_account

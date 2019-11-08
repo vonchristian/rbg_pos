@@ -5,7 +5,7 @@ module StoreFronts
     it 'create_stock' do
       product                  = create(:product)
       entry                    = create(:entry_with_credit_and_debit)
-      voucher                  = create(:voucher, accounting_entry: entry)
+      voucher                  = create(:voucher, entry: entry)
       order                    = create(:purchase_order, voucher: voucher)
       purchase_order_line_item = create(:purchase_order_line_item, product: product, purchase_order: order, stock_id: nil)
 

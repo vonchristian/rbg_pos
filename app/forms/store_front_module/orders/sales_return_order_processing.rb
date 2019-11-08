@@ -35,7 +35,7 @@ module StoreFrontModule
         search_term: find_customer.name,
         reference_number: reference_number)
         find_cart.sales_return_order_line_items.each do |line_item|
-          line_item.update_attributes!(date: date)
+          line_item.update!(date: date)
           line_item.cart_id = nil
           line_item.save
           order.sales_return_order_line_items << line_item

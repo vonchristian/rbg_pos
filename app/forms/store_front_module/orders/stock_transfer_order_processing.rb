@@ -40,7 +40,7 @@ module StoreFrontModule
           order.save!
 
           find_cart.purchase_order_line_items.each do |line_item|
-            line_item.update_attributes!(date: date)
+            line_item.update!(date: date)
             line_item.cart_id = nil
             order.purchase_order_line_items << line_item
             create_stock(line_item)
@@ -52,7 +52,7 @@ module StoreFrontModule
 
           if find_registry.present?
             find_registry.purchase_order_line_items.each do |line_item|
-              line_item.update_attributes!(date: date)
+              line_item.update!(date: date)
               line_item.cart_id = nil
               order.purchase_order_line_items << line_item
 
@@ -66,7 +66,7 @@ module StoreFrontModule
       def create_stock(line_item)
         ::StoreFronts::StockTransfers::StockCreation.new(line_item: line_item, destination_store_front: find_destination_store_front).create_stock!
       end
-      
+
       def create_accounts(order)
         ::AccountCreators::PurchaseOrder.new(purchase_order: order).create_accounts!
       end

@@ -21,7 +21,7 @@ module StoreFrontModule
       private
       def add_items
         cart.sales_order_line_items.each do |line_item|
-          line_item.update_attributes!(date: date)
+          line_item.update!(date: date)
         end
         sales_order.sales_order_line_items << cart.sales_order_line_items
 

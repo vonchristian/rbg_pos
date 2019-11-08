@@ -17,7 +17,7 @@ module StoreFrontModule
 
       private
       def create_purchase_order
-      order = StoreFrontModule::Orders::PurchaseOrder.create!(
+      order = StoreFrontModule::Orders::PurchaseOrder.new(
         supplier:                find_supplier,
         date:                    date,
         store_front:             find_employee.store_front,
@@ -26,22 +26,27 @@ module StoreFrontModule
         voucher:                 find_voucher,
         search_term:             find_supplier.business_name,
         employee:                find_employee)
+        create_accounts(order)
+        order.save!
       end
 
       def remove_cart_reference
         find_cart.purchase_order_line_items.each do |line_item|
-          line_item.update_attributes!(date: date)
+          line_item.update!(date: date)
           line_item.cart_id = nil
           find_order.purchase_order_line_items << line_item
         end
         if find_registry.present?
           find_registry.purchase_order_line_items.each do |line_item|
-            line_item.update_attributes!(date: date)
+            line_item.update!(date: date)
             line_item.cart_id = nil
             find_order.purchase_order_line_items << line_item
           end
         end
       end
+      def create_accounts(order)
+        ::AccountCreators::PurchaseOrder.new(purchase_order: order).create_accounts!
+      end 
 
       def create_purchase_prices
         find_order.purchase_order_line_items.each do |line_item|
