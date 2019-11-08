@@ -30,17 +30,13 @@ module Orders
             entry_date: Date.current,
             description: "Sales Return - #{order.account_number}",
             credit_amounts_attributes: [{ amount: line_item.total_cost,
-                                          account: credit_account,
-                                          commercial_document: order},
+                                          account: credit_account},
                                         { amount: line_item.cost_of_goods_sold,
-                                          account: cost_of_goods_sold,
-                                          commercial_document: order} ],
+                                          account: cost_of_goods_sold} ],
               debit_amounts_attributes:[{amount: line_item.total_cost,
-                                          account: sales,
-                                          commercial_document: order},
+                                          account: sales},
                                          { amount: line_item.cost_of_goods_sold,
-                                          account: merchandise_inventory,
-                                          commercial_document: order}])
+                                          account: merchandise_inventory}])
         end
 
         def delete_item
