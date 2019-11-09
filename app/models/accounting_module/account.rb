@@ -35,6 +35,10 @@ module AccountingModule
       AccountingModule::Entry.where(id: ids)
     end
 
+    def self.assets_and_liabilities
+      self.assets.or(self.liabilities)
+    end
+
     def self.active
       where(active: true)
     end
