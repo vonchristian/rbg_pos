@@ -25,6 +25,11 @@ module AccountingModule
       accounts = User.pluck(:cash_on_hand_account_id)
      where(id: accounts)
     end
+
+    def self.except_accounts(accounts)
+      where.not(id: accounts)
+    end
+
     def self.debit_entries
       ids = AccountingModule::DebitAmount.for_account(account_id: self.pluck(:id)).pluck(:entry_id)
       AccountingModule::Entry.where(id: ids)
