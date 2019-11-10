@@ -12,11 +12,7 @@
           <div class="row">
             <div class="col-md-5">
               <%= f.input :account_id, label: false, placeholder: "Select Account", collection:
-              current_business.accounts.assets.
-              except_accounts(Customer.pluck(:receivable_account_id)).
-              except_accounts(WorkOrder.pluck(:receivable_account_id)).
-              except_accounts(Order.pluck(:receivable_account_id)).
-              map{ |a| [ a.name, a.id] }, input_html: { class: 'chosen-select' } %>
+              @accounts.map{ |a| [ a.name, a.id] }, input_html: { class: 'chosen-select' } %>
             </div>
             <div class="col-md-3">
               <%= f.input :amount, label: false, placeholder: "Amount" %>

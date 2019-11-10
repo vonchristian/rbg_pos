@@ -4,6 +4,10 @@ module Suppliers
       @supplier = Supplier.find(params[:supplier_id])
       @voucher_amount = Suppliers::VoucherAmountProcessing.new
       @voucher = Suppliers::VoucherProcessing.new
+      ids = []
+      ids << StoreFront.pluck(:merchandise_inventory_account_id)
+      ids << User.cash_on_hand_accounts.ids
+      @accounts = current_business.accounts.assets.where(id: ids.flatten.compact.uniq)
     end
     def create
       @supplier = Supplier.find(params[:supplier_id])
@@ -20,7 +24,7 @@ module Suppliers
       @voucher_amount = current_cart.voucher_amounts.find(params[:id])
       @voucher_amount.destroy
       redirect_to new_supplier_voucher_amount_url(@supplier)
-    end 
+    end
 
     private
     def voucher_amount_params
