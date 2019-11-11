@@ -23,6 +23,9 @@ module StoreFronts
     delegate :name,           to: :supplier,       prefix: true
     delegate :date,           to: :purchase_order, prefix: true, allow_nil: true
     delegate :quantity,       to: :purchase, prefix: true
+    def self.available_quantity
+      sum(&:available_quantity)
+    end 
     def self.processed
       joins(:purchase).where.not('line_items.order_id' => nil)
     end

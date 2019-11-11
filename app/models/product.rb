@@ -82,8 +82,8 @@ class Product < ApplicationRecord
 
 
 
-	def in_stock(args={})
-		balance(args)
+	def in_stock
+		stocks.available_quantity
 	end
 	def sold_items_count
 		sales_balance
