@@ -7,7 +7,7 @@ module Suppliers
       ids = []
       ids << StoreFront.pluck(:merchandise_inventory_account_id)
       ids << User.cash_on_hand_accounts.ids
-      @accounts = current_business.accounts.assets.where(id: ids.flatten.compact.uniq)
+      @accounts = AccountingModule::Account.where(id: ids.flatten.compact.uniq)
     end
     def create
       @supplier = Supplier.find(params[:supplier_id])
