@@ -82,8 +82,11 @@ class Product < ApplicationRecord
 
 
 
-	def in_stock
-		stocks.available_quantity
+	def in_stock(store_front:)
+		stocks.
+    where(store_front: store_front).
+    processed.
+    available_quantity
 	end
 	def sold_items_count
 		sales_balance
