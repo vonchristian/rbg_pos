@@ -10,6 +10,7 @@ module Orders
 
     def cancel!
       ActiveRecord::Base.transaction do
+        delete_stocks
         delete_order
         delete_voucher
         delete_entry
@@ -17,12 +18,20 @@ module Orders
 
     end
 
-    private 
+    private
+
+    def delete_stocks
+      order.stocks.destroy_all
+    end
+
     def delete_entry
-      entry.destroy
+      if entry.present?
+        entry.destroy
+      end
     end
 
     def delete_voucher
+      voucher.orders.destroy_all
       voucher.destroy
     end
 

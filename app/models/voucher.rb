@@ -4,7 +4,7 @@ class Voucher < ApplicationRecord
   belongs_to :preparer,            class_name: "User", optional: true
   belongs_to :entry,    class_name: 'AccountingModule::Entry', foreign_key: 'entry_id', optional: true
   has_many :voucher_amounts,       class_name: "Vouchers::VoucherAmount", dependent: :destroy
-
+  has_many :orders, dependent: :destroy
   delegate :name, to: :preparer, prefix: true, allow_nil: true
   delegate :name, to: :disburser, prefix: true, allow_nil: true
   delegate :name, to: :payee, prefix: true

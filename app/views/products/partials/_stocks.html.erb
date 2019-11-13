@@ -1,20 +1,18 @@
 <div class="tab-pane <%= 'active' if current_page?(product_stocks_path(@product)) %>" id="product-stocks">
-                             <div class="content table-responsive table-full-width">
-                                <table class="table table-striped">
-                                    <thead>
-
-                                      <th>Product</th>
-                                      <th>Date Purchased </th>
-                                      <th> In Stock </th>
-
-                                      <th>Quantity</th>
-                                      <th>Unit Cost</th>
-                                      <th>Total Cost</th>
-                                      <th>Supplier</th>
-                                      <th></th>
-                                    </thead>
-                                    <tbody>
-                                      <% @stocks.each do |stock| %>
+  <div class="content table-responsive table-full-width">
+    <table class="table table-striped">
+      <thead>
+        <th>Product</th>
+        <th>Date Purchased </th>
+        <th> In Stock </th>
+        <th>Quantity</th>
+        <th>Unit Cost</th>
+        <th>Total Cost</th>
+        <th>Supplier</th>
+        <th></th>
+      </thead>
+      <tbody>
+        <% @stocks.each do |stock| %>
                                       <tr>
                                       <td><%=link_to stock.name, store_front_module_stock_path(stock) %><br>
                                         <small><%= stock.barcode %></small><br>
