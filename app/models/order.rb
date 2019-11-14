@@ -1,7 +1,10 @@
 class Order < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :text_search, against: [:reference_number, :search_term]
-  pg_search_scope :text_search_with_stocks, against: [:reference_number, :search_term], associated_against: { line_items: [:bar_code] }, associated_against: { stocks: [:barcode] }
+  pg_search_scope :text_search_with_stocks, against: [:reference_number, :search_term],
+  associated_against: { line_items: [:bar_code] },
+  associated_against: { stocks: [:barcode] },
+  associated_against: { products: [:name] }  
 
   multisearchable against: [:reference_number, :description]
 
@@ -13,7 +16,7 @@ class Order < ApplicationRecord
   belongs_to :voucher,                 optional: true
   has_many :line_items,                dependent: :destroy
   has_many :stocks,                    through: :line_items
-
+  has_many :products, through: :stocks
   delegate :full_name, to: :technician, prefix: true, allow_nil: true #WTF
   delegate :cash_tendered, :discount_amount, to: :cash_payment, prefix: true, allow_nil: true
   delegate :full_name, to: :employee, prefix: true, allow_nil: true
