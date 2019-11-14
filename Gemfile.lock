@@ -431,6 +431,7 @@ DEPENDENCIES
   devise_invitable (~> 1.7.0)
   factory_bot_rails
   faker
+  ffi (= 1.11.2)
   font-awesome-rails
   groupdate
   guard-rspec

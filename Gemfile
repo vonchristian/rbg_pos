@@ -48,6 +48,7 @@ gem "roo", "2.7.0"
 gem 'simple_calendar'
 gem "pdf-reader"
 gem 'pagy'
+gem 'ffi', '1.11.2'
 
 group :development do
   gem 'bullet'
