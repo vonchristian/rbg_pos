@@ -52,10 +52,6 @@ gem 'pagy'
 gem 'ffi', '1.11.2'
 
 group :development do
-  gem 'bullet'
-  gem "letter_opener"
-  gem 'guard-rspec', require: false
-  gem 'web-console', '>= 3.3.0'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
@@ -64,15 +60,17 @@ end
 
 group :development, :test do
   gem 'rspec-rails'
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'factory_bot_rails'
   gem 'faker'
-  gem 'launchy'
+  gem 'bullet'
 end
 
 group :test do
   gem 'shoulda-matchers'
   gem 'capybara'
-  gem 'webdrivers', '~> 3.0'
+  gem 'webdrivers'
   gem 'database_rewinder'
 end
+
+gem 'rack-mini-profiler', require: false
+gem "simple_calendar"

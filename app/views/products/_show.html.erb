@@ -4,43 +4,52 @@
           <div class="row">
 
             <div class="col-md-9">
-              <h4 class="title-up"><%= @product.name.try(:upcase) %></h4>
+              <h4 class="title-up"><%= product.name.try(:upcase) %></h4>
 
             </div>
           </div>
 
           <ul class="nav nav-pills nav-pills-underline">
             <li class="nav-item">
-             <%= link_to 'Info', product_path(@product), class: "nav-link #{ 'active' if current_page?(product_path(@product))}" %>
+             <%= link_to 'Info', product_path(product), class: "nav-link #{ 'active' if current_page?(product_path(product))}" %>
 
             </li>
              <li class="nav-item">
-              <%= link_to 'Purchases', product_stocks_path(@product), id: "#{@product.id}-stocks", class: "nav-link #{'active' if current_page?(product_stocks_path(@product))}" %>
+              <%= link_to 'Purchases', product_stocks_path(product), id: "#{product.id}-stocks", class: "nav-link #{'active' if current_page?(product_stocks_path(product))}" %>
             </li>
 
             <li class="nav-item">
-             <%= link_to 'Sales', product_orders_path(@product), class: "nav-link #{'active' if current_page?(product_orders_path(@product))}" %>
+             <%= link_to 'Sales', product_orders_path(product), class: "nav-link #{'active' if current_page?(product_orders_path(product))}" %>
             </li>
 
-             <li class="nav-item">
-              <%= link_to 'Stocks Transfers', product_stock_transfers_path(@product), id: "#{@product.id}-stocks", class: "nav-link #{'active' if current_page?(product_stock_transfers_path(@product))}" %>
+            <li class="nav-item">
+              <%= link_to 'Stocks Transfers', product_stock_transfers_path(product), id: "#{product.id}-stocks", class: "nav-link #{'active' if current_page?(product_stock_transfers_path(product))}" %>
             </li>
+            <% if current_user.proprietor? %>
+
+              <li class="nav-item">
+                <%= link_to 'Settings', product_settings_path(product), id: "#{product.id}-settings", class: "nav-link #{'active' if current_page?(product_settings_path(product))}" %>
+              </li>
+            <% end %>
 
           </ul>
           <br />
 
 
-              <% if current_page? product_path(@product) %>
+              <% if current_page? product_path(product) %>
                <%=render 'products/partials/info' %>
                <% end %>
-              <% if current_page? product_orders_path(@product) %>
+              <% if current_page? product_orders_path(product) %>
                <%=render 'products/partials/sales' %>
                <% end %>
-               <% if current_page? product_stocks_path(@product) %>
+               <% if current_page? product_stocks_path(product) %>
                  <%=render 'products/partials/stocks' %>
                <% end %>
-               <% if current_page? product_stock_transfers_path(@product) %>
+               <% if current_page? product_stock_transfers_path(product) %>
                  <%=render 'products/partials/stock_transfers' %>
+               <% end %>
+               <% if current_page? product_settings_path(product) %>
+                 <%= render 'products/partials/settings', product: product %>
                <% end %>
 
            </div>

@@ -1,6 +1,8 @@
+</div>
+</div>
 <div class="tab-pane <%= 'active' if current_page?(product_orders_path(@product)) %>" id="product-sales">
   <div class="content">
-    <div class="container-fluid">
+    <div class="container">
       <div class="row">
         <div class="col-md-12">
           <div class="card">
@@ -16,16 +18,18 @@
                 </thead>
                 <tbody>
                   <% @orders.each do |order| %>
-      <%= render 'store_front_module/orders/partials/header', order: order %>
-
+                    <%= link_to store_front_module_sales_order_path(order) do %>
+                      <%= render 'store_front_module/orders/partials/header', order: order %>
+                    <% end %>
                   <% end %>
                 </tbody>
               </table>
-              <center><%= will_paginate @orders %>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <center><%== pagy_bootstrap_nav(@pagy) %></center>
+
 </div>

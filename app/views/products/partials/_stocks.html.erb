@@ -21,7 +21,7 @@
                                               <% stock.sales.processed.each do |sale| %>
                                                 Quantity: <span class="badge bg-green"><%= sale.quantity %></span><br>
                                                Customer: <%= sale.customer_name %><br>
-                                               Date: <%= sale.date.strftime('%B %e, %Y') %><br>
+                                               Date: <%= sale.date.strftime('%b %e, %Y') %><br>
                                                REF #: <%= sale.reference_number %>
                                               <% end %>
                                             <% end %>
@@ -37,7 +37,7 @@
 
                                       </td>
 
-                                      <td><%= stock.try(:purchase_order_date).try(:strftime, ("%B %e, %Y")) %></td>
+                                      <td><%= stock.try(:purchase_order_date).try(:strftime, ("%b %e, %Y")) %></td>
                                       <td> <%= stock.balance %></td>
 
                                       <td><%= stock.purchase_quantity %></td>

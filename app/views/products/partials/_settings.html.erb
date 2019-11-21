@@ -1,0 +1,5 @@
+<h4 class="title-up"> Product Settings </h4>
+
+<% if current_user.proprietor? %>
+  <%= link_to 'Edit Product', edit_product_path(@product), class: "btn btn-danger" %>
+<% end %>

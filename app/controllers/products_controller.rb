@@ -23,12 +23,14 @@ class ProductsController < ApplicationController
   end
   def low_on_stock
     @low_on_stock_products = (Product.low_on_stock).paginate(page: params[:page], per_page: 35)
-  end
+	end
+	
 	def new
 		@product = Product.new
 		authorize @product
 		@category = Category.new
 	end
+
 	def create
 		@product = Product.create(product_params)
 		if @product.valid?
@@ -38,6 +40,7 @@ class ProductsController < ApplicationController
 			render :new
 		end
 	end
+
 	def show
 		@product = Product.find(params[:id])
 
@@ -54,7 +57,7 @@ class ProductsController < ApplicationController
 		@product.update(product_params)
 		if @product.valid?
 			@product.save
-			redirect_to "/products?search=#{@product.name}", notice: "Product updated successfully"
+			redirect_to product_settings_url(@product), notice: "Product updated successfully"
 		else
 			render :edit
 		end

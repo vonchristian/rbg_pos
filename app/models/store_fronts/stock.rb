@@ -18,23 +18,12 @@ module StoreFronts
 
     delegate :name,           to: :product
     delegate :unit_code,      to: :unit_of_measurement
-    delegate :purchase_order, :unit_cost,  to: :purchase
+    delegate :purchase_order, to: :purchase
+    delegate :unit_cost,      to: :purchase, prefix: true
     delegate :supplier,       to: :purchase_order, allow_nil: true
     delegate :name,           to: :supplier,       prefix: true
     delegate :date,           to: :purchase_order, prefix: true, allow_nil: true
     delegate :quantity,       to: :purchase, prefix: true
-
-    def self.to_csv
-     attributes = %w{name barcode purchase_quantity sales_balance stock_transfers_balance spoilage_balance internal_uses_balance purchase_returns_balance available_quantity}
-
-     CSV.generate(headers: true) do |csv|
-       csv << attributes
-
-       all.each do |user|
-         csv << attributes.map{ |attr| user.send(attr) }
-       end
-     end
-   end
 
     def self.available
       where(available: true)
@@ -61,9 +50,10 @@ module StoreFronts
       sales_returns_balance    -
       purchase_returns_balance -
       stock_transfers_balance  -
-      sales_balance  -
+      sales_balance            -
       internal_uses_balance    -
-      spoilages_balance
+      spoilages_balance        - 
+      for_warranties_balance
     end
 
     def sold?
@@ -105,6 +95,10 @@ module StoreFronts
     def purchase_returns_balance
       purchase_returns.processed.balance
     end
+
+    def for_warranties_balance
+      for_warranties.processed.balance 
+    end 
 
     def update_available_quantity
       ::StoreFronts::StockQuantityUpdater.new(stock: self).update_available_quantity!

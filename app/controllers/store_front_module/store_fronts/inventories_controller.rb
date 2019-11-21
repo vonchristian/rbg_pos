@@ -24,15 +24,14 @@ module StoreFrontModule
         headers["Content-Type"] = "text/csv"
     
         # Make the file download with a specific filename
-        headers["Content-Disposition"] = "attachment; filename=\"example.csv\""
+        headers["Content-Disposition"] = "attachment; filename=\"Stock Inventory.csv\""
     
         # Don't buffer when going through proxy servers
         headers["X-Accel-Buffering"] = "no"
     
         # Set an Enumerator as the body
         self.response_body = csv_body
-    
-        # Set the status to success
+  
         response.status = 200
       end
     
@@ -41,6 +40,7 @@ module StoreFrontModule
       def csv_body
         Enumerator.new do |yielder|
           yielder << CSV.generate_line(["Name", "Barcode", "Purchases", "Sales", "Stock Transfers", "Spoilages", "Internal Uses", "Available QTY"])
+          
           @stocks.joins(:product).order('products.name').each do |stock|
             yielder << CSV.generate_line([
               stock.name, 

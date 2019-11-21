@@ -26,9 +26,10 @@ Rails.application.routes.draw do
     match "/out_of_stock" => "products#out_of_stock",  via: [:get], on: :collection
     match "/low_on_stock" => "products#low_on_stock",  via: [:get], on: :collection
 
-  	resources :stocks, only: [:index, :new, :create, :edit, :update], module: :products
+  	resources :stocks,          only: [:index, :new, :create, :edit, :update], module: :products
     resources :stock_transfers, only: [:index], module: :products
-    resources :orders, only: [:index], module: :products
+    resources :orders,          only: [:index], module: :products
+    resources :settings,        only: [:index], module: :products
   end
   resources :line_items, only: [:new, :create, :edit, :update]
   resources :orders, only: [:index, :show, :new, :create, :destroy]

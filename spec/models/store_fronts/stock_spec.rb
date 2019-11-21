@@ -21,7 +21,7 @@ module StoreFronts
       it { is_expected.to delegate_method(:name).to(:product) }
       it { is_expected.to delegate_method(:unit_code).to(:unit_of_measurement) }
       it { is_expected.to delegate_method(:purchase_order).to(:purchase) }
-      it { is_expected.to delegate_method(:unit_cost).to(:purchase) }
+      it { is_expected.to delegate_method(:unit_cost).to(:purchase).with_prefix }
       it { is_expected.to delegate_method(:supplier).to(:purchase_order) }
       it { is_expected.to delegate_method(:name).to(:supplier).with_prefix }
       it { is_expected.to delegate_method(:date).to(:purchase_order).with_prefix }
@@ -40,11 +40,15 @@ module StoreFronts
     end
 
     it '.available' do
-      stock   = create(:stock, available: true)
-      stock_2 = create(:stock, available: false)
+      available_stock    = create(:stock, available: true)
+      discontinued_stock = create(:stock, available: false)
+      
+      available = described_class.available
+      
+      expect(available).to eq [available_stock]
+      expect(available).to_not eq [discontinued_stock]
 
-      expect(described_class.available).to include(stock)
-      expect(described_class.available).to_not include(stock_2)
+      
     end
 
     it '.available_quantity' do
@@ -61,6 +65,7 @@ module StoreFronts
       order    = create(:purchase_order, voucher: voucher)
       purchase = create(:purchase_order_line_item, quantity: 100, stock: stock)
       order.line_items << purchase
+      
       expect(stock.balance).to eql 100
 
       #sales
@@ -69,6 +74,7 @@ module StoreFronts
       sales_order  = create(:sales_order, voucher: sale_voucher)
       sale         = create(:sales_order_line_item, stock: stock, quantity: 10)
       sales_order.line_items << sale
+      
       expect(stock.balance).to eql 90
 
       #stock_transfers
@@ -76,6 +82,7 @@ module StoreFronts
       transfer_voucher = create(:voucher, entry: transfer_entry)
       transfer_order   = create(:stock_transfer_order, voucher: transfer_order)
       transfer         = create(:stock_transfer_order_line_item, quantity: 10, stock: stock, order: transfer_order)
+      
       expect(stock.balance).to eql 80
 
       #internal_uses

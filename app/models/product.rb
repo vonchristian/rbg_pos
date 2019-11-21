@@ -52,9 +52,11 @@ class Product < ApplicationRecord
   def low_on_stock?
     !out_of_stock? && low_stock_count > in_stock
   end
+
   def out_of_stock?
     in_stock <= 0
   end
+
   def badge_color
     if out_of_stock?
       "danger"
@@ -64,6 +66,7 @@ class Product < ApplicationRecord
       "success"
     end
   end
+
   def last_purchase_cost
     purchases.last.try(:unit_cost)
   end
@@ -87,7 +90,8 @@ class Product < ApplicationRecord
     where(store_front: store_front).
     processed.
     available_quantity
-	end
+  end
+  
 	def sold_items_count
 		sales_balance
 	end

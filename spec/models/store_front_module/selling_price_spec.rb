@@ -13,7 +13,6 @@ module StoreFrontModule
       it { is_expected.to validate_numericality_of :price }
     end
 
-
     it ".price_for_unit_of_measurement(unit_of_measurement:)" do
       business            = create(:business)
       store_front         = create(:store_front, business: business)
