@@ -18,6 +18,7 @@ module StoreFrontModule
     def self.price_for_store_front(store_front:)
       for_store_front(store_front: store_front).try(:price)
     end
+    
     def self.for_store_front(store_front:)
       where(store_front: store_front).current
     end

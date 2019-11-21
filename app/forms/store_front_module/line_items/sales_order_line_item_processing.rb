@@ -81,6 +81,7 @@ module StoreFrontModule
         find_stock.balance_for_cart(find_cart)
       end
 
+
       def quantity_is_less_than_or_equal_to_available_quantity?
         errors[:quantity] << "exceeded available quantity" if quantity.to_f > available_quantity
       end

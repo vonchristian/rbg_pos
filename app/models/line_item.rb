@@ -65,7 +65,7 @@ class LineItem < ApplicationRecord
   end
 
   def self.balance(args={})
-    balance_finder(args.merge(line_items: self)).new(args.merge(line_items: self)).compute
+    sum(&:quantity)
   end
 
 

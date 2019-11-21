@@ -24,5 +24,7 @@ sheet.add_row [
   stock.purchase_returns.balance,
   stock.available_quantity
 ]
+  end
 end
-end
+
+File.open(wb)

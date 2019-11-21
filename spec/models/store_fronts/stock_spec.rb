@@ -14,11 +14,14 @@ module StoreFronts
       it { is_expected.to have_many :sales_returns }
       it { is_expected.to have_many :purchase_returns }
       it { is_expected.to have_many :for_warranties }
+      it { is_expected.to have_many :line_items }
     end
+
     describe 'delegations' do
       it { is_expected.to delegate_method(:name).to(:product) }
       it { is_expected.to delegate_method(:unit_code).to(:unit_of_measurement) }
       it { is_expected.to delegate_method(:purchase_order).to(:purchase) }
+      it { is_expected.to delegate_method(:unit_cost).to(:purchase) }
       it { is_expected.to delegate_method(:supplier).to(:purchase_order) }
       it { is_expected.to delegate_method(:name).to(:supplier).with_prefix }
       it { is_expected.to delegate_method(:date).to(:purchase_order).with_prefix }
@@ -43,6 +46,14 @@ module StoreFronts
       expect(described_class.available).to include(stock)
       expect(described_class.available).to_not include(stock_2)
     end
+
+    it '.available_quantity' do
+      stock_1 = create(:stock, available_quantity: 10)
+      stock_2 = create(:stock, available_quantity: 10)
+      
+      expect(described_class.available_quantity).to eql 20
+    end 
+
     it '#balance' do
       stock    = create(:stock)
       entry    = create(:entry_with_credit_and_debit)
@@ -106,6 +117,21 @@ module StoreFronts
       for_warranty         = create(:for_warranty_order_line_item, quantity: 10, stock: stock, order: for_warranty_order)
 
       expect(stock.balance).to eql 50
+    end
+
+    it '#balance_for_cart(cart)' do 
+      stock    = create(:stock)
+      entry    = create(:entry_with_credit_and_debit)
+      voucher  = create(:voucher, entry: entry)
+      order    = create(:purchase_order, voucher: voucher)
+      purchase = create(:purchase_order_line_item, quantity: 100, stock: stock)
+      order.line_items << purchase
+      expect(stock.balance).to eql 100
+
+      cart     = create(:cart)
+      sales_order_line_item = create(:sales_order_line_item, quantity: 10, stock: stock, cart: cart)
+
+      expect(stock.balance_for_cart(cart)).to eql 90
     end
   end
 end

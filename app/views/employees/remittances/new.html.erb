@@ -19,7 +19,7 @@
           <br>
           <div class="row">
             <div class="col-md-8 offset-md-3">
-              <h4 class="title-up"> <b><%= number_to_currency @employee.default_cash_on_hand_account_balance %></b></h4>
+              <h4 class="title-up"> <b><%= number_to_currency @employee.cash_on_hand_account.balance(to_date: Date.current.end_of_day) %></b></h4>
               <small class="text-muted">CASH ON HAND OF EMPLOYEE </small>
             </div>
           </div>
