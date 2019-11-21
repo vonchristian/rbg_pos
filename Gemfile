@@ -9,6 +9,7 @@ gem 'spreadsheet'
 gem 'rqrcode'
 gem 'webpacker', '~> 4.0'
 gem "font-awesome-rails"
+gem 'sidekiq'
 # gem 'activerecord-postgis-adapter'
 gem 'pg_search'
 gem 'chronic'
