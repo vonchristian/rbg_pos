@@ -7,20 +7,20 @@ class WorkOrder < ApplicationRecord
   multisearchable :against => [:description, :model_number, :serial_number,
     :updates_content, :reported_problem, :physical_condition, :service_number, :customer_name, :product_name]
 
-  belongs_to :receivable_account,      class_name: 'AccountingModule::Account', optional: true
-  belongs_to :sales_revenue_account,   class_name: 'AccountingModule::Account', optional: true
-  belongs_to :sales_discount_account,  class_name: 'AccountingModule::Account', optional: true
-  belongs_to :service_revenue_account, class_name: 'AccountingModule::Account', optional: true
+  belongs_to :receivable_account,      class_name: 'AccountingModule::Account'
+  belongs_to :sales_revenue_account,   class_name: 'AccountingModule::Account'
+  belongs_to :sales_discount_account,  class_name: 'AccountingModule::Account'
+  belongs_to :service_revenue_account, class_name: 'AccountingModule::Account'
 
   belongs_to :product_unit
   belongs_to :department,              optional: true
   belongs_to :work_order_category,     optional: true
   belongs_to :supplier,                optional: true
   belongs_to :section,                 optional: true
-  has_many :accessories
-  belongs_to :customer,                optional: true
+  belongs_to :customer                
   belongs_to :store_front
   has_one :charge_invoice,              as: :invoiceable, class_name: "Invoices::ChargeInvoice"
+  has_many :accessories
   has_many :technician_work_orders,     dependent: :destroy
   has_many :technicians,                through: :technician_work_orders
   has_many :work_order_updates,         as: :updateable, class_name: "Post", dependent: :destroy
@@ -30,8 +30,6 @@ class WorkOrder < ApplicationRecord
   has_many :sales_order_line_items,     through: :sales_orders, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem"
   has_many :accessories,                dependent: :destroy
   has_many :entries,                    class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
-
-  accepts_nested_attributes_for :product_unit
 
   validates :description, :physical_condition, :reported_problem, presence: true
   validates :customer_id, :date_received, presence: true
@@ -46,22 +44,20 @@ class WorkOrder < ApplicationRecord
   after_commit :set_customer_name, :set_product_name,  on: [:create, :update]
 
   def self.receivable_accounts
-    ids ||= pluck(:receivable_account_id)
+    ids = pluck(:receivable_account_id)
     AccountingModule::Account.where(id: ids.uniq.compact.flatten)
+  end
+
+  def self.total_receivables(args = {}) 
+    receivable_accounts.balance(args)
   end
 
   def self.done_and_rto
     where(status: 'done').or(self.where(status: 'return_to_owner'))
   end
 
-  def self.payment_entries #refactor
-    payments = []
-    all.each do |work_order|
-      work_order.payment_entries.each do |payment|
-        payments << payment
-      end
-     end
-    payments
+  def self.payment_entries
+    receivable_accounts.credit_entries
   end
 
   def name
@@ -98,29 +94,21 @@ class WorkOrder < ApplicationRecord
   end
   def self.from(hash={}) #refactor
     if hash[:from_date] && hash[:to_date]
-     from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date])
-      to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date])
-      where('updated_at' => (from_date.beginning_of_day)..(to_date.end_of_day))
+      date_range = DateRange.new(from_date: hash[:from_date], to_date: hash[:to_date])
+      where('date_received' => date_range.start_date..date_range.end_date)
     else
       all
     end
   end
 
-  def self.received_at(hash={}) #refactor
-    if hash[:from_date] && hash[:to_date]
-     from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date])
-      to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date])
-      where('date_received' => (from_date.beginning_of_day)..(to_date.end_of_day))
-    else
-      all
-    end
+  def self.received_at(from_date:, to_date:)
+    date_range = DateRange.new(from_date: from_date, to_date: to_date)
+    where('date_received' => date_range.start_date..date_range.end_date)
   end
 
-  def self.released_on(args={})
-    if args[:from_date] && args[:to_date]
-      date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
-      released.where('release_date' => date_range.range)
-    end
+  def self.released_on(from_date:, to_date:)
+    date_range = DateRange.new(from_date: from_date, to_date: to_date)
+    where('release_date' => date_range.start_date..date_range.end_date)
   end
 
   def self.payments

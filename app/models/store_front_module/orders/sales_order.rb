@@ -14,6 +14,14 @@ module StoreFrontModule
       delegate :full_name, to: :customer, prefix: true, allow_nil: true
       delegate :balance, to: :receivable_account
       before_destroy :delete_entry
+      def self.receivable_accounts 
+        ids = pluck(:receivable_account_id)
+        AccountingModule::Account.where(id: ids.uniq.compact.flatten)
+      end
+
+      def self.total_receivables(args = {})
+        receivable_accounts.balance(args)
+      end
 
       def has_balance?
         balance > 0
@@ -28,11 +36,12 @@ module StoreFrontModule
       end
 
 
-      def accounts_receivable_total
-        default_receivable_account.debits_balance(commercial_document_id: self.id, commercial_document_type: "Order")
+      def accounts_receivable_total(args = {})
+        receivable_account.debits_balance(args)
       end
-      def payments_total
-        default_receivable_account.credits_balance(commercial_document_id: self.id, commercial_document_type: "Order")
+
+      def payments_total(args = {})
+        receivable_account.credits_balance(args)
       end
 
       def payment_entries

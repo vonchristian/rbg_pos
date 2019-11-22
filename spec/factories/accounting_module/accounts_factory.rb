@@ -20,6 +20,10 @@ FactoryBot.define do
 
     end
 
+    factory :contra_revenue, class: AccountingModule::Revenue do
+      contra { true }
+    end
+
     factory :expense, class: AccountingModule::Expense do
 
     end

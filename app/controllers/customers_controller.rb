@@ -1,9 +1,9 @@
 class CustomersController < ApplicationController
 	def index
 		if params[:search].present?
-			@customers = current_business.customers.text_search(params[:search]).paginate(page: params[:page], per_page: 20)
+			@pagy, @customers = pagy(current_business.customers.includes(:orders, :work_orders, :avatar_attachment =>[:blob]).text_search(params[:search]))
 		else
-			@customers = current_business.customers.paginate(page: params[:page], per_page: 35)
+			@pagy, @customers = pagy(current_business.customers.includes(:orders, :work_orders, :avatar_attachment =>[:blob]))
 		end
 	end
 	def new

@@ -3,6 +3,8 @@ FactoryBot.define do
     association :work_order_category
     association :receivable_account, factory: :asset
     association :service_revenue_account, factory: :revenue
+    association :sales_revenue_account, factory: :revenue 
+    association :sales_discount_account, factory: :contra_revenue
     association :customer
     association :product_unit
     association :store_front

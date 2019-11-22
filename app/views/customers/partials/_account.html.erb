@@ -2,16 +2,16 @@
   <div class="content">
     <div class="row">
       <div class="col-md-3">
-        <h4><%= number_to_currency @customer.accounts_receivable %></h4>
-        <small> ACCOUNTS RECEIVABLE</small>
+        <h4 class="title-up"><%= number_to_currency @customer.total_sales_receivable %></h4>
+        <small class="text-muted"> SALES RECEIVABLE</small>
       </div>
       <div class="col-md-3">
-        <h4><%= number_to_currency @customer.payments_total %></h4>
-        <small> PAYMENTS</small>
+        <h4 class="title-up"><%= number_to_currency @customer.total_work_orders_receivable %></h4>
+        <small class="text-muted"> SERVICES RECEIVABLE</small>
       </div>
       <div class="col-md-3">
-        <h4 class="text-danger"><%= number_to_currency @customer.balance_total %></h4>
-        <small class="text-danger"> BALANCE</small>
+        <h4 class="title-up"><%= number_to_currency @customer.total_receivables %></h4>
+        <small class="text-muted"> TOTAL RECEIVABLES</small>
       </div>
       <div class="col-md-3">
         <h4></h4>

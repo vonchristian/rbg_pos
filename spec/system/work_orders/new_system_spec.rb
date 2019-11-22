@@ -3,10 +3,10 @@ require 'rails_helper'
 describe 'New work order' do
   before(:each) do
     work_order = create(:work_order)
-    supplier = create(:supplier, business_name: 'Test supplier')
-    category = create(:work_order_category, title: 'Desktop')
-    customer = create(:customer, first_name: 'Juan', last_name: 'Cruz')
-    user = create(:user, role: 'technician')
+    supplier   = create(:supplier, business_name: 'Test supplier')
+    category   = create(:work_order_category, title: 'Desktop')
+    customer   = create(:customer, first_name: 'Juan', last_name: 'Cruz')
+    user       = create(:user, role: 'technician')
     login_as(user, scope: :user)
     visit computer_repair_section_dashboard_index_url
     click_link 'New Work Order'

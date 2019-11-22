@@ -30,6 +30,11 @@ module AccountingModule
       where.not(id: accounts)
     end
 
+    def self.entries
+      ids = AccountingModule::Amount.for_account(account_id: self.ids).pluck(:entry_id)
+      AccountingModule::Entry.where(id: ids.uniq.compact.flatten)
+    end
+
     def self.debit_entries
       ids = AccountingModule::DebitAmount.for_account(account_id: self.pluck(:id)).pluck(:entry_id)
       AccountingModule::Entry.where(id: ids)

@@ -1,5 +1,24 @@
 <div class="tab-pane <%= 'active' if current_page? customer_path(@customer) %>">
   <div class="content">
-   
+     <h3 class="title-up"> Receivables </h3>
+
+   <div class="row">
+      <div class="col-md-3">
+        <h4 class="title-up"><%= number_to_currency @customer.total_sales_receivable %></h4>
+        <small class="text-muted"> SALES RECEIVABLE</small>
+      </div>
+      <div class="col-md-3">
+        <h4 class="title-up"><%= number_to_currency @customer.total_work_orders_receivable %></h4>
+        <small class="text-muted"> SERVICES RECEIVABLE</small>
+      </div>
+      <div class="col-md-3">
+        <h4 class="title-up"><%= number_to_currency @customer.total_receivables %></h4>
+        <small class="text-muted"> TOTAL RECEIVABLES</small>
+      </div>
+      <div class="col-md-3">
+        <h4></h4>
+        <%#= link_to 'New Payment', new_customer_payment_path(@customer), class: "btn btn-primary" %>
+      </div>
+    </div>
   </div>
 </div>

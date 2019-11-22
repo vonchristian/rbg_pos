@@ -10,7 +10,7 @@ class Customer < ApplicationRecord
   belongs_to :sales_discount_account,  class_name: 'AccountingModule::Account', optional: true
   belongs_to :service_revenue_account, class_name: 'AccountingModule::Account', optional: true
 
-	has_many :orders, as: :commercial_document
+	has_many :orders, as: :commercial_document, class_name: 'StoreFrontModule::Orders::SalesOrder'
 	has_many :entries, through: :orders
   has_many :payments, as: :commercial_document, class_name: "AccountingModule::Entry"
 	has_many :line_items, through: :orders
@@ -51,11 +51,25 @@ class Customer < ApplicationRecord
 		orders.count
 	end
 
-	def accounts_receivable
-    other_credits_total +
-    credit_sales_order_accounts_receivable_total +
-    credit_repair_services_accounts_receivable_total
-	end
+  def accounts_receivable
+    total_sales_receivable + 
+    total_work_orders_receivable 
+    # other_credits_total +
+    # credit_sales_order_accounts_receivable_total +
+    # credit_repair_services_accounts_receivable_total
+  end
+  def total_receivables 
+    total_sales_receivable + 
+    total_work_orders_receivable
+  end
+
+  def total_sales_receivable
+    orders.total_receivables
+  end
+  def total_work_orders_receivable
+    work_orders.total_receivables
+  end
+  
 
   def credit_sales_order_accounts_receivable_total
     total = []
