@@ -10,4 +10,5 @@ describe Customer do
 
   it { is_expected.to have_many :orders }
   it { is_expected.to have_many :work_orders }
+  it { is_expected.to have_many :departments }
 end

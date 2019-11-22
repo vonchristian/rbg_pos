@@ -29,7 +29,7 @@
             <%= link_to "Account", customer_account_index_path(@customer), class: "nav-link #{ 'active' if current_page?(customer_account_index_path(@customer)) }" %>
           </li>
           <li class="nav-item">
-            <%= link_to "Settings", customer_settings_path(@customer), class: "nav-link #{ 'active' if current_page?(customer_settings_path(@customer)) }" %>
+            <%= link_to "Settings", customer_settings_path(@customer), id: "#{@customer.id}-settings", class: "nav-link #{ 'active' if current_page?(customer_settings_path(@customer)) }" %>
           </li>
         </ul>
         <br>
