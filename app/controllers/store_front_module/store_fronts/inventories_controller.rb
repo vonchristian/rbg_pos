@@ -39,7 +39,7 @@ module StoreFrontModule
     
       def csv_body
         Enumerator.new do |yielder|
-          yielder << CSV.generate_line(["Name", "Barcode", "Purchases", "Sales", "Stock Transfers", "Spoilages", "Internal Uses", "Available QTY"])
+          yielder << CSV.generate_line(["Name", "Barcode", "Purchases", "Sales", "Stock Transfers", "Spoilages", "Internal Uses", 'Sales Returns', 'For Warranty', "Available QTY"])
           
           @stocks.joins(:product).order('products.name').each do |stock|
             yielder << CSV.generate_line([
@@ -50,6 +50,8 @@ module StoreFrontModule
               stock.stock_transfers_balance,
               stock.spoilages_balance,
               stock.internal_uses_balance,
+              stock.sales_returns_balance,
+              stock.for_warranties_balance,
               stock.available_quantity
               ])
           end

@@ -50,6 +50,7 @@ gem 'simple_calendar'
 gem "pdf-reader"
 gem 'pagy'
 gem 'ffi', '1.11.2'
+gem 'rufo', require: false
 
 group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
@@ -64,6 +65,7 @@ group :development, :test do
   gem 'faker'
   gem 'bullet'
 end
+
 
 group :test do
   gem 'shoulda-matchers'
