@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_06_131841) do
+ActiveRecord::Schema.define(version: 2019_11_25_015542) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -433,6 +433,8 @@ ActiveRecord::Schema.define(version: 2019_11_06_131841) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "service_number"
+    t.bigint "customer_id"
+    t.index ["customer_id"], name: "index_product_units_on_customer_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -845,6 +847,7 @@ ActiveRecord::Schema.define(version: 2019_11_06_131841) do
   add_foreign_key "parent_account_categories", "businesses"
   add_foreign_key "payments", "orders"
   add_foreign_key "posts", "users"
+  add_foreign_key "product_units", "customers"
   add_foreign_key "products", "businesses"
   add_foreign_key "products", "categories"
   add_foreign_key "purchase_orders", "accounts", column: "payable_account_id"
