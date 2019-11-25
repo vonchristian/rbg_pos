@@ -75,4 +75,3 @@ group :test do
 end
 
 gem 'rack-mini-profiler', require: false
-gem "simple_calendar"

@@ -17,7 +17,7 @@ class WorkOrder < ApplicationRecord
   belongs_to :work_order_category,     optional: true
   belongs_to :supplier,                optional: true
   belongs_to :section,                 optional: true
-  belongs_to :customer                
+  belongs_to :customer
   belongs_to :store_front
   has_one :charge_invoice,              as: :invoiceable, class_name: "Invoices::ChargeInvoice"
   has_many :accessories
@@ -43,12 +43,14 @@ class WorkOrder < ApplicationRecord
 
   after_commit :set_customer_name, :set_product_name,  on: [:create, :update]
 
+  accepts_nested_attributes_for :product_unit
+
   def self.receivable_accounts
     ids = pluck(:receivable_account_id)
     AccountingModule::Account.where(id: ids.uniq.compact.flatten)
   end
 
-  def self.total_receivables(args = {}) 
+  def self.total_receivables(args = {})
     receivable_accounts.balance(args)
   end
 

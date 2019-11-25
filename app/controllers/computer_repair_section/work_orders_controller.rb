@@ -52,7 +52,7 @@ module ComputerRepairSection
     end
     def update_params
       params.require(:work_order).
-      permit(:work_order_category_id, :date_received, :contact_person, :store_front_id, :section_id, :under_warranty, :supplier_id, :purchase_date, :expiry_date, :service_number, :status, :customer_id, :reported_problem, :physical_condition, :description, :model_number, :serial_number, :technician_id, :account_number, :department_id)
+      permit(:work_order_category_id, :date_received, :contact_person, :store_front_id, :section_id, :under_warranty, :supplier_id, :purchase_date, :expiry_date, :service_number, :status, :customer_id, :reported_problem, :physical_condition, :description, :model_number, :serial_number, :technician_id, :account_number, :department_id, :product_unit_attributes => [:description, :model_number, :serial_number])
     end
   end
 end

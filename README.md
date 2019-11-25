@@ -1,4 +1,10 @@
 
+number of total work orders
+number of released work orders with balances
+number of work in progress per employee
+
+
+
 add business to work orders
 todo
 migrate

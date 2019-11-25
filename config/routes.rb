@@ -105,6 +105,8 @@ Rails.application.routes.draw do
   resources :work_order_statuses, only: [:edit, :update]
   namespace :computer_repair_section do
     resources :dashboard, only: [:index]
+    resources :insights, only: [:index]
+
 
     resources :work_orders do
       resources :service_charges, only: [:new, :create, :destroy], module: :work_orders

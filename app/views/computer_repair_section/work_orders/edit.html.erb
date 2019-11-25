@@ -1,37 +1,36 @@
-<div class="card card-solid">
+<%= @work_order.product_unit.inspect %>
+<div class="container-fluid">
+<div class="card">
   <div class="card-body">
 
-<div class="content">
-  <div class="row">
-    <div class="col-md-8 offset-md-2">
-      <div class="card">
-        <div class="header">
-          <h4 class="title condensed-text"> WORK ORDER DETAILS </h4>
-        </div>
-        <div class="content">
+          <h4 class="title-up"> WORK ORDER DETAILS </h4>
+<div class="row">
+  <div class="col-md-5">
+  </div>
+  <div class="col-md-6">
 <%= simple_form_for @work_order, url: :computer_repair_section_work_order, html: { class: "form-horizontal" }, wrapper: :horizontal_form do |f| %>
   <%= f.error_notification %>
-  <span class="float-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span>
-  <%= f.input :work_order_category_id, label: 'Category', collection: WorkOrderCategory.all.map{ |a| [a.title, a.id] } %>
 
-  <%= f.input :customer_id, collection: Customer.all.map{|a| [a.full_name, a.id] } %>
+  <%= f.input :work_order_category_id, label: 'Category', collection: WorkOrderCategory.all.map{ |a| [a.title, a.id] }, input_html: { class: 'chosen-select' } %>
+
+  <%= f.input :customer_id, collection: Customer.all.map{|a| [a.full_name, a.id] }, input_html: { class: 'chosen-select' } %>
   <%= f.input :contact_person %>
-  <%= f.input :department_id, collection:  Department.all.map{|a| [a.name, a.id] } %>
+  <%= f.input :department_id, collection:  Department.all.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
 
   <%= f.simple_fields_for :product_unit do |ff| %>
   <%= ff.input :description, label: "Manufacturer/Description" %>
-  <%= ff.input :model_number %>
-  <%= ff.input :serial_number %>
+  <%= ff.input :model_number, input_html: { value: @work_order.model_number } %>
+  <%= ff.input :serial_number, input_html: { value: @work_order.serial_number } %>
   <% end %>
   <%= f.input :physical_condition %>
   <%= f.input :reported_problem, as: :text %>
   <%= f.input :under_warranty %>
   <div id="warranty-details" display="none">
-    <%= f.input :supplier_id, collection: Supplier.all.map{|a| [a.business_name, a.id] } %>
+    <%= f.input :supplier_id, collection: Supplier.all.map{|a| [a.business_name, a.id] }, input_html: { class: 'chosen-select' } %>
     <%= f.input :purchase_date, as: :string, input_html: { class: "datepicker" } %>
     <%= f.input :expiry_date, as: :string, input_html: { class: "datepicker" } %>
   </div>
-  <%= f.submit "Update Work Order", class: "btn btn-primary" %>
+  <%= f.submit "Update Work Order", class: "btn btn-primary float-right" %>
 <% end %>
 <script>
   var under_warranty_checkcard = document.getElementById('work_order_under_warranty');
@@ -43,22 +42,4 @@
        under_warranty_details_div.style['display'] = 'none';
      }
   };
-</script>
-
-<script type="text/javascript">
-  $(document).ready(function() {
-    $("#work_order_customer_id").select2({
-      theme: "bootstrap"
-    });
-  });
-    $(document).ready(function() {
-    $("#work_order_department_id").select2({
-      theme: "bootstrap"
-    });
-  });
-  $(document).ready(function() {
-    $("#work_order_supplier_id").select2({
-      theme: "bootstrap"
-    });
-  });
 </script>
