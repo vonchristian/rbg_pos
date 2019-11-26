@@ -4,8 +4,7 @@ class WorkOrder < ApplicationRecord
 
   pg_search_scope :text_search, against: [:service_number, :reported_problem, :physical_condition, :customer_name, :product_name],
   :associated_against => { :charge_invoice => [:number], product_unit: [:description, :model_number, :serial_number] }
-  multisearchable :against => [:description, :model_number, :serial_number,
-    :updates_content, :reported_problem, :physical_condition, :service_number, :customer_name, :product_name]
+  multisearchable :against => [:description, :model_number, :serial_number, :reported_problem, :physical_condition, :service_number, :customer_name, :product_name]
 
   belongs_to :receivable_account,      class_name: 'AccountingModule::Account'
   belongs_to :sales_revenue_account,   class_name: 'AccountingModule::Account'
@@ -24,6 +23,8 @@ class WorkOrder < ApplicationRecord
   has_many :technician_work_orders,     dependent: :destroy
   has_many :technicians,                through: :technician_work_orders
   has_many :work_order_updates,         as: :updateable, class_name: "Post", dependent: :destroy
+  has_many :diagnoses,                  as: :updateable, class_name: 'Diagnosis', dependent: :destroy
+  has_many :actions_taken,              as: :updateable, class_name: 'ActionTaken', dependent: :destroy
   has_many :work_order_service_charges, class_name: 'WorkOrders::WorkOrderServiceCharge', dependent: :destroy
   has_many :service_charges,            through: :work_order_service_charges
   has_many :sales_orders,               class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document, dependent: :destroy
@@ -176,9 +177,6 @@ class WorkOrder < ApplicationRecord
     default_sales_discount_account.debits_balance(commercial_document_id: self.id, commercial_document_type: "WorkOrder")
   end
 
-  def updates_content
-    work_order_updates.pluck(:content)
-  end
   def total_spare_parts_cost
     sales_order_line_items.total_cost
   end
@@ -195,12 +193,6 @@ class WorkOrder < ApplicationRecord
     (self.created_at - Time.zone.now) /86400
   end
 
-  def diagnoses
-    work_order_updates.diagnosis
-  end
-  def actions_taken
-    work_order_updates.actions_taken
-  end
   def destroy_entry_for(options={})
     order = options[:order]
     entry = AccountingModule::Amount.where(commercial_document_id: order.id, commercial_document_type: order.class.to_s).first

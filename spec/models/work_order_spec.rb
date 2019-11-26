@@ -16,6 +16,8 @@ describe WorkOrder do
     it { is_expected.to have_many :technician_work_orders }
     it { is_expected.to have_many :technicians }
     it { is_expected.to have_many :work_order_updates }
+    it { is_expected.to have_many :diagnoses }
+    it { is_expected.to have_many :actions_taken }
     it { is_expected.to have_many :work_order_service_charges }
     it { is_expected.to have_many :service_charges }
     it { is_expected.to have_many :sales_order_line_items }
@@ -52,7 +54,7 @@ describe WorkOrder do
     it { is_expected.to delegate_method(:number).to(:charge_invoice).with_prefix }
   end
 
-  it '.received_at(args = {})' do 
+  it '.received_at(args = {})' do
     old    = create(:work_order, date_received: Date.current.last_month)
     recent = create(:work_order, date_received: Date.current)
 
@@ -62,7 +64,7 @@ describe WorkOrder do
     expect(described_class.received_at(from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month)).to_not include(old)
   end
 
-  it '.released_at(args = {})' do 
+  it '.released_at(args = {})' do
     old    = create(:work_order, release_date: Date.current.last_month)
     recent = create(:work_order, release_date: Date.current)
 
