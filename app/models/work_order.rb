@@ -178,11 +178,13 @@ class WorkOrder < ApplicationRecord
   end
 
   def total_spare_parts_cost
-    sales_order_line_items.total_cost
+    sales_revenue_account.balance
   end
+
   def total_service_charges_cost
-    service_charges.sum(&:amount)
+    service_revenue_account.balance
   end
+
   def total_charges_cost
     total_service_charges_cost + total_spare_parts_cost
   end

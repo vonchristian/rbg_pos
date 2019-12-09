@@ -1,15 +1,15 @@
 require 'rails_helper'
 describe 'New work order spare parts' do
   before(:each) do
-    work_order = create(:work_order)
-    supplier = create(:supplier, business_name: 'Test supplier')
-    category = create(:work_order_category, title: 'Desktop')
-    customer = create(:customer, first_name: 'Juan', last_name: 'Cruz')
-    work_order = create(:work_order, customer: customer, work_order_category: category)
-    product     = create(:product, name: 'Test Product')
-    uom         = create(:unit_of_measurement, product: product, base_measurement: true, conversion_quantity: 1)
-    store_front = create(:store_front)
-    cart        = create(:cart)
+    work_order               = create(:work_order)
+    supplier                 = create(:supplier, business_name: 'Test supplier')
+    category                 = create(:work_order_category, title: 'Desktop')
+    customer                 = create(:customer, first_name: 'Juan', last_name: 'Cruz')
+    work_order               = create(:work_order, customer: customer, work_order_category: category)
+    product                  = create(:product, name: 'Test Product')
+    uom                      = create(:unit_of_measurement, product: product, base_measurement: true, conversion_quantity: 1)
+    store_front              = create(:store_front)
+    cart                     = create(:cart)
     stock                    = create(:stock, product: product, store_front: store_front, barcode: '11111111', unit_of_measurement: uom)
     supplier                 = create(:supplier)
     entry                    = create(:entry_with_credit_and_debit)
@@ -32,6 +32,8 @@ describe 'New work order spare parts' do
     fill_in 'Date', with: Date.current
 
     click_button 'Save Order'
+
+    expect(page).to have_content('saved successfully')
   end
 
   it 'with searched product' do
@@ -44,5 +46,8 @@ describe 'New work order spare parts' do
     fill_in 'Date', with: Date.current
 
     click_button 'Save Order'
+
+    expect(page).to have_content('saved successfully')
+    
   end
 end

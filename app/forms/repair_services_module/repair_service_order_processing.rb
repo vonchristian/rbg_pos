@@ -31,12 +31,11 @@ module RepairServicesModule
       AccountCreators::SalesOrder.new(sales_order: order).create_accounts!
     end
     def create_entry(order)
-        accounts_receivable = find_work_order.receivable_account
-        cost_of_goods_sold = find_work_order.store_front.cost_of_goods_sold_account
-        sales = find_work_order.store_front.sales_account
+        accounts_receivable   = find_work_order.receivable_account
+        cost_of_goods_sold    = find_work_order.store_front.cost_of_goods_sold_account
+        sales                 = find_work_order.sales_revenue_account
         merchandise_inventory = find_work_order.store_front.merchandise_inventory_account
         find_employee.entries.create!(
-          recorder: find_employee,
           commercial_document: find_customer,
           entry_date: order.date,
           description: "Spare parts for work order ##{find_work_order.service_number}",
@@ -52,12 +51,15 @@ module RepairServicesModule
       def find_customer
         Customer.find(customer_id)
       end
+
       def find_employee
         User.find(employee_id)
       end
+
       def find_cart
         Cart.find(cart_id)
       end
+      
       def find_work_order
         WorkOrder.find(work_order_id)
       end

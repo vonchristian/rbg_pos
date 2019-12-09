@@ -4,6 +4,7 @@ describe WorkOrder do
   describe 'associations' do
     it { is_expected.to belong_to :product_unit }
     it { is_expected.to belong_to(:supplier).optional }
+    it { is_expected.to belong_to(:department).optional }
     it { is_expected.to belong_to(:section).optional }
     it { is_expected.to belong_to(:receivable_account) }
     it { is_expected.to belong_to(:service_revenue_account) }
@@ -73,5 +74,26 @@ describe WorkOrder do
     expect(described_class.released_on(from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month)).to include(recent)
     expect(described_class.released_on(from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month)).to_not include(old)
   end
+
+  it "#total_service_charges_cost" do
+    work_order     = create(:work_order)
+    entry          = build(:entry)
+    entry.debit_amounts.build(amount: 100, account: work_order.receivable_account)
+    entry.credit_amounts.build(amount: 100, account: work_order.service_revenue_account)
+    entry.save!
+
+    expect(work_order.total_service_charges_cost).to eql 100
+  end
+
+  it "#total_spare_parts_cost" do
+    work_order     = create(:work_order)
+    entry          = build(:entry)
+    entry.debit_amounts.build(amount: 100, account: work_order.receivable_account)
+    entry.credit_amounts.build(amount: 100, account: work_order.sales_revenue_account)
+    entry.save!
+
+    expect(work_order.total_spare_parts_cost).to eql 100
+  end
+
 
 end
