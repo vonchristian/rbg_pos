@@ -17,16 +17,6 @@ class ServiceTagPdf < Prawn::Document
         warranty_details
       end
       reported_problem
-
-    end
-    bounding_box [0,360], width: 600 do
-      tech_support
-    end
-    bounding_box [0,290], width: 250 do
-      problem_statement
-    end
-    bounding_box [290,290], width: 250 do
-      solution_statement
     end
   end
 
