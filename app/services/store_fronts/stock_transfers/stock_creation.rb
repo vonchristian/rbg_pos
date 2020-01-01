@@ -2,7 +2,7 @@ module StoreFronts
   module StockTransfers
     class StockCreation
       attr_reader :line_item, :stock, :destination_store_front
-      def initialize(line_item: line_item, destination_store_front:)
+      def initialize(line_item:, destination_store_front:)
         @line_item               = line_item
         @destination_store_front = destination_store_front
         @stock                   = @line_item.stock
