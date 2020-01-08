@@ -1,4 +1,4 @@
 <%= simple_form_for @work_order, url: :computer_repair_section_work_order_endorsement do |f| %>
-  <%= f.input :technician_id, collection: current_store_front.employees.technician.map{|a| [a.full_name, a.id] } %>
-  <%= f.submit 'Endorse Work Order' %>
+  <%= f.input :technician_id, collection: current_store_front.employees.technician.map{|a| [a.full_name, a.id] }, input_html: { class: 'chosen-select' } %>
+  <%= f.submit 'Endorse Work Order', class: 'btn btn-primary float-right' %>
 <% end %>
