@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :work_order do
+    association :technician, factory: :technician
     association :work_order_category
     association :receivable_account, factory: :asset
     association :service_revenue_account, factory: :revenue

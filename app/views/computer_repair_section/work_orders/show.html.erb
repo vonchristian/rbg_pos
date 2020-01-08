@@ -6,6 +6,7 @@
             <div class="col-md-7">
               <h3 class="title-up">#<%= @work_order.service_number %> - <%= @work_order.description.try(:upcase) %> </h3>
               <br>
+              <%= link_to 'Endorse', edit_computer_repair_section_work_order_endorsement_path(@work_order) %>
               <%= link_to 'Update Info', edit_computer_repair_section_work_order_path(@work_order), class: "btn btn-sm btn-outline-warning" %>
               <% if current_user.proprietor? %>
                 <%= link_to computer_repair_section_work_order_path(@work_order), method: :delete do %>

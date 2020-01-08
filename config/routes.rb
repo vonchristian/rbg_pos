@@ -109,6 +109,7 @@ Rails.application.routes.draw do
 
 
     resources :work_orders do
+      resources :endorsements,    only: [:edit, :update], module: :work_orders 
       resources :service_charges, only: [:new, :create, :destroy], module: :work_orders
       resources :additional_charges, only: [:new, :create], module: :work_orders
       resources :spare_parts, only: [:new, :create, :destroy]

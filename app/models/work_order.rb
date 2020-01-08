@@ -10,7 +10,7 @@ class WorkOrder < ApplicationRecord
   belongs_to :sales_revenue_account,   class_name: 'AccountingModule::Account'
   belongs_to :sales_discount_account,  class_name: 'AccountingModule::Account'
   belongs_to :service_revenue_account, class_name: 'AccountingModule::Account'
-
+  belongs_to :technician,              class_name: 'User', foreign_key: 'technician_id'
   belongs_to :product_unit
   belongs_to :department,              optional: true
   belongs_to :work_order_category,     optional: true

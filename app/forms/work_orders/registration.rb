@@ -17,6 +17,7 @@ module WorkOrders
     private
     def create_work_order
       work_order = WorkOrder.received.new(
+        technician: find_technician,
         work_order_category_id: work_order_category_id,
         service_number:     WorkOrder.last.id.succ,
         date_received:      date_received,

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_25_015542) do
+ActiveRecord::Schema.define(version: 2020_01_08_032243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -772,6 +772,7 @@ ActiveRecord::Schema.define(version: 2019_11_25_015542) do
     t.bigint "work_order_category_id"
     t.bigint "sales_revenue_account_id"
     t.bigint "department_id"
+    t.bigint "technician_id"
     t.index ["account_number"], name: "index_work_orders_on_account_number", unique: true
     t.index ["customer_id"], name: "index_work_orders_on_customer_id"
     t.index ["department_id"], name: "index_work_orders_on_department_id"
@@ -783,6 +784,7 @@ ActiveRecord::Schema.define(version: 2019_11_25_015542) do
     t.index ["service_revenue_account_id"], name: "index_work_orders_on_service_revenue_account_id"
     t.index ["status"], name: "index_work_orders_on_status"
     t.index ["store_front_id"], name: "index_work_orders_on_store_front_id"
+    t.index ["technician_id"], name: "index_work_orders_on_technician_id"
     t.index ["work_order_category_id"], name: "index_work_orders_on_work_order_category_id"
   end
 
@@ -908,5 +910,6 @@ ActiveRecord::Schema.define(version: 2019_11_25_015542) do
   add_foreign_key "work_orders", "product_units"
   add_foreign_key "work_orders", "sections"
   add_foreign_key "work_orders", "store_fronts"
+  add_foreign_key "work_orders", "users", column: "technician_id"
   add_foreign_key "work_orders", "work_order_categories"
 end
