@@ -12,7 +12,7 @@ class User < ApplicationRecord
   has_many :orders, foreign_key: 'employee_id'
   has_many :sales_orders, class_name: "StoreFrontModule::Orders::SalesOrder", foreign_key: 'employee_id'
   has_many :technician_work_orders, foreign_key: 'technician_id'
-  has_many :work_orders, through: :technician_work_orders
+  has_many :work_orders, foreign_key: 'technician_id'
   has_many :entries, class_name: "AccountingModule::Entry", foreign_key: 'recorder_id'
   has_many :fund_transfers, class_name: "AccountingModule::Entry", as: :commercial_document
   has_many :actions_taken, class_name: "ActionsTaken"
