@@ -4,6 +4,9 @@ module ComputerRepairSection
       @work_order_update = Post.create(update_params)
       @work_order_update.user = current_user
       if @work_order_update.valid?
+        if @work_order.technician.blank?
+          @work_order.technician_id = current_user.id 
+        end 
         @work_order_update.save
         @work_order_update.updateable.add_technician(current_user)
         redirect_to computer_repair_section_work_order_url(@work_order_update.updateable), notice: "Update saved successfully."
