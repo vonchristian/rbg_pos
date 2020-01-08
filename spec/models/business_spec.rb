@@ -6,6 +6,7 @@ describe Business do
     it { is_expected.to have_many :employees }
     it { is_expected.to have_many :store_fronts }
     it { is_expected.to have_many :accounts }
+    it { is_expected.to have_many :work_orders }
   end
 
   describe 'validations' do

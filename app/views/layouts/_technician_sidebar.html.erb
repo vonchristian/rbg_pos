@@ -18,9 +18,7 @@
     <% end %>
     <hr>
       <li class="nav-item">
-        <a href="/computer_repair_section/dashboard?technician
-        
-        =<%=current_user.id %>" class="nav-link <%= 'active' if current_page? computer_repair_section_dashboard_index_path %>">
+        <a href="/computer_repair_section/dashboard?technician=<%=current_user.id %>" class="nav-link <%= 'active' if current_page? computer_repair_section_dashboard_index_path %>">
           <i class="nav-icon fa fa-th"></i>
           <p>Repairs</p>
         </a>

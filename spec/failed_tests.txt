@@ -47,11 +47,12 @@ example_id                                                                      
 ./spec/models/accounting_module/sub_account_spec.rb[1:1:2]                       | passed  | 0.0063 seconds  |
 ./spec/models/bank_account_spec.rb[1:1:1]                                        | passed  | 0.02798 seconds |
 ./spec/models/business_account_config_spec.rb[1:1]                               | pending | 0.00006 seconds |
-./spec/models/business_spec.rb[1:1:1]                                            | passed  | 0.00176 seconds |
-./spec/models/business_spec.rb[1:1:2]                                            | passed  | 0.0046 seconds  |
-./spec/models/business_spec.rb[1:1:3]                                            | passed  | 0.00169 seconds |
-./spec/models/business_spec.rb[1:1:4]                                            | passed  | 0.00139 seconds |
-./spec/models/business_spec.rb[1:2:1]                                            | passed  | 0.01031 seconds |
+./spec/models/business_spec.rb[1:1:1]                                            | passed  | 0.03517 seconds |
+./spec/models/business_spec.rb[1:1:2]                                            | passed  | 0.00381 seconds |
+./spec/models/business_spec.rb[1:1:3]                                            | passed  | 0.01779 seconds |
+./spec/models/business_spec.rb[1:1:4]                                            | passed  | 0.00435 seconds |
+./spec/models/business_spec.rb[1:1:5]                                            | passed  | 0.01499 seconds |
+./spec/models/business_spec.rb[1:2:1]                                            | passed  | 0.09794 seconds |
 ./spec/models/cart_spec.rb[1:1:1]                                                | passed  | 0.00184 seconds |
 ./spec/models/category_spec.rb[1:1:1]                                            | passed  | 0.01343 seconds |
 ./spec/models/concerns/date_range_spec.rb[1:1]                                   | passed  | 0.00394 seconds |
