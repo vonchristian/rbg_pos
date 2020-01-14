@@ -12,14 +12,14 @@
   <div class="row">
     <div class="col-md-10 offset-md-1">
   <%= f.error_notification %>
-  <%= f.input :technician_id, input_html: { value: current_user.id }, as: :hidden %>
+  <%= f.input :technician_id, label: 'Assigned To:', collection: current_store_front.employees.technician.map{|a| [a.full_name, a.id] }, default: current_user, input_html: { class: 'chosen-select' } %>
   <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
   <%= f.input :work_order_category_id, label: 'Category', collection: WorkOrderCategory.all.map{ |a| [a.title, a.id] }, input_html: { class: 'chosen-select' } %>
   <%= f.input :date_received, as: :string, input_html: { class: "datepicker" } %>
   <%= f.input :store_front_id, input_html: { value: current_user.store_front_id }, as: :hidden %>
   <span class="float-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span>
 
-  <%= f.input :customer_id, collection: Customer.all.map{|a| [a.full_name, a.id] }, input_html: { class: 'chosen-select' } %>
+  <%= f.input :customer_id, label: 'Customer', collection: Customer.all.map{|a| [a.full_name, a.id] }, input_html: { class: 'chosen-select' } %>
   <%= f.input :contact_person %>
   <%= f.input :department_id, collection: Department.all.map{ |a| [a.customer_name_and_department, a.id] }, input_html: { class: 'chosen-select' } %>
 
