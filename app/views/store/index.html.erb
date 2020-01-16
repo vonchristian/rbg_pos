@@ -134,32 +134,62 @@
                   </div>
                 </div>
                 <hr>
-            <span><label>Customer</label><span class="float-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span></span>
-                    
+                <div class='row'>
+                  <div class='col-md-6'>
+                    <h4 class='title-up'>Customers </h4>
+                  </div>
+                  <div class='col-md-6'>
+                    <%= link_to 'New Customer', new_customer_registration_path, remote: true, class: 'btn btn-link float-right' %>
+                  </div>
+                </div>
+             
                <%= form_tag store_index_path, method: :get, id: "search-form" do %>
                     <div class="input-group stylish-input-group">
                       <%= text_field_tag :customer_search, params[:customer_search], class: "search-query form-control border-input", placeholder: "Search customer", type: "search" %>
                       <span class="input-group-btn">
-                        <%= button_tag(type: 'submit', class: "btn") do %>
-                          <i class="icon-magnifier"></i> Search
+                        <%= button_tag(type: 'submit', class: "btn btn-outline-primary") do %>
+                          <i class="fa fa-search"></i>
                         <% end %>
                       </span>
                     </div>
                   <% end %>
+                  <br>
                   <% if @customers.present? %>
                     <% @customers.each do |customer| %>
-                      <%= customer.full_name %>
-                      <%= link_to 'Select', store_index_path(customer_id: customer.id) %>
+                      
+                      <div class='row'>
+                        <div class='col-md-8'>
+                          <b><%= customer.full_name %></b><br>
+                          <small class="text-muted"><i class="fa fa-phone"></i> <%= customer.contact_number %></small>&nbsp; &nbsp;
+                          <small class="text-muted"><i class="fa fa-map-marker"></i> <%= customer.address %></small>
+                        </div>
+                        <div class='col-md-4'>
+                          <%= link_to 'Select', store_index_path(customer_id: customer.id), class: 'btn btn-outline-primary btn-sm float-right' %>
+                        </div>
+                      </div>
+                      <hr>
                     <% end %>
+                    <%==pagy_bootstrap_nav(@pagy) %>
                   <% end %>
               <% if @customer.present? %>
+              <div class='row'>
+                        <div class='col-md-8'>
+                          <b><%= @customer.full_name %></b><br>
+                          <small class="text-muted"><i class="fa fa-phone"></i> <%= @customer.contact_number %></small>&nbsp; &nbsp;
+                          <small class="text-muted"><i class="fa fa-map-marker"></i> <%= @customer.address %></small>
+                        </div>
+                        <div class='col-md-4'>
+                          
+                        </div>
+                      </div>
+                      <br>
                 <%= simple_form_for @sales_order, url: :store_front_module_sales_order_processings do |f| %>
                 
                     <%= f.input :date, as: :string, input_html: { id: 'sale-order-date', class: "datepicker" } %>
                     
                   
 
-                    <%= f.input :customer_id, input_html: { value: @customer.id } %>
+                    <%= f.input :customer_id, input_html: { value: @customer.id }, as: :hidden %>
                     <div class="row">
                       <div class="col-md-7">
                         <%= f.input :cash_tendered, input_html: { id: 'cash_tendered', oninput: 'calculateOrderTotalCost()',  class: "input-lg" } %>
@@ -175,7 +205,7 @@
                     <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
                     <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
 
-                    <%= f.submit "Save Order", class: "btn btn-lg btn-primary btn-block" %>
+                    <%= f.submit "Save Order", class: "btn btn-lg btn-primary btn-block", data: { disable_with: 'Processing...' } %>
                   </div>
                 </div>
                 <% end %>
