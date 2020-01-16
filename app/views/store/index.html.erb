@@ -121,45 +121,67 @@
               </div>
             </div>
             <div class="card-body">
-
-              <%= simple_form_for @sales_order, url: :store_front_module_sales_order_processings do |f| %>
-              <div class="row">
-                <div class="col-md-10 offset-md-1">
-                  <div class="row">
-                <div class="col-md-6">
-                  <h4 class="title-up"><b> TOTAL </b> </h4>
-                </div>
-                <div class="col-md-6">
-                  <h4 class="title-up">
-                    <b class="float-right"><%= number_to_currency @cart.sales_order_line_items.total_cost %></b>
-                  </h4>
-                </div>
-              </div>
-              <hr>
-                  <%= f.input :date, as: :string, input_html: { id: 'sale-order-date', class: "datepicker" } %>
-                  <span><label>Customer</label><span class="float-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span></span>
-                  <%= f.input :customer_id, collection: Customer.all.map{ |a| [a.full_name, a.id] }, label: false, input_html: { id: 'selectCustomer', class: 'chosen-select' } %>
-                  <div class="row">
-                    <div class="col-md-7">
-                      <%= f.input :cash_tendered, input_html: { id: 'cash_tendered', oninput: 'calculateOrderTotalCost()',  class: "input-lg" } %>
-                    </div>
-                    <div class="col-md-5">
-                      <%= f.input :discount_amount, label: "Discount", input_html: { id: 'discount_amount', oninput: 'calculateOrderTotalCost()', value: 0} %>
-                    </div>
+            <div class="row">
+                  <div class="col-md-10 offset-md-1">
+                    <div class="row">
+                  <div class="col-md-6">
+                    <h4 class="title-up"><b> TOTAL </b> </h4>
                   </div>
-                  <%= f.input :order_change, readonly: true, input_html: { id: 'change', class: "input-lg", value: 0 } %>
-                  <%= f.input :reference_number %>
-                  <%= f.input :total_cost, input_html: { id: 'total_cost', value: @cart.total_cost }, as: :hidden %>
-                  <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden  %>
-                  <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
-                  <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-
-                  <%= f.submit "Save Order", class: "btn btn-lg btn-primary btn-block" %>
+                  <div class="col-md-6">
+                    <h4 class="title-up">
+                      <b class="float-right"><%= number_to_currency @cart.sales_order_line_items.total_cost %></b>
+                    </h4>
+                  </div>
                 </div>
+                <hr>
+            <span><label>Customer</label><span class="float-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span></span>
+                    
+               <%= form_tag store_index_path, method: :get, id: "search-form" do %>
+                    <div class="input-group stylish-input-group">
+                      <%= text_field_tag :customer_search, params[:customer_search], class: "search-query form-control border-input", placeholder: "Search customer", type: "search" %>
+                      <span class="input-group-btn">
+                        <%= button_tag(type: 'submit', class: "btn") do %>
+                          <i class="icon-magnifier"></i> Search
+                        <% end %>
+                      </span>
+                    </div>
+                  <% end %>
+                  <% if @customers.present? %>
+                    <% @customers.each do |customer| %>
+                      <%= customer.full_name %>
+                      <%= link_to 'Select', store_index_path(customer_id: customer.id) %>
+                    <% end %>
+                  <% end %>
+              <% if @customer.present? %>
+                <%= simple_form_for @sales_order, url: :store_front_module_sales_order_processings do |f| %>
+                
+                    <%= f.input :date, as: :string, input_html: { id: 'sale-order-date', class: "datepicker" } %>
+                    
+                  
+
+                    <%= f.input :customer_id, input_html: { value: @customer.id } %>
+                    <div class="row">
+                      <div class="col-md-7">
+                        <%= f.input :cash_tendered, input_html: { id: 'cash_tendered', oninput: 'calculateOrderTotalCost()',  class: "input-lg" } %>
+                      </div>
+                      <div class="col-md-5">
+                        <%= f.input :discount_amount, label: "Discount", input_html: { id: 'discount_amount', oninput: 'calculateOrderTotalCost()', value: 0} %>
+                      </div>
+                    </div>
+                    <%= f.input :order_change, readonly: true, input_html: { id: 'change', class: "input-lg", value: 0 } %>
+                    <%= f.input :reference_number %>
+                    <%= f.input :total_cost, input_html: { id: 'total_cost', value: @cart.total_cost }, as: :hidden %>
+                    <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden  %>
+                    <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
+                    <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+
+                    <%= f.submit "Save Order", class: "btn btn-lg btn-primary btn-block" %>
+                  </div>
+                </div>
+                <% end %>
+                <br>
               </div>
-              <% end %>
-              <br>
-            </div>
+          <% end %>
         <% end %>
       </div>
     </div>

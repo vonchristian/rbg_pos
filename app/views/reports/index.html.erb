@@ -52,12 +52,12 @@
                 </div>
               </div>
             <% end %>
-          <%=link_to reports_sales_path(user_id: nil, format: 'xlsx', from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day) do %>
-	          <p class="category"> Daily Sales </p>
+          <%=link_to reports_sales_path(user_id: nil, format: 'csv', from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day) do %>
+	          <h4 class='subtitle-up'> Daily Sales </p>
 	          <small>Generate report of sales for this day <%=Time.zone.now.strftime("%B %e, %Y") %></small>
 	        <% end %>
           <hr>
-          <h4 class="title"> Purchase Returns  </h4>
+          <h4 class="title-up"> Purchase Returns  </h4>
           <p class="category">Generate report for purchase returns</p><br>
           <%= form_tag({:action => "index", controller: "reports/purchase_returns", format: 'xlsx'}, {:method => :get})  do %>
               <div class="row">

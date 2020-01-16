@@ -1,12 +1,12 @@
 
 
-    <%=link_to reports_sales_path(user_id: @employee.id, format: 'pdf', from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day) do %>
-            <h4 class="subtitle-up text-dark"> Daily Sales </h4>
+    <%=link_to reports_sales_path(user_id: @employee.id, format: 'csv', from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day, cash_on_hand_account: current_user.cash_on_hand_account) do %>
+            <h4 class="title-up"> Daily Sales </h4>
             <small class="text-muted">Generate report of sales for this day <%=Time.zone.now.strftime("%B %e, %Y") %></small>
           <% end %>
           <br>
           <br>
-          <%= form_tag({:action => "index", controller: "/reports/sales", format: 'pdf', user_id: @employee.id }, {:method => :get})  do %>
+          <%= form_tag({:action => "index", controller: "/reports/sales", format: 'csv', user_id: @employee.id }, {:method => :get})  do %>
             <%= hidden_field_tag :user_id, value: @employee.id %>
               <div class="row">
                 <div class="col-md-3">
