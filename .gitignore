@@ -23,6 +23,8 @@
 /public/packs
 /public/packs-test
 /storage
+/public/storage
+
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity

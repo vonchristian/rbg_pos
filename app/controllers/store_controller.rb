@@ -9,7 +9,7 @@ class StoreController < ApplicationController
 		@cart = current_cart
 		@sales_order = StoreFrontModule::Orders::SalesOrderProcessing.new
 		if params[:customer_search].present?
-			@pagy, @customers = pagy(current_business.customers)
+			@pagy, @customers = pagy(current_business.customers.text_search(params[:customer_search]))
 		end
 		@customer = current_business.customers.find_by(id: params[:customer_id])
 	end

@@ -139,7 +139,7 @@
                     <h4 class='title-up'>Customers </h4>
                   </div>
                   <div class='col-md-6'>
-                    <%= link_to 'New Customer', new_customer_registration_path, remote: true, class: 'btn btn-link float-right' %>
+                    <%= link_to 'New Customer', new_store_customer_registration_path, class: 'btn btn-link float-right' %>
                   </div>
                 </div>
              
@@ -186,13 +186,14 @@
                 <%= simple_form_for @sales_order, url: :store_front_module_sales_order_processings do |f| %>
                 
                     <%= f.input :date, as: :string, input_html: { id: 'sale-order-date', class: "datepicker" } %>
-                    
-                  
-
                     <%= f.input :customer_id, input_html: { value: @customer.id }, as: :hidden %>
                     <div class="row">
                       <div class="col-md-7">
-                        <%= f.input :cash_tendered, input_html: { id: 'cash_tendered', oninput: 'calculateOrderTotalCost()',  class: "input-lg" } %>
+                        <% if @customer.present? %>
+                          <%= f.input :cash_tendered, autofocus: true, input_html: { id: 'cash_tendered', oninput: 'calculateOrderTotalCost()',  class: "input-lg" } %>
+                        <% else %>  
+                          <%= f.input :cash_tendered, input_html: { id: 'cash_tendered', oninput: 'calculateOrderTotalCost()',  class: "input-lg" } %>
+                        <% end %>
                       </div>
                       <div class="col-md-5">
                         <%= f.input :discount_amount, label: "Discount", input_html: { id: 'discount_amount', oninput: 'calculateOrderTotalCost()', value: 0} %>
