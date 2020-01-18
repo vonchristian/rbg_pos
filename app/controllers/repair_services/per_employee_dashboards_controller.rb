@@ -2,7 +2,7 @@ module RepairServices
   class PerEmployeeDashboardsController < ApplicationController
     def index
       @from_date          = params[:from_date] ? Date.parse(params[:from_date]) : Date.current.beginning_of_month
-      @to_date            = params[:from_date] ? Date.parse(params[:from_date]) : Date.current.end_of_month
+      @to_date            = params[:to_date] ? Date.parse(params[:to_date]) : Date.current.end_of_month
       @employee           = User.find(params[:user_id])
       @pagy, @work_orders = pagy(@employee.work_orders.released_on(from_date: @from_date, to_date: @to_date))
 
