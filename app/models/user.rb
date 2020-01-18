@@ -4,22 +4,22 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-  belongs_to :branch, optional: true
-  belongs_to :store_front, optional: true
-  belongs_to :business, optional: true
-  belongs_to :section, optional: true
+  belongs_to :branch,               optional: true
+  belongs_to :store_front,          optional: true
+  belongs_to :business,             optional: true
+  belongs_to :section,              optional: true
   belongs_to :cash_on_hand_account, optional: true, class_name: "AccountingModule::Account"
-  has_many :orders, foreign_key: 'employee_id'
-  has_many :sales_orders, class_name: "StoreFrontModule::Orders::SalesOrder", foreign_key: 'employee_id'
+  has_many :orders,                 foreign_key: 'employee_id'
+  has_many :sales_orders,           class_name: "StoreFrontModule::Orders::SalesOrder", foreign_key: 'employee_id'
   has_many :technician_work_orders, foreign_key: 'technician_id'
-  has_many :work_orders, foreign_key: 'technician_id'
-  has_many :entries, class_name: "AccountingModule::Entry", foreign_key: 'recorder_id'
-  has_many :fund_transfers, class_name: "AccountingModule::Entry", as: :commercial_document
-  has_many :actions_taken, class_name: "ActionsTaken"
+  has_many :work_orders,            foreign_key: 'technician_id'
+  has_many :entries,                class_name: "AccountingModule::Entry", foreign_key: 'recorder_id'
+  has_many :fund_transfers,         class_name: "AccountingModule::Entry", as: :commercial_document
+  has_many :actions_taken,          class_name: "ActionsTaken"
   has_many :employee_cash_accounts, class_name: "Employees::EmployeeCashAccount", foreign_key: 'employee_id'
-  has_many :cash_accounts, through: :employee_cash_accounts, class_name: "AccountingModule::Account", foreign_key: 'cash_account_id'
-  has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", foreign_key: 'recorder_id'
-  has_many :cash_counts, class_name: "CashCounts::CashCount", foreign_key: 'employee_id'
+  has_many :cash_accounts,          through: :employee_cash_accounts, class_name: "AccountingModule::Account", foreign_key: 'cash_account_id'
+  has_many :voucher_amounts,        class_name: "Vouchers::VoucherAmount", foreign_key: 'recorder_id'
+  has_many :cash_counts,            class_name: "CashCounts::CashCount", foreign_key: 'employee_id'
 
   enum role: [:proprietor, :sales_clerk, :stock_custodian, :technician]
 
