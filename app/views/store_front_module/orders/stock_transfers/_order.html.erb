@@ -23,7 +23,7 @@
           <small class="text-muted"><%= line_item.bar_code %></small>
         </div>
                   <div class="col-md-2">
-                    <span class="text-muted"><%= number_to_currency StoreFronts::SellingPriceFinder.new(stock: line_item.stock, store_front: current_store_front).selling_price %></span>
+                    <span class="text-muted"><%= number_to_currency StoreFronts::SellingPriceFinder.new(stock: line_item.stock, store_front: order.destination_store_front).selling_price %></span>
                   </div>
                   
 
