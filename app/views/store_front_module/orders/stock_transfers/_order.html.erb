@@ -23,23 +23,13 @@
           <small class="text-muted"><%= line_item.bar_code %></small>
         </div>
                   <div class="col-md-2">
-                    <span class="text-muted"><%= number_to_currency line_item.unit_cost %></span>
+                    <span class="text-muted"><%= number_to_currency StoreFronts::SellingPriceFinder.new(stock: line_item.stock, store_front: current_store_front).selling_price %></span>
                   </div>
-                  <div class="col-md-3">
-                    <span class="text-muted"><%= number_to_currency line_item.total_cost %></span>
-
-                  </div>
+                  
 
                 </div>
-                <hr>
+             
     <% end %>
-    <div class="row">
-      <div class="col-md-6 offset-md-1">
-        <p class="title-up"> TOTAL </p>
-      </div>
-      <div class="col-md-3">
-        <p class="title-up float-right"><%= number_to_currency order.total_cost %></p>
-      </div>
-    </div>
+    
   </div>
 </div>

@@ -10,16 +10,16 @@
   <div class="col-md-3">
     <div class='card card-solid'>
       <div class='card-body'>
-        <small>RELEASES <%= Date.current.strftime("%b. %Y").upcase %></small>
-        <h3 class="subtitle-up"> <%= @work_orders.released_on(from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month).count %></h3>
+        <small>RELEASES <%= @from_date.strftime("%b. %Y").upcase %></small>
+        <h3 class="subtitle-up"> <%= @work_orders.released_on(from_date: @from_date, to_date: @to_date).count %></h3>
       </div>
     </div>
   </div>
   <div class="col-md-3">
     <div class='card card-solid'>
       <div class='card-body'>
-        <small>SERVICE CHARGE PAYMENTS <%= Date.current.strftime("%b. %Y").upcase %></small>
-        <h3 class="subtitle-up"> <%= number_to_currency @work_orders.released_on(from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month).sum(&:service_charge_payments) %></h3>
+        <small>SERVICE CHARGE PAYMENTS <%= @from_date.strftime("%b. %Y").upcase %></small>
+        <h3 class="subtitle-up"> <%= number_to_currency @work_orders.released_on(from_date: @from_date, to_date: @to_date).sum(&:service_charge_payments) %></h3>
       </div>
     </div>
   </div>
@@ -76,5 +76,5 @@
         <% end %>
       </tbody>
     </table>
-    <center> <%==pagy_bootstrap_nav(@pagy) %>
+    <center> <%==pagy_bootstrap_nav(@pagy) %></center>
   </div>
