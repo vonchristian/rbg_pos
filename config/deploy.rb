@@ -5,7 +5,7 @@ require 'mina/rbenv'
 require 'mina/puma'
 
 set :whenever_name, 'production'
-set :domain, 'rbgtech.online'
+set :domain, '167.99.64.121'
 set :deploy_to, '/var/www/rbg'
 set :repository, 'https://github.com/vonchristian/rbg_pos.git'
 set :branch, 'master'
