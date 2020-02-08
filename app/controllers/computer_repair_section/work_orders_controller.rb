@@ -2,6 +2,10 @@ module ComputerRepairSection
   class WorkOrdersController < ApplicationController
     def new
       @work_order = ::WorkOrders::Registration.new
+      if params[:customer_search].present?
+        @pagy, @customers = pagy(current_business.customers.text_search(params[:customer_search]))
+      end
+      @customer = current_business.customers.find_by(id: params[:customer_id])
     end
     def create
       @work_order = ::WorkOrders::Registration.new(work_order_params)

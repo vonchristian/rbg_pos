@@ -38,6 +38,8 @@ Rails.application.routes.draw do
   resources :reports, only: [:index]
   resources :customer_registrations, only: [:new, :create]
   resources :store_customer_registrations, only: [:new, :create]
+  resources :work_order_customer_registrations, only: [:new, :create]
+
 
   namespace :reports do
     resources :purchase_returns, only: [:index]
