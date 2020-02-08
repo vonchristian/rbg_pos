@@ -2,13 +2,13 @@ module StoreFrontModule
   module Orders
     class SalesOrder < Order
 
-      belongs_to :receivable_account,    class_name: 'AccountingModule::Account',  optional: true
-      belongs_to :sales_revenue_account, class_name: 'AccountingModule::Account',  optional: true
+      belongs_to :receivable_account,     class_name: 'AccountingModule::Account',  optional: true
+      belongs_to :sales_revenue_account,  class_name: 'AccountingModule::Account',  optional: true
       belongs_to :sales_discount_account, class_name: 'AccountingModule::Account', optional: true
 
       has_one :cash_payment, as: :cash_paymentable, class_name: "StoreFrontModule::CashPayment", dependent: :destroy
       has_many :sales_order_line_items, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem", foreign_key: 'order_id', dependent: :destroy
-      has_many :other_sales_line_items, foreign_key: 'order_id'
+      has_many :other_sales_line_items, foreign_key: 'order_id', dependent: :destroy
       has_many :stocks, through: :sales_order_line_items, class_name: 'StoreFronts::Stock'
       delegate :name, to: :customer, prefix: true, allow_nil: true
       delegate :full_name, to: :customer, prefix: true, allow_nil: true

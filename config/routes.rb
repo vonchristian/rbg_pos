@@ -199,8 +199,8 @@ Rails.application.routes.draw do
       resources :additional_line_items, only: [:new, :create, :destroy], module: :sales_orders
       resources :additional_line_item_processings, only: [:create], module: :sales_orders
       resources :additional_other_sales_items, only: [:new, :create, :destroy], module: :sales_orders
+      resources :other_sales_line_item_cancellations, only: [:destroy], module: :sales_orders
       resources :additional_other_sales_item_order_processings, only: [:new, :create], module: :sales_orders
-
     end
     resources :purchase_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items
     resources :purchase_return_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items
