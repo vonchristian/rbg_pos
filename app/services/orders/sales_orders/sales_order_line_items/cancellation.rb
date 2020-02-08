@@ -40,7 +40,6 @@ module Orders
         end
 
         def delete_item
-          line_item.referenced_purchase_order_line_items.destroy_all
           line_item.destroy
         end
 
