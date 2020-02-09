@@ -26,6 +26,7 @@ class StoreFront < ApplicationRecord
   has_many :store_front_accounts,                  class_name: 'StoreFronts::StoreFrontAccount'
   has_many :accounts,                              through: :store_front_accounts
   has_many :stocks,                                class_name: 'StoreFronts::Stock'
+  has_many :level_one_account_categories,          class_name: 'AccountingModule::AccountCategories::LevelOneAccountCategory'
   validates :name, presence: true
 
   delegate :name, to: :business, prefix: true

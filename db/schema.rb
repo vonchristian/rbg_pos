@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_08_032243) do
+ActiveRecord::Schema.define(version: 2020_02_09_032619) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,9 +51,11 @@ ActiveRecord::Schema.define(version: 2020_01_08_032243) do
     t.boolean "active", default: true
     t.bigint "business_id"
     t.bigint "account_category_id"
+    t.bigint "level_one_account_category_id"
     t.index ["account_category_id"], name: "index_accounts_on_account_category_id"
     t.index ["account_code"], name: "index_accounts_on_account_code", unique: true
     t.index ["business_id"], name: "index_accounts_on_business_id"
+    t.index ["level_one_account_category_id"], name: "index_accounts_on_level_one_account_category_id"
     t.index ["name"], name: "index_accounts_on_name", unique: true
     t.index ["type"], name: "index_accounts_on_type"
   end
@@ -282,6 +284,18 @@ ActiveRecord::Schema.define(version: 2020_01_08_032243) do
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_ledger_accounts_on_account_id"
     t.index ["ledgerable_type", "ledgerable_id"], name: "index_ledger_accounts_on_ledgerable_type_and_ledgerable_id"
+  end
+
+  create_table "level_one_account_categories", force: :cascade do |t|
+    t.string "title"
+    t.string "code"
+    t.string "type"
+    t.bigint "store_front_id", null: false
+    t.boolean "contra", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["store_front_id"], name: "index_level_one_account_categories_on_store_front_id"
+    t.index ["type"], name: "index_level_one_account_categories_on_type"
   end
 
   create_table "line_items", force: :cascade do |t|
@@ -794,6 +808,7 @@ ActiveRecord::Schema.define(version: 2020_01_08_032243) do
   add_foreign_key "account_categories", "parent_account_categories"
   add_foreign_key "accounts", "account_categories"
   add_foreign_key "accounts", "businesses"
+  add_foreign_key "accounts", "level_one_account_categories"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
@@ -825,6 +840,7 @@ ActiveRecord::Schema.define(version: 2020_01_08_032243) do
   add_foreign_key "entries", "users"
   add_foreign_key "entries", "users", column: "recorder_id"
   add_foreign_key "ledger_accounts", "accounts"
+  add_foreign_key "level_one_account_categories", "store_fronts"
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "line_items", column: "purchase_order_line_item_id"
   add_foreign_key "line_items", "line_items", column: "referenced_line_item_id"

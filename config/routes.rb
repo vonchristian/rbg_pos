@@ -284,4 +284,7 @@ Rails.application.routes.draw do
     resources :receivables, only: [:index]
   end
   resources :sales_clerks, only: [:index, :show]
+  namespace :accounting_module do 
+    resources :level_one_account_categories, only: [:index, :new, :create, :show]
+  end 
 end

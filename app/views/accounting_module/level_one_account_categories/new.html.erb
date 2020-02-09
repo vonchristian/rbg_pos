@@ -1,0 +1,7 @@
+<%= simple_form_for @level_one_account_category, url: :accounting_module_level_one_account_categories do |f| %>
+  <%= f.input :title %>
+  <%= f.input :code %>
+  <%= f.input :contra, as: :boolean %>
+  <%= f.input :type, collection: AccountingModule::AccountCategories::LevelOneAccountCategory.types, as: :radio_buttons %>
+  <%= f.submit "Save Account Category" %>
+<% end %>
