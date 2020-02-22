@@ -4,7 +4,7 @@
       pg_search_scope :text_search, against: [:bar_code], :associated_against => {:product => [:name] }
       belongs_to :purchase_order,                     class_name: "StoreFrontModule::Orders::PurchaseOrder", foreign_key: 'order_id', optional: true
       has_many :referenced_purchase_order_line_items, class_name: "StoreFrontModule::LineItems::ReferencedPurchaseOrderLineItem", foreign_key: 'purchase_order_line_item_id', dependent: :destroy
-      has_many :sales_order_line_items,               through: :referenced_purchase_order_line_items, class_name: 'StoreFrontModule::LineItems::SalesOrderLineItem', source: :sales_order_line_item
+    has_many :sales_order_line_items,               through: :referenced_purchase_order_line_items, class_name: 'StoreFrontModule::LineItems::SalesOrderLineItem', source: :sales_order_line_item
       has_many :purchase_return_order_line_items,     class_name: "StoreFrontModule::LineItems::PurchaseReturnOrderLineItem", foreign_key: 'purchase_order_line_item_id'
       has_many :internal_use_order_line_items,        class_name: "StoreFrontModule::LineItems::InternalUseOrderLineItem", foreign_key: 'purchase_order_line_item_id'
       has_many :stock_transfer_order_line_items,      class_name: "StoreFrontModule::LineItems::StockTransferOrderLineItem", foreign_key: 'purchase_order_line_item_id',  dependent: :destroy

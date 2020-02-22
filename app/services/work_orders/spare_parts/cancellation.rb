@@ -5,9 +5,9 @@ module WorkOrders
       attr_reader :line_item, :work_order, :employee
 
       def initialize(args)
-        @employee  = args.fetch(:employee)
-        @line_item = args.fetch(:line_item)
-        @work_order     = args.fetch(:work_order)
+        @employee   = args.fetch(:employee)
+        @line_item  = args.fetch(:line_item)
+        @work_order = args.fetch(:work_order)
       end
       def cancel!
         create_entry
@@ -36,7 +36,6 @@ module WorkOrders
       end
 
       def delete_item
-        line_item.referenced_purchase_order_line_items.destroy_all
         line_item.destroy
       end
 

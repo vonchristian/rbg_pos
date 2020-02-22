@@ -122,29 +122,29 @@ module StoreFrontModule
         bambang_primark = StoreFront.find_by(name: 'Bambang Primark')
 
 
-        StoreFrontModule::SellingPrice.find_or_create_by!(
+        StoreFrontModule::SellingPrice.create!(
           price:               lagawe_selling_price(row),
           product:             find_product(row),
           store_front:         lagawe,
           unit_of_measurement: unit_of_measurement(row))
 
-        StoreFrontModule::SellingPrice.find_or_create_by!(
+        StoreFrontModule::SellingPrice.create!(
           price:               alfonso_lista_selling_price(row),
           product:             find_product(row),
           store_front:         alfonso_lista,
           unit_of_measurement: unit_of_measurement(row))
-         StoreFrontModule::SellingPrice.find_or_create_by!(
+         StoreFrontModule::SellingPrice.create!(
           price:               lamut_selling_price(row),
           product:             find_product(row),
           store_front:         lamut,
           unit_of_measurement: unit_of_measurement(row))
 
-          StoreFrontModule::SellingPrice.find_or_create_by!(
+          StoreFrontModule::SellingPrice.create!(
           price:               bambang_new_selling_price(row),
           product:             find_product(row),
           store_front:         bambang_new,
           unit_of_measurement: unit_of_measurement(row))
-          StoreFrontModule::SellingPrice.find_or_create_by!(
+          StoreFrontModule::SellingPrice.create!(
           price:               bambang_primark_selling_price(row),
           product:             find_product(row),
           store_front:         bambang_primark,
