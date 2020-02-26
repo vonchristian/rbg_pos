@@ -49,6 +49,7 @@ module StoreFrontModule
           receivable_account.credit_entries
         end
       end
+      
       def revenue_entries
         if sales_revenue_account
           sales_revenue_account.entries
