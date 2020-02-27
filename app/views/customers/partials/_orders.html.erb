@@ -60,7 +60,8 @@
                 <% order.payment_entries.each do |payment| %>
                   Date: <%= payment.entry_date.strftime("%B %e, %Y") %>
                   <br>Amount <%= number_to_currency payment.debit_amounts.sum(&:amount) %><br>
-                  Reference # <%= payment.reference_number %>
+                  Reference # <%= payment.reference_number %><br>
+                  Sales Clerk: <%= payment.recorder.try(:name) %>
                 <% end %>
               </td>
               <td>
