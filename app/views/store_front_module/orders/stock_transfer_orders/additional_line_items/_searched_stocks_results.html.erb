@@ -1,0 +1,4 @@
+<% @stocks.each do |stock| %>
+  <%= render 'store_front_module/orders/stock_transfer_orders/additional_line_items/stock', stock: stock %>
+<% end %>
+<center><%==pagy_bootstrap_nav(@pagy) %></center>

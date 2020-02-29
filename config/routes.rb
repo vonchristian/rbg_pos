@@ -184,7 +184,10 @@ Rails.application.routes.draw do
     resources :purchase_order_line_item_registries, only: [:create]
     resources :unit_of_measurements, only: [:edit, :update], module: :settings
     resources :selling_prices, only: [:new, :create], module: :settings
-    resources :stock_transfers, only: [:index, :show, :edit, :update, :destroy], module: :orders
+    resources :stock_transfers, only: [:index, :show, :edit, :update, :destroy], module: :orders do 
+      resources :additional_line_items,                  only: [:new, :create, :destroy], module: :stock_transfer_orders
+      resources :additional_line_item_order_processings, only: [:create], module: :stock_transfer_orders 
+    end 
     resources :received_stock_transfers, only: [:index, :show], module: :orders
     resources :repair_services_orders, only: [:index, :show], module: :orders
     resources :sales_returns, only: [:index, :show], module: :orders

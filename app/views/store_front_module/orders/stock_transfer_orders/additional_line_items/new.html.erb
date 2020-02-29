@@ -1,0 +1,94 @@
+<div id="customer-modal" class="modal fade"></div>
+
+<div class="row">
+  <div class="col-md-7">
+    <div class="card card-default">
+      <div class="card-header with-border">
+        <div class="row">
+          <div class="col-md-6">
+            <h4 class="title-up"> Additional Items </h4>
+          </div>
+          <div class="col-md-6">
+           
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+      <% if params[:search].present? %>
+        <%=form_tag new_store_front_module_stock_transfer_additional_line_item_path(@stock_transfer_order), method: :get do %>
+           <div class="input-group">
+             <%= text_field_tag :search, params[:search], id: 'stock-search-form', class: "search-query form-control border-input", placeholder: "Search for items", type: "search" %>
+             <span class="input-group-btn">
+               <%= button_tag(type: 'submit', class: "btn btn-default", id: 'store-search-button') do %>
+                 <i class="icon-magnifier"></i> Browse Products
+               <% end %>
+             </span>
+           </div>
+         <% end %>
+      <% else %>
+        <%=form_tag new_store_front_module_stock_transfer_additional_line_item_path(@stock_transfer_order), method: :get do %>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], id: "stock-search-form", class: "search-query form-control border-input", autofocus: true, placeholder: "Search for items", type: "search" %>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', class: "btn btn-default", id: 'stock-search-btn') do %>
+                <i class="icon-magnifier"></i> Browse Products
+              <% end %>
+            </span>
+          </div>
+        <% end %>
+      <% end %>
+      <br>
+
+      <% if @stocks.present? %>
+        <%= render 'store_front_module/orders/stock_transfer_orders/additional_line_items/searched_stocks_results' %>
+      <% elsif @products.present? %>
+        <%= render 'store_front_module_orders/stock_transfer_orders/additional_line_items/searched_products_results' %>
+      <% end %>
+    </div>
+  </div>
+
+
+</div>
+<% if current_cart.purchase_order_line_items.present? %>
+<div class='col-md-5'>
+  <div class='card'>
+    <div  class='card-body'>
+      <h3 class='title-up'> Add. Items Processing </h3>
+<div class='table table-responsive'>
+  <table class='table table-striped'>
+    <thead>
+      <tr>
+        <th> QTY </th>
+        <th> ITEM </th>
+        <th> UNIT COST </th>
+        <th> TOTAL COST </th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% current_cart.purchase_order_line_items.each do |line_item| %>
+        <tr>
+          <td><%= line_item.quantity %></td>
+          <td><%= line_item.product_name %><br>
+            <small class='text-muted'><%= line_item.bar_code %></small>
+          </td>
+          <td><%= number_to_currency line_item.unit_cost %></td>
+          <td><%= number_to_currency line_item.total_cost %></td>
+          <td>
+           <%= link_to store_front_module_stock_transfer_additional_line_item_path(id: line_item.id, stock_transfer_order_id: @stock_transfer_order.id), method: :delete do %>
+                  <span class="fa fa-times text-danger" data-toggle="tooltip" title="Remove Item"></span>
+                <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<%= simple_form_for @additional_line_item_order_processing, url: :store_front_module_stock_transfer_additional_line_item_order_processings do |f| %>
+  <%= f.input :stock_transfer_order_id, input_html: { value: @stock_transfer_order.id }, as: :hidden %>
+  <%= f.input :cart_id, input_html: { value: current_cart.id}, as: :hidden %>
+  <span class='text-danger'> Please review the items above if correct before proceeding. This action cannot be undone. </span>
+  <hr>
+  <%= f.submit "Add Items", class: 'btn btn-block btn-primary' %>
+<% end %>
+<% end %>
