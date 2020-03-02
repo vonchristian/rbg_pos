@@ -1,4 +1,4 @@
-<%= @work_order.product_unit.inspect %>
+
 <div class="container-fluid">
 <div class="card">
   <div class="card-body">
@@ -13,15 +13,11 @@
 
   <%= f.input :work_order_category_id, label: 'Category', collection: WorkOrderCategory.all.map{ |a| [a.title, a.id] }, input_html: { class: 'chosen-select' } %>
 
-  <%= f.input :customer_id, collection: Customer.all.map{|a| [a.full_name, a.id] }, input_html: { class: 'chosen-select' } %>
+  <%= f.input :customer_id, collection: Customer.all.map{|a| [a.full_name, a.id] }, input_html: { class: 'chosen-select', value: @work_order.customer_id } %>
   <%= f.input :contact_person %>
   <%= f.input :department_id, collection:  Department.all.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
+  
 
-  <%= f.simple_fields_for :product_unit do |ff| %>
-  <%= ff.input :description, label: "Manufacturer/Description" %>
-  <%= ff.input :model_number, input_html: { value: @work_order.model_number } %>
-  <%= ff.input :serial_number, input_html: { value: @work_order.serial_number } %>
-  <% end %>
   <%= f.input :physical_condition %>
   <%= f.input :reported_problem, as: :text %>
   <%= f.input :under_warranty %>

@@ -16,6 +16,7 @@ module ComputerRepairSection
         render :new
       end
     end
+
     def show
       @post = Post.new
       @work_order = WorkOrder.find(params[:id])
@@ -34,13 +35,11 @@ module ComputerRepairSection
     def update
       @work_order = WorkOrder.find(params[:id])
       @work_order.update(update_params)
-      if @work_order.save
-        if @work_order.released?
-          @work_order.update!(release_date: @work_order.updated_at)
-        end
+      if @work_order.valid?
+        @work_order.save!
         redirect_to computer_repair_section_work_order_url(@work_order), notice: "Updated successfully"
       else
-        render :show
+        render :edit
       end
     end
 
