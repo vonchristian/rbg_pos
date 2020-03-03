@@ -41,9 +41,17 @@
                                       <td> <%= stock.balance %></td>
 
                                       <td><%= stock.purchase_quantity %></td>
-
-                                      <td><%= number_to_currency stock.last_purchase_cost %></td>
-                                      <td><%= number_to_currency stock.total_cost %></td>
+                
+                                      <td>
+                                      <% if current_user.proprietor? %>
+                                        <%= number_to_currency stock.last_purchase_cost %>
+                                      <% end %>
+                                        </td>
+                                      <td>
+                                      <% if current_user.proprietor? %>
+                                        <%= number_to_currency stock.total_cost %>
+                                      <% end %>
+                                        </td>
 
 
 
