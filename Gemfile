@@ -18,7 +18,7 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 4.0'
 gem 'rubyzip', '>= 1.2.1'
 gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
-gem 'axlsx_rails'
+gem 'caxlsx_rails'
 gem 'mina', require: false
 gem 'mina-puma', require: false,  github: 'untitledkingdom/mina-puma'
 gem 'sass-rails', '~> 5.0'
@@ -50,7 +50,6 @@ gem 'simple_calendar'
 gem "pdf-reader"
 gem 'pagy'
 gem 'ffi', '1.11.2'
-gem 'rufo', require: false
 
 group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'

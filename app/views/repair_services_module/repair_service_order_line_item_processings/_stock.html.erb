@@ -28,6 +28,8 @@
       <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, autofocus: true, label: false %>
       <%= f.input :stock_id, input_html: { value: stock.id }, as: :hidden %>
       <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
+      <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+
       <%= f.input :bar_code, input_html: { value: params[:search] }, as: :hidden %>
     </div>
     <div class="col-md-3">

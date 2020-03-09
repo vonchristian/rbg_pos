@@ -35,7 +35,7 @@ module RepairServicesModule
     private
     def line_item_params
       params.require(:repair_services_module_repair_service_order_line_item_processing).permit(:quantity,
-        :unit_cost, :unit_of_measurement_id, :product_id, :cart_id, :work_order_id, :bar_code, :stock_id)
+        :unit_cost, :unit_of_measurement_id, :product_id, :cart_id, :work_order_id, :bar_code, :stock_id, :employee_id)
     end
   end
 end

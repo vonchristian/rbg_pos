@@ -30,7 +30,7 @@ class WorkOrder < ApplicationRecord
   has_many :sales_orders,               class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document, dependent: :destroy
   has_many :sales_order_line_items,     through: :sales_orders, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem"
   has_many :accessories,                dependent: :destroy
-  has_many :entries,                    class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
+  has_many :entries,                    class_name: "AccountingModule::Entry", through: :receivable_account
 
   validates :description, :physical_condition, :reported_problem, presence: true
   validates :customer_id, :date_received, presence: true
@@ -170,7 +170,7 @@ class WorkOrder < ApplicationRecord
 
 
   def balance_total
-    accounts_receivable_total - payments_total
+    receivable_account.balance
   end
 
   def discounts_total

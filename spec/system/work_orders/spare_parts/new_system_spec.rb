@@ -1,14 +1,14 @@
 require 'rails_helper'
 describe 'New work order spare parts' do
   before(:each) do
-    work_order               = create(:work_order)
+    store_front              = create(:store_front)
+
     supplier                 = create(:supplier, business_name: 'Test supplier')
     category                 = create(:work_order_category, title: 'Desktop')
     customer                 = create(:customer, first_name: 'Juan', last_name: 'Cruz')
-    work_order               = create(:work_order, customer: customer, work_order_category: category)
+    work_order               = create(:work_order, customer: customer, work_order_category: category, store_front: store_front)
     product                  = create(:product, name: 'Test Product')
     uom                      = create(:unit_of_measurement, product: product, base_measurement: true, conversion_quantity: 1)
-    store_front              = create(:store_front)
     cart                     = create(:cart)
     stock                    = create(:stock, product: product, store_front: store_front, barcode: '11111111', unit_of_measurement: uom)
     supplier                 = create(:supplier)

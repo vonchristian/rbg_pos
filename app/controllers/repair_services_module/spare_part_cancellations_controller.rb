@@ -7,7 +7,6 @@ module RepairServicesModule
         line_item: @line_item,
         work_order: @work_order,
         employee: current_user
-
       ).cancel!
       redirect_to computer_repair_section_work_order_url(@work_order), notice: 'Spare part cancelled successfully'
     end

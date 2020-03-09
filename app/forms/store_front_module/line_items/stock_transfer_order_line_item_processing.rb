@@ -40,8 +40,7 @@ module StoreFrontModule
           unit_of_measurement: find_stock.unit_of_measurement,
           bar_code: find_stock.barcode
           )
-        purchase.stock_transfers.create!(
-            stock:                    find_stock,
+        find_stock.stock_transfers.create!(
             cart:                     find_cart,
             bar_code:                 find_stock.barcode,
             quantity:                 quantity,

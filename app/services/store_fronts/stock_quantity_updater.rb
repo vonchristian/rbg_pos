@@ -7,7 +7,9 @@ module StoreFronts
     end
 
     def update_available_quantity!
-      stock.update(available_quantity: stock.balance)
+      if stock.purchase.present?
+        stock.update(available_quantity: stock.balance)
+      end 
     end
   end
 end
