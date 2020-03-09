@@ -426,7 +426,7 @@ DEPENDENCIES
   precise_distance_of_time_in_words
   pry-rails
   public_activity
-  puma (~> 4.0)
+  puma
   pundit
   rack-mini-profiler
   rails (= 6.0.2.1)
