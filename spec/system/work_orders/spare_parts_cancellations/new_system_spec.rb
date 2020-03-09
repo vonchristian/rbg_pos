@@ -15,7 +15,6 @@ describe 'Spare part cancellation' do
     entry.debit_amounts.build(amount: sales_order.total_cost, account: @work_order.receivable_account)
     entry.credit_amounts.build(amount: sales_order.total_cost, account: @work_order.sales_revenue_account)
     entry.save!
-    sales_order.update!(entry: entry)
     login_as(proprietor, scope: :user)
 
     visit computer_repair_section_work_order_path(@work_order)
