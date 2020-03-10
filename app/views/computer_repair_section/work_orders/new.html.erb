@@ -12,9 +12,9 @@
             <div class='col-md-9'>
               <%= form_tag new_computer_repair_section_work_order_path, method: :get, id: "search-form" do %>
                 <div class="input-group stylish-input-group">
-                  <%= text_field_tag :customer_search, params[:customer_search], class: "search-query form-control border-input", placeholder: "Search customer", type: "search" %>
+                  <%= text_field_tag :customer_search, params[:customer_search], id: "customer-search-form", class: "search-query form-control border-input", placeholder: "Search customer", type: "search" %>
                   <span class="input-group-btn">
-                    <%= button_tag(type: 'submit', class: "btn btn-outline-primary") do %>
+                    <%= button_tag(type: 'submit', class: "btn btn-outline-primary", id: "customer-search-btn") do %>
                       <i class="fa fa-search"></i> Search Customer
                     <% end %>
                   </span>
@@ -38,7 +38,7 @@
                           <small class="text-muted"><i class="fa fa-map-marker"></i> <%= customer.address %></small>
                         </div>
                         <div class='col-md-4'>
-                          <%= link_to 'Select', new_computer_repair_section_work_order_path(customer_id: customer.id), class: 'btn btn-outline-primary btn-sm float-right' %>
+                          <%= link_to 'Select', new_computer_repair_section_work_order_path(customer_id: customer.id), class: 'btn btn-outline-primary btn-sm float-right', id: "#{customer.id}-select-customer" %>
                         </div>
                       </div>
                       <hr>

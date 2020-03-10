@@ -6,17 +6,21 @@ describe 'New work order' do
     work_order = create(:work_order)
     supplier   = create(:supplier, business_name: 'Test supplier')
     category   = create(:work_order_category, title: 'Desktop')
-    customer   = create(:customer, first_name: 'Juan', last_name: 'Cruz')
     user       = create(:user, role: 'technician', first_name: 'Test', last_name: 'Tech')
+    @customer  = create(:customer, first_name: 'Juan', last_name: 'Cruz', business: user.business)
+
     login_as(user, scope: :user)
     visit computer_repair_section_dashboard_index_path
     click_link 'New Repair'
   end
   it 'with valid attributes', js: true do
+    fill_in "customer-search-form", with: @customer.full_name
+    click_button "customer-search-btn"
+    click_link "#{@customer.id}-select-customer"
     select_from_chosen 'Test Tech', from: 'Assigned To'
     select_from_chosen 'Desktop', from: 'Category'
     fill_in 'Date received',            with: Date.current
-    select_from_chosen 'Juan Cruz', from: 'Customer'
+   
     fill_in 'Contact person',           with: 'none'
     fill_in 'Manufacturer/Description', with: 'Asus'
     fill_in 'Model number',             with: 'XYZ'
@@ -32,11 +36,5 @@ describe 'New work order' do
 
     expect(page).to have_content('received successfully')
 
-  end
-
-  it 'with invalid attributes' do
-    click_button 'Save Work Order'
-
-    expect(page).to have_content("can't be blank")
   end
 end

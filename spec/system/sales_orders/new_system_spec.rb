@@ -1,7 +1,7 @@
 require 'rails_helper'
 include ChosenSelect
 describe 'New cash sales order' do
-  let!(:customer)  { create(:customer) }
+
 
   before(:each) do
     product     = create(:product, name: 'Test Product')
@@ -16,6 +16,7 @@ describe 'New cash sales order' do
     purchase_order_line_item = create(:purchase_order_line_item, quantity: 10, stock: stock, purchase_order: purchase_order, unit_cost: 100)
     cash                     = create(:asset)
     sales_clerk              = create(:sales_clerk, store_front: store_front, cash_on_hand_account: cash)
+    @customer                = create(:customer, business: sales_clerk.business)
     sales_clerk.cash_accounts << cash
     login_as(sales_clerk, scope: :user)
     visit store_index_path
@@ -30,8 +31,11 @@ describe 'New cash sales order' do
 
     expect(page).to have_content('added to cart')
 
+    fill_in "customer-search-form", with: @customer.full_name
+    click_button "customer-search-btn"
+    click_link "#{@customer.id}-select-customer"
     fill_in 'sale-order-date', with: Date.current.strftime('%B %e, %Y')
-    select_from_chosen customer.full_name, from: 'selectCustomer'
+
     fill_in 'Cash tendered',    with: 100
     fill_in 'Discount',         with: 0
     fill_in 'Reference number', with: '120DFG'
@@ -52,8 +56,11 @@ describe 'New cash sales order' do
 
     expect(page).to have_content('added to cart')
 
-    fill_in 'sale-order-date', with: Date.current
-    select_from_chosen customer.full_name, from: "selectCustomer"
+    fill_in "customer-search-form", with: @customer.full_name
+    click_button "customer-search-btn"
+    click_link "#{@customer.id}-select-customer"
+    fill_in 'sale-order-date', with: Date.current.strftime('%B %e, %Y')
+
     fill_in 'Cash tendered',    with: 100
     fill_in 'Discount',         with: 0
     fill_in 'Reference number', with: '120DFG'
