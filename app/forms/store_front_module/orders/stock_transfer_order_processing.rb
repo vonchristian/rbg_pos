@@ -26,16 +26,16 @@ module StoreFrontModule
       def create_stock_transfer_order
         order = StoreFrontModule::Orders::PurchaseOrder.new(
           credit: true,
-          date:                    date,
-          description:             reference_number,
-          employee:                find_employee,
-          account_number:          SecureRandom.uuid,
-          commercial_document:     find_employee.store_front,
-          store_front:             find_employee.store_front,
-          supplier:                find_employee.store_front,
-          search_term:             find_destination_store_front.name,
+          date:                       date,
+          description:                reference_number,
+          employee:                   find_employee,
+          account_number:             SecureRandom.uuid,
+          commercial_document:        find_employee.store_front,
+          store_front:                find_employee.store_front,
+          supplier:                   find_employee.store_front,
+          search_term:                find_destination_store_front.name,
           destination_store_front_id: destination_store_front_id,
-          reference_number:        reference_number)
+          reference_number:           reference_number)
           create_accounts(order)
           order.save!
 
