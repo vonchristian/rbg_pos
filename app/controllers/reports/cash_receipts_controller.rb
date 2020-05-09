@@ -20,6 +20,7 @@ module Reports
             employee:      @user,
             view_context:  view_context)
           send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Cash Receipts Report.pdf'
+          pdf = nil
         end
       end
     end
