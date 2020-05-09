@@ -7,7 +7,7 @@ require 'mina/puma'
 set :whenever_name, 'production'
 set :domain, '167.99.64.121'
 set :deploy_to, '/var/www/rbg'
-set :repository, 'https://github.com/vonchristian/rbg_pos.git'
+set :repository, 'git@github.com:vonchristian/rbg_pos.git'
 set :branch, 'master'
 set :user, 'deploy'
 set :force_asset_precompile, true
@@ -27,11 +27,7 @@ set :shared_dirs, fetch(:shared_dirs, []).push('public/assets').push('public/pac
 # This task is the environment that is loaded for most commands, such as
 # `mina deploy` or c`mina rake`.
 task :remote_environment do
-  # If you're using rbenv, use this to load the rbenv environment.
-  # Be sure to commit your .ruby-version or .rbenv-version to your repository.
   invoke :'rbenv:load'
-  # For those using RVM, use this to load an RVM version@gemset.
-  # invoke :'rvm:use[ruby-1.9.3-p125@default]'
 end
 
 # Put any custom mkdir's in here for when `mina setup` is ran.
@@ -87,7 +83,6 @@ task :deploy => :remote_environment do
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
     invoke :'rails:db_migrate'
-
     invoke :'rails:assets_precompile'
     command %{yarn install}
     command %{NODE_ENV=production RAILS_ENV=production bundle exec rails webpacker:compile}
