@@ -12,7 +12,6 @@ set :branch, 'master'
 set :user, 'deploy'
 set :force_asset_precompile, true
 set :term_mode, nil
-set :forward_agent, true
 set :app_path, lambda { "#{fetch(:deploy_to)}/#{fetch(:current_path)}" }
 set :stage, 'production'
 set :shared_paths,  ['config/database.yml', 'log', 'tmp/log', 'public/system', 'tmp/pids', 'tmp/sockets']
