@@ -1,41 +1,41 @@
 module StoreFrontModule
-  module Orders 
-    module StockTransferOrders 
-      class AdditionalLineItemsController < ApplicationController 
-        def new 
+  module Orders
+    module StockTransferOrders
+      class AdditionalLineItemsController < ApplicationController
+        def new
           @stock_transfer_order = current_store_front.delivered_stock_transfer_orders.find(params[:stock_transfer_id])
-          @additional_line_item = StoreFrontModule::Orders::StockTransferOrders::AdditionalLineItem.new 
-          @additional_line_item_order_processing = StoreFrontModule::Orders::StockTransferOrders::AdditionalLineItemOrderProcessing.new 
+          @additional_line_item = StoreFrontModule::LineItems::StockTransferOrderLineItemProcessing.new
+          @additional_line_item_order_processing = StoreFrontModule::Orders::StockTransferOrders::AdditionalLineItemOrderProcessing.new
           if params[:search].present?
             @pagy, @stocks   = pagy(current_store_front.stocks.processed.includes(:product, :purchase => [:unit_of_measurement]).text_search(params[:search]))
             @pagy, @products = pagy(Product.text_search(params[:search]))
-          end 
-        end 
+          end
+        end
 
-        def create 
+        def create
           @stock_transfer_order = current_store_front.delivered_stock_transfer_orders.find(params[:stock_transfer_id])
-          @additional_line_item = StoreFrontModule::Orders::StockTransferOrders::AdditionalLineItem.new(stock_transfer_line_item_params)
+          @additional_line_item = StoreFrontModule::LineItems::StockTransferOrderLineItemProcessing.new(stock_transfer_line_item_params)
           if @additional_line_item.valid?
             @additional_line_item.process!
             redirect_to new_store_front_module_stock_transfer_additional_line_item_url(@stock_transfer_order), notice: 'Item added successfully.'
-          else 
-            render :new 
-          end 
-        end 
+          else
+            render :new
+          end
+        end
 
-        def destroy 
+        def destroy
           @stock_transfer_order = current_store_front.delivered_stock_transfer_orders.find(params[:stock_transfer_id])
           @item = current_cart.purchase_order_line_items.find(params[:id])
           @item.destroy
           redirect_to new_store_front_module_stock_transfer_additional_line_item_url(@stock_transfer_order), alert: 'Item removed successfully.'
-        end 
+        end
 
-        private 
+        private
         def stock_transfer_line_item_params
-          params.require(:store_front_module_orders_stock_transfer_orders_additional_line_item).
-          permit(:cart_id, :stock_id, :product_id, :quantity, :employee_id, :unit_of_measurement_id, :unit_cost, :bar_code)
-        end 
-      end 
-    end 
-  end 
-end 
+          params.require(:store_front_module_line_items_stock_transfer_order_line_item_processing).
+          permit(:quantity, :unit_of_measurement_id, :product_id, :bar_code, :cart_id, :stock_id, :selling_price)
+        end
+      end
+    end
+  end
+end

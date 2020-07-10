@@ -55,7 +55,7 @@
         <% if (Date.current.beginning_of_day..Date.current.end_of_day).include?(@order.date) %>
           <%= link_to "Add Items", new_store_front_module_stock_transfer_additional_line_item_path(@order), class: "btn btn-danger" %>
         <% end %>
-        <hr> 
+        <hr>
               <% @order.purchase_order_line_items.each do |line_item| %>
                 <div class="row">
                   <div class="col-md-2">
@@ -64,7 +64,7 @@
                   <div class="col-md-6">
                     <b><%=line_item.product_name %></b><br>
                     <small class="text-muted"><%= line_item.bar_code %></small>
-                   
+
                   </div>
                   <div class="col-md-2">
                     <span class="float-right"><%= number_to_currency StoreFronts::SellingPriceFinder.new(stock: line_item.stock, store_front: @order.destination_store_front).selling_price %></span>
