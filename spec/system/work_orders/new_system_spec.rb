@@ -19,8 +19,7 @@ describe 'New work order' do
     click_link "#{@customer.id}-select-customer"
     select_from_chosen 'Test Tech', from: 'Assigned To'
     select_from_chosen 'Desktop', from: 'Category'
-    fill_in 'Date received',            with: Date.current
-   
+
     fill_in 'Contact person',           with: 'none'
     fill_in 'Manufacturer/Description', with: 'Asus'
     fill_in 'Model number',             with: 'XYZ'
@@ -29,7 +28,7 @@ describe 'New work order' do
     fill_in 'Reported problem',         with: 'no power'
     check 'Under warranty'
     select_from_chosen 'Test supplier', from: 'Supplier'
-    fill_in 'Purchase date',            with: Date.current
+    fill_in 'Purchase date',            with: Date.current.strftime("%B %e, %Y")
     fill_in 'Expiry date',              with: Date.current.next_year
 
     click_button 'Save Work Order'

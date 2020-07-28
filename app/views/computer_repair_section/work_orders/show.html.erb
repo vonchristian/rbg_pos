@@ -132,7 +132,9 @@
                   <b>Purchase Date</b>
                 </div>
                 <div class="col-md-6">
-                  <%= @work_order.purchase_date.strftime("%B %e, %Y") %>
+                  <% if @work_order.purchase_date.present? %>
+                    <%= @work_order.purchase_date.strftime("%B %e, %Y") %>
+                  <% end %>
                 </div>
               </div>
               <% end %>
