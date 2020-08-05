@@ -88,7 +88,7 @@ task :deploy => :remote_environment do
     invoke :'deploy:cleanup'
 
     on :launch do
-      invoke :'puma:restart'
+      # invoke :'puma:restart'
       # invoke :'whenever:update'
     end
   end
