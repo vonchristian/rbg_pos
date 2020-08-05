@@ -48,10 +48,6 @@
           <span class="float-right"><%= link_to 'Print(Excel)', store_front_module_stock_transfer_path(@order, format: 'xlsx'), class: "btn btn-default btn-sm" %></span>
           <span class="float-right"><%= link_to 'Print(PDF)', order_path(@order, format: 'pdf'), class: "btn btn-default btn-sm" %></span>
         <% end %>
-        <% if current_user.proprietor? %>
-          <%= link_to "Edit Destination", edit_store_front_module_stock_transfer_path(@order), class: "btn btn-danger" %>
-
-        <% end %>
         <% if (Date.current.beginning_of_day..Date.current.end_of_day).include?(@order.date) %>
           <%= link_to "Add Items", new_store_front_module_stock_transfer_additional_line_item_path(@order), class: "btn btn-danger" %>
         <% end %>
