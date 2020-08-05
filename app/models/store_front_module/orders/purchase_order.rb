@@ -9,6 +9,8 @@ module StoreFrontModule
       has_many :stock_transfer_order_line_items, class_name: 'StoreFrontModule::LineItems::StockTransferOrderLineItem', foreign_key: 'order_id', dependent: :destroy
       has_many :line_items, dependent: :destroy, foreign_key: 'order_id'
       has_many :stocks, through: :purchase_order_line_items
+      has_many :transferred_stocks, through: :stock_transfer_order_line_items, source: :stock
+
       delegate :name, to: :supplier, prefix: true, allow_nil: true
       delegate :name, to: :origin_store_front, prefix: true, allow_nil: true
       delegate :name, to: :destination_store_front, prefix: true, allow_nil: true

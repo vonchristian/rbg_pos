@@ -29,6 +29,7 @@ module StoreFrontModule
         @stock_transfer = StoreFrontModule::Orders::PurchaseOrder.find(params[:id])
         @stock_transfer.update(stock_transfer_params)
         if @stock_transfer.valid?
+          StoreFrontModule::StockTransferStockDestinationUpdate.new(stock_transfer_id: @stock_transfer.id).update_store_fronts
           @stock_transfer.save
           redirect_to store_front_module_stock_transfer_url(@stock_transfer), notice: "Updated successfully"
         else

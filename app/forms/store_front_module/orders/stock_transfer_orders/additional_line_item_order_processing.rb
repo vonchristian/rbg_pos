@@ -17,13 +17,16 @@ module StoreFrontModule
         end
 
         private
+
         def add_items_to_order
           find_stock_transfer_order.purchase_order_line_items << find_cart.purchase_order_line_items
+          find_stock_transfer_order.stock_transfer_order_line_items << find_cart.stock_transfer_order_line_items
 
           find_cart.stock_transfer_order_line_items.where(order_id: nil).each do |line_item|
             line_item.update!(order_id: find_stock_transfer_order.id)
           end
         end
+
         def create_stocks
           find_stock_transfer_order.purchase_order_line_items.each do |line_item|
             ::StoreFronts::StockTransfers::StockCreation.new(line_item: line_item, destination_store_front: find_stock_transfer_order.destination_store_front).create_stock!

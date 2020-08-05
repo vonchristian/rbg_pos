@@ -9,7 +9,8 @@ module StoreFronts
       end
 
       def create_stock!
-        new_stock = destination_store_front.stocks.create!(
+        new_stock = StoreFronts::Stock.create!(
+        store_front: destination_store_front,
         available:           true,
         product:             line_item.product,
         unit_of_measurement: line_item.unit_of_measurement,

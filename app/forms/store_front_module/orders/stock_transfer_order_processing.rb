@@ -48,6 +48,7 @@ module StoreFrontModule
 
           find_cart.stock_transfer_order_line_items.where(order_id: nil).each do |line_item|
             line_item.update!(order_id: order.id)
+            order.stock_transfer_order_line_items << line_item
           end
 
           if find_registry.present?
