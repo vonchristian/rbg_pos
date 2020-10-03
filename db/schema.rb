@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_09_032619) do
+ActiveRecord::Schema.define(version: 2020_09_06_222920) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -361,8 +361,10 @@ ActiveRecord::Schema.define(version: 2020_02_09_032619) do
     t.bigint "sales_revenue_account_id"
     t.bigint "sales_discount_account_id"
     t.bigint "payable_account_id"
+    t.bigint "department_id"
     t.index ["account_number"], name: "index_orders_on_account_number", unique: true
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_orders"
+    t.index ["department_id"], name: "index_orders_on_department_id"
     t.index ["destination_store_front_id"], name: "index_orders_on_destination_store_front_id"
     t.index ["employee_id"], name: "index_orders_on_employee_id"
     t.index ["payable_account_id"], name: "index_orders_on_payable_account_id"
@@ -856,6 +858,7 @@ ActiveRecord::Schema.define(version: 2020_02_09_032619) do
   add_foreign_key "orders", "accounts", column: "receivable_account_id"
   add_foreign_key "orders", "accounts", column: "sales_discount_account_id"
   add_foreign_key "orders", "accounts", column: "sales_revenue_account_id"
+  add_foreign_key "orders", "departments"
   add_foreign_key "orders", "store_fronts"
   add_foreign_key "orders", "store_fronts", column: "destination_store_front_id"
   add_foreign_key "orders", "users", column: "employee_id"

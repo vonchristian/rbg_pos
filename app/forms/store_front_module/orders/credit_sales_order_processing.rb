@@ -3,6 +3,7 @@ module StoreFrontModule
     class CreditSalesOrderProcessing
       include ActiveModel::Model
       attr_accessor  :customer_id,
+                     :department_id,
                      :date,
                      :description,
                      :employee_id,
@@ -30,6 +31,7 @@ module StoreFrontModule
       def create_sales_order
           order = StoreFrontModule::Orders::SalesOrder.new(
           store_front_id: store_front_id,
+          department_id: department_id,
           account_number: account_number,
           date: date,
           employee: find_employee,

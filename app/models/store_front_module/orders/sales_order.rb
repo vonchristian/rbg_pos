@@ -5,7 +5,7 @@ module StoreFrontModule
       belongs_to :receivable_account,     class_name: 'AccountingModule::Account',  optional: true
       belongs_to :sales_revenue_account,  class_name: 'AccountingModule::Account',  optional: true
       belongs_to :sales_discount_account, class_name: 'AccountingModule::Account', optional: true
-
+      belongs_to :department, optional: true
       has_one :cash_payment, as: :cash_paymentable, class_name: "StoreFrontModule::CashPayment", dependent: :destroy
       has_many :sales_order_line_items, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem", foreign_key: 'order_id', dependent: :destroy
       has_many :other_sales_line_items, foreign_key: 'order_id', dependent: :destroy
@@ -14,7 +14,7 @@ module StoreFrontModule
       delegate :full_name, to: :customer, prefix: true, allow_nil: true
       delegate :balance, to: :receivable_account
       before_destroy :delete_entry
-      def self.receivable_accounts 
+      def self.receivable_accounts
         ids = pluck(:receivable_account_id)
         AccountingModule::Account.where(id: ids.uniq.compact.flatten)
       end
@@ -49,7 +49,7 @@ module StoreFrontModule
           receivable_account.credit_entries
         end
       end
-      
+
       def revenue_entries
         if sales_revenue_account
           sales_revenue_account.entries

@@ -114,6 +114,8 @@
               </div>
               <hr>
                   <%= f.input :customer_id, input_html: { value: @customer.id }, as: :hidden %>
+                  <%= f.input :department_id, collection: @customer.departments.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
+
                   <%= f.input :date, as: :string, input_html: { class: "datepicker", id: 'credit-sale-order-date' } %>
                   <%= f.input :store_front_id, input_html: { value: current_store_front.id }, as: :hidden %>
                   <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>

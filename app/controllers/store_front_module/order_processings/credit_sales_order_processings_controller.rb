@@ -16,6 +16,7 @@ module StoreFrontModule
       def order_params
         params.require(:store_front_module_orders_credit_sales_order_processing).
         permit(:customer_id,
+               :department_id,
                :date,
                :employee_id,
                :cart_id,
