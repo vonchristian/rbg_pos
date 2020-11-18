@@ -19,7 +19,7 @@ module WorkOrders
       work_order = WorkOrder.received.new(
         technician: find_technician,
         work_order_category_id: work_order_category_id,
-        service_number:     WorkOrder.last.id.succ,
+        service_number:     WorkOrder.last ? WorkOrder.last.id.succ : 1,
         date_received:      date_received,
         contact_person:     contact_person,
         store_front_id:     store_front_id,

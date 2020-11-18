@@ -9,24 +9,13 @@ module WorkOrders
     end
     def cancel!
       ActiveRecord::Base.transaction do
-        create_entry
+        delete_entry
         delete_service_charge
       end
     end
     private
-    def create_entry
-      accounts_receivable = work_order.receivable_account
-      service_revenue = work_order.service_revenue_account
-        employee.entries.create!(
-          commercial_document: customer,
-          entry_date: Date.current,
-          description: "Cancel #{service_charge.description}",
-          debit_amounts_attributes: [amount: service_charge.amount,
-                                     account: service_revenue
-                                     ],
-            credit_amounts_attributes:[ amount: service_charge.amount,
-                                        account: accounts_receivable
-                                      ])
+    def delete_entry
+      service_charge.entry.destroy
     end
 
     def delete_service_charge

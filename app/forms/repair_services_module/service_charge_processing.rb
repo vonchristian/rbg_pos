@@ -21,7 +21,7 @@ module RepairServicesModule
       services_revenue = find_work_order.default_service_revenue_account
         find_employee.entries.create!(
           recorder: find_employee,
-          commercial_document: find_customer,
+          commercial_document: service_charge,
           entry_date: date,
           description: description,
           debit_amounts_attributes: [amount: service_charge.amount,

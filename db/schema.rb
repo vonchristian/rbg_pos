@@ -189,19 +189,6 @@ ActiveRecord::Schema.define(version: 2020_09_06_222920) do
     t.index ["name"], name: "index_categories_on_name", unique: true
   end
 
-  create_table "customer_accounts", force: :cascade do |t|
-    t.bigint "sales_account_id"
-    t.bigint "service_income_account_id"
-    t.bigint "receivable_account_id"
-    t.bigint "customer_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["customer_id"], name: "index_customer_accounts_on_customer_id"
-    t.index ["receivable_account_id"], name: "index_customer_accounts_on_receivable_account_id"
-    t.index ["sales_account_id"], name: "index_customer_accounts_on_sales_account_id"
-    t.index ["service_income_account_id"], name: "index_customer_accounts_on_service_income_account_id"
-  end
-
   create_table "customers", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -274,16 +261,6 @@ ActiveRecord::Schema.define(version: 2020_09_06_222920) do
     t.datetime "updated_at", null: false
     t.index ["invoiceable_type", "invoiceable_id"], name: "index_invoices_on_invoiceable_type_and_invoiceable_id"
     t.index ["type"], name: "index_invoices_on_type"
-  end
-
-  create_table "ledger_accounts", force: :cascade do |t|
-    t.string "ledgerable_type"
-    t.bigint "ledgerable_id"
-    t.bigint "account_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["account_id"], name: "index_ledger_accounts_on_account_id"
-    t.index ["ledgerable_type", "ledgerable_id"], name: "index_ledger_accounts_on_ledgerable_type_and_ledgerable_id"
   end
 
   create_table "level_one_account_categories", force: :cascade do |t|
@@ -403,19 +380,6 @@ ActiveRecord::Schema.define(version: 2020_09_06_222920) do
     t.index ["type"], name: "index_parent_account_categories_on_type"
   end
 
-  create_table "payments", force: :cascade do |t|
-    t.bigint "order_id"
-    t.integer "mode_of_payment"
-    t.decimal "discount_amount", default: "0.0"
-    t.decimal "cash_tendered"
-    t.decimal "change"
-    t.decimal "total_cost"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.decimal "total_cost_less_discount"
-    t.index ["order_id"], name: "index_payments_on_order_id"
-  end
-
   create_table "pg_search_documents", force: :cascade do |t|
     t.text "content"
     t.string "searchable_type"
@@ -519,13 +483,6 @@ ActiveRecord::Schema.define(version: 2020_09_06_222920) do
     t.index ["type"], name: "index_registries_on_type"
   end
 
-  create_table "repairs", force: :cascade do |t|
-    t.text "symptoms_observed"
-    t.text "repair_description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "sections", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -575,15 +532,6 @@ ActiveRecord::Schema.define(version: 2020_09_06_222920) do
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_store_front_accounts_on_account_id"
     t.index ["store_front_id"], name: "index_store_front_accounts_on_store_front_id"
-  end
-
-  create_table "store_front_configs", force: :cascade do |t|
-    t.bigint "accounts_receivable_account_id"
-    t.bigint "store_front_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["accounts_receivable_account_id"], name: "index_store_front_configs_on_accounts_receivable_account_id"
-    t.index ["store_front_id"], name: "index_store_front_configs_on_store_front_id"
   end
 
   create_table "store_fronts", force: :cascade do |t|
@@ -827,10 +775,6 @@ ActiveRecord::Schema.define(version: 2020_09_06_222920) do
   add_foreign_key "businesses", "parent_account_categories", column: "service_receivable_parent_account_category_id"
   add_foreign_key "businesses", "parent_account_categories", column: "service_revenue_parent_account_category_id"
   add_foreign_key "cash_counts", "users", column: "employee_id"
-  add_foreign_key "customer_accounts", "accounts", column: "customer_id"
-  add_foreign_key "customer_accounts", "accounts", column: "receivable_account_id"
-  add_foreign_key "customer_accounts", "accounts", column: "sales_account_id"
-  add_foreign_key "customer_accounts", "accounts", column: "service_income_account_id"
   add_foreign_key "customers", "accounts", column: "receivable_account_id"
   add_foreign_key "customers", "accounts", column: "sales_discount_account_id"
   add_foreign_key "customers", "accounts", column: "sales_revenue_account_id"
@@ -841,7 +785,6 @@ ActiveRecord::Schema.define(version: 2020_09_06_222920) do
   add_foreign_key "employee_cash_accounts", "users", column: "employee_id"
   add_foreign_key "entries", "users"
   add_foreign_key "entries", "users", column: "recorder_id"
-  add_foreign_key "ledger_accounts", "accounts"
   add_foreign_key "level_one_account_categories", "store_fronts"
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "line_items", column: "purchase_order_line_item_id"
@@ -866,7 +809,6 @@ ActiveRecord::Schema.define(version: 2020_09_06_222920) do
   add_foreign_key "other_sales_line_items", "carts"
   add_foreign_key "other_sales_line_items", "orders"
   add_foreign_key "parent_account_categories", "businesses"
-  add_foreign_key "payments", "orders"
   add_foreign_key "posts", "users"
   add_foreign_key "product_units", "customers"
   add_foreign_key "products", "businesses"
@@ -886,8 +828,6 @@ ActiveRecord::Schema.define(version: 2020_09_06_222920) do
   add_foreign_key "stocks", "unit_of_measurements"
   add_foreign_key "store_front_accounts", "accounts"
   add_foreign_key "store_front_accounts", "store_fronts"
-  add_foreign_key "store_front_configs", "accounts", column: "accounts_receivable_account_id"
-  add_foreign_key "store_front_configs", "store_fronts"
   add_foreign_key "store_fronts", "account_categories", column: "sales_revenue_account_category_id"
   add_foreign_key "store_fronts", "account_categories", column: "service_receivable_account_category_id"
   add_foreign_key "store_fronts", "accounts", column: "cost_of_goods_sold_account_id"
