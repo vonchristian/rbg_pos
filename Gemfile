@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
-ruby '2.7.1'
+ruby '2.7.2'
 gem 'prawn-icon'
-gem 'rails', '6.0.3'
+gem 'rails', '6.0.3.4'
 gem "audited", "~> 4.7"
 gem 'autonumeric-rails'
 gem 'spreadsheet'
@@ -35,11 +35,10 @@ gem 'simple_form'
 gem 'devise'
 gem 'devise_invitable', '~> 1.7.0'
 gem 'mini_magick'
-gem 'bootsnap', '>= 1.4.2', require: false
+gem 'bootsnap', require: false
 gem 'prawn'
 gem 'prawn-table'
 gem 'chartkick'
-# gem 'paymaya'
 gem 'precise_distance_of_time_in_words'
 gem 'pundit'
 gem 'will_paginate'
