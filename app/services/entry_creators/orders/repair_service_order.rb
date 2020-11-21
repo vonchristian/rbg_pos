@@ -2,9 +2,9 @@ module EntryCreators
   module Orders
     class RepairServiceOrder
       attr_reader :sales_order, :work_order, :employee, :customer, :receivable_account, :sales_revenue_account, :cost_of_goods_sold_account, :merchandise_inventory_account
-      
+
       def initialize(sales_order:, work_order:, employee:)
-        @sales_order                   = sales_order 
+        @sales_order                   = sales_order
         @customer                      = @sales_order.customer
         @work_order                    = work_order
         @employee                      = employee
@@ -13,12 +13,12 @@ module EntryCreators
         @cost_of_goods_sold_account    = @store_front.cost_of_goods_sold_account
         @sales_revenue_account         = @work_order.sales_revenue_account
         @merchandise_inventory_account = @store_front.merchandise_inventory_account
-      end 
+      end
 
       def create_entry!
-       
+
         entry = employee.entries.build(
-        commercial_document: customer,
+        commercial_document: @sales_order,
         entry_date:          sales_order.date,
         description:         "Spare parts for work order ##{work_order.service_number}")
 
@@ -39,8 +39,7 @@ module EntryCreators
           account: merchandise_inventory_account)
 
         entry.save!
-      end 
-    end 
+      end
+    end
   end
-end 
-                                       
+end
