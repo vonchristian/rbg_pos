@@ -260,7 +260,7 @@
               </div>
               <div class="row">
                 <div class="col-md-6">
-                  <p class="title-up"> CASH PAYMENTS / RETURNS </p>
+                  <p class="title-up"> CASH PAYMENTS / SALES RETURNS </p>
                 </div>
                 <div class="col-md-6">
                   <p class="title-up float-right"> <%=number_to_currency @work_order.payments_total %></p>
@@ -297,16 +297,16 @@
                         <small><%= entry.recorder.full_name %></small><br>
                       </span>
                       <% end %>
-                      <span class="badge badge-warning"><%= number_to_currency entry.debit_amounts.total %></span>
+                      <span class="badge badge-warning"><%= number_to_currency entry.debit_amounts.where(account: @work_order.receivable_account).total %></span>
 
                   </div>
 
                   <div class="col-md-2">
-                    <% if current_user.proprietor? %>
-                      <%=link_to entry_path(entry), method: :delete do %>
-                        <span class="float-right" data-toggle='tooltip' title="Cancel Transaction"><i class="fa fa-times text-danger"></i></span>
-                      <% end %>
-                    <% end %>
+                    <%# if current_user.proprietor? %>
+                      <%#=link_to entry_path(entry), method: :delete do %>
+                        <!--<span class="float-right" data-toggle='tooltip' title="Cancel Transaction"><i class="fa fa-times text-danger"></i></span>!-->
+                      <%# end %>
+                    <%# end %>
                   </div>
                 </div>
                 <hr>

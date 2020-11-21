@@ -7,7 +7,7 @@ gem "audited", "~> 4.7"
 gem 'autonumeric-rails'
 gem 'spreadsheet'
 gem 'rqrcode'
-gem 'webpacker', '~> 5.0'
+gem 'webpacker'
 gem "font-awesome-rails"
 gem 'sidekiq'
 # gem 'activerecord-postgis-adapter'
