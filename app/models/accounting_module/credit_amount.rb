@@ -1,4 +1,4 @@
 module AccountingModule
-  class CreditAmount < Amount
+  class CreditAmount < AccountingModule::Amount
   end
 end

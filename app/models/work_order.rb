@@ -134,6 +134,17 @@ class WorkOrder < ApplicationRecord
   def accounts_receivable_total
     receivable_account.debits_balance
   end
+  def accounts_receivable_less_sales_returns_total
+    receivable_account.debits_balance - sales_returns_total
+  end
+
+  def sales_returns_total
+    receivable_account.credits_balance - cash_payments_total
+  end
+
+  def cash_payments_total
+    receivable_account.credit_entries.map{ |entry| entry.amounts.where(account_id: User.cash_on_hand_accounts.ids).total }.sum
+  end
 
   def refunds_total
   end

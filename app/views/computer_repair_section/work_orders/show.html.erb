@@ -260,10 +260,18 @@
               </div>
               <div class="row">
                 <div class="col-md-6">
-                  <p class="title-up"> CASH PAYMENTS / SALES RETURNS </p>
+                  <p class="title-up"> SALES RETURNS </p>
                 </div>
                 <div class="col-md-6">
-                  <p class="title-up float-right"> <%=number_to_currency @work_order.payments_total %></p>
+                  <p class="title-up float-right"> <%=number_to_currency @work_order.sales_returns_total %></p>
+                </div>
+              </div>
+               <div class="row">
+                <div class="col-md-6">
+                  <p class="title-up"> CASH PAYMENTS </p>
+                </div>
+                <div class="col-md-6">
+                  <p class="title-up float-right"> <%=number_to_currency @work_order.cash_payments_total %></p>
                 </div>
               </div>
               <hr class="min-margin">
@@ -286,18 +294,39 @@
               <h4 class="subtitle-up"> TRANSACTIONS HISTORY </h4>
               <p class="text-muted"> List of payments, credit orders and charges </p>
               <hr>
-              <% @work_order.entries.includes(:recorder).each do |entry| %>
+              <% @work_order.entries.includes(:recorder).order(created_at: :desc).each do |entry| %>
                 <div class="row">
 
                   <div class="col-md-10">
-                      <span><%= entry.description %></span><br>
+                      <b><%= entry.description %></b><br>
                       <span class="text-muted">
                       <%= entry.entry_date.strftime("%b %e") %>
                       <% if entry.recorder.present? %>
                         <small><%= entry.recorder.full_name %></small><br>
                       </span>
                       <% end %>
-                      <span class="badge badge-warning"><%= number_to_currency entry.debit_amounts.where(account: @work_order.receivable_account).total %></span>
+                      <small>DEBIT</small>
+                      <% entry.debit_amounts.each do |amount| %>
+                        <div class="row">
+                          <div class="col-md-8">
+                            <%= amount.account_name %>
+                          </div>
+                          <div class='col-md-4'>
+                            <span class="float-right"><%= number_to_currency amount.amount %></span>
+                          </div>
+                        </div>
+                      <% end %>
+                      <small>CREDIT</small>
+                      <% entry.credit_amounts.each do |amount| %>
+                        <div class="row">
+                          <div class="col-md-8">
+                            <%= amount.account_name %>
+                          </div>
+                          <div class='col-md-4'>
+                            <span class="float-right"><%= number_to_currency amount.amount %></span>
+                          </div>
+                        </div>
+                      <% end %>
 
                   </div>
 

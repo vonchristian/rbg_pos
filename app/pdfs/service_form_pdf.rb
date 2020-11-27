@@ -181,8 +181,8 @@ end
     end
   end
   def payment_data
-    @payment_date ||= [["", "RECEIVABLES", "#{price(@work_order.accounts_receivable_total)}"]] +
-                      [["", "PAYMENTS", "#{price(@work_order.payments_total)}"]] +
+    @payment_date ||= [["", "RECEIVABLES", "#{price(@work_order.accounts_receivable_less_sales_returns_total)}"]] +
+                      [["", "PAYMENTS", "#{price(@work_order.cash_payments_total)}"]] +
                       [["", "BALANCE", "#{price(@work_order.balance_total)}"]]
   end
 end
