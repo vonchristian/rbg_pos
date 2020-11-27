@@ -1,4 +1,4 @@
 module AccountingModule
-  class DebitAmount < Amount
+  class DebitAmount < AccountingModule::Amount
   end
 end
