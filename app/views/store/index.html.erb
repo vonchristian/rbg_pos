@@ -227,7 +227,7 @@
             </div>
           </div>
           <div class="card-body">
-            <% User.sales_clerk.each do |sales_clerk| %>
+            <% User.sales_clerk.where(email: ['elmie@rbg.com','lea@rbg.com','nova@rbg.com', 'jenelyn.lamut@rbg.com','leizel@rbg.com']).each do |sales_clerk| %>
               <div class="row">
                 <div class="col-md-4">
                   <%= sales_clerk.full_name %>
@@ -237,7 +237,7 @@
                 </div>
                 <div class="col-md-4">
                   <span class="pull-right">
-                    <b><%= number_to_currency sales_clerk.cash_on_hand_account.balance(from_date: Date.current.beginning_of_day, to_date: Date.current.end_of_day) %></b>
+                    <b><%= number_to_currency sales_clerk.cash_on_hand_account.debits_balance(from_date: Date.current.beginning_of_day, to_date: Date.current.end_of_day) %></b>
                   </span>
                 </div>
               </div>
