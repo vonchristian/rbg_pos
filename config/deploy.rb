@@ -4,13 +4,13 @@ require 'mina/git'
 require 'mina/rbenv'
 require 'mina/puma'
 
-Dir["#{Rails.root}/lib/mina/*.rb"].each { |file| require file }
+Dir["/lib/mina/*.rb"].each { |file| require file }
 
 set :whenever_name, 'production'
 set :domain, '167.99.64.121'
 set :deploy_to, '/var/www/rbg'
 set :repository, 'git@github.com:vonchristian/rbg_pos.git'
-set :branch, 'master'
+set :branch, 'main'
 set :user, 'deploy'
 set :force_asset_precompile, true
 set :term_mode, nil
