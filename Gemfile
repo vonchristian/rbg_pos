@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
-ruby '2.7.2'
+ruby '3.0.2'
 gem 'prawn-icon'
 gem 'rails', '6.0.3.4'
 gem "audited", "~> 4.7"
@@ -47,7 +47,7 @@ gem "roo", "2.7.0"
 gem 'simple_calendar'
 gem "pdf-reader"
 gem 'pagy'
-gem 'ffi', '1.11.2'
+gem 'ffi', '1.15.3'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 group :development do
